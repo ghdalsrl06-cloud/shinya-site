@@ -27,6 +27,15 @@ const albumLd = {
 <Base lang="ja" title="ミュージック — SHINYA / 深夜">
   <script type="application/ld+json" set:html={JSON.stringify(albumLd)} />
   <div class="container">
+    <section class="page-banner">
+      <img class="page-banner-art" src={`${base}/images/music-banner.jpg`} alt="" />
+      <div class="page-banner-scrim" aria-hidden="true"></div>
+      <div class="page-banner-inner">
+        <h1 class="page-banner-title">深夜 MUSIC</h1>
+        <p class="page-banner-sub">ダークエレクトロニックJ-POP · 全7曲 + 60分ミックス</p>
+      </div>
+    </section>
+
     {playlist && (
       <section class="section">
         <h2>{t('ja', 'section.playlist')}</h2>
