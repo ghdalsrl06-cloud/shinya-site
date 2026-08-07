@@ -5,7 +5,7 @@ import { t } from '../../i18n/ui';
 
 const releases = await getCollection('music');
 const playlist = releases.find((r) => r.data.kind === 'playlist');
-const singles = releases.filter((r) => r.data.kind !== 'playlist');
+const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 ---
 
 <Base lang="ko" title="뮤직 — SHINYA / 深夜">
@@ -16,8 +16,8 @@ const singles = releases.filter((r) => r.data.kind !== 'playlist');
         <div class="card playlist-card">
           <span class="badge">{playlist.data.status === 'coming-soon' ? t('ko', 'badge.coming') : playlist.data.releaseDate}</span>
           <h3 style="margin: 0.8rem 0 0.1rem;">{playlist.data.title}</h3>
-          {playlist.data.titleJa && <p class="card-title-ja">{playlist.data.titleJa}</p>}
-          <p class="card-desc">{playlist.data.description}</p>
+          {playlist.data.titleKo && <p class="card-title-ja">{playlist.data.titleKo}</p>}
+          <p class="card-desc">{playlist.data.descriptionKo ?? playlist.data.description}</p>
           {playlist.data.youtubeId && (
             <div class="video-wrap" style="margin-top: 1.2rem;">
               <iframe
@@ -39,8 +39,8 @@ const singles = releases.filter((r) => r.data.kind !== 'playlist');
           <div class="card">
             <span class="badge">{r.data.status === 'coming-soon' ? t('ko', 'badge.coming') : r.data.releaseDate}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{r.data.title}</h3>
-            {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
-            <p class="card-desc">{r.data.description}</p>
+            {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
+            <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
             {r.data.youtubeId && (
               <div class="video-wrap" style="margin-top: 1rem;">
                 <iframe

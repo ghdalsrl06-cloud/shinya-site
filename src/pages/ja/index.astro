@@ -66,7 +66,7 @@ const moods = [
           <span class="badge">{latest.data.status === 'coming-soon' ? t('ja', 'badge.coming') : t('ja', 'badge.new')}</span>
           <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
           {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
-          <p class="card-desc">{latest.data.description}</p>
+          <p class="card-desc">{latest.data.descriptionJa ?? latest.data.description}</p>
         </div>
       )}
     </section>

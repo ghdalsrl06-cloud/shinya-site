@@ -64,7 +64,7 @@ const moods = [
         <div class="card">
           <span class="badge">{latest.data.status === 'coming-soon' ? 'Coming Soon' : 'New Release'}</span>
           <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
-          {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
+          {latest.data.titleEn && <p class="card-title-ja">{latest.data.titleEn}</p>}
           <p class="card-desc">{latest.data.description}</p>
         </div>
       )}
