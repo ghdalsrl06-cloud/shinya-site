@@ -28,8 +28,11 @@
       alpha += (target - alpha) * 0.04;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (alpha > 0.005) {
+        const midnight = document.documentElement.classList.contains('midnight-mode');
         for (const d of drops) {
-          const c = d.tint < 0.12 ? '62, 230, 240' : d.tint > 0.88 ? '255, 45, 110' : '170, 195, 235';
+          const c = midnight
+            ? d.tint < 0.12 ? '176, 140, 255' : d.tint > 0.7 ? '255, 36, 68' : '210, 120, 140'
+            : d.tint < 0.12 ? '62, 230, 240' : d.tint > 0.88 ? '255, 45, 110' : '170, 195, 235';
           ctx.strokeStyle = `rgba(${c}, ${0.22 * alpha})`;
           ctx.lineWidth = 1;
           ctx.beginPath();

@@ -34,7 +34,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
     <div class="hero-inner">
         <h1 class="jp-title glitch" data-text="深夜">深夜</h1>
         <p class="en-title">Shinya · Tokyo</p>
-        <p class="tagline">{t('ja', 'hero.tagline')}</p>
+        <p class="tagline" data-midnight-text={t('ja', 'hero.tagline.midnight')}>{t('ja', 'hero.tagline')}</p>
         {lyricLines.length > 0 && <p class="hero-lyric" data-lyric-lines={JSON.stringify(lyricLines)} aria-hidden="true"></p>}
         <div class="hero-clock"><TokyoClock lang="ja" /></div>
         <p class="hero-cta">
