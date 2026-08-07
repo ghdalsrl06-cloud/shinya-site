@@ -1,0 +1,87 @@
+---
+import Base from '../../../layouts/Base.astro';
+import LiteYouTube from '../../../components/LiteYouTube.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../../../i18n/ui';
+
+export async function getStaticPaths() {
+  const singles = (await getCollection('music'))
+    .filter((r) => r.data.kind !== 'playlist')
+    .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+  return singles.map((song, i) => ({
+    params: { slug: song.id },
+    props: { song, prev: singles[i - 1] ?? null, next: singles[i + 1] ?? null },
+  }));
+}
+
+const { song, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicRecording',
+  name: song.data.title,
+  alternateName: song.data.titleKo,
+  position: song.data.track,
+  byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
+  inAlbum: { '@type': 'MusicAlbum', name: 'SHINYA 深夜' },
+  datePublished: song.data.releaseDate,
+  url: `${site}${base}/ko/music/${song.id}/`,
+};
+---
+
+<Base lang="ko" title={`${song.data.title} (${song.data.titleKo}) — SHINYA / 深夜`} description={song.data.descriptionKo ?? song.data.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <div class="container">
+    <article class="section song-page">
+      <a class="back-link" href={`${base}/ko/music/`}>{t('ko', 'back.music')}</a>
+      <p class="post-meta">{song.data.track}번 트랙 · {song.data.status === 'coming-soon' ? t('ko', 'badge.coming') : song.data.releaseDate}</p>
+      <h1 class="song-title">{song.data.title}</h1>
+      {song.data.titleKo && <p class="song-sub">{song.data.titleKo}</p>}
+      <p class="song-desc">{song.data.descriptionKo ?? song.data.description}</p>
+
+      {song.data.youtubeId && (
+        <div class="song-video">
+          <LiteYouTube id={song.data.youtubeId} title={song.data.title} />
+        </div>
+      )}
+
+      <section class="lyrics">
+        <h2>{t('ko', 'song.lyrics')}</h2>
+        {song.data.lyrics ? (
+          <div class="lyrics-cols">
+            <div class="lyrics-block">
+              <h3>{t('ko', 'song.original')}</h3>
+              {song.data.lyrics.map((line) => (line ? <p>{line}</p> : <p class="lyrics-gap">&nbsp;</p>))}
+            </div>
+            {song.data.lyricsKo && (
+              <div class="lyrics-block">
+                <h3>{t('ko', 'song.translation')}</h3>
+                {song.data.lyricsKo.map((line) => (line ? <p>{line}</p> : <p class="lyrics-gap">&nbsp;</p>))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <p class="lyrics-soon">{t('ko', 'song.lyrics.soon')}</p>
+        )}
+      </section>
+
+      {(prev || next) && (
+        <nav class="post-nav">
+          {prev ? (
+            <a class="post-nav-link" href={`${base}/ko/music/${prev.id}/`}>
+              <span class="post-nav-label">← {prev.data.track}번 트랙</span>
+              <span class="post-nav-title">{prev.data.title}</span>
+            </a>
+          ) : <span />}
+          {next ? (
+            <a class="post-nav-link next" href={`${base}/ko/music/${next.id}/`}>
+              <span class="post-nav-label">{next.data.track}번 트랙 →</span>
+              <span class="post-nav-title">{next.data.title}</span>
+            </a>
+          ) : <span />}
+        </nav>
+      )}
+    </article>
+  </div>
+</Base>

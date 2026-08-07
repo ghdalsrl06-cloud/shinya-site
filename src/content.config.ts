@@ -29,6 +29,9 @@ const music = defineCollection({
     description: z.string(),
     descriptionKo: z.string().optional(),
     descriptionJa: z.string().optional(),
+    lyrics: z.array(z.string()).optional(),
+    lyricsKo: z.array(z.string()).optional(),
+    lyricsEn: z.array(z.string()).optional(),
   }),
 });
 

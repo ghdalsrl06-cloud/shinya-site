@@ -24,9 +24,20 @@ const cover = post.data.cover
     ? post.data.cover
     : `${base}/${post.data.cover.replace(/^\//, '')}`
   : '';
+const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const postLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
+  mainEntityOfPage: `${site}${base}/ja/blog/${post.id.replace(/^(ko|ja)\//, '')}/`,
+};
 ---
 
 <Base lang="ja" title={`${post.data.title} — SHINYA / 深夜`} description={post.data.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(postLd)} />
   <div class="container">
     <article class="section prose">
       <a class="back-link" href={`${base}/ja/blog/`}>{t('ja', 'back.blog')}</a>

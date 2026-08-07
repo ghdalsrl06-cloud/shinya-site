@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import TokyoClock from '../../components/TokyoClock.astro';
+import LiteYouTube from '../../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 
@@ -13,7 +14,7 @@ const posts = (await getCollection('blog'))
   .slice(0, 3);
 
 // 첫 업로드가 올라오면 유튜브 영상 ID를 넣어 홈에 노출합니다 (영어 홈과 동일).
-const latestVideoId = '';
+const latestVideoId = 'eSuk6hPMKdg';
 
 const singles = releases
   .filter((r) => r.data.kind !== 'playlist')
@@ -58,14 +59,7 @@ const moods = singles.map((r) => ({
     {latestVideoId && (
       <section class="section">
         <h2>{t('ko', 'section.video')}</h2>
-        <div class="video-wrap">
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${latestVideoId}`}
-            title="최신 영상"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          />
-        </div>
+        <LiteYouTube id={latestVideoId} title="SHINYA" />
       </section>
     )}
 

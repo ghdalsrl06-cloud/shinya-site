@@ -26,6 +26,11 @@ export const ui = {
     'badge.new': 'New Release',
     'music.subscribe.pre': 'First releases are on the way — subscribe on',
     'music.subscribe.post': 'to catch them at midnight.',
+    'back.music': '← Music',
+    'song.lyrics': 'Lyrics',
+    'song.lyrics.soon': 'Lyrics will be published after release.',
+    'song.original': 'Original',
+    'song.translation': 'English translation',
   },
   ko: {
     'nav.home': '홈',
@@ -52,6 +57,11 @@ export const ui = {
     'badge.new': '새 릴리스',
     'music.subscribe.pre': '첫 릴리스를 준비하고 있어요 —',
     'music.subscribe.post': '구독하고 자정에 만나요.',
+    'back.music': '← 뮤직',
+    'song.lyrics': '가사',
+    'song.lyrics.soon': '가사는 릴리스 후 공개됩니다.',
+    'song.original': '원문',
+    'song.translation': '한국어 번역',
   },
   ja: {
     'nav.home': 'ホーム',
@@ -78,6 +88,11 @@ export const ui = {
     'badge.new': '新リリース',
     'music.subscribe.pre': 'ファーストリリースを準備中 —',
     'music.subscribe.post': 'をチャンネル登録して、真夜中に会いましょう。',
+    'back.music': '← ミュージック',
+    'song.lyrics': '歌詞',
+    'song.lyrics.soon': '歌詞はリリース後に公開されます。',
+    'song.original': '原文',
+    'song.translation': '訳',
   },
 } as const;
 
