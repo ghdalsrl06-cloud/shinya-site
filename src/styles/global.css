@@ -493,6 +493,30 @@ article.prose::before {
 }
 .link-card:hover .link-arrow { color: var(--neon-pink); transform: translateX(4px); }
 
+/* ---- prev/next post nav ---- */
+.post-nav {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line);
+}
+.post-nav-link {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg-raised); color: var(--text);
+  transition: border-color 0.25s, transform 0.25s;
+}
+.post-nav-link:hover { border-color: var(--neon-purple); transform: translateY(-2px); color: var(--text); }
+.post-nav-link.next { text-align: right; }
+.post-nav-label {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--neon-purple);
+}
+.post-nav-link:hover .post-nav-label { color: var(--neon-pink); }
+.post-nav-title { font-size: 0.9rem; font-weight: 500; }
+@media (max-width: 640px) {
+  .post-nav { grid-template-columns: 1fr; }
+  .post-nav-link.next { text-align: left; }
+}
+
 /* ---- comments ---- */
 .comments { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
 

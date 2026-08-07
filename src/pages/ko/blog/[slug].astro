@@ -5,11 +5,16 @@ import { getCollection, render } from 'astro:content';
 import { t } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter((p) => p.id.startsWith('ko/'));
-  return posts.map((post) => ({ params: { slug: post.id.replace(/^ko\//, '') }, props: { post } }));
+  const posts = (await getCollection('blog'))
+    .filter((p) => p.id.startsWith('ko/') && !p.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return posts.map((post, i) => ({
+    params: { slug: post.id.replace(/^ko\//, '') },
+    props: { post, newer: posts[i - 1] ?? null, older: posts[i + 1] ?? null },
+  }));
 }
 
-const { post } = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 130));
@@ -35,6 +40,22 @@ const cover = post.data.cover
             <li><a class="tag" href={`${base}/ko/blog/tag/${tagSlug(tag)}/`}>#{tag}</a></li>
           ))}
         </ul>
+      )}
+      {(older || newer) && (
+        <nav class="post-nav">
+          {older ? (
+            <a class="post-nav-link" href={`${base}/ko/blog/${older.id.replace(/^ko\//, '')}/`}>
+              <span class="post-nav-label">← 이전 글</span>
+              <span class="post-nav-title">{older.data.title}</span>
+            </a>
+          ) : <span />}
+          {newer ? (
+            <a class="post-nav-link next" href={`${base}/ko/blog/${newer.id.replace(/^ko\//, '')}/`}>
+              <span class="post-nav-label">다음 글 →</span>
+              <span class="post-nav-title">{newer.data.title}</span>
+            </a>
+          ) : <span />}
+        </nav>
       )}
       <Comments lang="ko" />
     </article>
