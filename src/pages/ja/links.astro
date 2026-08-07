@@ -4,8 +4,8 @@ import Base from '../../layouts/Base.astro';
 // imageに/public配下のパス(例: images/character-small.png)を入れると、
 // リンクカードに小さなキャラクターサムネイルが表示されます。空ならプレースホルダー。
 const links = [
-  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: '' },
-  { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中', image: '' },
+  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: 'images/character-thumb.jpg' },
+  { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中', image: 'images/character-thumb.jpg' },
 ];
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(/^\//, '')}`);
