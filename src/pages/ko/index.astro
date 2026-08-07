@@ -27,14 +27,18 @@ const moods = singles.map((r) => ({
 ---
 
 <Base lang="ko" title="SHINYA / 深夜 — 도쿄의 심야 음악" description="자정 이후를 위한 다크 일렉트로닉 J-POP. SHINYA / 深夜의 오리지널 음악.">
-  <section class="hero">
-    <h1 class="jp-title glitch" data-text="深夜">深夜</h1>
-    <p class="en-title">Shinya · Tokyo</p>
-    <p class="tagline">{t('ko', 'hero.tagline')}</p>
-    <div class="hero-clock"><TokyoClock lang="ko" /></div>
-    <p class="hero-cta">
-      <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">{t('ko', 'btn.youtube')}</a>
-    </p>
+  <section class="hero hero-character">
+    <img class="hero-art" src={`${base}/images/hero-character.jpg`} alt="" />
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-inner">
+        <h1 class="jp-title glitch" data-text="深夜">深夜</h1>
+        <p class="en-title">Shinya · Tokyo</p>
+        <p class="tagline">{t('ko', 'hero.tagline')}</p>
+        <div class="hero-clock"><TokyoClock lang="ko" /></div>
+        <p class="hero-cta">
+          <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">{t('ko', 'btn.youtube')}</a>
+        </p>
+    </div>
   </section>
 
   <div class="ticker" aria-hidden="true">
