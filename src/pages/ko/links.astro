@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ArtImg from '../../components/ArtImg.astro';
 
 // image에 /public 하위 경로(예: images/character-small.png)를 넣으면
 // 링크 카드에 작은 캐릭터 썸네일이 표시됩니다. 비워두면 플레이스홀더가 나옵니다.
@@ -14,7 +15,7 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
 <Base lang="ko" title="링크 — SHINYA / 深夜">
   <div class="container">
     <section class="page-banner">
-      <img class="page-banner-art" src={`${base}/images/links-banner.jpg`} alt="" />
+      <ArtImg class="page-banner-art" src="images/links-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 LINKS</h1>

@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# generated responsive image variants (rebuilt at astro build)
+public/images/opt/

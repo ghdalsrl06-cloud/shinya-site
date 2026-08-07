@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ArtImg from '../components/ArtImg.astro';
 
 // Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
 // replace a scene's placeholder art with a real photo.
@@ -45,7 +46,7 @@ const scenes = [
     <section class="section character-section">
       <div class="character-card">
         {characterImage ? (
-          <img src={`${base}/${characterImage}`} alt="SHINYA" loading="lazy" />
+          <ArtImg src={characterImage} width={810} sizes="(min-width: 700px) 420px, 90vw" alt="SHINYA" />
         ) : (
           <span class="character-kanji" aria-hidden="true">深夜</span>
         )}
@@ -67,7 +68,7 @@ const scenes = [
         <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
           <div class={`scene-visual ${s.cls}`}>
             {s.image ? (
-              <img src={`${base}/${s.image}`} alt={s.title} loading="lazy" />
+              <ArtImg src={s.image} width={1400} sizes="(min-width: 1000px) 460px, 100vw" alt={s.title} />
             ) : (
               <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
             )}

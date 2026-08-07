@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ArtImg from '../components/ArtImg.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../i18n/ui';
@@ -28,7 +29,7 @@ const albumLd = {
   <script type="application/ld+json" set:html={JSON.stringify(albumLd)} />
   <div class="container">
     <section class="page-banner">
-      <img class="page-banner-art" src={`${base}/images/music-banner.jpg`} alt="" />
+      <ArtImg class="page-banner-art" src="images/music-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 MUSIC</h1>
