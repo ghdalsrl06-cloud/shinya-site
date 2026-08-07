@@ -1,0 +1,73 @@
+name: YouTube sync
+
+# Checks the channel RSS feed daily and opens an issue for any video that
+# is not yet registered in releases.json. No automatic commits — a human
+# (or a Claude session) registers the video afterwards.
+
+on:
+  schedule:
+    - cron: '20 0 * * *' # daily 09:20 KST, after the blog rebuild
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CHANNEL_HANDLE: shinyatokyo
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch channel feed
+        run: |
+          page=$(curl -fsSL "https://www.youtube.com/@${CHANNEL_HANDLE}")
+          cid=$(echo "$page" | grep -oP '"channelId":"\K[^"]+' | head -1)
+          if [ -z "$cid" ]; then
+            echo "Could not resolve channel id for @${CHANNEL_HANDLE}; skipping."
+            exit 0
+          fi
+          echo "Channel id: $cid"
+          curl -fsSL "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml
+      - name: Ensure label exists
+        run: gh label create youtube-sync --color FF2D6E --description "Auto-detected new YouTube video" || true
+      - name: Open issues for unregistered videos
+        run: |
+          [ -f /tmp/feed.xml ] || exit 0
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          import json, re, subprocess
+
+          ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
+          root = ET.parse('/tmp/feed.xml').getroot()
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
+          entries = [
+              (e.find('yt:videoId', ns).text, e.find('a:title', ns).text)
+              for e in root.findall('a:entry', ns)
+          ]
+          new = [(v, t) for v, t in entries if v not in known]
+          print(f'feed: {len(entries)} videos, unregistered: {len(new)}')
+          for vid, title in new:
+              # skip if an issue (open or closed) already mentions this video id
+              r = subprocess.run(
+                  ['gh', 'issue', 'list', '--state', 'all', '--search', f'"youtube-id: {vid}" in:body', '--json', 'number'],
+                  capture_output=True, text=True,
+              )
+              if r.returncode == 0 and json.loads(r.stdout or '[]'):
+                  print(f'skip (already reported): {vid}')
+                  continue
+              body = (
+                  f'새 유튜브 영상이 감지되었습니다.\n\n'
+                  f'- 제목: {title}\n'
+                  f'- 링크: https://youtu.be/{vid}\n'
+                  f'- youtube-id: {vid}\n\n'
+                  f'사이트에 등록하려면 Claude 세션에서 이 링크를 공유하고 등록을 요청하세요.\n'
+              )
+              subprocess.run(
+                  ['gh', 'issue', 'create', '--title', f'새 유튜브 영상: {title}', '--label', 'youtube-sync', '--body', body],
+                  check=False,
+              )
+              print(f'issue created: {vid} {title}')
+          PY
