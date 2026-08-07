@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const releases = await getCollection('music');
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const playlist = releases.find((r) => r.data.kind === 'playlist');
+
+const stories = [
+  'The elevator descends and the night begins with a bad decision, made quietly and on purpose. "One more sip" is the promise the whole album keeps.',
+  'A rule is set early: whatever happens tonight, morning erases the names. That deadline is what makes every hour after it burn brighter.',
+  'Under a streetlight, the lies that only work at 2am. Both of them know. Neither of them stops.',
+  'The deepest point of the night. Neon rippling on the water, bass under the skin — not sinking, surrendering.',
+  'A convenience-store window, a coffee going cold, a phone that stays dark. Hope is at its most stubborn at 3am.',
+  'The goodbye that tastes like the first lie of the night. Everything after this is aftermath.',
+  'One song loops until the sky turns pale — and the last line hands you back to track one. The night never really ends.',
+];
+const scenes = singles.map((s, i) => ({ song: s, story: stories[i] ?? '' }));
+---
+
+<Base title="One Night Loop — the SHINYA album story" description="Seven tracks, one night: how the SHINYA album loops from midnight back to midnight.">
+  <div class="container">
+    <section class="page-banner">
+      <img class="page-banner-art" src={`${base}/${playlist?.data.poster ?? 'images/hero-character.jpg'}`} alt="" />
+      <div class="page-banner-scrim" aria-hidden="true"></div>
+      <div class="page-banner-inner">
+        <h1 class="page-banner-title">ONE NIGHT LOOP</h1>
+        <p class="page-banner-sub">Seven tracks · one night · no exit</p>
+      </div>
+    </section>
+
+    <section class="section prose about-intro">
+      <p>
+        The SHINYA album is one night told in order. It starts at midnight with a bad decision,
+        goes down as far as a night can go, and ends where it began. Walk it track by track:
+      </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map(({ song, story }, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class="scene-visual">
+            {song.data.poster && <img src={`${base}/${song.data.poster}`} alt={song.data.title} loading="lazy" />}
+            <span class="scene-time">TRACK 0{song.data.track}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{song.data.title}{song.data.titleEn ? ` — ${song.data.titleEn}` : ''}</h3>
+            <p>{story}</p>
+            <p><a href={`${base}/music/${song.id}/`}>Lyrics & video →</a></p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
+      <p>
+        And then 4:59 rolls over, the elevator numbers start falling again, and 毒でいいの is
+        already playing. The album is a loop because those nights are a loop.
+      </p>
+      <p>
+        Hear it in one sitting: <a href={`${base}/music/`}>the 60-minute SHINYA mix</a>.
+      </p>
+    </section>
+  </div>
+</Base>

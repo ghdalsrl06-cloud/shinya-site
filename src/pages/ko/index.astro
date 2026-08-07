@@ -24,6 +24,7 @@ const moods = singles.map((r) => ({
   title: `${r.data.title}${r.data.titleKo ? ` — ${r.data.titleKo}` : ''}`,
   desc: r.data.descriptionKo ?? r.data.description,
 }));
+const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.trim())).filter(Boolean);
 ---
 
 <Base lang="ko" title="SHINYA / 深夜 — 도쿄의 심야 음악" description="자정 이후를 위한 다크 일렉트로닉 J-POP. SHINYA / 深夜의 오리지널 음악.">
@@ -34,6 +35,7 @@ const moods = singles.map((r) => ({
         <h1 class="jp-title glitch" data-text="深夜">深夜</h1>
         <p class="en-title">Shinya · Tokyo</p>
         <p class="tagline">{t('ko', 'hero.tagline')}</p>
+        {lyricLines.length > 0 && <p class="hero-lyric" data-lyric-lines={JSON.stringify(lyricLines)} aria-hidden="true"></p>}
         <div class="hero-clock"><TokyoClock lang="ko" /></div>
         <p class="hero-cta">
           <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">{t('ko', 'btn.youtube')}</a>
@@ -107,16 +109,39 @@ const moods = singles.map((r) => ({
 </Base>
 
 <script>
-  // 방문자의 현지 날짜(연중 일수) 기준으로 오늘 밤의 무드를 고릅니다.
-  const card = document.querySelector('.mood-card');
-  if (card) {
-    const moods = JSON.parse(card.getAttribute('data-moods'));
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const dayOfYear = Math.floor((now - start) / 86_400_000);
-    const mood = moods[dayOfYear % moods.length];
-    card.querySelector('[data-mood-genre]').textContent = mood.genre;
-    card.querySelector('[data-mood-title]').textContent = mood.title;
-    card.querySelector('[data-mood-desc]').textContent = mood.desc;
-  }
+  const initHome = () => {
+    const card = document.querySelector('.mood-card');
+    if (card) {
+      const moods = JSON.parse(card.getAttribute('data-moods'));
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((now - start) / 86_400_000);
+      const mood = moods[dayOfYear % moods.length];
+      card.querySelector('[data-mood-genre]').textContent = mood.genre;
+      card.querySelector('[data-mood-title]').textContent = mood.title;
+      card.querySelector('[data-mood-desc]').textContent = mood.desc;
+    }
+
+    const lyricEl = document.querySelector('[data-lyric-lines]');
+    if (lyricEl && !lyricEl.dataset.bound) {
+      lyricEl.dataset.bound = '1';
+      const lines = JSON.parse(lyricEl.getAttribute('data-lyric-lines'));
+      let i = Math.floor(Math.random() * lines.length);
+      const show = () => {
+        lyricEl.textContent = lines[i % lines.length];
+        lyricEl.classList.remove('lyric-glitch');
+        void lyricEl.offsetWidth;
+        lyricEl.classList.add('lyric-glitch');
+        i++;
+      };
+      show();
+      if (window.__shinyaLyricTimer) clearInterval(window.__shinyaLyricTimer);
+      window.__shinyaLyricTimer = setInterval(() => {
+        if (!document.contains(lyricEl)) { clearInterval(window.__shinyaLyricTimer); return; }
+        show();
+      }, 5000);
+    }
+  };
+  initHome();
+  document.addEventListener('astro:page-load', initHome);
 </script>

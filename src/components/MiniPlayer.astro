@@ -1,0 +1,51 @@
+---
+// Sticky mini player for the 60-min SHINYA mix. transition:persist keeps the
+// iframe (and its audio) alive across client-side navigations.
+const MIX_ID = 'eSuk6hPMKdg';
+---
+
+<div class="mini-player" data-mini-player transition:persist="mini-player">
+  <button class="mp-open" type="button" aria-expanded="false" title="SHINYA MIX — 60 min">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M8 5.5v13l11-6.5z" />
+    </svg>
+    <span>深夜 MIX</span>
+  </button>
+  <div class="mp-body" hidden>
+    <div class="mp-frame" data-mix-id={MIX_ID}></div>
+    <button class="mp-close" type="button" aria-label="Close player">×</button>
+  </div>
+</div>
+
+<script>
+  const init = () => {
+    const root = document.querySelector('[data-mini-player]');
+    if (!root || root.dataset.bound) return;
+    root.dataset.bound = '1';
+    const open = root.querySelector('.mp-open');
+    const body = root.querySelector('.mp-body');
+    const frame = root.querySelector('.mp-frame');
+    const close = root.querySelector('.mp-close');
+    open?.addEventListener('click', () => {
+      if (!frame.querySelector('iframe')) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${frame.getAttribute('data-mix-id')}?autoplay=1`;
+        iframe.title = 'SHINYA MIX';
+        iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+        iframe.allowFullscreen = true;
+        frame.appendChild(iframe);
+      }
+      body.hidden = false;
+      open.setAttribute('aria-expanded', 'true');
+      root.classList.add('is-open');
+    });
+    close?.addEventListener('click', () => {
+      frame.replaceChildren();
+      body.hidden = true;
+      open.setAttribute('aria-expanded', 'false');
+      root.classList.remove('is-open');
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

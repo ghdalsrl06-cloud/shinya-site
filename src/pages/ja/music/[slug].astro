@@ -30,7 +30,7 @@ const ld = {
 };
 ---
 
-<Base lang="ja" title={`${song.data.title} — SHINYA / 深夜`} description={song.data.descriptionJa ?? song.data.description}>
+<Base lang="ja" title={`${song.data.title} — SHINYA / 深夜`} description={song.data.descriptionJa ?? song.data.description} ogImage={song.data.poster}>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <div class="container">
     <article class="section song-page">

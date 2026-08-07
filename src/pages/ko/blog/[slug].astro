@@ -36,7 +36,7 @@ const postLd = {
 };
 ---
 
-<Base lang="ko" title={`${post.data.title} — SHINYA / 深夜`} description={post.data.description}>
+<Base lang="ko" title={`${post.data.title} — SHINYA / 深夜`} description={post.data.description} ogImage={post.data.cover}>
   <script type="application/ld+json" set:html={JSON.stringify(postLd)} />
   <div class="container">
     <article class="section prose">
