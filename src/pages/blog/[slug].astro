@@ -1,9 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Comments from '../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((p) => !p.id.startsWith('ko/'));
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
@@ -28,6 +29,7 @@ const tagSlug = (tag: string) => tag.replace(/\s+/g, '-');
           ))}
         </ul>
       )}
+      <Comments lang="en" />
     </article>
   </div>
 </Base>

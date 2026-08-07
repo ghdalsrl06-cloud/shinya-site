@@ -2,9 +2,9 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context) {
-  const posts = (await getCollection('blog')).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-  );
+  const posts = (await getCollection('blog'))
+    .filter((post) => !post.id.startsWith('ko/'))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   return rss({
     title: 'SHINYA / 深夜 — Blog',
