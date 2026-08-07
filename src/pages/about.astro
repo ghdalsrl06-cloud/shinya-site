@@ -1,26 +1,79 @@
 ---
 import Base from '../layouts/Base.astro';
+
+// Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
+// replace a scene's placeholder art with a real photo.
+const scenes = [
+  {
+    cls: 'scene-kissa',
+    kanji: '喫茶',
+    time: '1:00 AM',
+    title: 'A Tokyo jazz kissa',
+    desc: 'A quiet trio on worn speakers, coffee going cold on the counter — instrumental jazz for the nights when thoughts will not stop looping.',
+    image: '',
+  },
+  {
+    cls: 'scene-citypop',
+    kanji: '街',
+    time: '1985',
+    title: 'An empty city pop street',
+    desc: 'Neon-soaked 80s Japan with the windows down. Nostalgic, a little romantic — a feeling that glows instead of sinking into melancholy.',
+    image: '',
+  },
+  {
+    cls: 'scene-lofi',
+    kanji: '灯',
+    time: '3:00 AM',
+    title: 'The desk lamp lofi hum',
+    desc: 'Slow piano, a layer of rain, volume just below listening level — for working, writing, or finally drifting off.',
+    image: '',
+  },
+];
 ---
 
 <Base title="About — SHINYA / 深夜">
+  <section class="about-hero">
+    <div class="about-hero-art" aria-hidden="true"></div>
+    <p class="about-label">About</p>
+    <h1 class="about-title">深夜 — SHINYA</h1>
+    <p class="about-motto">夜はまだ長い。— The night is still long.</p>
+  </section>
+
   <div class="container">
-    <section class="section prose">
-      <h2 style="font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--neon-purple);">About</h2>
-      <h1 style="font-family: var(--font-jp); letter-spacing: 0.15em;">深夜 — SHINYA</h1>
-      <p style="font-family: var(--font-jp); color: var(--text-dim);">夜はまだ長い。— The night is still long.</p>
+    <section class="section prose about-intro">
       <p>
         SHINYA (深夜, "late night" in Japanese) is a music project for the hours after midnight —
         when the city goes quiet, the neon stays on, and everything sounds a little more honest.
+        The sound lives somewhere between three scenes:
+      </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map((s, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class={`scene-visual ${s.cls}`}>
+            {s.image ? (
+              <img src={s.image} alt={s.title} loading="lazy" />
+            ) : (
+              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
+            )}
+            <span class="scene-time">{s.time}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
+      <p>
+        Original tracks and long-form mixes are made for thinking, driving, working,
+        and the kind of nights when you don't really want to sleep yet.
       </p>
       <p>
-        The sound lives somewhere between a Tokyo jazz kissa at 1am, an empty city pop street in 1985,
-        and the lofi hum of a desk lamp at 3. Original tracks and long-form mixes are made for
-        thinking, driving, working, and the kind of nights when you don't really want to sleep yet.
-      </p>
-      <p>
-        New music arrives on
-        <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> —
-        always at midnight.
+        New music arrives on <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> — always at midnight.
       </p>
     </section>
   </div>

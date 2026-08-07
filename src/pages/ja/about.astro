@@ -1,20 +1,73 @@
 ---
 import Base from '../../layouts/Base.astro';
+
+// imageに/public配下のパスを入れると、プレースホルダーアートが実際の写真に置き換わります。
+const scenes = [
+  {
+    cls: 'scene-kissa',
+    kanji: '喫茶',
+    time: '1:00 AM',
+    title: '東京のジャズ喫茶',
+    desc: '古びたスピーカーから流れる静かなトリオ、カウンターで冷めていくコーヒー — 思考がループする夜のためのインストゥルメンタル・ジャズ。',
+    image: '',
+  },
+  {
+    cls: 'scene-citypop',
+    kanji: '街',
+    time: '1985',
+    title: '誰もいないシティポップの街角',
+    desc: '窓を開けて走る、ネオンに濡れた80年代の日本。懐かしくて、少しロマンチックで — 沈む代わりに光る気分。',
+    image: '',
+  },
+  {
+    cls: 'scene-lofi',
+    kanji: '灯',
+    time: '3:00 AM',
+    title: 'デスクランプのローファイ・ハム',
+    desc: '遅いピアノ、雨音をひとつ、「聴く」より少し下げた音量 — 働く夜、書く夜、そしてようやく眠りに落ちる夜のために。',
+    image: '',
+  },
+];
 ---
 
 <Base lang="ja" title="アバウト — SHINYA / 深夜">
+  <section class="about-hero">
+    <div class="about-hero-art" aria-hidden="true"></div>
+    <p class="about-label">About</p>
+    <h1 class="about-title">深夜 — SHINYA</h1>
+    <p class="about-motto">夜はまだ長い。</p>
+  </section>
+
   <div class="container">
-    <section class="section prose">
-      <h2 style="font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--neon-purple);">About</h2>
-      <h1 style="font-family: var(--font-jp); letter-spacing: 0.15em;">深夜 — SHINYA</h1>
-      <p style="font-family: var(--font-jp); color: var(--text-dim);">夜はまだ長い。</p>
+    <section class="section prose about-intro">
       <p>
         SHINYA(深夜)は、真夜中過ぎの時間のための音楽プロジェクトです —
-        街が静まり、ネオンだけが灯り、すべてが少しだけ素直に聞こえる、あの時間のために。
+        街が静まり、ネオンだけが灯り、すべてが少しだけ素直に聞こえる、あの時間。
+        サウンドは3つのシーンのあいだ、そのどこかにあります:
       </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map((s, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class={`scene-visual ${s.cls}`}>
+            {s.image ? (
+              <img src={s.image} alt={s.title} loading="lazy" />
+            ) : (
+              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
+            )}
+            <span class="scene-time">{s.time}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
       <p>
-        サウンドは、午前1時の東京のジャズ喫茶、1985年の誰もいないシティポップの街角、
-        そして午前3時のデスクランプのローファイなハムノイズ、そのどこかにあります。
         オリジナルトラックとロングフォームのミックスは、考える夜、走る夜、働く夜、
         そしてまだ眠りたくない夜のために作られています。
       </p>

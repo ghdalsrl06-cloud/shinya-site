@@ -1,21 +1,75 @@
 ---
 import Base from '../../layouts/Base.astro';
+
+// image에 /public 하위 경로를 넣으면 플레이스홀더 아트가 실제 사진으로 교체됩니다.
+const scenes = [
+  {
+    cls: 'scene-kissa',
+    kanji: '喫茶',
+    time: '1:00 AM',
+    title: '도쿄의 재즈킷사',
+    desc: '낡은 스피커에서 흐르는 조용한 트리오, 카운터에서 식어가는 커피 — 생각이 꼬리를 무는 밤을 위한 인스트루멘털 재즈.',
+    image: '',
+  },
+  {
+    cls: 'scene-citypop',
+    kanji: '街',
+    time: '1985',
+    title: '텅 빈 시티팝 거리',
+    desc: '창문을 내리고 달리는 네온 젖은 80년대 일본. 그립고, 조금 낭만적이고 — 우울 대신 빛나는 기분.',
+    image: '',
+  },
+  {
+    cls: 'scene-lofi',
+    kanji: '灯',
+    time: '3:00 AM',
+    title: '책상 스탠드의 로파이 험',
+    desc: '느린 피아노, 빗소리 한 겹, "듣는" 것보다 살짝 낮은 볼륨 — 일할 때, 글 쓸 때, 그리고 마침내 잠들 때.',
+    image: '',
+  },
+];
 ---
 
 <Base lang="ko" title="소개 — SHINYA / 深夜">
+  <section class="about-hero">
+    <div class="about-hero-art" aria-hidden="true"></div>
+    <p class="about-label">About</p>
+    <h1 class="about-title">深夜 — SHINYA</h1>
+    <p class="about-motto">夜はまだ長い。— 밤은 아직 길다.</p>
+  </section>
+
   <div class="container">
-    <section class="section prose">
-      <h2 style="font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--neon-purple);">About</h2>
-      <h1 style="font-family: var(--font-jp); letter-spacing: 0.15em;">深夜 — SHINYA</h1>
-      <p style="font-family: var(--font-jp); color: var(--text-dim);">夜はまだ長い。— 밤은 아직 길다.</p>
+    <section class="section prose about-intro">
       <p>
         SHINYA(深夜, 일본어로 "심야")는 자정 이후의 시간을 위한 음악 프로젝트입니다 —
-        도시가 조용해지고, 네온만 켜져 있고, 모든 것이 조금 더 솔직하게 들리는 그 시간을 위해.
+        도시가 조용해지고, 네온만 켜져 있고, 모든 것이 조금 더 솔직하게 들리는 그 시간.
+        사운드는 세 개의 장면 사이 어딘가에 있습니다:
       </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map((s, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class={`scene-visual ${s.cls}`}>
+            {s.image ? (
+              <img src={s.image} alt={s.title} loading="lazy" />
+            ) : (
+              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
+            )}
+            <span class="scene-time">{s.time}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
       <p>
-        사운드는 새벽 1시의 도쿄 재즈킷사, 1985년의 텅 빈 시티팝 거리,
-        그리고 새벽 3시 책상 스탠드의 로파이 험 사이 어딘가에 있습니다. 오리지널 트랙과 롱폼 믹스는
-        생각할 때, 운전할 때, 일할 때, 그리고 아직 잠들고 싶지 않은 밤을 위해 만들어집니다.
+        오리지널 트랙과 롱폼 믹스는 생각할 때, 운전할 때, 일할 때,
+        그리고 아직 잠들고 싶지 않은 밤을 위해 만들어집니다.
       </p>
       <p>
         새 음악은 <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">유튜브</a>에

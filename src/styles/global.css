@@ -322,6 +322,86 @@ a:focus-visible, .btn:focus-visible {
   50% { box-shadow: 0 0 8px var(--neon-glow); }
 }
 
+/* ---- about page ---- */
+.about-hero {
+  position: relative; overflow: hidden; text-align: center;
+  padding: 6rem 1.25rem 4.5rem;
+}
+.about-hero-art {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(167, 139, 250, 0.05) 42px 44px),
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(255, 110, 199, 0.14), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 20% -10%, rgba(167, 139, 250, 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 20%, rgba(96, 76, 180, 0.14), transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+.about-hero > * { position: relative; }
+.about-label {
+  font-size: 0.8rem; letter-spacing: 0.45em; text-transform: uppercase;
+  color: var(--neon-purple);
+}
+.about-title {
+  font-family: var(--font-jp); font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 700; letter-spacing: 0.12em; margin-top: 0.8rem;
+  text-shadow: 0 0 30px var(--neon-glow);
+}
+.about-motto { font-family: var(--font-jp); color: var(--text-dim); margin-top: 1rem; letter-spacing: 0.1em; }
+.about-intro { text-align: center; }
+.about-intro p { color: var(--text-dim); font-size: 1.02rem; }
+.about-outro { text-align: center; }
+.about-outro p { color: var(--text-dim); }
+
+.scenes { display: flex; flex-direction: column; gap: 3rem; max-width: 860px; margin: 0 auto; }
+.scene { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; align-items: center; }
+.scene.flip .scene-visual { order: 2; }
+.scene-visual {
+  position: relative; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--line);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.scene:hover .scene-visual {
+  border-color: var(--line-bright); transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 28px rgba(167, 139, 250, 0.1);
+}
+.scene-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene-kanji {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-jp); font-size: clamp(3rem, 8vw, 5rem); font-weight: 700;
+  letter-spacing: 0.2em; color: var(--text); opacity: 0.16; text-indent: 0.2em;
+}
+.scene-time {
+  position: absolute; left: 0.9rem; bottom: 0.8rem;
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text); background: rgba(7, 11, 22, 0.55);
+  border: 1px solid var(--line-bright); border-radius: 999px; padding: 0.15rem 0.7rem;
+  backdrop-filter: blur(6px);
+}
+.scene-text h3 { font-weight: 600; font-size: 1.15rem; margin-bottom: 0.6rem; }
+.scene-text p { color: var(--text-dim); font-size: 0.97rem; }
+
+/* placeholder art per scene — replaced entirely once a real image is set */
+.scene-kissa {
+  background:
+    radial-gradient(circle at 72% 30%, rgba(240, 180, 100, 0.28), transparent 42%),
+    radial-gradient(ellipse 90% 70% at 30% 85%, rgba(120, 70, 40, 0.25), transparent 65%),
+    linear-gradient(160deg, #141225, #0b0e1c 70%);
+}
+.scene-citypop {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255, 110, 199, 0.32), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 75% 10%, rgba(167, 139, 250, 0.28), transparent 60%),
+    repeating-linear-gradient(90deg, transparent 0 26px, rgba(255, 110, 199, 0.05) 26px 28px),
+    linear-gradient(180deg, #171030, #0d0a1e);
+}
+.scene-lofi {
+  background:
+    radial-gradient(circle at 28% 38%, rgba(255, 200, 130, 0.2), transparent 30%),
+    radial-gradient(ellipse 90% 80% at 70% 90%, rgba(76, 90, 180, 0.22), transparent 65%),
+    linear-gradient(200deg, #0e1430, #080b18);
+}
+
 /* ---- comments ---- */
 .comments { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
 
@@ -363,6 +443,9 @@ a:focus-visible, .btn:focus-visible {
   .nav-links a { font-size: 0.72rem; }
   .hero { padding: 5rem 1.25rem 4rem; }
   .section { padding: 2.5rem 0; }
+  .scene { grid-template-columns: 1fr; gap: 1.2rem; }
+  .scene.flip .scene-visual { order: 0; }
+  .scenes { gap: 2.2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
