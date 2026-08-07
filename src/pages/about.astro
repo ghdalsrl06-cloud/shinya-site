@@ -3,7 +3,8 @@ import Base from '../layouts/Base.astro';
 
 // Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
 // replace a scene's placeholder art with a real photo.
-const characterImage = '';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const characterImage = 'images/about/character.jpg';
 const scenes = [
   {
     cls: 'scene-kissa',
@@ -11,7 +12,7 @@ const scenes = [
     time: '2:00 AM',
     title: 'A streetlight in the rain',
     desc: 'Wet asphalt, neon haze, and the words people only say at this hour — the street where 午前二時の嘘 happens.',
-    image: '',
+    image: 'images/about/scene-street.jpg',
   },
   {
     cls: 'scene-citypop',
@@ -19,7 +20,7 @@ const scenes = [
     time: '3:00 AM',
     title: 'The convenience store window',
     desc: 'Fluorescent light on the glass, a coffee going cold, still waiting for someone — the scene behind 午前3時まだ君を待つ.',
-    image: '',
+    image: 'images/about/scene-store.jpg',
   },
   {
     cls: 'scene-lofi',
@@ -27,7 +28,7 @@ const scenes = [
     time: '4:00 AM',
     title: 'The last platform',
     desc: 'An empty station, one song on repeat, the first train still hours away — where 午前4時のリピート loops.',
-    image: '',
+    image: 'images/about/scene-platform.jpg',
   },
 ];
 ---
@@ -44,7 +45,7 @@ const scenes = [
     <section class="section character-section">
       <div class="character-card">
         {characterImage ? (
-          <img src={characterImage} alt="SHINYA" loading="lazy" />
+          <img src={`${base}/${characterImage}`} alt="SHINYA" loading="lazy" />
         ) : (
           <span class="character-kanji" aria-hidden="true">深夜</span>
         )}
@@ -66,7 +67,7 @@ const scenes = [
         <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
           <div class={`scene-visual ${s.cls}`}>
             {s.image ? (
-              <img src={s.image} alt={s.title} loading="lazy" />
+              <img src={`${base}/${s.image}`} alt={s.title} loading="lazy" />
             ) : (
               <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
             )}

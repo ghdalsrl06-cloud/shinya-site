@@ -2,7 +2,8 @@
 import Base from '../../layouts/Base.astro';
 
 // image에 /public 하위 경로를 넣으면 플레이스홀더 아트가 실제 사진으로 교체됩니다.
-const characterImage = '';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const characterImage = 'images/about/character.jpg';
 const scenes = [
   {
     cls: 'scene-kissa',
@@ -10,7 +11,7 @@ const scenes = [
     time: '2:00 AM',
     title: '비 내리는 가로등 아래',
     desc: '젖은 아스팔트, 네온 안개, 이 시간에만 꺼내는 말들 — 午前二時の嘘가 일어나는 거리.',
-    image: '',
+    image: 'images/about/scene-street.jpg',
   },
   {
     cls: 'scene-citypop',
@@ -18,7 +19,7 @@ const scenes = [
     time: '3:00 AM',
     title: '편의점 창가',
     desc: '유리에 비치는 형광등, 식어가는 커피, 아직 누군가를 기다리는 마음 — 午前3時まだ君を待つ의 장면.',
-    image: '',
+    image: 'images/about/scene-store.jpg',
   },
   {
     cls: 'scene-lofi',
@@ -26,7 +27,7 @@ const scenes = [
     time: '4:00 AM',
     title: '막차가 끊긴 승강장',
     desc: '텅 빈 역, 반복 재생되는 한 곡, 첫차까지는 아직 먼 시간 — 午前4時のリピート가 도는 곳.',
-    image: '',
+    image: 'images/about/scene-platform.jpg',
   },
 ];
 ---
@@ -43,7 +44,7 @@ const scenes = [
     <section class="section character-section">
       <div class="character-card">
         {characterImage ? (
-          <img src={characterImage} alt="SHINYA" loading="lazy" />
+          <img src={`${base}/${characterImage}`} alt="SHINYA" loading="lazy" />
         ) : (
           <span class="character-kanji" aria-hidden="true">深夜</span>
         )}
@@ -65,7 +66,7 @@ const scenes = [
         <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
           <div class={`scene-visual ${s.cls}`}>
             {s.image ? (
-              <img src={s.image} alt={s.title} loading="lazy" />
+              <img src={`${base}/${s.image}`} alt={s.title} loading="lazy" />
             ) : (
               <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
             )}
