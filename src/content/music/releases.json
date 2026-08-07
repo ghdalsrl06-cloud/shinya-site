@@ -6,94 +6,102 @@
     "titleEn": "J-Pop · Dark Electronic — 7 Songs · 60 Min",
     "titleJa": "J-POP・ダークエレクトロニック — 7曲・60分",
     "kind": "playlist",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "All seven tracks in one continuous hour — dark electronic J-pop for the hours after midnight.",
     "descriptionKo": "7곡을 하나로 이은 60분 — 자정 이후의 시간을 위한 다크 일렉트로닉 J-POP.",
-    "descriptionJa": "7曲を一つに繋いだ60分 — 真夜中過ぎのためのダークエレクトロニックJ-POP。"
+    "descriptionJa": "7曲を一つに繋いだ60分 — 真夜中過ぎのためのダークエレクトロニックJ-POP。",
+    "youtubeId": "lysgQWYLTqM"
   },
   {
     "id": "poison-is-fine",
     "title": "毒でいいの",
     "titleKo": "독이라도 좋아",
     "titleEn": "Poison Is Fine",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "Knowing it's bad for you and reaching for it anyway.",
     "descriptionKo": "나쁜 걸 알면서도 손을 뻗는 밤.",
     "descriptionJa": "毒だと分かっていて、それでも手を伸ばす夜。",
-    "track": 1
+    "track": 1,
+    "youtubeId": "KRfQkTkbmXg"
   },
   {
     "id": "strangers-by-morning",
     "title": "朝になれば他人",
     "titleKo": "아침이 되면 타인",
     "titleEn": "Strangers by Morning",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "Close until sunrise — strangers after it.",
     "descriptionKo": "해가 뜨기 전까지만 가까운 사이.",
     "descriptionJa": "日が昇るまでだけの距離。朝になれば他人。",
-    "track": 2
+    "track": 2,
+    "youtubeId": "UpBtxYiDuO8"
   },
   {
     "id": "lies-at-2am",
     "title": "午前二時の嘘",
     "titleKo": "새벽 2시의 거짓말",
     "titleEn": "Lies at 2AM",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "The things we say under a streetlight at 2am.",
     "descriptionKo": "가로등 아래, 새벽 2시에만 하는 말들.",
     "descriptionJa": "街灯の下、午前二時にだけ口にする言葉。",
-    "track": 3
+    "track": 3,
+    "youtubeId": "PqmkpTnLjDA"
   },
   {
     "id": "drowning-in-the-night",
     "title": "夜に溺れる",
     "titleKo": "밤에 잠기다",
     "titleEn": "Drowning in the Night",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "Sinking into the dark and not wanting to be saved.",
     "descriptionKo": "어둠에 가라앉는데, 구해지고 싶지 않은 기분.",
     "descriptionJa": "闇に沈んでいくのに、助かりたくない気分。",
-    "track": 4
+    "track": 4,
+    "youtubeId": "nY9nJY0VOWM"
   },
   {
     "id": "still-waiting-at-3am",
     "title": "午前3時まだ君を待つ",
     "titleKo": "새벽 3시, 아직 널 기다려",
     "titleEn": "Still Waiting at 3AM",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "A convenience store window, a cold coffee, and you.",
     "descriptionKo": "편의점 창가, 식어버린 커피, 그리고 너.",
     "descriptionJa": "コンビニの窓際、冷めたコーヒー、そして君。",
-    "track": 5
+    "track": 5,
+    "youtubeId": "LDZpwDHRwLA"
   },
   {
     "id": "the-last-kiss-was-a-lie",
     "title": "最後のキスは嘘",
     "titleKo": "마지막 키스는 거짓말",
     "titleEn": "The Last Kiss Was a Lie",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "The goodbye that was gentle enough to be a lie.",
     "descriptionKo": "너무 다정해서 거짓말이었던 이별 인사.",
     "descriptionJa": "優しすぎて嘘だと分かった、さよならのキス。",
-    "track": 6
+    "track": 6,
+    "youtubeId": "wxcg6m1Ty4c"
   },
   {
     "id": "4am-on-repeat",
     "title": "午前4時のリピート",
     "titleKo": "새벽 4시의 리피트",
     "titleEn": "4AM on Repeat",
-    "status": "coming-soon",
+    "status": "released",
     "releaseDate": "2026-08-07",
     "description": "The same song, the same platform, the same thought — on repeat.",
     "descriptionKo": "같은 노래, 같은 승강장, 같은 생각 — 반복 재생.",
     "descriptionJa": "同じ曲、同じホーム、同じ考え — リピート再生。",
-    "track": 7
+    "track": 7,
+    "youtubeId": "eSuk6hPMKdg"
   }
 ]
