@@ -13,9 +13,9 @@ const releases = await getCollection('music');
         {releases.map((r) => (
           <div class="card">
             <span class="badge">{r.data.status === 'coming-soon' ? 'Coming Soon' : r.data.releaseDate}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem; font-weight: 600;">{r.data.title}</h3>
-            {r.data.titleJa && <p style="font-family: var(--font-jp); color: var(--text-dim);">{r.data.titleJa}</p>}
-            <p style="color: var(--text-dim); font-size: 0.95rem; margin-top: 0.6rem;">{r.data.description}</p>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{r.data.title}</h3>
+            {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
+            <p class="card-desc">{r.data.description}</p>
             {r.data.youtubeId && (
               <div class="video-wrap" style="margin-top: 1rem;">
                 <iframe

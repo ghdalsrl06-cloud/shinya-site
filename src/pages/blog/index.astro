@@ -14,10 +14,10 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf()
         {posts.map((p) => (
           <li class="card">
             <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
-            <h3 style="font-weight: 600; margin: 0.3rem 0;">
-              <a href={`${base}/blog/${p.id}/`} style="color: var(--text);">{p.data.title}</a>
+            <h3 style="margin: 0.3rem 0;">
+              <a href={`${base}/blog/${p.id}/`}>{p.data.title}</a>
             </h3>
-            <p style="color: var(--text-dim); font-size: 0.95rem;">{p.data.description}</p>
+            <p class="card-desc">{p.data.description}</p>
           </li>
         ))}
       </ul>

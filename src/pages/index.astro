@@ -13,7 +13,7 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf()
     <h1 class="jp-title">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
     <p class="tagline">Jazz, city pop &amp; lofi for the hours after midnight.</p>
-    <p style="margin-top: 2.5rem;">
+    <p class="hero-cta">
       <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
     </p>
   </section>
@@ -24,9 +24,9 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf()
       {latest && (
         <div class="card">
           <span class="badge">{latest.data.status === 'coming-soon' ? 'Coming Soon' : 'New Release'}</span>
-          <h3 style="margin: 0.8rem 0 0.2rem; font-weight: 600;">{latest.data.title}</h3>
-          {latest.data.titleJa && <p style="font-family: var(--font-jp); color: var(--text-dim);">{latest.data.titleJa}</p>}
-          <p style="color: var(--text-dim); margin-top: 0.6rem;">{latest.data.description}</p>
+          <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
+          {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
+          <p class="card-desc">{latest.data.description}</p>
         </div>
       )}
     </section>
@@ -37,10 +37,10 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf()
         {posts.map((p) => (
           <li class="card">
             <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
-            <h3 style="font-weight: 600; margin: 0.3rem 0;">
-              <a href={`${base}/blog/${p.id}/`} style="color: var(--text);">{p.data.title}</a>
+            <h3 style="margin: 0.3rem 0;">
+              <a href={`${base}/blog/${p.id}/`}>{p.data.title}</a>
             </h3>
-            <p style="color: var(--text-dim); font-size: 0.95rem;">{p.data.description}</p>
+            <p class="card-desc">{p.data.description}</p>
           </li>
         ))}
       </ul>
