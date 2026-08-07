@@ -4,14 +4,38 @@ import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 
 const releases = await getCollection('music');
+const playlist = releases.find((r) => r.data.kind === 'playlist');
+const singles = releases.filter((r) => r.data.kind !== 'playlist');
 ---
 
 <Base lang="ko" title="뮤직 — SHINYA / 深夜">
   <div class="container">
+    {playlist && (
+      <section class="section">
+        <h2>{t('ko', 'section.playlist')}</h2>
+        <div class="card playlist-card">
+          <span class="badge">{playlist.data.status === 'coming-soon' ? t('ko', 'badge.coming') : playlist.data.releaseDate}</span>
+          <h3 style="margin: 0.8rem 0 0.1rem;">{playlist.data.title}</h3>
+          {playlist.data.titleJa && <p class="card-title-ja">{playlist.data.titleJa}</p>}
+          <p class="card-desc">{playlist.data.description}</p>
+          {playlist.data.youtubeId && (
+            <div class="video-wrap" style="margin-top: 1.2rem;">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${playlist.data.youtubeId}`}
+                title={playlist.data.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
     <section class="section">
-      <h2>{t('ko', 'section.discography')}</h2>
+      <h2>{playlist ? t('ko', 'section.singles') : t('ko', 'section.discography')}</h2>
       <div class="card-grid">
-        {releases.map((r) => (
+        {singles.map((r) => (
           <div class="card">
             <span class="badge">{r.data.status === 'coming-soon' ? t('ko', 'badge.coming') : r.data.releaseDate}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{r.data.title}</h3>
@@ -22,6 +46,7 @@ const releases = await getCollection('music');
                 <iframe
                   src={`https://www.youtube-nocookie.com/embed/${r.data.youtubeId}`}
                   title={r.data.title}
+                  loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
                 />
@@ -31,9 +56,7 @@ const releases = await getCollection('music');
         ))}
       </div>
       <p style="margin-top: 2.5rem; color: var(--text-dim);">
-        {t('ko', 'music.subscribe.pre')}
-        <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">유튜브</a>를
-        {t('ko', 'music.subscribe.post')}
+        {t('ko', 'music.subscribe.pre')} <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">유튜브</a>를 {t('ko', 'music.subscribe.post')}
       </p>
     </section>
   </div>
