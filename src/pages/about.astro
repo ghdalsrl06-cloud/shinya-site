@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 
 // Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
 // replace a scene's placeholder art with a real photo.
+const characterImage = '';
 const scenes = [
   {
     cls: 'scene-kissa',
@@ -40,6 +41,18 @@ const scenes = [
   </section>
 
   <div class="container">
+    <section class="section character-section">
+      <div class="character-card">
+        {characterImage ? (
+          <img src={characterImage} alt="SHINYA" loading="lazy" />
+        ) : (
+          <span class="character-kanji" aria-hidden="true">深夜</span>
+        )}
+        <span class="scene-time">SHINYA</span>
+      </div>
+      <p class="character-caption">The one who stays up — 夜更かしの住人</p>
+    </section>
+
     <section class="section prose about-intro">
       <p>
         SHINYA (深夜, "late night" in Japanese) is a music project for the hours after midnight —

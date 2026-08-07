@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 
 // imageに/public配下のパスを入れると、プレースホルダーアートが実際の写真に置き換わります。
+const characterImage = '';
 const scenes = [
   {
     cls: 'scene-kissa',
@@ -39,6 +40,18 @@ const scenes = [
   </section>
 
   <div class="container">
+    <section class="section character-section">
+      <div class="character-card">
+        {characterImage ? (
+          <img src={characterImage} alt="SHINYA" loading="lazy" />
+        ) : (
+          <span class="character-kanji" aria-hidden="true">深夜</span>
+        )}
+        <span class="scene-time">SHINYA</span>
+      </div>
+      <p class="character-caption">夜更かしの住人</p>
+    </section>
+
     <section class="section prose about-intro">
       <p>
         SHINYA(深夜)は、真夜中過ぎの時間のための音楽プロジェクトです —
