@@ -144,27 +144,29 @@ const GOATCOUNTER_CODE = 'shinya';
       const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // Scroll reveal: cards, scenes, and headings rise in as they enter the viewport.
+      // Scroll-position based (not IntersectionObserver) so nothing can stay stuck hidden.
+      const revealCheck = () => {
+        document.querySelectorAll('.reveal:not(.reveal-in)').forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < innerHeight * 0.9 && r.bottom > -innerHeight * 0.2) {
+            el.classList.add('reveal-in');
+            setTimeout(() => el.classList.remove('reveal', 'reveal-in'), 1000);
+          }
+        });
+      };
+      let revealRaf = 0;
+      addEventListener('scroll', () => {
+        if (!revealRaf) revealRaf = requestAnimationFrame(() => { revealRaf = 0; revealCheck(); });
+      }, { passive: true });
       const initReveal = () => {
         if (reduced()) return;
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const e of entries) {
-              if (!e.isIntersecting) continue;
-              e.target.classList.add('reveal-in');
-              io.unobserve(e.target);
-              setTimeout(() => e.target.classList.remove('reveal', 'reveal-in'), 900);
-            }
-          },
-          { threshold: 0.12 },
-        );
         document.querySelectorAll('.card, .scene, .section > h2, .page-banner, .song-hero').forEach((el) => {
           if (el.dataset.reveal) return;
           el.dataset.reveal = '1';
-          const r = el.getBoundingClientRect();
-          if (r.top < innerHeight * 0.85) return; // already visible: skip
+          if (el.getBoundingClientRect().top < innerHeight * 0.85) return; // already visible: skip
           el.classList.add('reveal');
-          io.observe(el);
         });
+        revealCheck();
       };
 
       // Hero parallax: art drifts with the pointer and slides with scroll.
