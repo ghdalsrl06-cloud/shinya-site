@@ -6,7 +6,7 @@ import { t } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog'))
-    .filter((p) => p.id.startsWith('ja/') && !p.data.draft)
+    .filter((p) => p.id.startsWith('ja/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return posts.map((post, i) => ({
     params: { slug: post.id.replace(/^ja\//, '') },

@@ -786,6 +786,20 @@ article.prose::before {
   .scenes { gap: 2.2rem; }
 }
 
+/* ---- large displays (QHD 2560px and up) ---- */
+@media (min-width: 1800px) {
+  html { font-size: 112.5%; } /* 18px base — everything rem-based scales with it */
+  .container,
+  .site-nav .inner,
+  .hero-inner { max-width: 1160px; }
+  .hero-character { min-height: min(1200px, 85vh); }
+  .prose { max-width: 760px; }
+  article.prose { max-width: 840px; }
+  .scenes { max-width: 1000px; }
+  .song-page { max-width: 820px; }
+  .playlist-card { max-width: 860px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
