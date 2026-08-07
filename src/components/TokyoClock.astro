@@ -1,0 +1,30 @@
+<p class="tokyo-time" data-tokyo-clock>
+  <span class="tt-label">東京</span>
+  <span class="tt-time" data-time>--:--</span>
+  <span class="tt-msg" data-msg></span>
+</p>
+
+<script>
+  const clocks = document.querySelectorAll('[data-tokyo-clock]');
+  const fmt = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  const update = () => {
+    const now = new Date();
+    const time = fmt.format(now);
+    const hour = Number(time.slice(0, 2));
+    const isShinya = hour >= 0 && hour < 4;
+    for (const el of clocks) {
+      el.querySelector('[data-time]').textContent = time;
+      el.querySelector('[data-msg]').textContent = isShinya
+        ? '— 深夜です. This is the hour the music was made for.'
+        : '— the night will come.';
+      el.classList.toggle('is-shinya', isShinya);
+    }
+  };
+  update();
+  setInterval(update, 10_000);
+</script>

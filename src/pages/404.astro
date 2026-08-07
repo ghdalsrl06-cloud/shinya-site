@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="404 — SHINYA / 深夜" description="Page not found.">
+  <section class="hero notfound">
+    <h1 class="jp-title">迷子</h1>
+    <p class="en-title">404 · Not Found</p>
+    <p class="tagline">夜に迷いましたね — you got lost in the night.<br />The page you were looking for isn't here.</p>
+    <p class="hero-cta">
+      <a class="btn" href={`${base}/`}>Back Home</a>
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,19 @@
+---
+// Star positions are generated at build time, so every deploy gets its own sky.
+const stars = Array.from({ length: 26 }, () => ({
+  x: (Math.random() * 100).toFixed(2),
+  y: (Math.random() * 100).toFixed(2),
+  size: (Math.random() * 1.4 + 0.8).toFixed(2),
+  delay: (Math.random() * 6).toFixed(2),
+  duration: (Math.random() * 4 + 4).toFixed(2),
+}));
+---
+
+<div class="night-sky" aria-hidden="true">
+  {stars.map((s) => (
+    <span
+      class="star"
+      style={`left:${s.x}%; top:${s.y}%; width:${s.size}px; height:${s.size}px; animation-delay:${s.delay}s; animation-duration:${s.duration}s;`}
+    />
+  ))}
+</div>

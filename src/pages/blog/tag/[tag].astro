@@ -1,0 +1,41 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag: tag.replace(/\s+/g, '-') },
+    props: {
+      tag,
+      posts: posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title={`#${tag} — SHINYA / 深夜`} description={`Blog posts tagged with ${tag}.`}>
+  <div class="container">
+    <section class="section">
+      <a class="back-link" href={`${base}/blog/`}>← Blog</a>
+      <h2>#{tag}</h2>
+      <ul class="post-list">
+        {posts.map((p) => (
+          <li class="card">
+            <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
+            <h3 style="margin: 0.3rem 0;">
+              <a href={`${base}/blog/${p.id}/`}>{p.data.title}</a>
+            </h3>
+            <p class="card-desc">{p.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Base>
