@@ -46,6 +46,9 @@ main { flex: 1; }
     radial-gradient(ellipse 60% 50% at 50% 110%, rgba(24, 120, 160, 0.10), transparent 70%);
 }
 
+/* rain visual layer (activated with the rain-sound toggle) */
+.rain-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+
 /* build-time night sky */
 .night-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 .star {
@@ -192,6 +195,52 @@ a:focus-visible, .btn:focus-visible {
 @keyframes drift {
   from { transform: translate(0, 0); }
   to { transform: translate(40px, 30px); }
+}
+
+/* ---- glitch title ---- */
+.glitch { position: relative; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute; inset: 0;
+  opacity: 0; pointer-events: none;
+}
+.glitch::before { color: rgba(62, 230, 240, 0.85); animation: glitchA 7s steps(1) 2s infinite; }
+.glitch::after { color: rgba(255, 45, 110, 0.85); animation: glitchB 7s steps(1) 2s infinite; }
+@keyframes glitchA {
+  0%, 90.9% { opacity: 0; transform: none; clip-path: inset(0); }
+  91% { opacity: 1; transform: translate(-7px, 2px); clip-path: inset(8% 0 58% 0); }
+  92.2% { opacity: 1; transform: translate(5px, -1px); clip-path: inset(62% 0 12% 0); }
+  93.4%, 100% { opacity: 0; }
+}
+@keyframes glitchB {
+  0%, 91.4% { opacity: 0; transform: none; clip-path: inset(0); }
+  91.5% { opacity: 1; transform: translate(6px, -2px); clip-path: inset(40% 0 34% 0); }
+  92.7% { opacity: 1; transform: translate(-4px, 1px); clip-path: inset(76% 0 4% 0); }
+  93.9%, 100% { opacity: 0; }
+}
+
+/* ---- track ticker ---- */
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+.ticker-track {
+  display: inline-flex; white-space: nowrap; will-change: transform;
+  animation: tickerScroll 36s linear infinite;
+}
+.ticker-item {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-jp); font-size: 0.92rem; letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+.ticker-sep { color: var(--neon-pink); margin: 0 1.5rem; }
+@keyframes tickerScroll {
+  to { transform: translateX(-50%); }
 }
 
 /* ---- sections & cards ---- */

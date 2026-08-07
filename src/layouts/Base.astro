@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import NightSky from '../components/NightSky.astro';
 import RainToggle from '../components/RainToggle.astro';
+import RainCanvas from '../components/RainCanvas.astro';
 import { t, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -67,6 +68,7 @@ const ogImage = `${site}${base}/images/og.png`;
   <body>
     <div class="bg-glow" aria-hidden="true"></div>
     <NightSky />
+    <RainCanvas />
     <nav class="site-nav">
       <div class="inner">
         <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya</span></a>
