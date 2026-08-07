@@ -1002,6 +1002,29 @@ article.prose::before {
   .mini-player { left: 0.8rem; bottom: 0.9rem; }
 }
 
+/* ---- share row ---- */
+.share-row {
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  margin: 2.2rem 0 0;
+}
+.share-label {
+  font-family: var(--font-tech); font-size: 0.68rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--text-dim); margin-right: 0.3rem;
+}
+.share-btn {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-tech); font-size: 0.72rem; letter-spacing: 0.12em;
+  color: var(--text-dim); background: none;
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 0.35rem 0.8rem; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.share-btn:hover { color: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 12px var(--neon-glow); }
+.share-btn.is-copied { color: var(--neon-purple); border-color: var(--neon-purple); }
+
+/* link from a song page to its behind-the-scenes post */
+.song-behind { margin-top: 1rem; font-size: 0.9rem; }
+
 /* ---- large displays (QHD 2560px and up) ---- */
 @media (min-width: 1800px) {
   html { font-size: 112.5%; } /* 18px base — everything rem-based scales with it */

@@ -1,5 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import ShareRow from '../../../components/ShareRow.astro';
+import ArtImg from '../../../components/ArtImg.astro';
 import Comments from '../../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 import { t } from '../../../i18n/ui';
@@ -43,7 +45,9 @@ const postLd = {
       <a class="back-link" href={`${base}/ja/blog/`}>{t('ja', 'back.blog')}</a>
       <p class="post-meta">{post.data.date.toISOString().slice(0, 10)} · {minutes}{t('ja', 'read.suffix')}</p>
       <h1>{post.data.title}</h1>
-      {cover && <img class="post-cover" src={cover} alt="" />}
+      {post.data.cover && (post.data.cover.startsWith('http')
+        ? <img class="post-cover" src={cover} alt="" />
+        : <ArtImg class="post-cover" src={post.data.cover} width={1280} sizes="(min-width: 900px) 780px, 100vw" />)}
       <Content />
       {post.data.tags.length > 0 && (
         <ul class="tag-list post-tags">
@@ -68,6 +72,7 @@ const postLd = {
           ) : <span />}
         </nav>
       )}
+      <ShareRow title={`${post.data.title} — SHINYA / 深夜`} lang="ja" />
       <Comments lang="ja" />
     </article>
   </div>

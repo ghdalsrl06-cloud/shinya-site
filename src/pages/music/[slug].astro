@@ -1,5 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ShareRow from '../../components/ShareRow.astro';
+import ArtImg from '../../components/ArtImg.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
@@ -17,6 +19,9 @@ export async function getStaticPaths() {
 const { song, prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const behind = (await getCollection('blog')).find(
+  (p) => p.id === `behind-${song.id}` && !p.data.draft && p.data.date.valueOf() <= Date.now(),
+);
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'MusicRecording',
@@ -35,13 +40,16 @@ const ld = {
   <div class="container">
     <article class="section song-page">
       <header class="song-hero">
-        {song.data.poster && <img class="song-hero-art" src={`${base}/${song.data.poster}`} alt="" aria-hidden="true" />}
+        {song.data.poster && <ArtImg class="song-hero-art" src={song.data.poster} width={1280} sizes="(min-width: 900px) 820px, 100vw" />}
         <div class="song-hero-scrim" aria-hidden="true"></div>
         <a class="back-link" href={`${base}/music/`}>{t('en', 'back.music')}</a>
         <p class="post-meta">Track {song.data.track} · {song.data.status === 'coming-soon' ? t('en', 'badge.coming') : song.data.releaseDate}</p>
         <h1 class="song-title">{song.data.title}</h1>
         {song.data.titleEn && <p class="song-sub">{song.data.titleEn}</p>}
         <p class="song-desc">{song.data.description}</p>
+        {behind && (
+          <p class="song-behind"><a href={`${base}/blog/${behind.id}/`}>Read the story behind this track →</a></p>
+        )}
       </header>
 
       {song.data.youtubeId && (
@@ -69,6 +77,8 @@ const ld = {
           <p class="lyrics-soon">{t('en', 'song.lyrics.soon')}</p>
         )}
       </section>
+
+      <ShareRow title={`${song.data.title} (${song.data.titleEn}) — SHINYA`} lang="en" />
 
       {(prev || next) && (
         <nav class="post-nav">

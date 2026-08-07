@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import ArtImg from '../components/ArtImg.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Base title="404 — SHINYA / 深夜" description="Page not found.">
   <section class="hero hero-character notfound">
-    <img class="hero-art" src={`${base}/images/about/scene-dawn.jpg`} alt="" />
+    <ArtImg class="hero-art" src="images/about/scene-dawn.jpg" width={1400} sizes="100vw" loading="eager" />
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="hero-inner">
       <h1 class="jp-title glitch" data-text="迷子">迷子</h1>

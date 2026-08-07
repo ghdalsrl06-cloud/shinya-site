@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ArtImg from '../components/ArtImg.astro';
 
 // Set `image` (e.g. `images/character-small.png` under /public) to show a
 // small character thumbnail on a link card; empty shows placeholder art.
@@ -14,7 +15,7 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
 <Base title="Links — SHINYA / 深夜">
   <div class="container">
     <section class="page-banner">
-      <img class="page-banner-art" src={`${base}/images/links-banner.jpg`} alt="" />
+      <ArtImg class="page-banner-art" src="images/links-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 LINKS</h1>

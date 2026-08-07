@@ -1,0 +1,47 @@
+---
+// Share buttons: X (Twitter), LINE, and copy-link.
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  lang?: Lang;
+}
+
+const { title, lang = 'en' } = Astro.props;
+const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const url = `${site}${Astro.url.pathname}`;
+const L = {
+  en: { share: 'Share', copy: 'Copy link', copied: 'Copied!' },
+  ko: { share: '공유', copy: '링크 복사', copied: '복사됨!' },
+  ja: { share: 'シェア', copy: 'リンクをコピー', copied: 'コピーしました!' },
+}[lang];
+const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
+---
+
+<div class="share-row">
+  <span class="share-label">{L.share}</span>
+  <a class="share-btn" href={xUrl} target="_blank" rel="noopener">X</a>
+  <a class="share-btn" href={lineUrl} target="_blank" rel="noopener">LINE</a>
+  <button class="share-btn share-copy" type="button" data-copy-url={url} data-copied-label={L.copied}>{L.copy}</button>
+</div>
+
+<script>
+  const bind = () => {
+    document.querySelectorAll('.share-copy').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.getAttribute('data-copy-url'));
+          const original = btn.textContent;
+          btn.textContent = btn.getAttribute('data-copied-label');
+          btn.classList.add('is-copied');
+          setTimeout(() => { btn.textContent = original; btn.classList.remove('is-copied'); }, 1600);
+        } catch {}
+      });
+    });
+  };
+  bind();
+  document.addEventListener('astro:page-load', bind);
+</script>
