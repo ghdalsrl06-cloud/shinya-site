@@ -465,6 +465,34 @@ article.prose::before {
     linear-gradient(200deg, #0e1430, #080b18);
 }
 
+/* ---- link cards with character thumb ---- */
+.link-card { padding: 1.1rem 1.3rem; }
+.link-card > a { display: flex; align-items: center; gap: 1rem; color: var(--text); }
+.link-thumb {
+  flex: 0 0 auto; width: 52px; height: 52px; border-radius: 12px; overflow: hidden;
+  position: relative; border: 1px solid var(--line-bright);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(167, 139, 250, 0.35), transparent 60%),
+    radial-gradient(circle at 50% 110%, rgba(255, 110, 199, 0.28), transparent 60%),
+    linear-gradient(180deg, #131b31, #0b0f1f);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.link-card:hover .link-thumb { border-color: var(--neon-pink); box-shadow: 0 0 14px var(--neon-glow); }
+.link-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.link-thumb-kanji {
+  font-family: var(--font-jp); font-size: 1.4rem; font-weight: 700;
+  color: var(--text); opacity: 0.55; text-shadow: 0 0 10px var(--neon-glow);
+}
+.link-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.link-body strong { font-weight: 500; color: var(--text); }
+.link-note { color: var(--text-dim); font-size: 0.85rem; }
+.link-arrow {
+  flex: 0 0 auto; color: var(--text-dim); font-size: 1.1rem;
+  transition: color 0.25s, transform 0.25s;
+}
+.link-card:hover .link-arrow { color: var(--neon-pink); transform: translateX(4px); }
+
 /* ---- comments ---- */
 .comments { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
 
