@@ -18,6 +18,61 @@
   --font-tech: 'Chakra Petch', 'Inter', system-ui, sans-serif;
 }
 
+/* ---- 深夜 mode: the palette inverts after midnight (00:00-04:59 local) ---- */
+html.midnight-mode {
+  --bg: #040308;
+  --bg-raised: #0a070f;
+  --bg-card: #0c0813;
+  --bg-card-hover: #120b1a;
+  --line: #241627;
+  --line-bright: #3c2038;
+  --text: #efdfe4;
+  --text-dim: #a08693;
+  --neon-pink: #ff2444;
+  --neon-purple: #b08cff;
+  --neon-glow: rgba(255, 36, 68, 0.42);
+  --purple-glow: rgba(176, 140, 255, 0.25);
+}
+html.midnight-mode .bg-glow {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse 55% 45% at 18% -5%, rgba(255, 36, 68, 0.12), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 15%, rgba(176, 140, 255, 0.07), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(190, 30, 60, 0.13), transparent 70%);
+}
+html.midnight-mode .hero::before {
+  background: radial-gradient(circle, rgba(255, 36, 68, 0.2), transparent 65%);
+}
+html.midnight-mode .hero::after {
+  background: radial-gradient(circle, rgba(176, 140, 255, 0.16), transparent 65%);
+}
+html.midnight-mode .glitch::before { color: rgba(176, 140, 255, 0.85); }
+html.midnight-mode .glitch::after { color: rgba(255, 36, 68, 0.85); }
+html.midnight-mode .star { filter: brightness(1.7); }
+html.midnight-mode .about-hero-art {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(176, 140, 255, 0.05) 42px 44px),
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(255, 36, 68, 0.16), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 20% -10%, rgba(176, 140, 255, 0.14), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 20%, rgba(190, 30, 60, 0.13), transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+
+/* nav indicator, visible only while 深夜 mode is on */
+.midnight-flag {
+  display: none;
+  font-family: var(--font-tech); font-size: 0.66rem; letter-spacing: 0.22em;
+  color: var(--neon-pink); border: 1px solid var(--neon-pink);
+  border-radius: 4px; padding: 0.14rem 0.55rem;
+  animation: flagPulse 2.6s ease-in-out infinite;
+}
+html.midnight-mode .midnight-flag { display: inline-block; }
+@keyframes flagPulse {
+  0%, 100% { box-shadow: 0 0 10px var(--neon-glow); opacity: 1; }
+  50% { box-shadow: 0 0 3px var(--neon-glow); opacity: 0.75; }
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }

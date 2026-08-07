@@ -79,6 +79,16 @@ const GOATCOUNTER_CODE = 'shinya';
     <title>{title}</title>
   </head>
   <body>
+    <script is:inline>
+      // 深夜 mode: after midnight (visitor's local time, 00:00-04:59) the
+      // whole palette inverts to blood-red. Preview any time with ?midnight=1.
+      (function () {
+        var p = new URLSearchParams(location.search);
+        var h = new Date().getHours();
+        var on = p.has('midnight') ? p.get('midnight') !== '0' : h >= 0 && h < 5;
+        if (on) document.documentElement.classList.add('midnight-mode');
+      })();
+    </script>
     <div class="bg-glow" aria-hidden="true"></div>
     <NightSky />
     <RainCanvas />
@@ -91,6 +101,7 @@ const GOATCOUNTER_CODE = 'shinya';
               <li><a href={l.href} class={isActive(l.href) ? 'active' : ''}>{l.label}</a></li>
             ))}
           </ul>
+          <span class="midnight-flag" aria-hidden="true">深夜 MODE</span>
           <div class="lang-switch" aria-label="Language">
             <a href={urlFor('en')} class={lang === 'en' ? 'active' : ''} lang="en">EN</a>
             <span aria-hidden="true">·</span>
