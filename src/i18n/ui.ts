@@ -1,4 +1,4 @@
-export type Lang = 'en' | 'ko';
+export type Lang = 'en' | 'ko' | 'ja';
 
 export const ui = {
   en: {
@@ -48,6 +48,30 @@ export const ui = {
     'badge.new': '새 릴리스',
     'music.subscribe.pre': '첫 릴리스를 준비하고 있어요 —',
     'music.subscribe.post': '구독하고 자정에 만나요.',
+  },
+  ja: {
+    'nav.home': 'ホーム',
+    'nav.music': 'ミュージック',
+    'nav.blog': 'ブログ',
+    'nav.about': 'アバウト',
+    'nav.links': 'リンク',
+    'hero.tagline': '真夜中過ぎの時間のためのジャズ、シティポップ、ローファイ。',
+    'btn.youtube': 'YouTubeチャンネル',
+    'section.mood': '今夜のムード',
+    'section.latest': '最新リリース',
+    'section.blog': 'ブログ最新記事',
+    'section.video': '最新動画',
+    'section.discography': 'ディスコグラフィー',
+    'mood.note': '今夜のおすすめは日付で変わります — 出典:',
+    'clock.shinya': '— 深夜です。この音楽が生まれた時間。',
+    'clock.day': '— 夜は必ず来ます。',
+    'footer.copy': '© 2026 SHINYA. 東京発、深夜の音楽。',
+    'read.suffix': '分で読めます',
+    'back.blog': '← ブログ',
+    'badge.coming': '準備中',
+    'badge.new': '新リリース',
+    'music.subscribe.pre': 'ファーストリリースを準備中 —',
+    'music.subscribe.post': 'をチャンネル登録して、真夜中に会いましょう。',
   },
 } as const;
 
