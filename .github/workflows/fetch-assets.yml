@@ -1,0 +1,28 @@
+name: Fetch generated scene assets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/blog-check-159lvt
+      - name: Download scene images
+        run: |
+          mkdir -p public/images/about
+          curl -fsSL -o public/images/about/scene-elevator-src.png "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260807_114638_961a6d03-b4b1-47d3-91d9-6e446d493759.png"
+          curl -fsSL -o public/images/about/scene-bathtub-src.png "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260807_114638_ec9c90bb-f40f-4695-bdb9-d6179ff33270.png"
+          curl -fsSL -o public/images/about/scene-dawn-src.png "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260807_114638_34fa845c-745f-432c-a2f5-53e04c5e8577.png"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/images/about
+          git commit -m "Add generated scene source images"
+          git push
