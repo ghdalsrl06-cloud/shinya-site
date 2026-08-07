@@ -1,17 +1,26 @@
 ---
 // Lightweight YouTube embed: shows only the thumbnail until clicked,
-// then swaps in the real iframe with autoplay.
+// then swaps in the real iframe with autoplay. Pass `poster` (a path
+// under /public or a full URL) to use custom art instead of the
+// YouTube thumbnail — useful while a video is still private.
 interface Props {
   id: string;
   title: string;
+  poster?: string;
 }
 
-const { id, title } = Astro.props;
+const { id, title, poster } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const posterSrc = poster
+  ? poster.startsWith('http')
+    ? poster
+    : `${base}/${poster.replace(/^\//, '')}`
+  : `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 ---
 
 <div class="video-wrap lite-yt" data-lite-yt data-video-id={id}>
   <button class="lite-yt-btn" type="button" data-title={title} aria-label={`Play: ${title}`}>
-    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" />
+    <img src={posterSrc} alt="" loading="lazy" />
     <span class="lite-yt-play" aria-hidden="true">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M8 5.5v13l11-6.5z" />
