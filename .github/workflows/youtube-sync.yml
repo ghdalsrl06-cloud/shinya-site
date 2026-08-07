@@ -23,11 +23,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch channel feed
         run: |
-          page=$(curl -fsSL "https://www.youtube.com/@${CHANNEL_HANDLE}")
-          cid=$(echo "$page" | grep -oP '"channelId":"\K[^"]+' | head -1)
+          page=$(curl -fsSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Accept-Language: en" \
+            "https://www.youtube.com/@${CHANNEL_HANDLE}")
+          echo "page bytes: ${#page}"
+          cid=$(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | head -1)
+          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP '"(channelId|externalId|browseId)":"\K(UC[0-9A-Za-z_-]{22})' | head -1)
+          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP 'channel_id=\K(UC[0-9A-Za-z_-]{22})' | head -1)
           if [ -z "$cid" ]; then
-            echo "Could not resolve channel id for @${CHANNEL_HANDLE}; skipping."
-            exit 0
+            echo "::error::Could not resolve channel id for @${CHANNEL_HANDLE}"
+            exit 1
           fi
           echo "Channel id: $cid"
           curl -fsSL "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml
