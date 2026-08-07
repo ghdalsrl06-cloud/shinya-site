@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const releases = await getCollection('music');
+---
+
+<Base title="Music — SHINYA / 深夜">
+  <div class="container">
+    <section class="section">
+      <h2>Discography</h2>
+      <div class="card-grid">
+        {releases.map((r) => (
+          <div class="card">
+            <span class="badge">{r.data.status === 'coming-soon' ? 'Coming Soon' : r.data.releaseDate}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem; font-weight: 600;">{r.data.title}</h3>
+            {r.data.titleJa && <p style="font-family: var(--font-jp); color: var(--text-dim);">{r.data.titleJa}</p>}
+            <p style="color: var(--text-dim); font-size: 0.95rem; margin-top: 0.6rem;">{r.data.description}</p>
+            {r.data.youtubeId && (
+              <div class="video-wrap" style="margin-top: 1rem;">
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${r.data.youtubeId}`}
+                  title={r.data.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style="margin-top: 2.5rem; color: var(--text-dim);">
+        First releases are on the way — subscribe on
+        <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a>
+        to catch them at midnight.
+      </p>
+    </section>
+  </div>
+</Base>

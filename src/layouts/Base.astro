@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Jazz, city pop and lofi for the late night. Original music by SHINYA / 深夜.' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const current = Astro.url.pathname;
+const links = [
+  { href: `${base}/`, label: 'Home' },
+  { href: `${base}/music/`, label: 'Music' },
+  { href: `${base}/blog/`, label: 'Blog' },
+  { href: `${base}/about/`, label: 'About' },
+  { href: `${base}/links/`, label: 'Links' },
+];
+const isActive = (href: string) => {
+  if (href === `${base}/`) return current === `${base}/` || current === base;
+  return current.startsWith(href);
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="inner">
+        <a href={`${base}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya</span></a>
+        <ul class="nav-links">
+          {links.map((l) => (
+            <li><a href={l.href} class={isActive(l.href) ? 'active' : ''}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p class="jp">深夜 — 夜はまだ長い</p>
+      <p>© 2026 SHINYA. Late night music from Tokyo.</p>
+    </footer>
+  </body>
+</html>
