@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const releases = await getCollection('music');
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const playlist = releases.find((r) => r.data.kind === 'playlist');
+
+const stories = [
+  'エレベーターが降りていき、夜は静かに、わざと下す悪い決断で始まる。「もう一口だけ」— その一言が、このアルバム全体が守る約束。',
+  'ルールは早めに決まる:今夜何があっても、朝が来れば名前を消す。その締め切りがあるから、それ以降のすべての時間がより熱く燃える。',
+  '街灯の下、午前2時にしか通じない嘘。ふたりとも分かっている。ふたりとも止まらない。',
+  '夜のいちばん深い場所。水面に揺れるネオン、肌の下で響くベース — 沈むのではなく、身をゆだねる。',
+  'コンビニの窓際、冷めていくコーヒー、鳴らない電話。午前3時の希望がいちばん頑固だ。',
+  '夜の最初の嘘の味がするさよなら。この後のすべては残骸。',
+  '空が白むまで一曲がリピートされ — 最後のフレーズがあなたをトラック1へ連れ戻す。夜は本当には終わらない。',
+];
+const scenes = singles.map((s, i) => ({ song: s, story: stories[i] ?? '' }));
+---
+
+<Base lang="ja" title="ひと晩のループ — SHINYA アルバムストーリー" description="7曲でひと晩:SHINYAのアルバムが真夜中から真夜中へ戻る物語。">
+  <div class="container">
+    <section class="page-banner">
+      <img class="page-banner-art" src={`${base}/${playlist?.data.poster ?? 'images/hero-character.jpg'}`} alt="" />
+      <div class="page-banner-scrim" aria-hidden="true"></div>
+      <div class="page-banner-inner">
+        <h1 class="page-banner-title">ONE NIGHT LOOP</h1>
+        <p class="page-banner-sub">7曲 · ひと晩 · 出口なし</p>
+      </div>
+    </section>
+
+    <section class="section prose about-intro">
+      <p>
+        SHINYAのアルバムは、順番どおりに流れるひと晩です。真夜中の悪い決断から始まり、
+        夜が行けるいちばん深いところまで降りて、始まった場所で終わります。
+        トラック順に歩いてみてください:
+      </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map(({ song, story }, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class="scene-visual">
+            {song.data.poster && <img src={`${base}/${song.data.poster}`} alt={song.data.title} loading="lazy" />}
+            <span class="scene-time">TRACK 0{song.data.track}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{song.data.title}</h3>
+            <p>{story}</p>
+            <p><a href={`${base}/ja/music/${song.id}/`}>歌詞 & 動画 →</a></p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
+      <p>
+        そして4時59分を過ぎると、エレベーターの数字がまた落ち始め、
+        毒でいいのはもう流れている。そういう夜がループだから、このアルバムもループです。
+      </p>
+      <p>
+        一気に聴く:<a href={`${base}/ja/music/`}>60分のSHINYAミックス</a>。
+      </p>
+    </section>
+  </div>
+</Base>

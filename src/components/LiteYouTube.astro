@@ -30,16 +30,22 @@ const posterSrc = poster
 </div>
 
 <script>
-  document.querySelectorAll('[data-lite-yt]').forEach((el) => {
-    const btn = el.querySelector('button');
-    btn?.addEventListener('click', () => {
-      const id = el.getAttribute('data-video-id');
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
-      iframe.title = btn.getAttribute('data-title') || 'YouTube video';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      iframe.allowFullscreen = true;
-      el.replaceChildren(iframe);
+  const bind = () => {
+    document.querySelectorAll('[data-lite-yt]').forEach((el) => {
+      if (el.dataset.bound) return;
+      el.dataset.bound = '1';
+      const btn = el.querySelector('button');
+      btn?.addEventListener('click', () => {
+        const id = el.getAttribute('data-video-id');
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+        iframe.title = btn.getAttribute('data-title') || 'YouTube video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        el.replaceChildren(iframe);
+      });
     });
-  });
+  };
+  bind();
+  document.addEventListener('astro:page-load', bind);
 </script>

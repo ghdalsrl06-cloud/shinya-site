@@ -1,17 +1,20 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import NightSky from '../components/NightSky.astro';
 import RainToggle from '../components/RainToggle.astro';
 import RainCanvas from '../components/RainCanvas.astro';
+import MiniPlayer from '../components/MiniPlayer.astro';
 import { t, type Lang } from '../i18n/ui';
 
 interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  ogImage?: string;
 }
 
-const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Dark electronic J-pop for the late night. Original music by SHINYA / 深夜.', lang = 'en' } = Astro.props;
+const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Dark electronic J-pop for the late night. Original music by SHINYA / 深夜.', lang = 'en', ogImage: ogImageProp } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
@@ -32,7 +35,12 @@ const urlFor = (l: Lang) => `${base}${l === 'en' ? '' : `/${l}`}${rest || '/'}`;
 const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
 const canonical = `${site}${current}`;
 const altUrl = (l: Lang) => `${site}${urlFor(l)}`;
-const ogImage = `${site}${base}/images/og.png`;
+const ogImage = ogImageProp
+  ? ogImageProp.startsWith('http')
+    ? ogImageProp
+    : `${site}${base}/${ogImageProp.replace(/^\//, '')}`
+  : `${site}${base}/images/og.png`;
+const isDefaultOg = !ogImageProp;
 const artistLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicGroup',
@@ -66,8 +74,8 @@ const GOATCOUNTER_CODE = 'shinya';
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {isDefaultOg && <meta property="og:image:width" content="1200" />}
+    {isDefaultOg && <meta property="og:image:height" content="630" />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -76,17 +84,25 @@ const GOATCOUNTER_CODE = 'shinya';
     <link rel="alternate" type="application/rss+xml" title="SHINYA / 深夜 — Blog" href={`${base}/rss.xml`} />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
     <script type="application/ld+json" set:html={JSON.stringify(artistLd)} />
+    <ClientRouter />
     <title>{title}</title>
   </head>
   <body>
-    <script is:inline>
+    <script is:inline data-astro-rerun>
       // 深夜 mode: after midnight (visitor's local time, 00:00-04:59) the
-      // whole palette inverts to blood-red. Preview any time with ?midnight=1.
+      // whole palette inverts to blood-red. Preview any time with ?midnight=1;
+      // the nav toggle stores a manual override in localStorage.
       (function () {
         var p = new URLSearchParams(location.search);
+        var stored = null;
+        try { stored = localStorage.getItem('shinya-midnight'); } catch (e) {}
         var h = new Date().getHours();
-        var on = p.has('midnight') ? p.get('midnight') !== '0' : h >= 0 && h < 5;
-        if (on) document.documentElement.classList.add('midnight-mode');
+        var on = p.has('midnight')
+          ? p.get('midnight') !== '0'
+          : stored !== null
+            ? stored === '1'
+            : h >= 0 && h < 5;
+        document.documentElement.classList.toggle('midnight-mode', on);
       })();
     </script>
     <div class="bg-glow" aria-hidden="true"></div>
@@ -101,6 +117,7 @@ const GOATCOUNTER_CODE = 'shinya';
               <li><a href={l.href} class={isActive(l.href) ? 'active' : ''}>{l.label}</a></li>
             ))}
           </ul>
+          <button class="midnight-toggle" type="button" data-midnight-toggle aria-pressed="false" title="深夜 MODE">深夜</button>
           <span class="midnight-flag" aria-hidden="true">深夜 MODE</span>
           <div class="lang-switch" aria-label="Language">
             <a href={urlFor('en')} class={lang === 'en' ? 'active' : ''} lang="en">EN</a>
@@ -121,6 +138,84 @@ const GOATCOUNTER_CODE = 'shinya';
       <p class="footer-links"><a href={`${base}/rss.xml`}>RSS</a></p>
     </footer>
     <RainToggle />
+    <MiniPlayer />
+    <script>
+      // Site-wide effects, re-initialized on every client-side navigation.
+      const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Scroll reveal: cards, scenes, and headings rise in as they enter the viewport.
+      const initReveal = () => {
+        if (reduced()) return;
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('reveal-in');
+              io.unobserve(e.target);
+              setTimeout(() => e.target.classList.remove('reveal', 'reveal-in'), 900);
+            }
+          },
+          { threshold: 0.12 },
+        );
+        document.querySelectorAll('.card, .scene, .section > h2, .page-banner, .song-hero').forEach((el) => {
+          if (el.dataset.reveal) return;
+          el.dataset.reveal = '1';
+          const r = el.getBoundingClientRect();
+          if (r.top < innerHeight * 0.85) return; // already visible: skip
+          el.classList.add('reveal');
+          io.observe(el);
+        });
+      };
+
+      // Hero parallax: art drifts with the pointer and slides with scroll.
+      let heroArt = null;
+      let mx = 0, my = 0, sy = 0, rafId = 0;
+      const findHero = () => { heroArt = reduced() ? null : document.querySelector('.hero-character .hero-art'); };
+      const applyParallax = () => {
+        rafId = 0;
+        if (!heroArt) return;
+        heroArt.style.transform = `scale(1.07) translate3d(${mx * 16}px, ${my * 10 + sy}px, 0)`;
+      };
+      const queue = () => { if (!rafId) rafId = requestAnimationFrame(applyParallax); };
+      addEventListener('mousemove', (e) => {
+        if (!heroArt) return;
+        mx = e.clientX / innerWidth - 0.5;
+        my = e.clientY / innerHeight - 0.5;
+        queue();
+      }, { passive: true });
+      addEventListener('scroll', () => {
+        if (!heroArt) return;
+        const hero = heroArt.closest('.hero-character');
+        if (!hero) return;
+        sy = Math.max(0, -hero.getBoundingClientRect().top) * 0.16;
+        queue();
+      }, { passive: true });
+
+      // Manual 深夜 mode toggle in the nav.
+      const initMidnightToggle = () => {
+        const btn = document.querySelector('[data-midnight-toggle]');
+        if (!btn || btn.dataset.bound) return;
+        btn.dataset.bound = '1';
+        const sync = () => btn.setAttribute('aria-pressed', String(document.documentElement.classList.contains('midnight-mode')));
+        sync();
+        btn.addEventListener('click', () => {
+          const on = document.documentElement.classList.toggle('midnight-mode');
+          try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
+          sync();
+        });
+      };
+
+      // GoatCounter: count client-side navigations too (initial load counts itself).
+      let firstLoad = true;
+      const countView = () => {
+        if (firstLoad) { firstLoad = false; return; }
+        window.goatcounter?.count?.({ path: location.pathname });
+      };
+
+      const initAll = () => { initReveal(); findHero(); initMidnightToggle(); countView(); };
+      initAll();
+      document.addEventListener('astro:page-load', initAll);
+    </script>
     {GOATCOUNTER_CODE && (
       <script
         is:inline

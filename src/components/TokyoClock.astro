@@ -15,7 +15,6 @@ const { lang = 'en' } = Astro.props;
 </p>
 
 <script>
-  const clocks = document.querySelectorAll('[data-tokyo-clock]');
   const fmt = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Asia/Tokyo',
     hour: '2-digit',
@@ -26,7 +25,8 @@ const { lang = 'en' } = Astro.props;
     const time = fmt.format(new Date());
     const hour = Number(time.slice(0, 2));
     const isShinya = hour >= 0 && hour < 4;
-    for (const el of clocks) {
+    // query fresh each tick so clocks on newly navigated pages are picked up
+    for (const el of document.querySelectorAll('[data-tokyo-clock]')) {
       el.querySelector('[data-time]').textContent = time;
       el.querySelector('[data-msg]').textContent = el.getAttribute(isShinya ? 'data-msg-shinya' : 'data-msg-day');
       el.classList.toggle('is-shinya', isShinya);
@@ -34,4 +34,5 @@ const { lang = 'en' } = Astro.props;
   };
   update();
   setInterval(update, 10_000);
+  document.addEventListener('astro:page-load', update);
 </script>

@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const releases = await getCollection('music');
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const playlist = releases.find((r) => r.data.kind === 'playlist');
+
+const stories = [
+  '엘리베이터가 내려가고, 밤은 조용히 그리고 일부러 내리는 나쁜 결정으로 시작된다. "한 모금만 더" — 이 한 마디가 앨범 전체가 지키는 약속이다.',
+  '규칙은 일찍 정해진다: 오늘 밤 무슨 일이 있어도, 아침이 오면 이름을 지운다. 그 마감이 있어서 그 뒤의 모든 시간이 더 뜨겁게 탄다.',
+  '가로등 아래, 새벽 2시에만 통하는 거짓말. 둘 다 알고 있다. 둘 다 멈추지 않는다.',
+  '밤의 가장 깊은 지점. 수면 위 네온, 피부 아래 울리는 베이스 — 가라앉는 게 아니라 몸을 맡기는 것.',
+  '편의점 창가, 식어가는 커피, 조용한 휴대폰. 새벽 3시의 희망이 가장 고집스럽다.',
+  '밤의 첫 거짓말 같은 맛이 나는 작별 인사. 이 뒤의 모든 것은 잔해다.',
+  '하늘이 창백해질 때까지 한 곡이 반복되고 — 마지막 가사가 당신을 다시 트랙 1로 데려간다. 밤은 사실 끝나지 않는다.',
+];
+const scenes = singles.map((s, i) => ({ song: s, story: stories[i] ?? '' }));
+---
+
+<Base lang="ko" title="하룻밤의 루프 — SHINYA 앨범 스토리" description="일곱 곡, 하룻밤: SHINYA 앨범이 자정에서 자정으로 되돌아오는 이야기.">
+  <div class="container">
+    <section class="page-banner">
+      <img class="page-banner-art" src={`${base}/${playlist?.data.poster ?? 'images/hero-character.jpg'}`} alt="" />
+      <div class="page-banner-scrim" aria-hidden="true"></div>
+      <div class="page-banner-inner">
+        <h1 class="page-banner-title">ONE NIGHT LOOP</h1>
+        <p class="page-banner-sub">일곱 곡 · 하룻밤 · 출구 없음</p>
+      </div>
+    </section>
+
+    <section class="section prose about-intro">
+      <p>
+        SHINYA 앨범은 순서대로 흐르는 하룻밤입니다. 자정의 나쁜 결정으로 시작해서,
+        밤이 갈 수 있는 가장 깊은 곳까지 내려갔다가, 시작한 자리에서 끝납니다.
+        트랙 순서대로 걸어보세요:
+      </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map(({ song, story }, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class="scene-visual">
+            {song.data.poster && <img src={`${base}/${song.data.poster}`} alt={song.data.title} loading="lazy" />}
+            <span class="scene-time">TRACK 0{song.data.track}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{song.data.title}{song.data.titleKo ? ` — ${song.data.titleKo}` : ''}</h3>
+            <p>{story}</p>
+            <p><a href={`${base}/ko/music/${song.id}/`}>가사 & 영상 →</a></p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
+      <p>
+        그리고 4시 59분이 넘어가면, 엘리베이터 숫자가 다시 떨어지기 시작하고,
+        毒でいいの는 이미 흐르고 있습니다. 그런 밤들이 루프이기 때문에, 이 앨범도 루프입니다.
+      </p>
+      <p>
+        한 번에 듣기: <a href={`${base}/ko/music/`}>60분 SHINYA 믹스</a>.
+      </p>
+    </section>
+  </div>
+</Base>
