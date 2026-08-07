@@ -26,7 +26,7 @@ const moods = singles.map((r) => ({
 
 <Base>
   <section class="hero">
-    <h1 class="jp-title">深夜</h1>
+    <h1 class="jp-title glitch" data-text="深夜">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
     <p class="tagline">Dark electronic J-pop for the hours after midnight.</p>
     <div class="hero-clock"><TokyoClock /></div>
@@ -34,6 +34,14 @@ const moods = singles.map((r) => ({
       <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
     </p>
   </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[...singles, ...singles].map((r) => (
+        <span class="ticker-item">{r.data.title}<span class="ticker-sep">·</span></span>
+      ))}
+    </div>
+  </div>
 
   <div class="container">
     <section class="section">

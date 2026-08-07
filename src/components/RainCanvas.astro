@@ -1,0 +1,60 @@
+<canvas class="rain-canvas" data-rain-canvas aria-hidden="true"></canvas>
+
+<script>
+  // Neon rain streaks, activated together with the rain-sound toggle.
+  const canvas = document.querySelector('[data-rain-canvas]');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (canvas && !reduced) {
+    const ctx = canvas.getContext('2d');
+    let drops = [];
+    let alpha = 0;
+    let target = 0;
+    let raf = null;
+
+    const resize = () => {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+      drops = Array.from({ length: Math.floor(innerWidth / 9) }, () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        len: 12 + Math.random() * 22,
+        speed: 9 + Math.random() * 9,
+        drift: -0.6 - Math.random() * 0.8,
+        tint: Math.random(),
+      }));
+    };
+
+    const step = () => {
+      alpha += (target - alpha) * 0.04;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (alpha > 0.005) {
+        for (const d of drops) {
+          const c = d.tint < 0.12 ? '62, 230, 240' : d.tint > 0.88 ? '255, 45, 110' : '170, 195, 235';
+          ctx.strokeStyle = `rgba(${c}, ${0.22 * alpha})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x + d.drift * (d.len / 14), d.y + d.len);
+          ctx.stroke();
+          d.y += d.speed;
+          d.x += d.drift;
+          if (d.y > canvas.height) {
+            d.y = -d.len;
+            d.x = Math.random() * canvas.width;
+          }
+          if (d.x < -20) d.x = canvas.width + 10;
+        }
+        raf = requestAnimationFrame(step);
+      } else {
+        raf = null;
+      }
+    };
+
+    resize();
+    addEventListener('resize', resize);
+    addEventListener('shinya:rain', (e) => {
+      target = e.detail.on ? 1 : 0;
+      if (!raf) raf = requestAnimationFrame(step);
+    });
+  }
+</script>

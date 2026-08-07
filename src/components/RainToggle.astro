@@ -58,5 +58,6 @@
     gain.gain.linearRampToValueAtTime(on ? 0.11 : 0, t + 1.2);
     btn.setAttribute('aria-pressed', String(on));
     btn.classList.toggle('is-on', on);
+    window.dispatchEvent(new CustomEvent('shinya:rain', { detail: { on } }));
   });
 </script>
