@@ -15,15 +15,17 @@ const posts = (await getCollection('blog'))
 // 첫 업로드가 올라오면 유튜브 영상 ID를 넣어 홈에 노출합니다 (영어 홈과 동일).
 const latestVideoId = '';
 
-const moods = [
-  { key: 'overthinking', title: '생각이 많은 밤', genre: '인스트루멘털 재즈', desc: '생각이 꼬리를 무는 밤에는 가사가 소음이 됩니다. 오래된 도쿄 재즈킷사의 조용한 트리오가 방의 공기를 붙잡아주는 동안, 생각은 흐르게 두세요.' },
-  { key: 'floating', title: '붕 뜨는 밤', genre: '시티팝', desc: '이유 없이 가볍고, 괜히 그립고, 말똥말똥한 밤. 네온에 젖은 80년대 일본의 사운드가 그 기분을 가라앉히지 않고 빛나게 유지해줍니다. 창문을 열고 들어보세요.' },
-  { key: 'sleepy', title: '잠들고 싶은 밤', genre: '슬로우 피아노 로파이', desc: '일정한 템포, 고조 없는 전개, 빗소리 한 겹. 볼륨은 "듣는" 수준보다 살짝 낮게 — 나머지는 밤이 알아서 해줍니다.' },
-  { key: 'reflective', title: '하루를 닫는 밤', genre: '조용한 어쿠스틱 보이스', desc: '일기를 쓰거나 하루를 되감는 시간 — 가사가 도움이 되는 유일한 밤. 속삭이듯 노래하는 목소리가 음악보다 친구에 가까워집니다.' },
-];
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const moods = singles.map((r) => ({
+  genre: `${r.data.track}번 트랙`,
+  title: `${r.data.title}${r.data.titleKo ? ` — ${r.data.titleKo}` : ''}`,
+  desc: r.data.descriptionKo ?? r.data.description,
+}));
 ---
 
-<Base lang="ko" title="SHINYA / 深夜 — 도쿄의 심야 음악" description="자정 이후를 위한 재즈, 시티팝, 로파이. SHINYA / 深夜의 오리지널 음악.">
+<Base lang="ko" title="SHINYA / 深夜 — 도쿄의 심야 음악" description="자정 이후를 위한 다크 일렉트로닉 J-POP. SHINYA / 深夜의 오리지널 음악.">
   <section class="hero">
     <h1 class="jp-title">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
@@ -41,7 +43,7 @@ const moods = [
         <span class="badge" data-mood-genre>{moods[0].genre}</span>
         <h3 style="margin: 0.8rem 0 0.2rem;" data-mood-title>{moods[0].title}</h3>
         <p class="card-desc" data-mood-desc>{moods[0].desc}</p>
-        <p class="mood-note">{t('ko', 'mood.note')} <a href={`${base}/ko/blog/music-for-2am/`}>새벽 2시의 음악</a>.</p>
+        <p class="mood-note">오늘의 곡은 날짜에 따라 바뀝니다 — <a href={`${base}/ko/music/`}>7곡 믹스 전체 보기</a>.</p>
       </div>
     </section>
 
