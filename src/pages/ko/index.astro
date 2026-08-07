@@ -1,56 +1,57 @@
 ---
-import Base from '../layouts/Base.astro';
-import TokyoClock from '../components/TokyoClock.astro';
+import Base from '../../layouts/Base.astro';
+import TokyoClock from '../../components/TokyoClock.astro';
 import { getCollection } from 'astro:content';
+import { t } from '../../i18n/ui';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
 const latest = releases[0];
 const posts = (await getCollection('blog'))
-  .filter((p) => !p.id.includes('/'))
+  .filter((p) => p.id.startsWith('ko/'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-// Set to a YouTube video ID once the first upload is live to feature it on the home page.
+// 첫 업로드가 올라오면 유튜브 영상 ID를 넣어 홈에 노출합니다 (영어 홈과 동일).
 const latestVideoId = '';
 
 const moods = [
-  { key: 'overthinking', title: 'The overthinking night', genre: 'Instrumental jazz', desc: 'Thoughts are looping — no lyrics tonight. A quiet trio in an old Tokyo jazz kissa holds the room together while you think.' },
-  { key: 'floating', title: 'The floating night', genre: 'City pop', desc: 'Weirdly light, nostalgic, wide awake for no reason. Neon-soaked 80s Japan keeps the feeling glowing. Open a window while it plays.' },
-  { key: 'sleepy', title: 'The trying-to-sleep night', genre: 'Slow piano lofi', desc: 'Steady tempo, no swells, a layer of rain. Keep the volume just below listening level and let the night do the rest.' },
-  { key: 'reflective', title: 'The closing-the-day night', genre: 'Quiet acoustic voices', desc: 'Journaling, replaying the day — the one time lyrics help. A voice that sounds like it is almost whispering.' },
+  { key: 'overthinking', title: '생각이 많은 밤', genre: '인스트루멘털 재즈', desc: '생각이 꼬리를 무는 밤에는 가사가 소음이 됩니다. 오래된 도쿄 재즈킷사의 조용한 트리오가 방의 공기를 붙잡아주는 동안, 생각은 흐르게 두세요.' },
+  { key: 'floating', title: '붕 뜨는 밤', genre: '시티팝', desc: '이유 없이 가볍고, 괜히 그립고, 말똥말똥한 밤. 네온에 젖은 80년대 일본의 사운드가 그 기분을 가라앉히지 않고 빛나게 유지해줍니다. 창문을 열고 들어보세요.' },
+  { key: 'sleepy', title: '잠들고 싶은 밤', genre: '슬로우 피아노 로파이', desc: '일정한 템포, 고조 없는 전개, 빗소리 한 겹. 볼륨은 "듣는" 수준보다 살짝 낮게 — 나머지는 밤이 알아서 해줍니다.' },
+  { key: 'reflective', title: '하루를 닫는 밤', genre: '조용한 어쿠스틱 보이스', desc: '일기를 쓰거나 하루를 되감는 시간 — 가사가 도움이 되는 유일한 밤. 속삭이듯 노래하는 목소리가 음악보다 친구에 가까워집니다.' },
 ];
 ---
 
-<Base>
+<Base lang="ko" title="SHINYA / 深夜 — 도쿄의 심야 음악" description="자정 이후를 위한 재즈, 시티팝, 로파이. SHINYA / 深夜의 오리지널 음악.">
   <section class="hero">
     <h1 class="jp-title">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
-    <p class="tagline">Jazz, city pop &amp; lofi for the hours after midnight.</p>
-    <div class="hero-clock"><TokyoClock /></div>
+    <p class="tagline">{t('ko', 'hero.tagline')}</p>
+    <div class="hero-clock"><TokyoClock lang="ko" /></div>
     <p class="hero-cta">
-      <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
+      <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">{t('ko', 'btn.youtube')}</a>
     </p>
   </section>
 
   <div class="container">
     <section class="section">
-      <h2>Tonight's Mood</h2>
+      <h2>{t('ko', 'section.mood')}</h2>
       <div class="card mood-card" data-moods={JSON.stringify(moods)}>
         <span class="badge" data-mood-genre>{moods[0].genre}</span>
         <h3 style="margin: 0.8rem 0 0.2rem;" data-mood-title>{moods[0].title}</h3>
         <p class="card-desc" data-mood-desc>{moods[0].desc}</p>
-        <p class="mood-note">Tonight's pick rotates with the date — from <a href={`${base}/blog/music-for-2am/`}>Music for 2AM</a>.</p>
+        <p class="mood-note">{t('ko', 'mood.note')} <a href={`${base}/ko/blog/music-for-2am/`}>새벽 2시의 음악</a>.</p>
       </div>
     </section>
 
     {latestVideoId && (
       <section class="section">
-        <h2>Latest Video</h2>
+        <h2>{t('ko', 'section.video')}</h2>
         <div class="video-wrap">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${latestVideoId}`}
-            title="Latest video"
+            title="최신 영상"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           />
@@ -59,10 +60,10 @@ const moods = [
     )}
 
     <section class="section">
-      <h2>Latest</h2>
+      <h2>{t('ko', 'section.latest')}</h2>
       {latest && (
         <div class="card">
-          <span class="badge">{latest.data.status === 'coming-soon' ? 'Coming Soon' : 'New Release'}</span>
+          <span class="badge">{latest.data.status === 'coming-soon' ? t('ko', 'badge.coming') : t('ko', 'badge.new')}</span>
           <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
           {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
           <p class="card-desc">{latest.data.description}</p>
@@ -71,13 +72,13 @@ const moods = [
     </section>
 
     <section class="section">
-      <h2>From the Blog</h2>
+      <h2>{t('ko', 'section.blog')}</h2>
       <ul class="post-list">
         {posts.map((p) => (
           <li class="card">
             <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
             <h3 style="margin: 0.3rem 0;">
-              <a href={`${base}/blog/${p.id}/`}>{p.data.title}</a>
+              <a href={`${base}/ko/blog/${p.id.replace(/^ko\//, '')}/`}>{p.data.title}</a>
             </h3>
             <p class="card-desc">{p.data.description}</p>
           </li>
@@ -88,7 +89,7 @@ const moods = [
 </Base>
 
 <script>
-  // Pick tonight's mood from the visitor's local date (day-of-year), not build time.
+  // 방문자의 현지 날짜(연중 일수) 기준으로 오늘 밤의 무드를 고릅니다.
   const card = document.querySelector('.mood-card');
   if (card) {
     const moods = JSON.parse(card.getAttribute('data-moods'));

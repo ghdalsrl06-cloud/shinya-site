@@ -1,22 +1,35 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Comments from '../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((p) => !p.id.includes('/'));
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 200));
+const tagSlug = (tag: string) => tag.replace(/\s+/g, '-');
 ---
 
 <Base title={`${post.data.title} — SHINYA / 深夜`} description={post.data.description}>
   <div class="container">
     <article class="section prose">
-      <p class="post-meta">{post.data.date.toISOString().slice(0, 10)}</p>
+      <a class="back-link" href={`${base}/blog/`}>← Blog</a>
+      <p class="post-meta">{post.data.date.toISOString().slice(0, 10)} · {minutes} min read</p>
       <h1>{post.data.title}</h1>
       <Content />
+      {post.data.tags.length > 0 && (
+        <ul class="tag-list post-tags">
+          {post.data.tags.map((tag) => (
+            <li><a class="tag" href={`${base}/blog/tag/${tagSlug(tag)}/`}>#{tag}</a></li>
+          ))}
+        </ul>
+      )}
+      <Comments lang="en" />
     </article>
   </div>
 </Base>

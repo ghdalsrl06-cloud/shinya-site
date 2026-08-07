@@ -1,0 +1,37 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+---
+
+<p class="tokyo-time" data-tokyo-clock data-msg-shinya={t(lang, 'clock.shinya')} data-msg-day={t(lang, 'clock.day')}>
+  <span class="tt-label">東京</span>
+  <span class="tt-time" data-time>--:--</span>
+  <span class="tt-msg" data-msg></span>
+</p>
+
+<script>
+  const clocks = document.querySelectorAll('[data-tokyo-clock]');
+  const fmt = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  const update = () => {
+    const time = fmt.format(new Date());
+    const hour = Number(time.slice(0, 2));
+    const isShinya = hour >= 0 && hour < 4;
+    for (const el of clocks) {
+      el.querySelector('[data-time]').textContent = time;
+      el.querySelector('[data-msg]').textContent = el.getAttribute(isShinya ? 'data-msg-shinya' : 'data-msg-day');
+      el.classList.toggle('is-shinya', isShinya);
+    }
+  };
+  update();
+  setInterval(update, 10_000);
+</script>

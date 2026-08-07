@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const links = [
+  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス' },
+  { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中' },
+];
+---
+
+<Base lang="ja" title="リンク — SHINYA / 深夜">
+  <div class="container">
+    <section class="section" style="max-width: 560px; margin: 0 auto;">
+      <h2>リンク</h2>
+      <ul class="post-list">
+        {links.map((l) => (
+          <li class="card">
+            <a href={l.href} target="_blank" rel="noopener" style="display: block;">
+              <strong style="color: var(--text); font-weight: 500;">{l.label}</strong>
+              <span style="display: block; color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem;">{l.note}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
+        Spotify / Apple Musicのリンクはファーストリリース後に追加されます。
+      </p>
+    </section>
+  </div>
+</Base>

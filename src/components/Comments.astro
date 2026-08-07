@@ -1,0 +1,45 @@
+---
+// giscus comments (GitHub Discussions 기반).
+// 활성화 방법:
+//   1. GitHub 저장소 Settings → General → Features에서 Discussions 활성화
+//   2. https://github.com/apps/giscus 앱을 저장소에 설치
+//   3. https://giscus.app 에서 저장소를 입력하고 category / categoryId 값을 받아 아래에 입력
+// categoryId가 비어 있는 동안 댓글 영역은 렌더링되지 않습니다.
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+
+const GISCUS = {
+  repo: 'ghdalsrl06-cloud/shinya-site',
+  repoId: 'R_kgDOTwr-rQ',
+  category: 'Announcements',
+  categoryId: 'DIC_kwDOTwr-rc4DC1_z',
+};
+---
+
+{GISCUS.categoryId && (
+  <section class="comments">
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo={GISCUS.repo}
+      data-repo-id={GISCUS.repoId}
+      data-category={GISCUS.category}
+      data-category-id={GISCUS.categoryId}
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="transparent_dark"
+      data-lang={lang}
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </section>
+)}
