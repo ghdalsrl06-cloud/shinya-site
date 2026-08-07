@@ -11,7 +11,8 @@
     "description": "All seven tracks in one continuous hour — dark electronic J-pop for the hours after midnight.",
     "descriptionKo": "7곡을 하나로 이은 60분 — 자정 이후의 시간을 위한 다크 일렉트로닉 J-POP.",
     "descriptionJa": "7曲を一つに繋いだ60分 — 真夜中過ぎのためのダークエレクトロニックJ-POP。",
-    "youtubeId": "eSuk6hPMKdg"
+    "youtubeId": "eSuk6hPMKdg",
+    "poster": "images/posters/shinya-mix-vol1.jpg"
   },
   {
     "id": "poison-is-fine",
@@ -216,7 +217,8 @@
       "Let me drown before the morning comes",
       "The me that only exists at night —",
       "Look at me"
-    ]
+    ],
+    "poster": "images/posters/poison-is-fine.jpg"
   },
   {
     "id": "strangers-by-morning",
@@ -496,7 +498,8 @@
       "And I am me",
       "When morning comes",
       "Strangers"
-    ]
+    ],
+    "poster": "images/posters/strangers-by-morning.jpg"
   },
   {
     "id": "lies-at-2am",
@@ -812,7 +815,8 @@
       "I'll surely forget",
       "So just for tonight",
       "Stay a lie"
-    ]
+    ],
+    "poster": "images/posters/lies-at-2am.jpg"
   },
   {
     "id": "drowning-in-the-night",
@@ -1149,7 +1153,8 @@
       "Hey...",
       "Just one more time",
       "Look at me"
-    ]
+    ],
+    "poster": "images/posters/drowning-in-the-night.jpg"
   },
   {
     "id": "still-waiting-at-3am",
@@ -1510,7 +1515,8 @@
       "It's already morning",
       "So why am I",
       "Still waiting for you?"
-    ]
+    ],
+    "poster": "images/posters/still-waiting-at-3am.jpg"
   },
   {
     "id": "the-last-kiss-was-a-lie",
@@ -1862,7 +1868,8 @@
       "I'll forget it all",
       "So just for now",
       "Stay a lie"
-    ]
+    ],
+    "poster": "images/posters/the-last-kiss-was-a-lie.jpg"
   },
   {
     "id": "4am-on-repeat",
@@ -2223,6 +2230,7 @@
       "Let's go back to being strangers",
       "So for now —",
       "Just one more time"
-    ]
+    ],
+    "poster": "images/posters/4am-on-repeat.jpg"
   }
 ]

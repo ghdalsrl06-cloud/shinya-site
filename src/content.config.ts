@@ -25,6 +25,7 @@ const music = defineCollection({
     track: z.number().optional(),
     status: z.enum(['released', 'coming-soon']),
     youtubeId: z.string().optional(),
+    poster: z.string().optional(),
     releaseDate: z.string().optional(),
     description: z.string(),
     descriptionKo: z.string().optional(),
