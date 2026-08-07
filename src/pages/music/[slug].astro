@@ -34,11 +34,15 @@ const ld = {
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <div class="container">
     <article class="section song-page">
-      <a class="back-link" href={`${base}/music/`}>{t('en', 'back.music')}</a>
-      <p class="post-meta">Track {song.data.track} · {song.data.status === 'coming-soon' ? t('en', 'badge.coming') : song.data.releaseDate}</p>
-      <h1 class="song-title">{song.data.title}</h1>
-      {song.data.titleEn && <p class="song-sub">{song.data.titleEn}</p>}
-      <p class="song-desc">{song.data.description}</p>
+      <header class="song-hero">
+        {song.data.poster && <img class="song-hero-art" src={`${base}/${song.data.poster}`} alt="" aria-hidden="true" />}
+        <div class="song-hero-scrim" aria-hidden="true"></div>
+        <a class="back-link" href={`${base}/music/`}>{t('en', 'back.music')}</a>
+        <p class="post-meta">Track {song.data.track} · {song.data.status === 'coming-soon' ? t('en', 'badge.coming') : song.data.releaseDate}</p>
+        <h1 class="song-title">{song.data.title}</h1>
+        {song.data.titleEn && <p class="song-sub">{song.data.titleEn}</p>}
+        <p class="song-desc">{song.data.description}</p>
+      </header>
 
       {song.data.youtubeId && (
         <div class="song-video">
