@@ -1,14 +1,31 @@
 ---
 import Base from '../../layouts/Base.astro';
+import LiteYouTube from '../../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 
 const releases = await getCollection('music');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
 const playlist = releases.find((r) => r.data.kind === 'playlist');
 const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const albumLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicAlbum',
+  name: 'SHINYA 深夜',
+  byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
+  numTracks: singles.length,
+  track: singles.map((r) => ({
+    '@type': 'MusicRecording',
+    name: r.data.title,
+    position: r.data.track,
+    url: `${site}${base}/ko/music/${r.id}/`,
+  })),
+};
 ---
 
 <Base lang="ko" title="뮤직 — SHINYA / 深夜">
+  <script type="application/ld+json" set:html={JSON.stringify(albumLd)} />
   <div class="container">
     {playlist && (
       <section class="section">
@@ -19,13 +36,8 @@ const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) =
           {playlist.data.titleKo && <p class="card-title-ja">{playlist.data.titleKo}</p>}
           <p class="card-desc">{playlist.data.descriptionKo ?? playlist.data.description}</p>
           {playlist.data.youtubeId && (
-            <div class="video-wrap" style="margin-top: 1.2rem;">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${playlist.data.youtubeId}`}
-                title={playlist.data.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              />
+            <div style="margin-top: 1.2rem;">
+              <LiteYouTube id={playlist.data.youtubeId} title={playlist.data.title} />
             </div>
           )}
         </div>
@@ -38,18 +50,12 @@ const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) =
         {singles.map((r) => (
           <div class="card">
             <span class="badge">{r.data.status === 'coming-soon' ? t('ko', 'badge.coming') : r.data.releaseDate}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{r.data.title}</h3>
+            <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
             {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
             <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
             {r.data.youtubeId && (
-              <div class="video-wrap" style="margin-top: 1rem;">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${r.data.youtubeId}`}
-                  title={r.data.title}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                />
+              <div style="margin-top: 1rem;">
+                <LiteYouTube id={r.data.youtubeId} title={r.data.title} />
               </div>
             )}
           </div>

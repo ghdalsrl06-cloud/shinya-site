@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TokyoClock from '../components/TokyoClock.astro';
+import LiteYouTube from '../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -57,14 +58,7 @@ const moods = singles.map((r) => ({
     {latestVideoId && (
       <section class="section">
         <h2>Latest Video</h2>
-        <div class="video-wrap">
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${latestVideoId}`}
-            title="Latest video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          />
-        </div>
+        <LiteYouTube id={latestVideoId} title="SHINYA" />
       </section>
     )}
 

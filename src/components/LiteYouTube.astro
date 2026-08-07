@@ -1,0 +1,36 @@
+---
+// Lightweight YouTube embed: shows only the thumbnail until clicked,
+// then swaps in the real iframe with autoplay.
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<div class="video-wrap lite-yt" data-lite-yt data-video-id={id}>
+  <button class="lite-yt-btn" type="button" data-title={title} aria-label={`Play: ${title}`}>
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" />
+    <span class="lite-yt-play" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5z" />
+      </svg>
+    </span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll('[data-lite-yt]').forEach((el) => {
+    const btn = el.querySelector('button');
+    btn?.addEventListener('click', () => {
+      const id = el.getAttribute('data-video-id');
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+      iframe.title = btn.getAttribute('data-title') || 'YouTube video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      el.replaceChildren(iframe);
+    });
+  });
+</script>
