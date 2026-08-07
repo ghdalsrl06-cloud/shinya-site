@@ -6,24 +6,26 @@ import { t } from '../../i18n/ui';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
-const latest = releases[0];
+const latest = releases.find((r) => r.data.kind === 'playlist') ?? releases[0];
 const posts = (await getCollection('blog'))
-  .filter((p) => p.id.startsWith('ja/'))
+  .filter((p) => p.id.startsWith('ja/') && !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
 // 最初の動画が公開されたら、YouTube動画IDを入れてホームに表示します(英語ホームと同じ)。
 const latestVideoId = '';
 
-const moods = [
-  { key: 'overthinking', title: '考えすぎる夜', genre: 'インストゥルメンタル・ジャズ', desc: '思考がループする夜、歌詞はノイズに言葉を足すだけ。古い東京のジャズ喫茶で流れるような静かなトリオが、部屋の空気を支えながら思考を流してくれます。' },
-  { key: 'floating', title: '浮かぶ夜', genre: 'シティポップ', desc: '理由もなく軽くて、妙に懐かしくて、目が冴えている夜。ネオンに濡れた80年代日本のサウンドが、その気分を沈ませず光らせ続けます。窓を開けて聴いてみてください。' },
-  { key: 'sleepy', title: '眠りたい夜', genre: 'スローピアノ・ローファイ', desc: '一定のテンポ、盛り上がりのない展開、雨音をひとつ重ねて。音量は「聴く」より少し下げて — あとは夜に任せましょう。' },
-  { key: 'reflective', title: '一日を閉じる夜', genre: '静かなアコースティック・ボイス', desc: '日記を書いたり、一日を巻き戻したりする時間 — 歌詞が助けになる唯一の夜。ささやくように歌う声は、音楽というより友達に近い。' },
-];
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const moods = singles.map((r) => ({
+  genre: `トラック${r.data.track}`,
+  title: r.data.title,
+  desc: r.data.descriptionJa ?? r.data.description,
+}));
 ---
 
-<Base lang="ja" title="SHINYA / 深夜 — 東京発、深夜の音楽" description="真夜中過ぎのためのジャズ、シティポップ、ローファイ。SHINYA / 深夜のオリジナル音楽。">
+<Base lang="ja" title="SHINYA / 深夜 — 東京発、深夜の音楽" description="真夜中過ぎのためのダークエレクトロニックJ-POP。SHINYA / 深夜のオリジナル音楽。">
   <section class="hero">
     <h1 class="jp-title">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
@@ -41,7 +43,7 @@ const moods = [
         <span class="badge" data-mood-genre>{moods[0].genre}</span>
         <h3 style="margin: 0.8rem 0 0.2rem;" data-mood-title>{moods[0].title}</h3>
         <p class="card-desc" data-mood-desc>{moods[0].desc}</p>
-        <p class="mood-note">{t('ja', 'mood.note')} <a href={`${base}/ja/blog/music-for-2am/`}>午前2時の音楽</a>.</p>
+        <p class="mood-note">今夜の一曲は日付で変わります — <a href={`${base}/ja/music/`}>7曲のミックスを見る</a>。</p>
       </div>
     </section>
 
@@ -66,7 +68,7 @@ const moods = [
           <span class="badge">{latest.data.status === 'coming-soon' ? t('ja', 'badge.coming') : t('ja', 'badge.new')}</span>
           <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
           {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
-          <p class="card-desc">{latest.data.description}</p>
+          <p class="card-desc">{latest.data.descriptionJa ?? latest.data.description}</p>
         </div>
       )}
     </section>

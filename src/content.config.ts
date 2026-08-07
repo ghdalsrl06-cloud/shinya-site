@@ -9,6 +9,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -17,11 +18,17 @@ const music = defineCollection({
   schema: z.object({
     id: z.string(),
     title: z.string(),
+    titleKo: z.string().optional(),
+    titleEn: z.string().optional(),
     titleJa: z.string().optional(),
+    kind: z.enum(['single', 'playlist']).default('single'),
+    track: z.number().optional(),
     status: z.enum(['released', 'coming-soon']),
     youtubeId: z.string().optional(),
     releaseDate: z.string().optional(),
     description: z.string(),
+    descriptionKo: z.string().optional(),
+    descriptionJa: z.string().optional(),
   }),
 });
 

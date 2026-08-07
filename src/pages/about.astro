@@ -1,26 +1,92 @@
 ---
 import Base from '../layouts/Base.astro';
+
+// Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
+// replace a scene's placeholder art with a real photo.
+const characterImage = '';
+const scenes = [
+  {
+    cls: 'scene-kissa',
+    kanji: '街灯',
+    time: '2:00 AM',
+    title: 'A streetlight in the rain',
+    desc: 'Wet asphalt, neon haze, and the words people only say at this hour — the street where 午前二時の嘘 happens.',
+    image: '',
+  },
+  {
+    cls: 'scene-citypop',
+    kanji: '窓',
+    time: '3:00 AM',
+    title: 'The convenience store window',
+    desc: 'Fluorescent light on the glass, a coffee going cold, still waiting for someone — the scene behind 午前3時まだ君を待つ.',
+    image: '',
+  },
+  {
+    cls: 'scene-lofi',
+    kanji: '駅',
+    time: '4:00 AM',
+    title: 'The last platform',
+    desc: 'An empty station, one song on repeat, the first train still hours away — where 午前4時のリピート loops.',
+    image: '',
+  },
+];
 ---
 
 <Base title="About — SHINYA / 深夜">
+  <section class="about-hero">
+    <div class="about-hero-art" aria-hidden="true"></div>
+    <p class="about-label">About</p>
+    <h1 class="about-title">深夜 — SHINYA</h1>
+    <p class="about-motto">夜はまだ長い。— The night is still long.</p>
+  </section>
+
   <div class="container">
-    <section class="section prose">
-      <h2 style="font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--neon-purple);">About</h2>
-      <h1 style="font-family: var(--font-jp); letter-spacing: 0.15em;">深夜 — SHINYA</h1>
-      <p style="font-family: var(--font-jp); color: var(--text-dim);">夜はまだ長い。— The night is still long.</p>
+    <section class="section character-section">
+      <div class="character-card">
+        {characterImage ? (
+          <img src={characterImage} alt="SHINYA" loading="lazy" />
+        ) : (
+          <span class="character-kanji" aria-hidden="true">深夜</span>
+        )}
+        <span class="scene-time">SHINYA</span>
+      </div>
+      <p class="character-caption">The one who stays up — 夜更かしの住人</p>
+    </section>
+
+    <section class="section prose about-intro">
       <p>
-        SHINYA (深夜, "late night" in Japanese) is a music project for the hours after midnight —
-        when the city goes quiet, the neon stays on, and everything sounds a little more honest.
+        SHINYA (深夜, "late night" in Japanese) is a dark electronic J-pop project for the hours
+        after midnight — when the city goes quiet, the neon stays on, and everything sounds
+        a little more honest. The sound lives in three scenes:
+      </p>
+    </section>
+
+    <section class="section scenes">
+      {scenes.map((s, i) => (
+        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
+          <div class={`scene-visual ${s.cls}`}>
+            {s.image ? (
+              <img src={s.image} alt={s.title} loading="lazy" />
+            ) : (
+              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
+            )}
+            <span class="scene-time">{s.time}</span>
+          </div>
+          <div class="scene-text">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section prose about-outro">
+      <p>
+        Original tracks and long-form mixes are made for thinking, driving, working,
+        and the kind of nights when you don't really want to sleep yet.
       </p>
       <p>
-        The sound lives somewhere between a Tokyo jazz kissa at 1am, an empty city pop street in 1985,
-        and the lofi hum of a desk lamp at 3. Original tracks and long-form mixes are made for
-        thinking, driving, working, and the kind of nights when you don't really want to sleep yet.
-      </p>
-      <p>
-        New music arrives on
-        <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> —
-        always at midnight.
+        New music arrives on <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> — always at midnight.
       </p>
     </section>
   </div>

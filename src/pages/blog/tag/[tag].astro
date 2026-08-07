@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter((p) => !p.id.includes('/'));
+  const posts = (await getCollection('blog')).filter((p) => !p.id.includes('/') && !p.data.draft);
   const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
   return tags.map((tag) => ({
     params: { tag: tag.replace(/\s+/g, '-') },

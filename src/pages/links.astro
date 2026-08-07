@@ -1,10 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 
+// Set `image` (e.g. `images/character-small.png` under /public) to show a
+// small character thumbnail on a link card; empty shows placeholder art.
 const links = [
-  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'Original late night music & mixes' },
-  { label: 'Naver Blog (한국어)', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중' },
+  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'Original late night music & mixes', image: '' },
+  { label: 'Naver Blog (한국어)', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: '' },
 ];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(/^\//, '')}`);
 ---
 
 <Base title="Links — SHINYA / 深夜">
@@ -13,10 +17,20 @@ const links = [
       <h2>Links</h2>
       <ul class="post-list">
         {links.map((l) => (
-          <li class="card">
-            <a href={l.href} target="_blank" rel="noopener" style="display: block;">
-              <strong style="color: var(--text); font-weight: 500;">{l.label}</strong>
-              <span style="display: block; color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem;">{l.note}</span>
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
             </a>
           </li>
         ))}

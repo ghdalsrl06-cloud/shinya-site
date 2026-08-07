@@ -1,10 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
 
+// imageに/public配下のパス(例: images/character-small.png)を入れると、
+// リンクカードに小さなキャラクターサムネイルが表示されます。空ならプレースホルダー。
 const links = [
-  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス' },
-  { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中' },
+  { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: '' },
+  { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中', image: '' },
 ];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(/^\//, '')}`);
 ---
 
 <Base lang="ja" title="リンク — SHINYA / 深夜">
@@ -13,10 +17,20 @@ const links = [
       <h2>リンク</h2>
       <ul class="post-list">
         {links.map((l) => (
-          <li class="card">
-            <a href={l.href} target="_blank" rel="noopener" style="display: block;">
-              <strong style="color: var(--text); font-weight: 500;">{l.label}</strong>
-              <span style="display: block; color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem;">{l.note}</span>
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
             </a>
           </li>
         ))}

@@ -5,28 +5,30 @@ import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
-const latest = releases[0];
+const latest = releases.find((r) => r.data.kind === 'playlist') ?? releases[0];
 const posts = (await getCollection('blog'))
-  .filter((p) => !p.id.includes('/'))
+  .filter((p) => !p.id.includes('/') && !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
 // Set to a YouTube video ID once the first upload is live to feature it on the home page.
 const latestVideoId = '';
 
-const moods = [
-  { key: 'overthinking', title: 'The overthinking night', genre: 'Instrumental jazz', desc: 'Thoughts are looping — no lyrics tonight. A quiet trio in an old Tokyo jazz kissa holds the room together while you think.' },
-  { key: 'floating', title: 'The floating night', genre: 'City pop', desc: 'Weirdly light, nostalgic, wide awake for no reason. Neon-soaked 80s Japan keeps the feeling glowing. Open a window while it plays.' },
-  { key: 'sleepy', title: 'The trying-to-sleep night', genre: 'Slow piano lofi', desc: 'Steady tempo, no swells, a layer of rain. Keep the volume just below listening level and let the night do the rest.' },
-  { key: 'reflective', title: 'The closing-the-day night', genre: 'Quiet acoustic voices', desc: 'Journaling, replaying the day — the one time lyrics help. A voice that sounds like it is almost whispering.' },
-];
+const singles = releases
+  .filter((r) => r.data.kind !== 'playlist')
+  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const moods = singles.map((r) => ({
+  genre: `Track ${r.data.track}`,
+  title: `${r.data.title}${r.data.titleEn ? ` — ${r.data.titleEn}` : ''}`,
+  desc: r.data.description,
+}));
 ---
 
 <Base>
   <section class="hero">
     <h1 class="jp-title">深夜</h1>
     <p class="en-title">Shinya · Tokyo</p>
-    <p class="tagline">Jazz, city pop &amp; lofi for the hours after midnight.</p>
+    <p class="tagline">Dark electronic J-pop for the hours after midnight.</p>
     <div class="hero-clock"><TokyoClock /></div>
     <p class="hero-cta">
       <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
@@ -35,12 +37,12 @@ const moods = [
 
   <div class="container">
     <section class="section">
-      <h2>Tonight's Mood</h2>
+      <h2>Tonight's Track</h2>
       <div class="card mood-card" data-moods={JSON.stringify(moods)}>
         <span class="badge" data-mood-genre>{moods[0].genre}</span>
         <h3 style="margin: 0.8rem 0 0.2rem;" data-mood-title>{moods[0].title}</h3>
         <p class="card-desc" data-mood-desc>{moods[0].desc}</p>
-        <p class="mood-note">Tonight's pick rotates with the date — from <a href={`${base}/blog/music-for-2am/`}>Music for 2AM</a>.</p>
+        <p class="mood-note">Tonight's track rotates with the date — from the <a href={`${base}/music/`}>7-track SHINYA mix</a>.</p>
       </div>
     </section>
 
@@ -64,7 +66,7 @@ const moods = [
         <div class="card">
           <span class="badge">{latest.data.status === 'coming-soon' ? 'Coming Soon' : 'New Release'}</span>
           <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
-          {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
+          {latest.data.titleEn && <p class="card-title-ja">{latest.data.titleEn}</p>}
           <p class="card-desc">{latest.data.description}</p>
         </div>
       )}

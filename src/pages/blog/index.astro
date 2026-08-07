@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const posts = (await getCollection('blog'))
-  .filter((p) => !p.id.includes('/'))
+  .filter((p) => !p.id.includes('/') && !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const tagSlug = (tag: string) => tag.replace(/\s+/g, '-');
 ---
