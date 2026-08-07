@@ -191,18 +191,51 @@ const GOATCOUNTER_CODE = 'shinya';
         queue();
       }, { passive: true });
 
+      // 深夜 mode extras: entry flash, tab chrome, and darker copy.
+      const isMidnight = () => document.documentElement.classList.contains('midnight-mode');
+      const triggerFlicker = () => {
+        if (reduced()) return;
+        document.documentElement.classList.add('midnight-flicker');
+        setTimeout(() => document.documentElement.classList.remove('midnight-flicker'), 800);
+      };
+      const FAVICON = (color) => `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='80' fill='%23${color}'%3E%E5%A4%9C%3C/text%3E%3C/svg%3E`;
+      const applyMidnightChrome = () => {
+        const on = isMidnight();
+        const link = document.querySelector("link[rel='icon']");
+        if (link) link.href = FAVICON(on ? 'ff2444' : 'ff2d6e');
+        const plain = document.title.replace(/^【深夜】 /, '');
+        document.title = on ? `【深夜】 ${plain}` : plain;
+        document.querySelectorAll('[data-midnight-text]').forEach((el) => {
+          if (!el.dataset.origText) el.dataset.origText = el.textContent;
+          el.textContent = on ? el.getAttribute('data-midnight-text') : el.dataset.origText;
+        });
+      };
+
       // Manual 深夜 mode toggle in the nav.
       const initMidnightToggle = () => {
         const btn = document.querySelector('[data-midnight-toggle]');
         if (!btn || btn.dataset.bound) return;
         btn.dataset.bound = '1';
-        const sync = () => btn.setAttribute('aria-pressed', String(document.documentElement.classList.contains('midnight-mode')));
+        const sync = () => btn.setAttribute('aria-pressed', String(isMidnight()));
         sync();
         btn.addEventListener('click', () => {
           const on = document.documentElement.classList.toggle('midnight-mode');
           try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
+          if (on) triggerFlicker();
           sync();
+          applyMidnightChrome();
+          dispatchEvent(new CustomEvent('shinya:midnight', { detail: { on } }));
         });
+      };
+
+      // Flash once per session when the site loads already in 深夜 mode.
+      const initMidnightEntry = () => {
+        if (!isMidnight()) return;
+        try {
+          if (sessionStorage.getItem('shinya-mflash')) return;
+          sessionStorage.setItem('shinya-mflash', '1');
+        } catch { return; }
+        triggerFlicker();
       };
 
       // GoatCounter: count client-side navigations too (initial load counts itself).
@@ -212,7 +245,7 @@ const GOATCOUNTER_CODE = 'shinya';
         window.goatcounter?.count?.({ path: location.pathname });
       };
 
-      const initAll = () => { initReveal(); findHero(); initMidnightToggle(); countView(); };
+      const initAll = () => { initReveal(); findHero(); initMidnightToggle(); initMidnightEntry(); applyMidnightChrome(); countView(); };
       initAll();
       document.addEventListener('astro:page-load', initAll);
     </script>

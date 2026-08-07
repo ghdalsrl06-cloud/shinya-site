@@ -8,7 +8,7 @@ interface Props {
 const { lang = 'en' } = Astro.props;
 ---
 
-<p class="tokyo-time" data-tokyo-clock data-msg-shinya={t(lang, 'clock.shinya')} data-msg-day={t(lang, 'clock.day')}>
+<p class="tokyo-time" data-tokyo-clock data-msg-shinya={t(lang, 'clock.shinya')} data-msg-day={t(lang, 'clock.day')} data-msg-midnight={t(lang, 'clock.midnight')}>
   <span class="tt-label">東京</span>
   <span class="tt-time" data-time>--:--</span>
   <span class="tt-msg" data-msg></span>
@@ -26,13 +26,18 @@ const { lang = 'en' } = Astro.props;
     const hour = Number(time.slice(0, 2));
     const isShinya = hour >= 0 && hour < 4;
     // query fresh each tick so clocks on newly navigated pages are picked up
+    const midnight = document.documentElement.classList.contains('midnight-mode');
     for (const el of document.querySelectorAll('[data-tokyo-clock]')) {
       el.querySelector('[data-time]').textContent = time;
-      el.querySelector('[data-msg]').textContent = el.getAttribute(isShinya ? 'data-msg-shinya' : 'data-msg-day');
-      el.classList.toggle('is-shinya', isShinya);
+      el.querySelector('[data-msg]').textContent =
+        midnight && el.getAttribute('data-msg-midnight')
+          ? el.getAttribute('data-msg-midnight')
+          : el.getAttribute(isShinya ? 'data-msg-shinya' : 'data-msg-day');
+      el.classList.toggle('is-shinya', isShinya || midnight);
     }
   };
   update();
   setInterval(update, 10_000);
   document.addEventListener('astro:page-load', update);
+  addEventListener('shinya:midnight', update);
 </script>
