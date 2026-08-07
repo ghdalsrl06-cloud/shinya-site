@@ -1,7 +1,9 @@
 name: Fetch generated scene assets
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [claude/blog-check-159lvt]
+    paths: ['.github/workflows/fetch-assets.yml']
 
 permissions:
   contents: write
