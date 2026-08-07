@@ -587,11 +587,10 @@ article.prose::before {
 }
 .card-art-content { position: relative; z-index: 2; max-width: 34rem; }
 
-.section-has-art {
+.section-art-panel {
   position: relative; overflow: hidden;
   border: 1px solid var(--line); border-radius: 8px;
-  padding: 2.4rem clamp(1.2rem, 4vw, 2.4rem) 2.6rem;
-  margin: 3.5rem 0;
+  padding: 1.8rem clamp(1.2rem, 4vw, 2rem) 2rem;
 }
 .section-art {
   position: absolute; inset: 0; z-index: 0;
@@ -601,7 +600,7 @@ article.prose::before {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(5, 7, 13, 0.92) 0%, rgba(5, 7, 13, 0.78) 55%, rgba(5, 7, 13, 0.9) 100%);
 }
-.section-has-art > :not(.section-art):not(.section-art-scrim) { position: relative; z-index: 2; }
+.section-art-panel > :not(.section-art):not(.section-art-scrim) { position: relative; z-index: 2; }
 
 /* ---- song page: blurred cover backdrop behind the header ---- */
 .song-hero {

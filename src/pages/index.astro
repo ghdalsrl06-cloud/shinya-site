@@ -88,11 +88,12 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       )}
     </section>
 
-    <section class="section section-has-art">
-      <img class="section-art" src={`${base}/images/home/vending.jpg`} alt="" loading="lazy" />
-      <div class="section-art-scrim" aria-hidden="true"></div>
+    <section class="section">
       <h2>From the Blog</h2>
-      <ul class="post-list">
+      <div class="section-art-panel">
+        <img class="section-art" src={`${base}/images/home/vending.jpg`} alt="" loading="lazy" />
+        <div class="section-art-scrim" aria-hidden="true"></div>
+        <ul class="post-list">
         {posts.map((p) => (
           <li class="card">
             <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
@@ -102,7 +103,8 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
             <p class="card-desc">{p.data.description}</p>
           </li>
         ))}
-      </ul>
+        </ul>
+      </div>
     </section>
   </div>
 </Base>
