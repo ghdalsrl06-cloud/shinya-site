@@ -1,34 +1,46 @@
 ---
-title: "Music for 2AM — Four Moods for the Hours You Can't Sleep"
-description: "Overthinking, floating, sleepy, or reflective — a guide to picking late night music that matches the mood you're actually in."
+title: "Music for 2AM — Seven Tracks for the Hours You Can't Sleep"
+description: "A walk through the first SHINYA album, hour by hour — dark electronic J-pop for the night between midnight and first light."
 date: 2026-08-07
-tags: [late night, jazz, city pop, lofi]
+tags: [late night, dark electronic, j-pop, album]
 ---
 
-It's 2am. You're tired, but your eyes are wide open, and thoughts that felt small in daylight are suddenly loud. Strangely, the music you want at this hour is never the music you played all day.
+It's 2am. You're tired, but your eyes are wide open, and thoughts that felt small in daylight are suddenly loud. The music you want at this hour is never the music you played all day — it has to be darker, slower, more honest.
 
-I've been building late-night playlists for years — it's half the reason SHINYA exists — and the trick I keep coming back to is simple: **don't pick songs, pick a mood.** Here are the four late-night moods I sort everything into.
+That's exactly the space the first SHINYA album lives in: seven dark electronic J-pop tracks, one continuous night. Here's the night, track by track.
 
-## 1. The overthinking night — instrumental jazz
+## 1. 毒でいいの — Poison Is Fine
 
-When thoughts are looping, lyrics only add more words to the noise. A quiet jazz trio or a low saxophone ballad — the kind you'd hear in an old Tokyo jazz kissa — lets your thinking flow while the music holds the room together. No words, no demands.
+The night starts with a decision you already know is bad. A low pulse, a voice that doesn't apologize. If it's poison, fine — pour it.
 
-## 2. The floating night — city pop
+## 2. 朝になれば他人 — Strangers by Morning
 
-Some nights you feel weirdly light: nostalgic, a little romantic, wide awake for no reason. That's a city pop night. The neon-soaked sound of 80s Japan — Tatsuro Yamashita, Mariya Takeuchi — keeps that feeling glowing instead of letting it sink into melancholy. Open a window while it plays. Instant midnight drive.
+Some closeness has an expiry time, and it's sunrise. A cold bedroom beat for the kind of intimacy that only exists in the dark.
 
-## 3. The trying-to-sleep night — slow piano lofi
+## 3. 午前二時の嘘 — Lies at 2AM
 
-When you actually want to drift off, switch to slow piano lofi or ambient — steady tempo, no dynamic swells, maybe a layer of rain. Keep the volume just below "listening" level, so it's less a song and more a room tone. Long, unbroken mixes work best: reaching for your phone to change tracks is how the sleepiness escapes.
+Under a streetlight, in the rain, people say things they'd never say at noon. Not because they're false — because they're too true. This is the album's 2am, and the reason this blog is called what it's called.
 
-## 4. The closing-the-day night — quiet acoustic voices
+## 4. 夜に溺れる — Drowning in the Night
 
-If you're journaling or replaying the day, this is the one time lyrics help. Soft acoustic guitar, a voice that sounds like it's almost whispering. At 2am, a gentle song with words feels less like music and more like company.
+The middle of the night, where time stops moving. A slow, submerged track for sinking into the dark and not really wanting to be saved.
 
-## Three quick rules for late night listening
+## 5. 午前3時まだ君を待つ — Still Waiting at 3AM
 
-1. **Match the mood first** — overthinking → jazz, floating → city pop, sleepy → lofi, reflective → acoustic
-2. **Half your daytime volume** — everything sounds twice as loud after midnight
-3. **Long mixes over single tracks** — choosing songs breaks the spell
+A convenience store window, fluorescent light, a coffee going cold. Waiting past the point where waiting makes sense — the most J-pop heart in the album, wrapped in the coldest synths.
 
-The night is honest, and so is the music you reach for in it. SHINYA makes jazz, city pop and lofi for exactly these hours — the first tracks are on the way, always arriving at midnight. 夜はまだ長い。
+## 6. 最後のキスは嘘 — The Last Kiss Was a Lie
+
+The goodbye that was gentle enough to be a lie. Red light under a door, a chorus that hurts more the prettier it gets.
+
+## 7. 午前4時のリピート — 4AM on Repeat
+
+An empty platform, the first train still hours away, the same song looping. The night doesn't end — it just repeats until it fades.
+
+## Three rules for listening after midnight
+
+1. Half your daytime volume — everything sounds twice as loud after midnight
+2. Headphones, not speakers — this album is a private conversation
+3. When in doubt, play the full 60-minute mix — choosing tracks breaks the spell
+
+The night is honest, and so is the music you reach for in it. All seven tracks and the full mix arrive on YouTube — always at midnight. 夜はまだ長い。
