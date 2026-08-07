@@ -283,7 +283,24 @@ article.prose::before {
 .prose p { margin: 1rem 0; color: var(--text); }
 .prose a { border-bottom: 1px solid rgba(167, 139, 250, 0.4); }
 .prose a:hover { border-bottom-color: var(--neon-pink); }
-.prose img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; }
+.prose img {
+  max-width: 100%; border-radius: 12px; margin: 1.8rem 0;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+.post-cover {
+  width: 100%; border-radius: 12px; margin: 0.4rem 0 2rem;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+/* image caption: an italic-only line right after an image renders as a caption */
+.prose p:has(> img) { margin-bottom: 0.4rem; }
+.prose p:has(> img) + p:has(> em:only-child) {
+  text-align: center; margin-top: 0;
+  font-size: 0.82rem; color: var(--text-dim); letter-spacing: 0.04em;
+}
+.prose p:has(> img) + p:has(> em:only-child) em { font-style: normal; }
 .prose ol, .prose ul { margin: 1rem 0 1rem 1.4rem; }
 .prose li { margin: 0.35rem 0; }
 .prose li::marker { color: var(--neon-pink); }
