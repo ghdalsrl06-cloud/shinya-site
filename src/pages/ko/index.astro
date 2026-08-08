@@ -9,7 +9,9 @@ import { t } from '../../i18n/ui';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
-const latest = releases.find((r) => r.data.kind === 'playlist') ?? releases[0];
+const latest = releases
+  .filter((r) => r.data.kind === 'playlist' && r.data.status !== 'coming-soon')
+  .sort((a, b) => (b.data.album ?? 1) - (a.data.album ?? 1))[0] ?? releases[0];
 const posts = (await getCollection('blog'))
   .filter((p) => p.id.startsWith('ko/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -19,8 +21,8 @@ const posts = (await getCollection('blog'))
 const latestVideoId = 'eSuk6hPMKdg';
 
 const singles = releases
-  .filter((r) => r.data.kind !== 'playlist')
-  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+  .filter((r) => r.data.kind !== 'playlist' && r.data.status !== 'coming-soon')
+  .sort((a, b) => (a.data.album ?? 1) - (b.data.album ?? 1) || (a.data.track ?? 99) - (b.data.track ?? 99));
 const moods = singles.map((r) => ({
   genre: `${r.data.track}번 트랙`,
   title: `${r.data.title}${r.data.titleKo ? ` — ${r.data.titleKo}` : ''}`,

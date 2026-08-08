@@ -7,9 +7,9 @@ import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
 const singles = releases
-  .filter((r) => r.data.kind !== 'playlist')
+  .filter((r) => r.data.kind !== 'playlist' && (r.data.album ?? 1) === 1)
   .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const playlist = releases.find((r) => r.data.kind === 'playlist');
+const playlist = releases.find((r) => r.data.kind === 'playlist' && (r.data.album ?? 1) === 1);
 
 const stories = [
   'The elevator descends and the night begins with a bad decision, made quietly and on purpose. "One more sip" is the promise the whole album keeps.',

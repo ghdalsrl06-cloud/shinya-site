@@ -9,13 +9,17 @@ import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 
 export async function getStaticPaths() {
-  const singles = (await getCollection('music'))
-    .filter((r) => r.data.kind !== 'playlist')
-    .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-  return singles.map((song, i) => ({
-    params: { slug: song.id },
-    props: { song, prev: singles[i - 1] ?? null, next: singles[i + 1] ?? null },
-  }));
+  const singles = (await getCollection('music')).filter((r) => r.data.kind !== 'playlist');
+  const albums = [...new Set(singles.map((s) => s.data.album ?? 1))];
+  return albums.flatMap((album) => {
+    const group = singles
+      .filter((s) => (s.data.album ?? 1) === album)
+      .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+    return group.map((song, i) => ({
+      params: { slug: song.id },
+      props: { song, prev: group[i - 1] ?? null, next: group[i + 1] ?? null },
+    }));
+  });
 }
 
 const { song, prev, next } = Astro.props;
