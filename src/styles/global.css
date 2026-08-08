@@ -446,6 +446,14 @@ a:focus-visible, .btn:focus-visible {
 .card:hover::before { opacity: 1; }
 .card h3 { font-weight: 600; letter-spacing: 0.01em; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+/* Cards in a grid row stretch to equal height; pin the media to the bottom
+   so videos/covers line up even when descriptions wrap to different line counts. */
+.card-grid .card { display: flex; flex-direction: column; align-items: stretch; }
+.card-grid .card .badge { align-self: flex-start; }
+.card-grid .card .card-media { margin-top: auto; padding-top: 1rem; }
+/* Bare <img> has no global max-width rule, so without this the srcset-derived
+   intrinsic size can overflow the card and get clipped by its overflow:hidden. */
+.card-media img { display: block; width: 100%; height: auto; border-radius: 4px; }
 
 .card-title-ja { font-family: var(--font-jp); color: var(--text-dim); }
 .card-desc { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.6rem; }
