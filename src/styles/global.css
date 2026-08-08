@@ -1064,6 +1064,45 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 }
 .lcm-actions { display: flex; gap: 0.6rem; }
 
+/* ---- search page (Pagefind UI, dark-electronic skin) ---- */
+.search-page { max-width: 720px; margin: 0 auto; min-height: 55vh; }
+.search-note { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.6rem; }
+.search-page .pagefind-ui {
+  --pagefind-ui-primary: var(--neon-pink);
+  --pagefind-ui-text: var(--text);
+  --pagefind-ui-background: var(--bg-card);
+  --pagefind-ui-border: var(--line-bright);
+  --pagefind-ui-tag: var(--bg-raised);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 6px;
+  --pagefind-ui-font: var(--font-en);
+}
+.search-page .pagefind-ui__search-input {
+  background: var(--bg-card); color: var(--text);
+  border: 1px solid var(--line-bright); font-weight: 300;
+}
+.search-page .pagefind-ui__search-input:focus-visible {
+  outline: 2px solid var(--neon-pink); outline-offset: 2px;
+}
+.search-page .pagefind-ui__search-clear { color: var(--text-dim); background: transparent; }
+.search-page .pagefind-ui__result {
+  border-color: var(--line);
+  padding: 1.1rem 0;
+}
+.search-page .pagefind-ui__result-title, .search-page .pagefind-ui__result-link { color: var(--text); }
+.search-page .pagefind-ui__result-link:hover { color: var(--neon-pink); }
+.search-page .pagefind-ui__result-excerpt { color: var(--text-dim); font-weight: 300; }
+.search-page .pagefind-ui__result-excerpt mark {
+  background: rgba(255, 45, 110, 0.22); color: var(--neon-pink);
+  border-radius: 2px; padding: 0 2px;
+}
+.search-page .pagefind-ui__message { color: var(--text-dim); }
+.search-page .pagefind-ui__button {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--line-bright);
+}
+.search-page .pagefind-ui__button:hover { color: var(--neon-pink); border-color: var(--neon-pink); }
+
 /* ---- large displays (QHD 2560px and up) ---- */
 @media (min-width: 1800px) {
   html { font-size: 112.5%; } /* 18px base — everything rem-based scales with it */

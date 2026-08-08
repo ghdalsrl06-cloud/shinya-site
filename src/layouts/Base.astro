@@ -24,6 +24,7 @@ const links = [
   { href: `${base}${prefix}/blog/`, label: t(lang, 'nav.blog') },
   { href: `${base}${prefix}/about/`, label: t(lang, 'nav.about') },
   { href: `${base}${prefix}/links/`, label: t(lang, 'nav.links') },
+  { href: `${base}${prefix}/search/`, label: t(lang, 'nav.search') },
 ];
 const isActive = (href: string) => {
   if (href === `${base}${prefix}/`) return current === `${base}${prefix}/` || current === `${base}${prefix}`;
@@ -129,7 +130,7 @@ const GOATCOUNTER_CODE = 'shinya';
         </div>
       </div>
     </nav>
-    <main>
+    <main data-pagefind-body>
       <slot />
     </main>
     <footer class="site-footer">
