@@ -10,7 +10,9 @@ const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const playlist = releases.find((r) => r.data.kind === 'playlist');
-const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const allSingles = releases.filter((r) => r.data.kind !== 'playlist');
+const singles = allSingles.filter((r) => (r.data.album ?? 1) === 1).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const singles2 = allSingles.filter((r) => r.data.album === 2).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -37,6 +39,29 @@ const albumLd = {
         <p class="page-banner-sub">다크 일렉트로닉 J-POP · 7곡 + 60분 믹스</p>
       </div>
     </section>
+
+
+    {singles2.length > 0 && (
+      <section class="section">
+        <h2>2nd Album 「始発まで」 — 첫차까지</h2>
+        <p class="album-note">자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡 — 커밍순. 가사는 미리 읽어볼 수 있어요.</p>
+        <div class="card-grid">
+          {singles2.map((r) => (
+            <div class="card">
+              <span class="badge">{t('ko', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
+              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
+              {coverOf(r) && (
+                <div style="margin-top: 1rem;">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
 
     {playlist && (
       <section class="section">

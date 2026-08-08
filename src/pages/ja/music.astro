@@ -10,7 +10,9 @@ const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const playlist = releases.find((r) => r.data.kind === 'playlist');
-const singles = releases.filter((r) => r.data.kind !== 'playlist').sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const allSingles = releases.filter((r) => r.data.kind !== 'playlist');
+const singles = allSingles.filter((r) => (r.data.album ?? 1) === 1).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const singles2 = allSingles.filter((r) => r.data.album === 2).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -37,6 +39,29 @@ const albumLd = {
         <p class="page-banner-sub">ダークエレクトロニックJ-POP · 全7曲 + 60分ミックス</p>
       </div>
     </section>
+
+
+    {singles2.length > 0 && (
+      <section class="section">
+        <h2>2nd Album 「始発まで」</h2>
+        <p class="album-note">午前0時から始発まで、眠れないひと晩の7曲 — カミングスーン。歌詞は先に読めます。</p>
+        <div class="card-grid">
+          {singles2.map((r) => (
+            <div class="card">
+              <span class="badge">{t('ja', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
+              <p class="card-desc">{r.data.descriptionJa ?? r.data.description}</p>
+              {coverOf(r) && (
+                <div style="margin-top: 1rem;">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
 
     {playlist && (
       <section class="section">

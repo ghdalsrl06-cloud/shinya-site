@@ -18,8 +18,8 @@ const posts = (await getCollection('blog'))
 const latestVideoId = 'eSuk6hPMKdg';
 
 const singles = releases
-  .filter((r) => r.data.kind !== 'playlist')
-  .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+  .filter((r) => r.data.kind !== 'playlist' && r.data.status !== 'coming-soon')
+  .sort((a, b) => (a.data.album ?? 1) - (b.data.album ?? 1) || (a.data.track ?? 99) - (b.data.track ?? 99));
 const moods = singles.map((r) => ({
   genre: `Track ${r.data.track}`,
   title: `${r.data.title}${r.data.titleEn ? ` — ${r.data.titleEn}` : ''}`,
