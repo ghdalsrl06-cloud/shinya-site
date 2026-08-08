@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { coverOf } from '../lib/covers';
 import ArtImg from '../components/ArtImg.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
@@ -47,7 +48,7 @@ const albumLd = {
           <p class="card-desc">{playlist.data.description}</p>
           {playlist.data.youtubeId && (
             <div style="margin-top: 1.2rem;">
-              <LiteYouTube id={playlist.data.youtubeId} title={playlist.data.title} poster={playlist.data.poster} />
+              <LiteYouTube id={playlist.data.youtubeId} title={playlist.data.title} poster={coverOf(playlist)} />
             </div>
           )}
         </div>
@@ -65,7 +66,7 @@ const albumLd = {
             <p class="card-desc">{r.data.description}</p>
             {r.data.youtubeId && (
               <div style="margin-top: 1rem;">
-                <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={r.data.poster} />
+                <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
               </div>
             )}
           </div>

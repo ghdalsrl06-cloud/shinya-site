@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { coverOf } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import { getCollection } from 'astro:content';
 
@@ -45,7 +46,7 @@ const scenes = singles.map((s, i) => ({ song: s, story: stories[i] ?? '' }));
       {scenes.map(({ song, story }, i) => (
         <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
           <div class="scene-visual">
-            {song.data.poster && <ArtImg src={song.data.poster} width={1280} sizes="(min-width: 1000px) 460px, 100vw" alt={song.data.title} />}
+            {coverOf(song) && <ArtImg src={coverOf(song)} width={1280} sizes="(min-width: 1000px) 460px, 100vw" alt={song.data.title} />}
             <span class="scene-time">TRACK 0{song.data.track}</span>
           </div>
           <div class="scene-text">

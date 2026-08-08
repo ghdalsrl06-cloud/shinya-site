@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import { coverOf } from '../../../lib/covers';
 import LyricCard from '../../../components/LyricCard.astro';
 import ShareRow from '../../../components/ShareRow.astro';
 import ArtImg from '../../../components/ArtImg.astro';
@@ -23,6 +24,7 @@ const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, ''
 const behind = (await getCollection('blog')).find(
   (p) => p.id === `ja/behind-${song.id}` && !p.data.draft && p.data.date.valueOf() <= Date.now(),
 );
+const cover = coverOf(song);
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'MusicRecording',
@@ -36,12 +38,12 @@ const ld = {
 };
 ---
 
-<Base lang="ja" title={`${song.data.title} — SHINYA / 深夜`} description={song.data.descriptionJa ?? song.data.description} ogImage={song.data.poster}>
+<Base lang="ja" title={`${song.data.title} — SHINYA / 深夜`} description={song.data.descriptionJa ?? song.data.description} ogImage={cover}>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <div class="container">
     <article class="section song-page">
       <header class="song-hero">
-        {song.data.poster && <ArtImg class="song-hero-art" src={song.data.poster} width={1280} sizes="(min-width: 900px) 820px, 100vw" />}
+        {cover && <ArtImg class="song-hero-art" src={cover} width={1280} sizes="(min-width: 900px) 820px, 100vw" />}
         <div class="song-hero-scrim" aria-hidden="true"></div>
         <a class="back-link" href={`${base}/ja/music/`}>{t('ja', 'back.music')}</a>
         <p class="post-meta">トラック{song.data.track} · {song.data.status === 'coming-soon' ? t('ja', 'badge.coming') : song.data.releaseDate}</p>
@@ -55,13 +57,13 @@ const ld = {
 
       {song.data.youtubeId && (
         <div class="song-video">
-          <LiteYouTube id={song.data.youtubeId} title={song.data.title} poster={song.data.poster} />
+          <LiteYouTube id={song.data.youtubeId} title={song.data.title} poster={cover} />
         </div>
       )}
 
       <section class="lyrics">
         <h2>{t('ja', 'song.lyrics')}</h2>
-        <LyricCard songTitle={song.data.title} songSub={song.data.titleEn} poster={song.data.poster} songId={song.id} lang="ja" />
+        <LyricCard songTitle={song.data.title} songSub={song.data.titleEn} poster={cover} songId={song.id} lang="ja" />
         {song.data.lyrics ? (
           <div class="lyrics-cols">
             <div class="lyrics-block">
