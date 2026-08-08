@@ -1,0 +1,208 @@
+---
+// Lyric card generator: click a lyric line on a song page to render it as a
+// 1080x1350 shareable image (cover-art backdrop + lyric + branding) on a
+// canvas, then download it as PNG. Everything happens client-side.
+interface Props {
+  songTitle: string;
+  songSub?: string;
+  poster?: string;
+  songId: string;
+  lang?: 'en' | 'ko' | 'ja';
+}
+
+const { songTitle, songSub = '', poster = '', songId, lang = 'en' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const posterSrc = poster ? `${base}/${poster.replace(/^\//, '')}` : '';
+const L = {
+  en: { hint: 'Tap any lyric line to turn it into a shareable card.', download: 'Download card', close: 'Close' },
+  ko: { hint: '가사를 클릭하면 이미지 카드로 저장할 수 있어요.', download: '카드 다운로드', close: '닫기' },
+  ja: { hint: '歌詞をタップするとカードとして保存できます。', download: 'カードを保存', close: '閉じる' },
+}[lang];
+---
+
+<p class="lyric-card-hint">{L.hint}</p>
+
+<div
+  class="lyric-card-modal"
+  data-lyric-modal
+  hidden
+  data-poster={posterSrc}
+  data-song-title={songTitle}
+  data-song-sub={songSub}
+  data-song-id={songId}
+>
+  <div class="lcm-backdrop" data-lcm-close aria-hidden="true"></div>
+  <div class="lcm-body" role="dialog" aria-modal="true">
+    <canvas class="lcm-canvas" width="1080" height="1350"></canvas>
+    <div class="lcm-actions">
+      <button class="share-btn" type="button" data-lcm-download>{L.download}</button>
+      <button class="share-btn" type="button" data-lcm-close>{L.close}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const init = () => {
+    const modal = document.querySelector('[data-lyric-modal]');
+    if (!modal || modal.dataset.bound) return;
+    modal.dataset.bound = '1';
+    const canvas = modal.querySelector('.lcm-canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 1080;
+    const H = 1350;
+    let img = null;
+    let imgTried = false;
+
+    const wrapText = (text, font, maxW) => {
+      ctx.font = font;
+      const lines = [];
+      let cur = '';
+      for (const ch of text) {
+        if (ctx.measureText(cur + ch).width > maxW && cur) {
+          lines.push(cur);
+          cur = ch === ' ' ? '' : ch;
+        } else {
+          cur += ch;
+        }
+      }
+      if (cur) lines.push(cur);
+      return lines;
+    };
+
+    const draw = (line, trans) => {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#05070d';
+      ctx.fillRect(0, 0, W, H);
+
+      if (img && img.naturalWidth) {
+        const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+        const dw = img.naturalWidth * s;
+        const dh = img.naturalHeight * s;
+        ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+      }
+
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, 'rgba(4, 5, 10, 0.62)');
+      g.addColorStop(0.45, 'rgba(4, 5, 10, 0.55)');
+      g.addColorStop(1, 'rgba(4, 5, 10, 0.95)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.025)';
+      for (let y = 0; y < H; y += 5) ctx.fillRect(0, y, W, 1);
+
+      // brand
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'left';
+      ctx.font = "700 46px 'Zen Old Mincho', serif";
+      ctx.shadowColor = 'rgba(255, 45, 110, 0.7)';
+      ctx.shadowBlur = 24;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText('深夜', 72, 116);
+      ctx.shadowBlur = 0;
+      ctx.font = "500 22px 'Chakra Petch', sans-serif";
+      ctx.fillStyle = 'rgba(217, 223, 239, 0.55)';
+      ctx.fillText('S H I N Y A', 190, 112);
+
+      // lyric (centered vertically)
+      const maxW = W - 200;
+      let lyricFont = "600 58px 'Zen Old Mincho', serif";
+      let lines = wrapText(line, lyricFont, maxW);
+      if (lines.length > 5) {
+        lyricFont = "600 46px 'Zen Old Mincho', serif";
+        lines = wrapText(line, lyricFont, maxW);
+      }
+      const lh = lyricFont.includes('58px') ? 88 : 70;
+      const transLines = trans ? wrapText(trans, "300 30px 'Inter', sans-serif", maxW) : [];
+      const blockH = lines.length * lh + (transLines.length ? 30 + transLines.length * 46 : 0);
+      let y = (H - blockH) / 2 + lh * 0.7;
+      ctx.textAlign = 'center';
+      ctx.font = lyricFont;
+      ctx.fillStyle = '#f4f6fc';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.65)';
+      ctx.shadowBlur = 18;
+      for (const l of lines) {
+        ctx.fillText(l, W / 2, y);
+        y += lh;
+      }
+      ctx.shadowBlur = 0;
+      if (transLines.length) {
+        y += 8;
+        ctx.font = "300 30px 'Inter', sans-serif";
+        ctx.fillStyle = 'rgba(190, 200, 222, 0.85)';
+        for (const l of transLines) {
+          ctx.fillText(l, W / 2, y);
+          y += 46;
+        }
+      }
+
+      // footer
+      const bar = ctx.createLinearGradient(W / 2 - 90, 0, W / 2 + 90, 0);
+      bar.addColorStop(0, '#3ee6f0');
+      bar.addColorStop(1, '#ff2d6e');
+      ctx.fillStyle = bar;
+      ctx.fillRect(W / 2 - 90, H - 210, 180, 4);
+      ctx.font = "700 40px 'Zen Old Mincho', serif";
+      ctx.fillStyle = '#f4f6fc';
+      ctx.fillText(modal.dataset.songTitle, W / 2, H - 140);
+      const sub = modal.dataset.songSub;
+      ctx.font = "300 26px 'Inter', sans-serif";
+      ctx.fillStyle = 'rgba(190, 200, 222, 0.7)';
+      ctx.fillText(sub ? `${sub} — SHINYA / 深夜` : 'SHINYA / 深夜', W / 2, H - 92);
+    };
+
+    const open = async (line, trans) => {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      try { await document.fonts.ready; } catch {}
+      if (!imgTried && modal.dataset.poster) {
+        imgTried = true;
+        img = new Image();
+        img.src = modal.dataset.poster;
+        try { await img.decode(); } catch { img = null; }
+      }
+      draw(line, trans);
+    };
+
+    modal.querySelectorAll('[data-lcm-close]').forEach((el) =>
+      el.addEventListener('click', () => {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }),
+    );
+    modal.querySelector('[data-lcm-download]')?.addEventListener('click', () => {
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `shinya-${modal.dataset.songId}-lyric.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      });
+    });
+
+    const blocks = [...document.querySelectorAll('.lyrics-block')];
+    blocks.forEach((block) => {
+      block.querySelectorAll('p').forEach((p) => {
+        if (p.classList.contains('lyrics-gap') || !p.textContent.trim()) return;
+        p.classList.add('lyric-clickable');
+        p.addEventListener('click', () => {
+          const idx = [...block.querySelectorAll('p')].indexOf(p);
+          const origBlock = blocks[0];
+          const orig = origBlock.querySelectorAll('p')[idx]?.textContent.trim() || p.textContent.trim();
+          const other = blocks.find((b) => b !== block);
+          let trans = '';
+          if (block === origBlock) {
+            trans = other?.querySelectorAll('p')[idx]?.textContent.trim() ?? '';
+          } else {
+            trans = p.textContent.trim();
+          }
+          if (trans === orig || trans === ' ') trans = '';
+          open(orig, trans);
+        });
+      });
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

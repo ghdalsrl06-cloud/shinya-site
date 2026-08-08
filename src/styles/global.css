@@ -1035,6 +1035,35 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 /* link from a song page to its behind-the-scenes post */
 .song-behind { margin-top: 1rem; font-size: 0.9rem; }
 
+/* ---- lyric card generator ---- */
+.lyric-card-hint {
+  font-size: 0.78rem; color: var(--text-dim); letter-spacing: 0.04em;
+  margin: -0.6rem 0 1.6rem;
+}
+.lyrics-block p.lyric-clickable { cursor: pointer; transition: color 0.2s, text-shadow 0.2s; }
+.lyrics-block p.lyric-clickable:hover { color: var(--neon-pink); text-shadow: 0 0 12px var(--neon-glow); }
+.lyric-card-modal {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.2rem;
+}
+.lyric-card-modal[hidden] { display: none; }
+.lcm-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(2, 3, 7, 0.82);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+}
+.lcm-body {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+}
+.lcm-canvas {
+  width: min(380px, 82vw, calc((100vh - 10rem) * 0.8)); height: auto;
+  border: 1px solid var(--line-bright); border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65), 0 0 40px rgba(255, 45, 110, 0.12);
+}
+.lcm-actions { display: flex; gap: 0.6rem; }
+
 /* ---- large displays (QHD 2560px and up) ---- */
 @media (min-width: 1800px) {
   html { font-size: 112.5%; } /* 18px base — everything rem-based scales with it */
