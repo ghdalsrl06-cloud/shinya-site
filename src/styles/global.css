@@ -1064,6 +1064,20 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 }
 .lcm-actions { display: flex; gap: 0.6rem; }
 
+/* ---- easter egg toast ---- */
+.egg-toast {
+  position: fixed; left: 50%; bottom: 4.6rem; transform: translate(-50%, 14px);
+  z-index: 95; opacity: 0; pointer-events: none; max-width: min(90vw, 480px);
+  background: rgba(7, 11, 22, 0.94);
+  border: 1px solid var(--neon-pink); border-radius: 6px;
+  color: var(--text); font-family: var(--font-jp);
+  font-size: 0.95rem; letter-spacing: 0.06em; text-align: center;
+  padding: 0.85rem 1.5rem;
+  box-shadow: 0 0 26px var(--neon-glow), 0 14px 40px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.egg-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
 /* ---- search page (Pagefind UI, dark-electronic skin) ---- */
 .search-page { max-width: 720px; margin: 0 auto; min-height: 55vh; }
 .search-note { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.6rem; }

@@ -9,7 +9,7 @@ export default defineConfig({
   site: 'https://ghdalsrl06-cloud.github.io',
   base: '/shinya-site',
   integrations: [
-    sitemap(),
+    sitemap({ filter: (page) => !page.includes('/5am/') }),
     {
       name: 'optimize-images',
       hooks: {

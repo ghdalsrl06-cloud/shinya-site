@@ -132,6 +132,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       const lines = JSON.parse(lyricEl.getAttribute('data-lyric-lines'));
       let i = Math.floor(Math.random() * lines.length);
       const show = () => {
+        if (lyricEl.dataset.locked) return;
         lyricEl.textContent = lines[i % lines.length];
         lyricEl.classList.remove('lyric-glitch');
         void lyricEl.offsetWidth;
