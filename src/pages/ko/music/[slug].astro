@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import LyricCard from '../../../components/LyricCard.astro';
 import ShareRow from '../../../components/ShareRow.astro';
 import ArtImg from '../../../components/ArtImg.astro';
 import LiteYouTube from '../../../components/LiteYouTube.astro';
@@ -60,6 +61,7 @@ const ld = {
 
       <section class="lyrics">
         <h2>{t('ko', 'song.lyrics')}</h2>
+        <LyricCard songTitle={song.data.title} songSub={song.data.titleKo} poster={song.data.poster} songId={song.id} lang="ko" />
         {song.data.lyrics ? (
           <div class="lyrics-cols">
             <div class="lyrics-block">
