@@ -72,11 +72,11 @@ const albumLd = {
               {r.data.titleEn && <p class="card-title-ja">{r.data.titleEn}</p>}
               <p class="card-desc">{r.data.description}</p>
               {isReleased(r) && r.data.youtubeId ? (
-                <div style="margin-top: 1rem;">
+                <div class="card-media">
                   <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
                 </div>
               ) : coverOf(r) && (
-                <div style="margin-top: 1rem;">
+                <div class="card-media">
                   <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
                 </div>
               )}
@@ -113,7 +113,7 @@ const albumLd = {
             {r.data.titleEn && <p class="card-title-ja">{r.data.titleEn}</p>}
             <p class="card-desc">{r.data.description}</p>
             {r.data.youtubeId && (
-              <div style="margin-top: 1rem;">
+              <div class="card-media">
                 <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
               </div>
             )}
