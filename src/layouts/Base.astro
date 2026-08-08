@@ -24,6 +24,7 @@ const links = [
   { href: `${base}${prefix}/blog/`, label: t(lang, 'nav.blog') },
   { href: `${base}${prefix}/about/`, label: t(lang, 'nav.about') },
   { href: `${base}${prefix}/links/`, label: t(lang, 'nav.links') },
+  { href: `${base}${prefix}/search/`, label: t(lang, 'nav.search') },
 ];
 const isActive = (href: string) => {
   if (href === `${base}${prefix}/`) return current === `${base}${prefix}/` || current === `${base}${prefix}`;
@@ -129,7 +130,7 @@ const GOATCOUNTER_CODE = 'shinya';
         </div>
       </div>
     </nav>
-    <main>
+    <main data-pagefind-body>
       <slot />
     </main>
     <footer class="site-footer">
@@ -213,22 +214,102 @@ const GOATCOUNTER_CODE = 'shinya';
         });
       };
 
+      const setMidnight = (on, flicker = true) => {
+        document.documentElement.classList.toggle('midnight-mode', on);
+        try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
+        if (on && flicker) triggerFlicker();
+        document.querySelector('[data-midnight-toggle]')?.setAttribute('aria-pressed', String(on));
+        applyMidnightChrome();
+        dispatchEvent(new CustomEvent('shinya:midnight', { detail: { on } }));
+      };
+
       // Manual 深夜 mode toggle in the nav.
       const initMidnightToggle = () => {
         const btn = document.querySelector('[data-midnight-toggle]');
         if (!btn || btn.dataset.bound) return;
         btn.dataset.bound = '1';
-        const sync = () => btn.setAttribute('aria-pressed', String(isMidnight()));
-        sync();
-        btn.addEventListener('click', () => {
-          const on = document.documentElement.classList.toggle('midnight-mode');
-          try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
-          if (on) triggerFlicker();
-          sync();
-          applyMidnightChrome();
-          dispatchEvent(new CustomEvent('shinya:midnight', { detail: { on } }));
-        });
+        btn.setAttribute('aria-pressed', String(isMidnight()));
+        btn.addEventListener('click', () => setMidnight(!isMidnight()));
       };
+
+      // ---- easter eggs ----
+      const eggToast = (msg) => {
+        const el = document.createElement('div');
+        el.className = 'egg-toast';
+        el.textContent = msg;
+        document.body.appendChild(el);
+        requestAnimationFrame(() => el.classList.add('show'));
+        setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 500); }, 3800);
+      };
+
+      // 1) console art for fellow residents of the night
+      console.log(
+        '%c深夜',
+        'color:#ff2d6e;font-size:52px;font-family:serif;font-weight:700;text-shadow:0 0 14px rgba(255,45,110,0.6)',
+      );
+      console.log(
+        '%cまだ起きてるんだ。君も夜の住人だね。\n아직 깨어 있네. 너도 밤의 주민이구나.\n\nヒント: 「4AM」/ 深夜ロゴ×7 / 東京 4:44 / 存在しない時間 …/5am/',
+        'color:#848fa8;font-size:12px;line-height:1.8',
+      );
+
+      // 2) typing "4am" anywhere summons 深夜 mode
+      let keyBuf = '';
+      addEventListener('keydown', (e) => {
+        const t = e.target;
+        if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || e.metaKey || e.ctrlKey || e.altKey) return;
+        keyBuf = (keyBuf + e.key.toLowerCase()).slice(-3);
+        if (keyBuf === '4am') {
+          keyBuf = '';
+          setMidnight(true);
+          eggToast('午前4時のリピート — 深夜モード起動');
+        }
+      });
+
+      // 4) seven rapid clicks on the 深夜 logo (seven tracks).
+      // Capture phase so rapid clicks can cancel the router navigation.
+      let brandCount = 0;
+      let brandLast = 0;
+      document.addEventListener(
+        'click',
+        (e) => {
+          const brand = e.target instanceof Element && e.target.closest('.brand');
+          if (!brand) return;
+          const now = Date.now();
+          if (now - brandLast < 1500) {
+            e.preventDefault();
+            e.stopPropagation();
+            brandCount++;
+          } else {
+            brandCount = 1;
+          }
+          brandLast = now;
+          if (brandCount >= 7) {
+            brandCount = 0;
+            triggerFlicker();
+            eggToast('７曲目の後、また１曲目。夜は終わらない。');
+          }
+        },
+        true,
+      );
+
+      // 3) at exactly 4:44 Tokyo time the hero whispers the seam of the loop
+      const tokyoFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false });
+      const check444 = () => {
+        const lyricEl = document.querySelector('[data-lyric-lines]');
+        if (!lyricEl) return;
+        const is444 = tokyoFmt.format(new Date()) === '04:44';
+        if (is444 && !lyricEl.dataset.locked) {
+          lyricEl.dataset.locked = '1';
+          lyricEl.textContent = '4:44 — ループの継ぎ目。この一分は、どの曲にも入っていない。';
+          lyricEl.classList.remove('lyric-glitch');
+          void lyricEl.offsetWidth;
+          lyricEl.classList.add('lyric-glitch');
+        } else if (!is444 && lyricEl.dataset.locked) {
+          delete lyricEl.dataset.locked;
+        }
+      };
+      setInterval(check444, 10_000);
+      document.addEventListener('astro:page-load', check444);
 
       // Flash once per session when the site loads already in 深夜 mode.
       const initMidnightEntry = () => {

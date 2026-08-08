@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base lang="ko" title="검색 — SHINYA / 深夜" description="곡, 가사, 블로그 글을 검색하세요.">
+  <div class="container">
+    <section class="section search-page" data-pagefind-ignore>
+      <h2>검색</h2>
+      <p class="search-note">곡 제목, 가사 한 구절, 블로그 글을 검색해보세요.</p>
+      <div id="search"></div>
+    </section>
+  </div>
+</Base>
+
+<link rel="stylesheet" href={`${base}/pagefind/pagefind-ui.css`} />
+<script is:inline src={`${base}/pagefind/pagefind-ui.js`}></script>
+<script is:inline data-astro-rerun define:vars={{ base }}>
+  if (window.PagefindUI && document.getElementById('search')?.childElementCount === 0) {
+    new window.PagefindUI({
+      element: '#search',
+      bundlePath: `${base}/pagefind/`,
+      showSubResults: true,
+      showImages: false,
+      translations: {
+        placeholder: '검색어를 입력하세요',
+        clear_search: '지우기',
+        load_more: '결과 더 보기',
+        zero_results: '"[SEARCH_TERM]"에 대한 결과가 없습니다',
+        many_results: '"[SEARCH_TERM]" 검색 결과 [COUNT]건',
+        one_result: '"[SEARCH_TERM]" 검색 결과 [COUNT]건',
+        searching: '"[SEARCH_TERM]" 검색 중...',
+      },
+    });
+  }
+</script>
