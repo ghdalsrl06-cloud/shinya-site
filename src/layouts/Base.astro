@@ -33,7 +33,7 @@ const isActive = (href: string) => {
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
 const rest = localeMatch ? current.slice(base.length + 3) : current.slice(base.length);
 const urlFor = (l: Lang) => `${base}${l === 'en' ? '' : `/${l}`}${rest || '/'}`;
-const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const canonical = `${site}${current}`;
 const altUrl = (l: Lang) => `${site}${urlFor(l)}`;
 const ogImage = ogImageProp

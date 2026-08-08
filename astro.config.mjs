@@ -6,8 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { optimizeImages } from './scripts/optimize-images.mjs';
 
 export default defineConfig({
-  site: 'https://ghdalsrl06-cloud.github.io',
-  base: '/shinya-site',
+  site: 'https://shinya-music.com',
   integrations: [
     sitemap({ filter: (page) => !page.includes('/5am/') }),
     {

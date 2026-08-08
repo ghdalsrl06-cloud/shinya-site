@@ -22,4 +22,4 @@ cover: images/covers/lies-at-2am.jpg
 
 앨범 전체에서 유일하게 느낌표가 붙은 가사입니다. 딱 한 번, 여기서만 소리치게 하고 싶었어요.
 
-[가사 전체 보기 →](/shinya-site/ko/music/lies-at-2am/)
+[가사 전체 보기 →](/ko/music/lies-at-2am/)

@@ -22,4 +22,4 @@ cover: images/covers/lies-at-2am.jpg
 
 アルバム全体で唯一、感嘆符がつく歌詞です。一度だけ、ここでだけ、叫ばせたかった。
 
-[歌詞全文 →](/shinya-site/ja/music/lies-at-2am/)
+[歌詞全文 →](/ja/music/lies-at-2am/)

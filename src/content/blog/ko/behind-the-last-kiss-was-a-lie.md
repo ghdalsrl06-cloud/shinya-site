@@ -22,4 +22,4 @@ cover: images/covers/the-last-kiss-was-a-lie.jpg
 
 앨범 3번 트랙에서는 거짓말을 해달라고 했고, 여기서는 방금 들은 이별이 거짓말이라고 말해달라고 합니다. 같은 부탁이 정반대 방향으로 돌아온 셈이에요.
 
-[가사 전체 보기 →](/shinya-site/ko/music/the-last-kiss-was-a-lie/)
+[가사 전체 보기 →](/ko/music/the-last-kiss-was-a-lie/)

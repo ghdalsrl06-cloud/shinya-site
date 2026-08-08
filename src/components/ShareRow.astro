@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { title, lang = 'en' } = Astro.props;
-const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const url = `${site}${Astro.url.pathname}`;
 const L = {
   en: { share: 'Share', copy: 'Copy link', copied: 'Copied!' },

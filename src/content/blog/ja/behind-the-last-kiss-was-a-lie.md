@@ -22,4 +22,4 @@ cover: images/covers/the-last-kiss-was-a-lie.jpg
 
 トラック3では嘘をついてほしいと願い、ここでは、いま聞いた別れの言葉が嘘だと言ってほしいと願う。同じ願いが、正反対の方向から戻ってきたわけです。
 
-[歌詞全文 →](/shinya-site/ja/music/the-last-kiss-was-a-lie/)
+[歌詞全文 →](/ja/music/the-last-kiss-was-a-lie/)

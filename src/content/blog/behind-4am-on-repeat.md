@@ -24,4 +24,4 @@ Track 2's "strangers by morning" returns here — but this time it's spoken like
 
 That's all seven behind-the-track entries. If you feel like starting the album over from track 1 — that's exactly the repeat this record was designed for.
 
-[Full lyrics →](/shinya-site/music/4am-on-repeat/)
+[Full lyrics →](/music/4am-on-repeat/)

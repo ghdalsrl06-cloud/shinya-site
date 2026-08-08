@@ -22,4 +22,4 @@ cover: images/covers/drowning-in-the-night.jpg
 
 名前を忘れるということは、昼の自分を忘れるということ。このアルバムでは、それは悲しいことではありません。
 
-[歌詞全文 →](/shinya-site/ja/music/drowning-in-the-night/)
+[歌詞全文 →](/ja/music/drowning-in-the-night/)

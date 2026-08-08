@@ -22,4 +22,4 @@ A low pulsing bass with a whispered vocal on top. Even the chorus never shouts �
 
 "One more sip" is the attitude of the entire album: knowing you should stop and not stopping. That feeling carries all the way to track 7.
 
-[Full lyrics →](/shinya-site/music/poison-is-fine/)
+[Full lyrics →](/music/poison-is-fine/)

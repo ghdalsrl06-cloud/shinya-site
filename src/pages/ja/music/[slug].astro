@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
 const { song, prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const site = (Astro.site?.href ?? 'https://ghdalsrl06-cloud.github.io/').replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const behind = (await getCollection('blog')).find(
   (p) => p.id === `ja/behind-${song.id}` && !p.data.draft && p.data.date.valueOf() <= Date.now(),
 );

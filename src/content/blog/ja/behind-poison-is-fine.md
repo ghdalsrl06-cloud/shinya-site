@@ -22,4 +22,4 @@ cover: images/covers/poison-is-fine.jpg
 
 「もう一口だけ」は、このアルバム全体の態度でもあります。止まるべきだと分かっていて止まらない心。その心がトラック7まで続いていきます。
 
-[歌詞全文 →](/shinya-site/ja/music/poison-is-fine/)
+[歌詞全文 →](/ja/music/poison-is-fine/)

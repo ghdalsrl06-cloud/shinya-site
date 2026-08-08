@@ -22,4 +22,4 @@ The kick is deliberately muffled, like a sound heard through a bedroom wall. The
 
 The line is both an excuse and a spell. It was a rule meant to keep two people from hurting each other — but singing it, the rule is what hurts most.
 
-[Full lyrics →](/shinya-site/music/strangers-by-morning/)
+[Full lyrics →](/music/strangers-by-morning/)
