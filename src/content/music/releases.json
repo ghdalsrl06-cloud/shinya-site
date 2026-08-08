@@ -2242,6 +2242,21 @@
     "album": 1
   },
   {
+    "id": "shinya-mix-vol2",
+    "title": "始発まで",
+    "titleKo": "첫차까지 · 2집 7곡 연속 믹스",
+    "titleEn": "Until the First Train — 2nd Album Mix",
+    "titleJa": "始発まで — 2ndアルバム・ミックス",
+    "kind": "playlist",
+    "status": "coming-soon",
+    "description": "Seven songs from midnight to the first train, joined into one continuous mix — coming soon.",
+    "descriptionKo": "자정부터 첫차까지, 일곱 곡을 하나로 이은 연속 믹스 — 커밍순.",
+    "descriptionJa": "午前0時から始発まで、7曲を一つに繋いだ連続ミックス — カミングスーン。",
+    "poster": "images/covers/shinya-mix-vol2.jpg",
+    "posterPre": "images/covers/shinya-mix-vol2-pre.jpg",
+    "album": 2
+  },
+  {
     "id": "midnight-alone",
     "title": "午前0時、ひとり",
     "titleKo": "자정, 혼자",
@@ -2384,7 +2399,9 @@
       "",
       "Midnight, in a room alone",
       "I still can't turn off the light"
-    ]
+    ],
+    "poster": "images/covers/midnight-alone.jpg",
+    "posterPre": "images/covers/midnight-alone-pre.jpg"
   },
   {
     "id": "like-a-habit",
@@ -2529,7 +2546,9 @@
       "",
       "Like a habit, today again",
       "I'm opening the screen"
-    ]
+    ],
+    "poster": "images/covers/like-a-habit.jpg",
+    "posterPre": "images/covers/like-a-habit-pre.jpg"
   },
   {
     "id": "the-one-i-deleted",
@@ -2677,7 +2696,9 @@
       "The one I deleted",
       "The one I deleted",
       "My fingers remember"
-    ]
+    ],
+    "poster": "images/covers/the-one-i-deleted.jpg",
+    "posterPre": "images/covers/the-one-i-deleted-pre.jpg"
   },
   {
     "id": "anyone-would-do",
@@ -2822,7 +2843,9 @@
       "",
       "Anyone would have been fine",
       "Anyone should have been fine — and yet"
-    ]
+    ],
+    "poster": "images/covers/anyone-would-do.jpg",
+    "posterPre": "images/covers/anyone-would-do-pre.jpg"
   },
   {
     "id": "read-at-3am",
@@ -2967,7 +2990,9 @@
       "",
       "3AM",
       "Still glowing"
-    ]
+    ],
+    "poster": "images/covers/read-at-3am.jpg",
+    "posterPre": "images/covers/read-at-3am-pre.jpg"
   },
   {
     "id": "teach-me-how-to-forget",
@@ -3115,7 +3140,9 @@
       "",
       "How to forget",
       "I still don't know"
-    ]
+    ],
+    "poster": "images/covers/teach-me-how-to-forget.jpg",
+    "posterPre": "images/covers/teach-me-how-to-forget-pre.jpg"
   },
   {
     "id": "the-first-train-comes",
@@ -3266,6 +3293,8 @@
       "The first train comes",
       "Until the first train",
       "I made it here alone"
-    ]
+    ],
+    "poster": "images/covers/the-first-train-comes.jpg",
+    "posterPre": "images/covers/the-first-train-comes-pre.jpg"
   }
 ]

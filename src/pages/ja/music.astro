@@ -9,7 +9,8 @@ import { t } from '../../i18n/ui';
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
-const playlist = releases.find((r) => r.data.kind === 'playlist');
+const playlist = releases.find((r) => r.data.kind === 'playlist' && (r.data.album ?? 1) === 1);
+const playlist2 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 2);
 const allSingles = releases.filter((r) => r.data.kind !== 'playlist');
 const singles = allSingles.filter((r) => (r.data.album ?? 1) === 1).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const singles2 = allSingles.filter((r) => r.data.album === 2).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
@@ -45,6 +46,23 @@ const albumLd = {
       <section class="section">
         <h2>2nd Album 「始発まで」</h2>
         <p class="album-note">午前0時から始発まで、眠れないひと晩の7曲 — カミングスーン。歌詞は先に読めます。</p>
+        {playlist2 && (
+          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+            <span class="badge">{playlist2.data.status === 'coming-soon' ? t('ja', 'badge.coming') : playlist2.data.releaseDate}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist2.data.title}</h3>
+            {playlist2.data.titleJa && <p class="card-title-ja">{playlist2.data.titleJa}</p>}
+            <p class="card-desc">{playlist2.data.descriptionJa ?? playlist2.data.description}</p>
+            {playlist2.data.youtubeId ? (
+              <div style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist2.data.youtubeId} title={playlist2.data.title} poster={coverOf(playlist2)} />
+              </div>
+            ) : coverOf(playlist2) && (
+              <div style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist2)} width={1280} sizes="(min-width: 1000px) 820px, 100vw" alt={playlist2.data.title} />
+              </div>
+            )}
+          </div>
+        )}
         <div class="card-grid">
           {singles2.map((r) => (
             <div class="card">

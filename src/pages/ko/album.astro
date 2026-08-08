@@ -9,7 +9,7 @@ const releases = await getCollection('music');
 const singles = releases
   .filter((r) => r.data.kind !== 'playlist' && (r.data.album ?? 1) === 1)
   .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const playlist = releases.find((r) => r.data.kind === 'playlist');
+const playlist = releases.find((r) => r.data.kind === 'playlist' && (r.data.album ?? 1) === 1);
 
 const stories = [
   '엘리베이터가 내려가고, 밤은 조용히 그리고 일부러 내리는 나쁜 결정으로 시작된다. "한 모금만 더" — 이 한 마디가 앨범 전체가 지키는 약속이다.',

@@ -9,7 +9,7 @@ const releases = await getCollection('music');
 const singles = releases
   .filter((r) => r.data.kind !== 'playlist' && (r.data.album ?? 1) === 1)
   .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const playlist = releases.find((r) => r.data.kind === 'playlist');
+const playlist = releases.find((r) => r.data.kind === 'playlist' && (r.data.album ?? 1) === 1);
 
 const stories = [
   'エレベーターが降りていき、夜は静かに、わざと下す悪い決断で始まる。「もう一口だけ」— その一言が、このアルバム全体が守る約束。',
