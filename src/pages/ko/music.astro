@@ -54,12 +54,12 @@ const albumLd = {
             {playlist2.data.titleKo && <p class="card-title-ja">{playlist2.data.titleKo}</p>}
             <p class="card-desc">{playlist2.data.descriptionKo ?? playlist2.data.description}</p>
             {isReleased(playlist2) && playlist2.data.youtubeId ? (
-              <div style="margin-top: 1.2rem;">
+              <div class="card-media" style="margin-top: 1.2rem;">
                 <LiteYouTube id={playlist2.data.youtubeId} title={playlist2.data.title} poster={coverOf(playlist2)} />
               </div>
             ) : coverOf(playlist2) && (
-              <div style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist2)} width={1280} sizes="(min-width: 1000px) 820px, 100vw" alt={playlist2.data.title} />
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist2)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist2.data.title} />
               </div>
             )}
           </div>
