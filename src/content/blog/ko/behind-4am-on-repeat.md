@@ -24,4 +24,4 @@ cover: images/covers/4am-on-repeat.jpg
 
 이것으로 7곡의 비하인드가 모두 끝났습니다. 처음부터 다시 듣고 싶어졌다면 — 그게 바로 이 앨범이 의도한 리피트입니다.
 
-[가사 전체 보기 →](/shinya-site/ko/music/4am-on-repeat/)
+[가사 전체 보기 →](/ko/music/4am-on-repeat/)

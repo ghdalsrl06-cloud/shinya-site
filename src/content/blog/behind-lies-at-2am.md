@@ -22,4 +22,4 @@ The intro sits on a real rain texture, with a synth flickering over it like a fa
 
 The only lyric on the album with an exclamation mark. I wanted her to shout exactly once — here.
 
-[Full lyrics →](/shinya-site/music/lies-at-2am/)
+[Full lyrics →](/music/lies-at-2am/)

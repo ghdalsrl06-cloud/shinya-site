@@ -22,4 +22,4 @@ Melodically, this is almost a classic J-pop ballad. So I deliberately wrapped it
 
 She knows better than anyone that the waiting is foolish. Choosing it anyway — that's how everyone on this album lives.
 
-[Full lyrics →](/shinya-site/music/still-waiting-at-3am/)
+[Full lyrics →](/music/still-waiting-at-3am/)

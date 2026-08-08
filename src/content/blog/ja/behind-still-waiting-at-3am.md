@@ -22,4 +22,4 @@ cover: images/covers/still-waiting-at-3am.jpg
 
 待つことが愚かだと、本人が一番よく分かっている。分かっていて選ぶ。このアルバムの人物は、みんなそうやって生きています。
 
-[歌詞全文 →](/shinya-site/ja/music/still-waiting-at-3am/)
+[歌詞全文 →](/ja/music/still-waiting-at-3am/)

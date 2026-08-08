@@ -22,4 +22,4 @@ The chorus melody is the prettiest thing on the album, written that way on purpo
 
 On track 3 she begged to be lied to. Here, she begs to be told that the goodbye she just heard was the lie. The same plea, returned from the opposite direction.
 
-[Full lyrics →](/shinya-site/music/the-last-kiss-was-a-lie/)
+[Full lyrics →](/music/the-last-kiss-was-a-lie/)

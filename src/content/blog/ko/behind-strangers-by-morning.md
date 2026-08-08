@@ -22,4 +22,4 @@ cover: images/covers/strangers-by-morning.jpg
 
 이 문장은 변명이기도 하고, 주문이기도 합니다. 서로에게 상처 주지 않기 위한 규칙이었는데, 부르다 보면 그 규칙이 제일 아픕니다.
 
-[가사 전체 보기 →](/shinya-site/ko/music/strangers-by-morning/)
+[가사 전체 보기 →](/ko/music/strangers-by-morning/)

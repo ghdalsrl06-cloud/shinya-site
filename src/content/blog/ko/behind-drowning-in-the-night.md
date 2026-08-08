@@ -22,4 +22,4 @@ cover: images/covers/drowning-in-the-night.jpg
 
 이름을 잊는다는 건 낮의 자신을 잊는다는 뜻입니다. 이 앨범에서 그건 슬픈 일이 아니에요.
 
-[가사 전체 보기 →](/shinya-site/ko/music/drowning-in-the-night/)
+[가사 전체 보기 →](/ko/music/drowning-in-the-night/)

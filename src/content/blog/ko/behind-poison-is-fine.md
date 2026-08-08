@@ -22,4 +22,4 @@ cover: images/covers/poison-is-fine.jpg
 
 "한 모금만 더"는 이 앨범 전체의 태도이기도 합니다. 멈춰야 하는 걸 알면서 멈추지 않는 마음. 그 마음이 트랙 7까지 이어집니다.
 
-[가사 전체 보기 →](/shinya-site/ko/music/poison-is-fine/)
+[가사 전체 보기 →](/ko/music/poison-is-fine/)

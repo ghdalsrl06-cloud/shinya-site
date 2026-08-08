@@ -22,4 +22,4 @@ Every sound in this track runs through a low-pass filter, like everything is hea
 
 Forgetting your name means forgetting your daytime self. On this album, that isn't a sad thing.
 
-[Full lyrics →](/shinya-site/music/drowning-in-the-night/)
+[Full lyrics →](/music/drowning-in-the-night/)

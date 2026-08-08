@@ -22,4 +22,4 @@ cover: images/covers/strangers-by-morning.jpg
 
 この一文は言い訳でもあり、呪文でもあります。傷つけ合わないためのルールだったのに、歌っているうちに、そのルールが一番痛い。
 
-[歌詞全文 →](/shinya-site/ja/music/strangers-by-morning/)
+[歌詞全文 →](/ja/music/strangers-by-morning/)

@@ -24,4 +24,4 @@ cover: images/covers/4am-on-repeat.jpg
 
 これで7曲のビハインドはすべて終わりです。最初からもう一度聴きたくなったなら — それこそが、このアルバムが意図したリピートです。
 
-[歌詞全文 →](/shinya-site/ja/music/4am-on-repeat/)
+[歌詞全文 →](/ja/music/4am-on-repeat/)

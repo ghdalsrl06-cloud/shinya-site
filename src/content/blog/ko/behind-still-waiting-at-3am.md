@@ -22,4 +22,4 @@ cover: images/covers/still-waiting-at-3am.jpg
 
 기다림이 어리석다는 걸 본인이 제일 잘 압니다. 알면서도 선택하는 것. 이 앨범의 인물들은 전부 그렇게 삽니다.
 
-[가사 전체 보기 →](/shinya-site/ko/music/still-waiting-at-3am/)
+[가사 전체 보기 →](/ko/music/still-waiting-at-3am/)
