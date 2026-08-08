@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { coverOf } from '../lib/covers';
+import { coverOf, isReleased } from '../lib/covers';
 import ArtImg from '../components/ArtImg.astro';
 import TokyoClock from '../components/TokyoClock.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
@@ -9,18 +9,18 @@ import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
 const latest = releases
-  .filter((r) => r.data.kind === 'playlist' && r.data.status !== 'coming-soon')
+  .filter((r) => r.data.kind === 'playlist' && isReleased(r))
   .sort((a, b) => (b.data.album ?? 1) - (a.data.album ?? 1))[0] ?? releases[0];
 const posts = (await getCollection('blog'))
   .filter((p) => !p.id.includes('/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-// Set to a YouTube video ID once the first upload is live to feature it on the home page.
-const latestVideoId = 'eSuk6hPMKdg';
+// Feature the newest released mix's video on the home page.
+const latestVideoId = latest?.data.youtubeId;
 
 const singles = releases
-  .filter((r) => r.data.kind !== 'playlist' && r.data.status !== 'coming-soon')
+  .filter((r) => r.data.kind !== 'playlist' && isReleased(r))
   .sort((a, b) => (a.data.album ?? 1) - (b.data.album ?? 1) || (a.data.track ?? 99) - (b.data.track ?? 99));
 const moods = singles.map((r) => ({
   genre: `Track ${r.data.track}`,
@@ -83,7 +83,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
           <ArtImg class="card-art" src="images/home/studio.jpg" width={1600} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" />
           <div class="card-art-scrim" aria-hidden="true"></div>
           <div class="card-art-content">
-            <span class="badge">{latest.data.status === 'coming-soon' ? 'Coming Soon' : 'New Release'}</span>
+            <span class="badge">{isReleased(latest) ? 'New Release' : 'Coming Soon'}</span>
             <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
             {latest.data.titleEn && <p class="card-title-ja">{latest.data.titleEn}</p>}
             <p class="card-desc">{latest.data.description}</p>

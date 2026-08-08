@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { coverOf } from '../../lib/covers';
+import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import TokyoClock from '../../components/TokyoClock.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
@@ -10,7 +10,7 @@ import { t } from '../../i18n/ui';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
 const latest = releases
-  .filter((r) => r.data.kind === 'playlist' && r.data.status !== 'coming-soon')
+  .filter((r) => r.data.kind === 'playlist' && isReleased(r))
   .sort((a, b) => (b.data.album ?? 1) - (a.data.album ?? 1))[0] ?? releases[0];
 const posts = (await getCollection('blog'))
   .filter((p) => p.id.startsWith('ja/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
@@ -18,10 +18,10 @@ const posts = (await getCollection('blog'))
   .slice(0, 3);
 
 // 最初の動画が公開されたら、YouTube動画IDを入れてホームに表示します(英語ホームと同じ)。
-const latestVideoId = 'eSuk6hPMKdg';
+const latestVideoId = latest?.data.youtubeId;
 
 const singles = releases
-  .filter((r) => r.data.kind !== 'playlist' && r.data.status !== 'coming-soon')
+  .filter((r) => r.data.kind !== 'playlist' && isReleased(r))
   .sort((a, b) => (a.data.album ?? 1) - (b.data.album ?? 1) || (a.data.track ?? 99) - (b.data.track ?? 99));
 const moods = singles.map((r) => ({
   genre: `トラック${r.data.track}`,
@@ -84,7 +84,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
           <ArtImg class="card-art" src="images/home/studio.jpg" width={1600} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" />
           <div class="card-art-scrim" aria-hidden="true"></div>
           <div class="card-art-content">
-            <span class="badge">{latest.data.status === 'coming-soon' ? t('ja', 'badge.coming') : t('ja', 'badge.new')}</span>
+            <span class="badge">{isReleased(latest) ? t('ja', 'badge.new') : t('ja', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
             {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
             <p class="card-desc">{latest.data.descriptionJa ?? latest.data.description}</p>

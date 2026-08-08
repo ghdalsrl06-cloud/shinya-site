@@ -2249,12 +2249,15 @@
     "titleJa": "始発まで — 2ndアルバム・ミックス",
     "kind": "playlist",
     "status": "coming-soon",
-    "description": "Seven songs from midnight to the first train, joined into one continuous mix — coming soon.",
-    "descriptionKo": "자정부터 첫차까지, 일곱 곡을 하나로 이은 연속 믹스 — 커밍순.",
-    "descriptionJa": "午前0時から始発まで、7曲を一つに繋いだ連続ミックス — カミングスーン。",
+    "description": "Seven songs from midnight to the first train, joined into one continuous mix.",
+    "descriptionKo": "자정부터 첫차까지, 일곱 곡을 하나로 이은 연속 믹스.",
+    "descriptionJa": "午前0時から始発まで、7曲を一つに繋いだ連続ミックス。",
     "poster": "images/covers/shinya-mix-vol2.jpg",
     "posterPre": "images/covers/shinya-mix-vol2-pre.jpg",
-    "album": 2
+    "album": 2,
+    "youtubeId": "IpYk6wIFFrk",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "midnight-alone",
@@ -2401,7 +2404,10 @@
       "I still can't turn off the light"
     ],
     "poster": "images/covers/midnight-alone.jpg",
-    "posterPre": "images/covers/midnight-alone-pre.jpg"
+    "posterPre": "images/covers/midnight-alone-pre.jpg",
+    "youtubeId": "4S5vl4B_XAs",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "like-a-habit",
@@ -2548,7 +2554,10 @@
       "I'm opening the screen"
     ],
     "poster": "images/covers/like-a-habit.jpg",
-    "posterPre": "images/covers/like-a-habit-pre.jpg"
+    "posterPre": "images/covers/like-a-habit-pre.jpg",
+    "youtubeId": "4Vl-nvisF5I",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "the-one-i-deleted",
@@ -2698,7 +2707,10 @@
       "My fingers remember"
     ],
     "poster": "images/covers/the-one-i-deleted.jpg",
-    "posterPre": "images/covers/the-one-i-deleted-pre.jpg"
+    "posterPre": "images/covers/the-one-i-deleted-pre.jpg",
+    "youtubeId": "tXjCItF99yw",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "anyone-would-do",
@@ -2845,7 +2857,10 @@
       "Anyone should have been fine — and yet"
     ],
     "poster": "images/covers/anyone-would-do.jpg",
-    "posterPre": "images/covers/anyone-would-do-pre.jpg"
+    "posterPre": "images/covers/anyone-would-do-pre.jpg",
+    "youtubeId": "R0-ybcTm35k",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "read-at-3am",
@@ -2992,7 +3007,10 @@
       "Still glowing"
     ],
     "poster": "images/covers/read-at-3am.jpg",
-    "posterPre": "images/covers/read-at-3am-pre.jpg"
+    "posterPre": "images/covers/read-at-3am-pre.jpg",
+    "youtubeId": "9fYuAlL1u1M",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "teach-me-how-to-forget",
@@ -3142,7 +3160,10 @@
       "I still don't know"
     ],
     "poster": "images/covers/teach-me-how-to-forget.jpg",
-    "posterPre": "images/covers/teach-me-how-to-forget-pre.jpg"
+    "posterPre": "images/covers/teach-me-how-to-forget-pre.jpg",
+    "youtubeId": "TnczQrnNb9U",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   },
   {
     "id": "the-first-train-comes",
@@ -3295,6 +3316,9 @@
       "I made it here alone"
     ],
     "poster": "images/covers/the-first-train-comes.jpg",
-    "posterPre": "images/covers/the-first-train-comes-pre.jpg"
+    "posterPre": "images/covers/the-first-train-comes-pre.jpg",
+    "youtubeId": "q_eMqO6u8Io",
+    "releaseDate": "2026-08-14",
+    "releaseAt": "2026-08-14T23:59:00+09:00"
   }
 ]
