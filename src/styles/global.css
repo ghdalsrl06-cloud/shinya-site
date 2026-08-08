@@ -603,14 +603,14 @@ article.prose::before {
 .section-art-panel > :not(.section-art):not(.section-art-scrim) { position: relative; z-index: 2; }
 /* cards on top of the art go frosted-glass so the image shows through */
 .section-art-panel .card {
-  background: rgba(12, 17, 31, 0.55);
+  background: rgba(12, 17, 31, 0.25);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-color: rgba(42, 53, 80, 0.55);
 }
-.section-art-panel .card:hover { background: rgba(16, 22, 39, 0.68); }
-html.midnight-mode .section-art-panel .card { background: rgba(9, 6, 16, 0.55); }
-html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 0.68); }
+.section-art-panel .card:hover { background: rgba(16, 22, 39, 0.4); }
+html.midnight-mode .section-art-panel .card { background: rgba(9, 6, 16, 0.25); }
+html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 0.4); }
 
 /* ---- song page: blurred cover backdrop behind the header ---- */
 .song-hero {
