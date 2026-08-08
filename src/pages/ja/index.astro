@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { coverOf } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import TokyoClock from '../../components/TokyoClock.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
@@ -70,7 +71,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
     {latestVideoId && (
       <section class="section">
         <h2>{t('ja', 'section.video')}</h2>
-        <LiteYouTube id={latestVideoId} title="SHINYA" poster={latest?.data.poster} />
+        <LiteYouTube id={latestVideoId} title="SHINYA" poster={latest ? coverOf(latest) : undefined} />
       </section>
     )}
 

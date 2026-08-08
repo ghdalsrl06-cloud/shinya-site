@@ -754,6 +754,10 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 28px rgba(62, 230, 240, 0.1);
 }
 .scene-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* album story uses the 16:9 titled covers — show them uncropped, badge on the right
+   so it doesn't sit on the artwork's bottom-left branding */
+.album-scenes .scene-visual { aspect-ratio: 16 / 9; }
+.album-scenes .scene-time { left: auto; right: 0.9rem; }
 .scene-kanji {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   font-family: var(--font-jp); font-size: clamp(3rem, 8vw, 5rem); font-weight: 700;
