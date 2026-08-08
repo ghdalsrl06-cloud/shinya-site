@@ -42,7 +42,7 @@ const scenes = singles.map((s, i) => ({ song: s, story: stories[i] ?? '' }));
       </p>
     </section>
 
-    <section class="section scenes">
+    <section class="section scenes album-scenes">
       {scenes.map(({ song, story }, i) => (
         <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
           <div class="scene-visual">
