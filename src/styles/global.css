@@ -465,6 +465,17 @@ a:focus-visible, .btn:focus-visible {
   background: rgba(255, 45, 110, 0.06);
 }
 
+/* ---- album tabs (music page) ---- */
+.album-tabs { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 2.6rem; }
+.album-tab {
+  appearance: none; background: rgba(255, 255, 255, 0.02); font: inherit; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 4px; color: var(--text-dim);
+  padding: 0.55rem 1.2rem; font-size: 0.85rem; letter-spacing: 0.06em;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.album-tab:hover { border-color: var(--line-bright); color: var(--text); }
+.album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); }
+
 /* ---- buttons ---- */
 .btn {
   display: inline-block; padding: 0.7rem 1.8rem; border-radius: 4px;
