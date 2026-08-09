@@ -15,6 +15,9 @@ const allSingles = releases.filter((r) => r.data.kind !== 'playlist');
 const singles = allSingles.filter((r) => (r.data.album ?? 1) === 1).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const singles2 = allSingles.filter((r) => r.data.album === 2).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const album2Out = singles2.length > 0 && isReleased(singles2[0]);
+const singles3 = allSingles.filter((r) => r.data.album === 3).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const album3Out = singles3.length > 0 && isReleased(singles3[0]);
+const playlist3 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 3);
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -42,6 +45,49 @@ const albumLd = {
       </div>
     </section>
 
+
+    {singles3.length > 0 && (
+      <section class="section">
+        <h2>3rd Album 「怖いままで」 — Still Afraid</h2>
+        <p class="album-note">{album3Out ? 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Out now.' : 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Coming soon.'}</p>
+        {playlist3 && (
+          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+            <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('en', 'badge.coming')}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist3.data.title}</h3>
+            {playlist3.data.titleEn && <p class="card-title-ja">{playlist3.data.titleEn}</p>}
+            <p class="card-desc">{playlist3.data.description}</p>
+            {isReleased(playlist3) && playlist3.data.youtubeId ? (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist3.data.youtubeId} title={playlist3.data.title} poster={coverOf(playlist3)} />
+              </div>
+            ) : coverOf(playlist3) && (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist3)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist3.data.title} />
+              </div>
+            )}
+          </div>
+        )}
+        <div class="card-grid">
+          {singles3.map((r) => (
+            <div class="card">
+              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('en', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleEn && <p class="card-title-ja">{r.data.titleEn}</p>}
+              <p class="card-desc">{r.data.description}</p>
+              {isReleased(r) && r.data.youtubeId ? (
+                <div class="card-media">
+                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
+                </div>
+              ) : coverOf(r) && (
+                <div class="card-media">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
 
     {singles2.length > 0 && (
       <section class="section">
