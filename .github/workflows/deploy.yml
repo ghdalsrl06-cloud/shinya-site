@@ -5,9 +5,10 @@ on:
     branches: [main]
   schedule:
     - cron: '5 0 * * *'
-    # 2nd-album release night: rebuild at 15:00 UTC Aug 14 (00:00 KST Aug 15),
+    # Album release nights: rebuild at 15:00 UTC (00:00 KST next day),
     # one minute after the 23:59 KST release, so covers/videos flip right away.
-    - cron: '0 15 14 8 *'
+    - cron: '0 15 14 8 *' # 2nd album — Aug 14
+    - cron: '0 15 21 8 *' # 3rd album — Aug 21
   workflow_dispatch:
 
 permissions:
