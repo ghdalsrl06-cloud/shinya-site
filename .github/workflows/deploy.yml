@@ -9,6 +9,7 @@ on:
     # one minute after the 23:59 KST release, so covers/videos flip right away.
     - cron: '0 15 14 8 *' # 2nd album — Aug 14
     - cron: '0 15 21 8 *' # 3rd album — Aug 21
+    - cron: '0 15 28 8 *' # 4th album — Aug 28
   workflow_dispatch:
 
 permissions:
