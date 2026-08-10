@@ -1,0 +1,27 @@
+name: Fetch assets
+
+on:
+  push:
+    branches: [claude/blog-check-159lvt]
+    paths: ['.github/workflows/fetch-assets.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download album jackets
+        run: |
+          curl -fL -o album-1-raw.png 'https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260810_001736_cf3ef914-dc67-4466-8402-4ca43db23160.png'
+          curl -fL -o album-2-raw.png 'https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260810_001736_83cfb0db-8aa1-42da-a174-49a3af040e96.png'
+          curl -fL -o album-3-raw.png 'https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260810_001736_0ef084e8-9035-465d-8661-dabccbd90fe2.png'
+      - name: Commit assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add album-*.png
+          git commit -m 'Fetch album jacket assets'
+          git push
