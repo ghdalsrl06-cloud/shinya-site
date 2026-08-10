@@ -80,6 +80,33 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
     )}
 
     <section class="section">
+      <h2>In the Studio</h2>
+      <div class="studio-gallery">
+        <a class="studio-card" href={`${base}/music/#album-1`}>
+          <ArtImg src="images/home/studio-vocal.jpg" width={1080} sizes="(min-width: 1000px) 30vw, 68vw" />
+          <span class="studio-caption">
+            <span class="studio-caption-tag">Recording Booth</span>
+            <span class="studio-caption-title">Vocal take, past midnight</span>
+          </span>
+        </a>
+        <a class="studio-card" href={`${base}/music/#album-2`}>
+          <ArtImg src="images/home/studio-album2.jpg" width={1080} sizes="(min-width: 1000px) 30vw, 68vw" />
+          <span class="studio-caption">
+            <span class="studio-caption-tag">2nd Album Session</span>
+            <span class="studio-caption-title">「始発まで」</span>
+          </span>
+        </a>
+        <a class="studio-card" href={`${base}/music/#album-4`}>
+          <ArtImg src="images/home/studio-album4.jpg" width={1080} sizes="(min-width: 1000px) 30vw, 68vw" />
+          <span class="studio-caption">
+            <span class="studio-caption-tag">4th Album Session</span>
+            <span class="studio-caption-title">「おやすみのあとで」</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Latest</h2>
       {latest && (
         <div class="card has-art">
