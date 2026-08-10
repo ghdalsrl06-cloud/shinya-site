@@ -65,6 +65,8 @@ html.midnight-mode .scene-visual img,
 html.midnight-mode .lite-yt img,
 html.midnight-mode .character-card img,
 html.midnight-mode .link-thumb img,
+html.midnight-mode .disco-item img,
+html.midnight-mode .album-jacket,
 html.midnight-mode .post-cover {
   filter: grayscale(0.85) sepia(0.7) hue-rotate(-42deg) saturate(2.4) brightness(0.7) contrast(1.1);
 }
@@ -464,6 +466,22 @@ a:focus-visible, .btn:focus-visible {
   border-radius: 4px; padding: 0.15rem 0.7rem;
   background: rgba(255, 45, 110, 0.06);
 }
+
+/* ---- discography grid (about page) ---- */
+.disco-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.8rem; }
+.disco-item { display: block; text-decoration: none; }
+.disco-item img {
+  width: 100%; height: auto; display: block; border-radius: 6px;
+  border: 1px solid var(--line);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.disco-item:hover img {
+  transform: translateY(-4px);
+  border-color: var(--line-bright);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 0 24px rgba(62, 230, 240, 0.08);
+}
+.disco-title { margin: 0.9rem 0 0.15rem; color: var(--text); font-weight: 600; }
+.disco-sub { margin: 0; color: var(--text-dim); font-size: 0.85rem; letter-spacing: 0.04em; }
 
 /* ---- album head: square jacket + intro at the top of each album tab ---- */
 .album-head { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; gap: 2.2rem; align-items: center; margin-bottom: 2.4rem; }
