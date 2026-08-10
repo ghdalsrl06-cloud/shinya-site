@@ -18,6 +18,9 @@ const album2Out = singles2.length > 0 && isReleased(singles2[0]);
 const singles3 = allSingles.filter((r) => r.data.album === 3).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const album3Out = singles3.length > 0 && isReleased(singles3[0]);
 const playlist3 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 3);
+const singles4 = allSingles.filter((r) => r.data.album === 4).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const album4Out = singles4.length > 0 && isReleased(singles4[0]);
+const playlist4 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 4);
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -41,27 +44,81 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 MUSIC</h1>
-        <p class="page-banner-sub">ダークエレクトロニックJ-POP · アルバム3枚 · 全21曲 + ミックス</p>
+        <p class="page-banner-sub">ダークエレクトロニックJ-POP · アルバム4枚 · 全28曲 + ミックス</p>
       </div>
     </section>
 
 
     <div class="album-tabs" role="tablist" aria-label="アルバム">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="3">
-        <ArtImg class="album-tab-art" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="4">
+        <ArtImg class="album-tab-art" src="images/covers/album-4.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">4th</span><span class="album-tab-name">おやすみのあとで</span></span>
+      </button>
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="3">
+        <ArtImg class="album-tab-art" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">3rd</span><span class="album-tab-name">怖いままで</span></span>
       </button>
       <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="2">
-        <ArtImg class="album-tab-art" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+        <ArtImg class="album-tab-art" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">2nd</span><span class="album-tab-name">始発まで</span></span>
       </button>
       <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="1">
-        <ArtImg class="album-tab-art" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+        <ArtImg class="album-tab-art" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">1st</span><span class="album-tab-name">SHINYA 深夜</span></span>
       </button>
     </div>
 
-    <div data-album-panel="3">
+    <div data-album-panel="4">
+    {singles4.length > 0 && (
+      <section class="section">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-4.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="おやすみのあとで アルバムジャケット" />
+          <div class="album-head-info">
+            <h2>4th Album 「おやすみのあとで」</h2>
+            <p class="album-note">{album4Out ? '二人になったあとのひと晩の7曲 — 切れない通話から、二人で見送る始発まで。' : '二人になったあとのひと晩の7曲 — 切れない通話から、二人で見送る始発まで。カミングスーン。歌詞は先に読めます。'}</p>
+          </div>
+        </div>
+        {playlist4 && (
+          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+            <span class="badge">{isReleased(playlist4) ? playlist4.data.releaseDate : t('ja', 'badge.coming')}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist4.data.title}</h3>
+            {playlist4.data.titleJa && <p class="card-title-ja">{playlist4.data.titleJa}</p>}
+            <p class="card-desc">{playlist4.data.descriptionJa ?? playlist4.data.description}</p>
+            {isReleased(playlist4) && playlist4.data.youtubeId ? (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist4.data.youtubeId} title={playlist4.data.title} poster={coverOf(playlist4)} />
+              </div>
+            ) : coverOf(playlist4) && (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist4)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist4.data.title} />
+              </div>
+            )}
+          </div>
+        )}
+        <div class="card-grid">
+          {singles4.map((r) => (
+            <div class="card">
+              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ja', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
+              <p class="card-desc">{r.data.descriptionJa ?? r.data.description}</p>
+              {isReleased(r) && r.data.youtubeId ? (
+                <div class="card-media">
+                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
+                </div>
+              ) : coverOf(r) && (
+                <div class="card-media">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+    </div>
+
+    <div data-album-panel="3" hidden>
     {singles3.length > 0 && (
       <section class="section">
         <div class="album-head">
@@ -239,7 +296,7 @@ const albumLd = {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     });
-    const m = location.hash.match(/^#album-([123])$/);
+    const m = location.hash.match(/^#album-([1-4])$/);
     if (m) select(m[1]);
   };
   initAlbumTabs();
