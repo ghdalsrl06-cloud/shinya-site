@@ -6,6 +6,7 @@ import TokyoClock from '../components/TokyoClock.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 
+const dspOut = Date.now() >= new Date('2026-08-21T00:00:00+09:00').valueOf();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const releases = await getCollection('music');
 const latest = releases
@@ -42,6 +43,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
         <div class="hero-clock"><TokyoClock /></div>
         <p class="hero-cta">
           <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
+          <a class="btn" style="margin-left: 0.7rem;" href="https://distrokid.com/hyperfollow/shinya1/shinya-" target="_blank" rel="noopener">{dspOut ? 'Stream Now' : 'Pre-Save'}</a>
         </p>
     </div>
   </section>

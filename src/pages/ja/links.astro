@@ -4,7 +4,9 @@ import ArtImg from '../../components/ArtImg.astro';
 
 // imageに/public配下のパス(例: images/character-small.png)を入れると、
 // リンクカードに小さなキャラクターサムネイルが表示されます。空ならプレースホルダー。
+const dspOut = Date.now() >= new Date('2026-08-21T00:00:00+09:00').valueOf();
 const links = [
+  { label: dspOut ? 'ストリーミング — SHINYA 深夜' : 'プレセーブ — SHINYA 深夜', href: 'https://distrokid.com/hyperfollow/shinya1/shinya-', note: dspOut ? 'Spotify・Apple Musicなど各ストアで聴く' : '8/21ストリーミングリリース — プレセーブで発売と同時にライブラリへ', image: 'images/covers/album-1.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: 'images/character-thumb.jpg' },
   { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中', image: 'images/character-thumb.jpg' },
 ];
