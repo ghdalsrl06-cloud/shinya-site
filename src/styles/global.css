@@ -67,6 +67,7 @@ html.midnight-mode .character-card img,
 html.midnight-mode .link-thumb img,
 html.midnight-mode .disco-item img,
 html.midnight-mode .album-jacket,
+html.midnight-mode .album-tab-art,
 html.midnight-mode .post-cover {
   filter: grayscale(0.85) sepia(0.7) hue-rotate(-42deg) saturate(2.4) brightness(0.7) contrast(1.1);
 }
@@ -496,16 +497,29 @@ a:focus-visible, .btn:focus-visible {
   .album-head .album-jacket { max-width: 300px; }
 }
 
-/* ---- album tabs (music page) ---- */
-.album-tabs { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 2.6rem; }
+/* ---- album tabs (music page): jacket thumb + number + title ---- */
+.album-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; margin-bottom: 2.6rem; max-width: 780px; }
 .album-tab {
   appearance: none; background: rgba(255, 255, 255, 0.02); font: inherit; cursor: pointer;
-  border: 1px solid var(--line); border-radius: 4px; color: var(--text-dim);
-  padding: 0.55rem 1.2rem; font-size: 0.85rem; letter-spacing: 0.06em;
+  border: 1px solid var(--line); border-radius: 6px; color: var(--text-dim);
+  padding: 0.55rem 0.9rem; letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 0.8rem; text-align: left;
   transition: border-color 0.25s, color 0.25s, background 0.25s;
 }
+.album-tab-art { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; flex: none; opacity: 0.85; transition: opacity 0.25s; }
+.album-tab-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.album-tab-no { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+.album-tab-name { font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .album-tab:hover { border-color: var(--line-bright); color: var(--text); }
+.album-tab:hover .album-tab-art, .album-tab.active .album-tab-art { opacity: 1; }
 .album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); }
+.album-tab.active .album-tab-no { color: var(--neon-pink); }
+@media (max-width: 700px) {
+  .album-tabs { gap: 0.6rem; }
+  .album-tab { flex-direction: column; align-items: center; text-align: center; gap: 0.55rem; padding: 0.7rem 0.4rem 0.8rem; }
+  .album-tab-art { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+  .album-tab-name { font-size: 0.78rem; max-width: 100%; }
+}
 
 /* ---- buttons ---- */
 .btn {
@@ -994,9 +1008,11 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 
 @media (max-width: 640px) {
   .site-nav .inner { flex-direction: column; gap: 0.5rem; padding: 0.8rem 1.25rem; }
-  .nav-right { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .nav-right { gap: 0.7rem 1rem; flex-wrap: wrap; justify-content: center; }
   .lang-switch { padding-left: 1rem; }
-  .nav-links { gap: 1rem; }
+  /* Deterministic two-row nav on mobile: links on top, 深夜 toggle + languages
+     below — the same layout in every language instead of wherever wrapping lands. */
+  .nav-links { gap: 1rem; flex-basis: 100%; justify-content: center; }
   .nav-links a { font-size: 0.72rem; }
   .hero { padding: 5rem 1.25rem 4rem; }
   .section { padding: 2.5rem 0; }
