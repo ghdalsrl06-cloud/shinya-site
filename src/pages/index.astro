@@ -44,7 +44,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
         <div class="hero-clock"><TokyoClock /></div>
         <p class="hero-cta">
           <a class="btn" href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube Channel</a>
-          <a class="btn" style="margin-left: 0.7rem;" href={hf.url} target="_blank" rel="noopener">{hf.upcoming ? 'Pre-Save' : 'Stream Now'}</a>
+          <a class="btn" href={hf.url} target="_blank" rel="noopener">{hf.upcoming ? 'Pre-Save' : 'Stream Now'}</a>
         </p>
     </div>
   </section>
