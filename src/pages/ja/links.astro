@@ -1,12 +1,19 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ArtImg from '../../components/ArtImg.astro';
+import { HYPERFOLLOW, isOut } from '../../lib/presave';
 
 // imageに/public配下のパス(例: images/character-small.png)を入れると、
 // リンクカードに小さなキャラクターサムネイルが表示されます。空ならプレースホルダー。
-const dspOut = Date.now() >= new Date('2026-08-13T00:00:00+09:00').valueOf();
 const links = [
-  { label: dspOut ? 'ストリーミング — SHINYA 深夜' : 'プレセーブ — SHINYA 深夜', href: 'https://distrokid.com/hyperfollow/shinya1/shinya-', note: dspOut ? 'Spotify・Apple Musicなど各ストアで聴く' : '8/13ストリーミングリリース — プレセーブで発売と同時にライブラリへ', image: 'images/covers/album-1.jpg' },
+  ...HYPERFOLLOW.map((e) => ({
+    label: `${isOut(e) ? 'ストリーミング' : 'プレセーブ'} — ${e.title}`,
+    href: e.url,
+    note: isOut(e)
+      ? 'Spotify・Apple Musicなど各ストアで聴く'
+      : `${e.dateLabel}ストリーミングリリース — プレセーブで発売と同時にライブラリへ`,
+    image: `images/covers/album-${e.n}.jpg`,
+  })),
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: 'images/character-thumb.jpg' },
   { label: 'NAVERブログ (韓国語)', href: '#', note: '夜に聴く音楽の話 — 準備中', image: 'images/character-thumb.jpg' },
 ];
