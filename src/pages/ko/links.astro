@@ -4,7 +4,9 @@ import ArtImg from '../../components/ArtImg.astro';
 
 // image에 /public 하위 경로(예: images/character-small.png)를 넣으면
 // 링크 카드에 작은 캐릭터 썸네일이 표시됩니다. 비워두면 플레이스홀더가 나옵니다.
+const dspOut = Date.now() >= new Date('2026-08-21T00:00:00+09:00').valueOf();
 const links = [
+  { label: dspOut ? '스트리밍 — SHINYA 深夜' : '프리세이브 — SHINYA 深夜', href: 'https://distrokid.com/hyperfollow/shinya1/shinya-', note: dspOut ? 'Spotify · Apple Music 등 모든 스토어에서 듣기' : '8/21 스트리밍 발매 — 미리 저장하면 발매와 동시에 라이브러리에 추가돼요', image: 'images/covers/album-1.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: '오리지널 심야 음악 & 믹스', image: 'images/character-thumb.jpg' },
   { label: '네이버 블로그', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: 'images/character-thumb.jpg' },
 ];
