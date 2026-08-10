@@ -4,9 +4,9 @@ import ArtImg from '../components/ArtImg.astro';
 
 // Set `image` (e.g. `images/character-small.png` under /public) to show a
 // small character thumbnail on a link card; empty shows placeholder art.
-const dspOut = Date.now() >= new Date('2026-08-21T00:00:00+09:00').valueOf();
+const dspOut = Date.now() >= new Date('2026-08-13T00:00:00+09:00').valueOf();
 const links = [
-  { label: dspOut ? 'Streaming — SHINYA 深夜' : 'Pre-Save — SHINYA 深夜', href: 'https://distrokid.com/hyperfollow/shinya1/shinya-', note: dspOut ? 'Listen on Spotify, Apple Music, and every major store' : 'Streaming release on Aug 21 — pre-save and it lands in your library at midnight', image: 'images/covers/album-1.jpg' },
+  { label: dspOut ? 'Streaming — SHINYA 深夜' : 'Pre-Save — SHINYA 深夜', href: 'https://distrokid.com/hyperfollow/shinya1/shinya-', note: dspOut ? 'Listen on Spotify, Apple Music, and every major store' : 'Streaming release on Aug 13 — pre-save and it lands in your library at midnight', image: 'images/covers/album-1.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'Original late night music & mixes', image: 'images/character-thumb.jpg' },
   { label: 'Naver Blog (한국어)', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: 'images/character-thumb.jpg' },
 ];
