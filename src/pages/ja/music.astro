@@ -55,8 +55,13 @@ const albumLd = {
     <div data-album-panel="3">
     {singles3.length > 0 && (
       <section class="section">
-        <h2>3rd Album 「怖いままで」</h2>
-        <p class="album-note">{album3Out ? '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲。' : '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="怖いままで アルバムジャケット" />
+          <div class="album-head-info">
+            <h2>3rd Album 「怖いままで」</h2>
+            <p class="album-note">{album3Out ? '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲。' : '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
+          </div>
+        </div>
         {playlist3 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -100,8 +105,13 @@ const albumLd = {
     <div data-album-panel="2" hidden>
     {singles2.length > 0 && (
       <section class="section">
-        <h2>2nd Album 「始発まで」</h2>
-        <p class="album-note">{album2Out ? '午前0時から始発まで、眠れないひと晩の7曲。' : '午前0時から始発まで、眠れないひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="始発まで アルバムジャケット" />
+          <div class="album-head-info">
+            <h2>2nd Album 「始発まで」</h2>
+            <p class="album-note">{album2Out ? '午前0時から始発まで、眠れないひと晩の7曲。' : '午前0時から始発まで、眠れないひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
+          </div>
+        </div>
         {playlist2 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist2) ? playlist2.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -143,6 +153,15 @@ const albumLd = {
     </div>
 
     <div data-album-panel="1" hidden>
+      <section class="section" style="padding-bottom: 0;">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="SHINYA 深夜 アルバムジャケット" />
+          <div class="album-head-info">
+            <h2>1st Album 「SHINYA 深夜」</h2>
+            <p class="album-note">真夜中過ぎのための7曲 — 夜が始まるアルバム。</p>
+          </div>
+        </div>
+      </section>
     {playlist && (
       <section class="section">
         <h2>{t('ja', 'section.playlist')}</h2>
