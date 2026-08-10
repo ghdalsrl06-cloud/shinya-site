@@ -465,6 +465,19 @@ a:focus-visible, .btn:focus-visible {
   background: rgba(255, 45, 110, 0.06);
 }
 
+/* ---- album head: square jacket + intro at the top of each album tab ---- */
+.album-head { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; gap: 2.2rem; align-items: center; margin-bottom: 2.4rem; }
+.album-head .album-jacket {
+  width: 100%; height: auto; display: block; border-radius: 6px;
+  border: 1px solid var(--line); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+.album-head-info h2 { margin-top: 0; }
+.album-head-info .album-note { margin-bottom: 0; }
+@media (max-width: 700px) {
+  .album-head { grid-template-columns: 1fr; gap: 1.4rem; }
+  .album-head .album-jacket { max-width: 300px; }
+}
+
 /* ---- album tabs (music page) ---- */
 .album-tabs { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 2.6rem; }
 .album-tab {

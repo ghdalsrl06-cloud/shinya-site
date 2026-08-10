@@ -55,8 +55,13 @@ const albumLd = {
     <div data-album-panel="3">
     {singles3.length > 0 && (
       <section class="section">
-        <h2>3rd Album 「怖いままで」 — Still Afraid</h2>
-        <p class="album-note">{album3Out ? 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Out now.' : 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Coming soon.'}</p>
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="怖いままで album cover" />
+          <div class="album-head-info">
+            <h2>3rd Album 「怖いままで」 — Still Afraid</h2>
+            <p class="album-note">{album3Out ? 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Out now.' : 'Seven songs from 1 AM to 5 AM — a night of being afraid to fall in love again. Coming soon.'}</p>
+          </div>
+        </div>
         {playlist3 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('en', 'badge.coming')}</span>
@@ -100,8 +105,13 @@ const albumLd = {
     <div data-album-panel="2" hidden>
     {singles2.length > 0 && (
       <section class="section">
-        <h2>2nd Album 「始発まで」 — Until the First Train</h2>
-        <p class="album-note">{album2Out ? 'Seven songs from midnight to the first train — the night after the night ended. Out now.' : 'Seven songs from midnight to the first train — the night after the night ended. Coming soon.'}</p>
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="始発まで album cover" />
+          <div class="album-head-info">
+            <h2>2nd Album 「始発まで」 — Until the First Train</h2>
+            <p class="album-note">{album2Out ? 'Seven songs from midnight to the first train — the night after the night ended. Out now.' : 'Seven songs from midnight to the first train — the night after the night ended. Coming soon.'}</p>
+          </div>
+        </div>
         {playlist2 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist2) ? playlist2.data.releaseDate : t('en', 'badge.coming')}</span>
@@ -143,6 +153,15 @@ const albumLd = {
     </div>
 
     <div data-album-panel="1" hidden>
+      <section class="section" style="padding-bottom: 0;">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="SHINYA 深夜 album cover" />
+          <div class="album-head-info">
+            <h2>1st Album 「SHINYA 深夜」</h2>
+            <p class="album-note">Seven tracks for the hours after midnight — the album where the night begins.</p>
+          </div>
+        </div>
+      </section>
     {playlist && (
       <section class="section">
         <h2>{t('en', 'section.playlist')}</h2>
