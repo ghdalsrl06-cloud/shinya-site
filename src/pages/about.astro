@@ -1,11 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import ArtImg from '../components/ArtImg.astro';
+import { isReleased } from '../lib/covers';
+import { getCollection } from 'astro:content';
 
 // Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
 // replace a scene's placeholder art with a real photo.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const characterImage = 'images/about/character.jpg';
+const musicReleases = await getCollection('music');
+const albumOut = (n) => musicReleases.some((r) => (r.data.album ?? 1) === n && isReleased(r));
+const discography = [
+  { n: 1, title: 'SHINYA 深夜', sub: '1st Album' },
+  { n: 2, title: '始発まで', sub: '2nd Album' },
+  { n: 3, title: '怖いままで', sub: '3rd Album' },
+];
 const scenes = [
   {
     cls: 'scene-kissa',
@@ -80,6 +89,19 @@ const scenes = [
           </div>
         </div>
       ))}
+    </section>
+
+    <section class="section discography">
+      <h2>Discography</h2>
+      <div class="disco-grid">
+        {discography.map((a) => (
+          <a class="disco-item" href={`${base}/music/#album-${a.n}`}>
+            <ArtImg src={`images/covers/album-${a.n}.jpg`} width={2048} sizes="(min-width: 700px) 320px, 90vw" alt={a.title} />
+            <p class="disco-title">{a.title}</p>
+            <p class="disco-sub">{a.sub} · {albumOut(a.n) ? 'Out now' : 'Coming soon'}</p>
+          </a>
+        ))}
+      </div>
     </section>
 
     <section class="section prose about-outro">

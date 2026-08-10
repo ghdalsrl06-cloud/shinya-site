@@ -47,9 +47,18 @@ const albumLd = {
 
 
     <div class="album-tabs" role="tablist" aria-label="Albums">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="3">3rd 「怖いままで」</button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="2">2nd 「始発まで」</button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="1">1st 「SHINYA 深夜」</button>
+      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="3">
+        <ArtImg class="album-tab-art" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">3rd</span><span class="album-tab-name">怖いままで</span></span>
+      </button>
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="2">
+        <ArtImg class="album-tab-art" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">2nd</span><span class="album-tab-name">始発まで</span></span>
+      </button>
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="1">
+        <ArtImg class="album-tab-art" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 48px, 30vw" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">1st</span><span class="album-tab-name">SHINYA 深夜</span></span>
+      </button>
     </div>
 
     <div data-album-panel="3">
