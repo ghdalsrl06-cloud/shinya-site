@@ -13,6 +13,7 @@ export const HYPERFOLLOW: HyperFollow[] = [
   { n: 1, title: 'SHINYA 深夜', url: 'https://distrokid.com/hyperfollow/shinya1/shinya-', releaseAt: '2026-08-13T00:00:00+09:00', dateLabel: '8/13' },
   { n: 2, title: '始発まで', url: 'https://distrokid.com/hyperfollow/shinya1/sEMe3DtLGgo', releaseAt: '2026-08-14T00:00:00+09:00', dateLabel: '8/14' },
   { n: 3, title: '怖いままで', url: 'https://distrokid.com/hyperfollow/shinya1/TaY2O1ea3h9', releaseAt: '2026-08-21T00:00:00+09:00', dateLabel: '8/21' },
+  { n: 4, title: 'おやすみのあとで', url: 'https://distrokid.com/hyperfollow/shinya1/iJ8VRBa3JwR', releaseAt: '2026-08-28T00:00:00+09:00', dateLabel: '8/28' },
 ];
 
 export const isOut = (e: HyperFollow): boolean => Date.now() >= new Date(e.releaseAt).valueOf();
