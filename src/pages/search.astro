@@ -17,12 +17,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <link rel="stylesheet" href={`${base}/pagefind/pagefind-ui.css`} />
 <script is:inline src={`${base}/pagefind/pagefind-ui.js`}></script>
 <script is:inline data-astro-rerun define:vars={{ base }}>
-  if (window.PagefindUI && document.getElementById('search')?.childElementCount === 0) {
-    new window.PagefindUI({
-      element: '#search',
-      bundlePath: `${base}/pagefind/`,
-      showSubResults: true,
-      showImages: false,
-    });
-  }
+  // After a client-side navigation the pagefind-ui.js tag loads
+  // asynchronously, so wait for it instead of checking once and giving up.
+  (function initSearch() {
+    const el = document.getElementById('search');
+    if (!el || el.childElementCount > 0) return;
+    if (window.PagefindUI) {
+      new window.PagefindUI({
+        element: '#search',
+        bundlePath: `${base}/pagefind/`,
+        showSubResults: true,
+        showImages: false,
+      });
+      return;
+    }
+    let s = document.querySelector('script[src$="pagefind-ui.js"]');
+    if (!s) {
+      s = document.createElement('script');
+      s.src = `${base}/pagefind/pagefind-ui.js`;
+      document.head.appendChild(s);
+    }
+    s.addEventListener('load', initSearch, { once: true });
+    setTimeout(initSearch, 400);
+  })();
 </script>
