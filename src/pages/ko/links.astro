@@ -14,6 +14,7 @@ const links = [
       : `${e.dateLabel} 스트리밍 발매 — 미리 저장하면 발매와 동시에 라이브러리에 추가돼요`,
     image: `images/covers/album-${e.n}.jpg`,
   })),
+  { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: '아티스트 페이지 팔로우 — 모든 발매를 한곳에서', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: '오리지널 심야 음악 & 믹스', image: 'images/character-thumb.jpg' },
   { label: '네이버 블로그', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: 'images/character-thumb.jpg' },
 ];
@@ -55,7 +56,7 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
         ))}
       </ul>
       <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
-        Spotify / Apple Music 링크는 첫 릴리스 이후에 추가됩니다.
+        Apple Music은 아티스트 인증이 끝나면 추가됩니다.
       </p>
     </section>
   </div>
