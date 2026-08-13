@@ -10,6 +10,7 @@ on:
     - cron: '0 15 14 8 *' # 2nd album — Aug 14
     - cron: '0 15 21 8 *' # 3rd album — Aug 21
     - cron: '0 15 28 8 *' # 4th album — Aug 28
+    - cron: '0 15 4 9 *' # 5th album — Sep 4
   workflow_dispatch:
 
 permissions:

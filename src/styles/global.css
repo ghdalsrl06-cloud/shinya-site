@@ -499,7 +499,7 @@ a:focus-visible, .btn:focus-visible {
 }
 
 /* ---- album tabs (music page): jacket thumb + number + title ---- */
-.album-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; margin-bottom: 2.6rem; max-width: 1000px; }
+.album-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.8rem; margin-bottom: 2.6rem; max-width: 1150px; }
 .album-tab {
   appearance: none; background: rgba(255, 255, 255, 0.02); font: inherit; cursor: pointer;
   border: 1px solid var(--line); border-radius: 6px; color: var(--text-dim);
@@ -520,6 +520,10 @@ a:focus-visible, .btn:focus-visible {
   .album-tab { flex-direction: column; align-items: center; text-align: center; gap: 0.55rem; padding: 0.7rem 0.4rem 0.8rem; }
   .album-tab-art { width: 100%; height: auto; aspect-ratio: 1 / 1; }
   .album-tab-name { font-size: 0.78rem; max-width: 100%; }
+  /* an odd tab count leaves the last one alone — stretch it across both
+     columns with a horizontal layout so the row doesn't look broken */
+  .album-tab:last-child:nth-child(odd) { grid-column: span 2; flex-direction: row; text-align: left; gap: 0.8rem; padding: 0.55rem 0.9rem; }
+  .album-tab:last-child:nth-child(odd) .album-tab-art { width: 48px; }
 }
 
 /* ---- home studio gallery: vertical recording-booth shots ---- */
