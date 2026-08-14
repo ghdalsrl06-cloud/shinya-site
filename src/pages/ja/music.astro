@@ -85,6 +85,7 @@ const albumLd = {
             <p class="album-note">{album5Out ? '同じ午前三時、八つの部屋 — はじめて他人の夜を歌う。最後の部屋はあなたの部屋。' : '同じ午前三時、八つの部屋 — はじめて他人の夜を歌う。最後の部屋はあなたの部屋。カミングスーン。歌詞は先に読めます。'}</p>
           </div>
         </div>
+        <h2>{t('ja', 'section.playlist')}</h2>
         {playlist5 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist5) ? playlist5.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -102,6 +103,7 @@ const albumLd = {
             )}
           </div>
         )}
+        <h2 style="margin-top: 2.2rem;">{t('ja', 'section.singles')}</h2>
         <div class="card-grid">
           {singles5.map((r) => (
             <div class="card">
@@ -135,6 +137,7 @@ const albumLd = {
             <p class="album-note">{album4Out ? '二人になったあとのひと晩の7曲 — 切れない通話から、二人で見送る始発まで。' : '二人になったあとのひと晩の7曲 — 切れない通話から、二人で見送る始発まで。カミングスーン。歌詞は先に読めます。'}</p>
           </div>
         </div>
+        <h2>{t('ja', 'section.playlist')}</h2>
         {playlist4 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist4) ? playlist4.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -152,6 +155,7 @@ const albumLd = {
             )}
           </div>
         )}
+        <h2 style="margin-top: 2.2rem;">{t('ja', 'section.singles')}</h2>
         <div class="card-grid">
           {singles4.map((r) => (
             <div class="card">
@@ -185,6 +189,7 @@ const albumLd = {
             <p class="album-note">{album3Out ? '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲。' : '午前1時から午前5時まで、また好きになるのが怖いひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
           </div>
         </div>
+        <h2>{t('ja', 'section.playlist')}</h2>
         {playlist3 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -202,6 +207,7 @@ const albumLd = {
             )}
           </div>
         )}
+        <h2 style="margin-top: 2.2rem;">{t('ja', 'section.singles')}</h2>
         <div class="card-grid">
           {singles3.map((r) => (
             <div class="card">
@@ -235,6 +241,7 @@ const albumLd = {
             <p class="album-note">{album2Out ? '午前0時から始発まで、眠れないひと晩の7曲。' : '午前0時から始発まで、眠れないひと晩の7曲 — カミングスーン。歌詞は先に読めます。'}</p>
           </div>
         </div>
+        <h2>{t('ja', 'section.playlist')}</h2>
         {playlist2 && (
           <div class="card playlist-card" style="margin-bottom: 1.6rem;">
             <span class="badge">{isReleased(playlist2) ? playlist2.data.releaseDate : t('ja', 'badge.coming')}</span>
@@ -252,6 +259,7 @@ const albumLd = {
             )}
           </div>
         )}
+        <h2 style="margin-top: 2.2rem;">{t('ja', 'section.singles')}</h2>
         <div class="card-grid">
           {singles2.map((r) => (
             <div class="card">
