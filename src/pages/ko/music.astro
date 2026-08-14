@@ -77,7 +77,8 @@ const albumLd = {
 
     <div data-album-panel="5">
     {singles5.length > 0 && (
-      <section class="section">
+      <>
+      <section class="section" style="padding-bottom: 0;">
         <div class="album-head">
           <ArtImg class="album-jacket" src="images/covers/album-5.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="おやすみのあとで 앨범 커버" />
           <div class="album-head-info">
@@ -85,9 +86,11 @@ const albumLd = {
             <p class="album-note">{album5Out ? '같은 새벽 세 시, 여덟 개의 방 — 처음으로 남의 밤을 부른다. 마지막 방은 당신의 방.' : '같은 새벽 세 시, 여덟 개의 방 — 처음으로 남의 밤을 부른다. 마지막 방은 당신의 방. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
           </div>
         </div>
+      </section>
+      {playlist5 && (
+      <section class="section">
         <h2>{t('ko', 'section.playlist')}</h2>
-        {playlist5 && (
-          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+          <div class="card playlist-card">
             <span class="badge">{isReleased(playlist5) ? playlist5.data.releaseDate : t('ko', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{playlist5.data.title}</h3>
             {playlist5.data.titleKo && <p class="card-title-ja">{playlist5.data.titleKo}</p>}
@@ -102,8 +105,10 @@ const albumLd = {
               </div>
             )}
           </div>
+      </section>
         )}
-        <h2 style="margin-top: 2.2rem;">{t('ko', 'section.singles')}</h2>
+      <section class="section">
+        <h2>{t('ko', 'section.singles')}</h2>
         <div class="card-grid">
           {singles5.map((r) => (
             <div class="card">
@@ -124,12 +129,14 @@ const albumLd = {
           ))}
         </div>
       </section>
+      </>
     )}
     </div>
 
     <div data-album-panel="4" hidden>
     {singles4.length > 0 && (
-      <section class="section">
+      <>
+      <section class="section" style="padding-bottom: 0;">
         <div class="album-head">
           <ArtImg class="album-jacket" src="images/covers/album-4.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="おやすみのあとで 앨범 커버" />
           <div class="album-head-info">
@@ -137,9 +144,11 @@ const albumLd = {
             <p class="album-note">{album4Out ? '함께가 된 뒤의 하룻밤 일곱 곡 — 끊지 못하는 통화에서 둘이서 배웅하는 첫차까지.' : '함께가 된 뒤의 하룻밤 일곱 곡 — 끊지 못하는 통화에서 둘이서 배웅하는 첫차까지. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
           </div>
         </div>
+      </section>
+      {playlist4 && (
+      <section class="section">
         <h2>{t('ko', 'section.playlist')}</h2>
-        {playlist4 && (
-          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+          <div class="card playlist-card">
             <span class="badge">{isReleased(playlist4) ? playlist4.data.releaseDate : t('ko', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{playlist4.data.title}</h3>
             {playlist4.data.titleKo && <p class="card-title-ja">{playlist4.data.titleKo}</p>}
@@ -154,8 +163,10 @@ const albumLd = {
               </div>
             )}
           </div>
+      </section>
         )}
-        <h2 style="margin-top: 2.2rem;">{t('ko', 'section.singles')}</h2>
+      <section class="section">
+        <h2>{t('ko', 'section.singles')}</h2>
         <div class="card-grid">
           {singles4.map((r) => (
             <div class="card">
@@ -176,12 +187,14 @@ const albumLd = {
           ))}
         </div>
       </section>
+      </>
     )}
     </div>
 
     <div data-album-panel="3" hidden>
     {singles3.length > 0 && (
-      <section class="section">
+      <>
+      <section class="section" style="padding-bottom: 0;">
         <div class="album-head">
           <ArtImg class="album-jacket" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="怖いままで 앨범 커버" />
           <div class="album-head-info">
@@ -189,9 +202,11 @@ const albumLd = {
             <p class="album-note">{album3Out ? '새벽 1시부터 5시까지, 또 좋아하게 되는 게 무서운 하룻밤의 일곱 곡.' : '새벽 1시부터 5시까지, 또 좋아하게 되는 게 무서운 하룻밤의 일곱 곡 — 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
           </div>
         </div>
+      </section>
+      {playlist3 && (
+      <section class="section">
         <h2>{t('ko', 'section.playlist')}</h2>
-        {playlist3 && (
-          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+          <div class="card playlist-card">
             <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('ko', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{playlist3.data.title}</h3>
             {playlist3.data.titleKo && <p class="card-title-ja">{playlist3.data.titleKo}</p>}
@@ -206,8 +221,10 @@ const albumLd = {
               </div>
             )}
           </div>
+      </section>
         )}
-        <h2 style="margin-top: 2.2rem;">{t('ko', 'section.singles')}</h2>
+      <section class="section">
+        <h2>{t('ko', 'section.singles')}</h2>
         <div class="card-grid">
           {singles3.map((r) => (
             <div class="card">
@@ -228,12 +245,14 @@ const albumLd = {
           ))}
         </div>
       </section>
+      </>
     )}
     </div>
 
     <div data-album-panel="2" hidden>
     {singles2.length > 0 && (
-      <section class="section">
+      <>
+      <section class="section" style="padding-bottom: 0;">
         <div class="album-head">
           <ArtImg class="album-jacket" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="始発まで 앨범 커버" />
           <div class="album-head-info">
@@ -241,9 +260,11 @@ const albumLd = {
             <p class="album-note">{album2Out ? '자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡.' : '자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡 — 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
           </div>
         </div>
+      </section>
+      {playlist2 && (
+      <section class="section">
         <h2>{t('ko', 'section.playlist')}</h2>
-        {playlist2 && (
-          <div class="card playlist-card" style="margin-bottom: 1.6rem;">
+          <div class="card playlist-card">
             <span class="badge">{isReleased(playlist2) ? playlist2.data.releaseDate : t('ko', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{playlist2.data.title}</h3>
             {playlist2.data.titleKo && <p class="card-title-ja">{playlist2.data.titleKo}</p>}
@@ -258,8 +279,10 @@ const albumLd = {
               </div>
             )}
           </div>
+      </section>
         )}
-        <h2 style="margin-top: 2.2rem;">{t('ko', 'section.singles')}</h2>
+      <section class="section">
+        <h2>{t('ko', 'section.singles')}</h2>
         <div class="card-grid">
           {singles2.map((r) => (
             <div class="card">
@@ -280,6 +303,7 @@ const albumLd = {
           ))}
         </div>
       </section>
+      </>
     )}
     </div>
 
