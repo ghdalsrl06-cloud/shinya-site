@@ -35,30 +35,6 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
     </section>
 
     <section class="section" style="max-width: 1000px; margin: 0 auto; padding-bottom: 0;">
-      <h2>ストリーミング · プレセーブ</h2>
-      <ul class="post-list link-grid">
-        {streamLinks.map((l) => (
-          <li class="card link-card">
-            <a href={l.href} target="_blank" rel="noopener">
-              <span class="link-thumb">
-                {l.image ? (
-                  <img src={resolve(l.image)} alt="" loading="lazy" />
-                ) : (
-                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
-                )}
-              </span>
-              <span class="link-body">
-                <strong>{l.label}</strong>
-                <span class="link-note">{l.note}</span>
-              </span>
-              <span class="link-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-
-    <section class="section" style="max-width: 1000px; margin: 0 auto;">
       <h2>公式リンク</h2>
       <ul class="post-list link-grid">
         {officialLinks.map((l) => (
@@ -83,6 +59,30 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
         Apple Musicはアーティスト認証の完了後に追加されます。
       </p>
+    </section>
+
+    <section class="section" style="max-width: 1000px; margin: 0 auto;">
+      <h2>ストリーミング · プレセーブ</h2>
+      <ul class="post-list link-grid">
+        {streamLinks.map((l) => (
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   </div>
 </Base>
