@@ -499,7 +499,7 @@ a:focus-visible, .btn:focus-visible {
 }
 
 /* ---- album tabs (music page): jacket thumb + number + title ---- */
-.album-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.8rem; margin-bottom: 2.6rem; max-width: 1150px; }
+.album-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.8rem; margin-bottom: 2.6rem; max-width: 1150px; }
 .album-tab {
   appearance: none; background: rgba(255, 255, 255, 0.02); font: inherit; cursor: pointer;
   border: 1px solid var(--line); border-radius: 6px; color: var(--text-dim);
