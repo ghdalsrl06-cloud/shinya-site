@@ -34,9 +34,9 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       </div>
     </section>
 
-    <section class="section" style="max-width: 560px; margin: 0 auto; padding-bottom: 0;">
+    <section class="section" style="max-width: 1000px; margin: 0 auto; padding-bottom: 0;">
       <h2>스트리밍 · 프리세이브</h2>
-      <ul class="post-list">
+      <ul class="post-list link-grid">
         {streamLinks.map((l) => (
           <li class="card link-card">
             <a href={l.href} target="_blank" rel="noopener">
@@ -58,9 +58,9 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       </ul>
     </section>
 
-    <section class="section" style="max-width: 560px; margin: 0 auto;">
+    <section class="section" style="max-width: 1000px; margin: 0 auto;">
       <h2>공식 링크</h2>
-      <ul class="post-list">
+      <ul class="post-list link-grid">
         {officialLinks.map((l) => (
           <li class="card link-card">
             <a href={l.href} target="_blank" rel="noopener">

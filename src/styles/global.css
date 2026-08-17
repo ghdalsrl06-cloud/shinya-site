@@ -897,6 +897,9 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 }
 
 /* ---- link cards with character thumb ---- */
+/* links page: cards flow in two columns on wide screens */
+.link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 700px) { .link-grid { grid-template-columns: 1fr; } }
 .link-card { padding: 1.1rem 1.3rem; }
 .link-card > a { display: flex; align-items: center; gap: 1rem; color: var(--text); }
 .link-thumb {
