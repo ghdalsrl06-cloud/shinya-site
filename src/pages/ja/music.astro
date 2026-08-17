@@ -24,6 +24,9 @@ const playlist4 = releases.find((r) => r.data.kind === 'playlist' && r.data.albu
 const singles5 = allSingles.filter((r) => r.data.album === 5).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const album5Out = singles5.length > 0 && isReleased(singles5[0]);
 const playlist5 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 5);
+const singles6 = allSingles.filter((r) => r.data.album === 6).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const album6Out = singles6.length > 0 && isReleased(singles6[0]);
+const playlist6 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 6);
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -47,13 +50,17 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 MUSIC</h1>
-        <p class="page-banner-sub">ダークエレクトロニックJ-POP · アルバム5枚 · 全36曲 + ミックス</p>
+        <p class="page-banner-sub">ダークエレクトロニックJ-POP · アルバム6枚 · 全43曲 + ミックス</p>
       </div>
     </section>
 
 
     <div class="album-tabs" role="tablist" aria-label="アルバム">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="5">
+      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="6">
+        <ArtImg class="album-tab-art" src="images/covers/album-6.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">CLUB</span><span class="album-tab-name">Paper Luck</span></span>
+      </button>
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="5">
         <ArtImg class="album-tab-art" src="images/covers/album-5.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">5th</span><span class="album-tab-name">誰かの部屋で</span></span>
       </button>
@@ -75,7 +82,65 @@ const albumLd = {
       </button>
     </div>
 
-    <div data-album-panel="5">
+    <div data-album-panel="6">
+    {singles6.length > 0 && (
+      <>
+      <section class="section" style="padding-bottom: 0;">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-6.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Paper Luck アルバムジャケット" />
+          <div class="album-head-info">
+            <h2>SHINYA CLUB 1st 「Paper Luck」 — 紙の運</h2>
+            <p class="album-note">{album6Out ? '新ライン SHINYA CLUB、始動 — 128 BPMのジャージークラブ7曲。宝くじ、折られた確率、片手に握れる運。紙の運。' : '新ライン SHINYA CLUB、始動 — 128 BPMのジャージークラブ7曲。宝くじ、折られた確率、片手に握れる運。カミングスーン。歌詞は先に読めます。'}</p>
+          </div>
+        </div>
+      </section>
+      {playlist6 && (
+      <section class="section">
+        <h2>{t('ja', 'section.playlist')}</h2>
+          <div class="card playlist-card">
+            <span class="badge">{isReleased(playlist6) ? playlist6.data.releaseDate : t('ja', 'badge.coming')}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist6.data.title}</h3>
+            {playlist6.data.titleJa && <p class="card-title-ja">{playlist6.data.titleJa}</p>}
+            <p class="card-desc">{playlist6.data.descriptionJa ?? playlist6.data.description}</p>
+            {isReleased(playlist6) && playlist6.data.youtubeId ? (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist6.data.youtubeId} title={playlist6.data.title} poster={coverOf(playlist6)} />
+              </div>
+            ) : coverOf(playlist6) && (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist6)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist6.data.title} />
+              </div>
+            )}
+          </div>
+      </section>
+        )}
+      <section class="section">
+        <h2>{t('ja', 'section.singles')}</h2>
+        <div class="card-grid">
+          {singles6.map((r) => (
+            <div class="card">
+              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ja', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
+              <p class="card-desc">{r.data.descriptionJa ?? r.data.description}</p>
+              {isReleased(r) && r.data.youtubeId ? (
+                <div class="card-media">
+                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
+                </div>
+              ) : coverOf(r) && (
+                <div class="card-media">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+      </>
+    )}
+    </div>
+
+    <div data-album-panel="5" hidden>
     {singles5.length > 0 && (
       <>
       <section class="section" style="padding-bottom: 0;">
@@ -385,7 +450,7 @@ const albumLd = {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     });
-    const m = location.hash.match(/^#album-([1-5])$/);
+    const m = location.hash.match(/^#album-([1-6])$/);
     if (m) select(m[1]);
   };
   initAlbumTabs();

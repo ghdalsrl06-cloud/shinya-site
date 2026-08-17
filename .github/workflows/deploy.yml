@@ -11,6 +11,7 @@ on:
     - cron: '0 15 21 8 *' # 3rd album — Aug 21
     - cron: '0 15 28 8 *' # 4th album — Aug 28
     - cron: '0 15 4 9 *' # 5th album — Sep 4
+    - cron: '0 15 11 9 *' # SHINYA CLUB 1st — Sep 11
   workflow_dispatch:
 
 permissions:
