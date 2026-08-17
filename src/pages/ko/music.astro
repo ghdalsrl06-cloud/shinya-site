@@ -50,7 +50,7 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 MUSIC</h1>
-        <p class="page-banner-sub">다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 43곡 + 믹스</p>
+        <p class="page-banner-sub" data-sub-main="다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 43곡 + 믹스" data-sub-club="SHINYA CLUB — 저지 클럽 라인 · 7곡 + 믹스">다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 43곡 + 믹스</p>
       </div>
     </section>
 
@@ -447,6 +447,8 @@ const albumLd = {
       document.querySelectorAll('[data-album-panel]').forEach((p) => {
         p.hidden = p.dataset.albumPanel !== n;
       });
+      const sub = document.querySelector('.page-banner-sub');
+      if (sub) sub.textContent = n === '6' ? sub.dataset.subClub : sub.dataset.subMain;
     };
     bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
