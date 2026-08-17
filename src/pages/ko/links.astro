@@ -5,15 +5,15 @@ import { HYPERFOLLOW, isOut } from '../../lib/presave';
 
 // image에 /public 하위 경로(예: images/character-small.png)를 넣으면
 // 링크 카드에 작은 캐릭터 썸네일이 표시됩니다. 비워두면 플레이스홀더가 나옵니다.
-const links = [
-  ...HYPERFOLLOW.map((e) => ({
-    label: `${isOut(e) ? '스트리밍' : '프리세이브'} — ${e.title}`,
-    href: e.url,
-    note: isOut(e)
-      ? 'Spotify · Apple Music 등 모든 스토어에서 듣기'
-      : `${e.dateLabel} 스트리밍 발매 — 미리 저장하면 발매와 동시에 라이브러리에 추가돼요`,
-    image: `images/covers/album-${e.n}.jpg`,
-  })),
+const streamLinks = HYPERFOLLOW.map((e) => ({
+  label: `${isOut(e) ? '스트리밍' : '프리세이브'} — ${e.title}`,
+  href: e.url,
+  note: isOut(e)
+    ? 'Spotify · Apple Music 등 모든 스토어에서 듣기'
+    : `${e.dateLabel} 스트리밍 발매 — 미리 저장하면 발매와 동시에 라이브러리에 추가돼요`,
+  image: `images/covers/album-${e.n}.jpg`,
+}));
+const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: '아티스트 페이지 팔로우 — 모든 발매를 한곳에서', image: 'images/character-thumb.jpg' },
   { label: 'YouTube Music — SHINYA 深夜', href: 'https://music.youtube.com/@shinyatokyo', note: '공식 아티스트 채널 ♪ — 앨범과 곡을 모아서 듣기', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: '오리지널 심야 음악 & 믹스', image: 'images/character-thumb.jpg' },
@@ -34,10 +34,34 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       </div>
     </section>
 
-    <section class="section" style="max-width: 560px; margin: 0 auto;">
-      <h2>링크</h2>
+    <section class="section" style="max-width: 560px; margin: 0 auto; padding-bottom: 0;">
+      <h2>스트리밍 · 프리세이브</h2>
       <ul class="post-list">
-        {links.map((l) => (
+        {streamLinks.map((l) => (
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" style="max-width: 560px; margin: 0 auto;">
+      <h2>공식 링크</h2>
+      <ul class="post-list">
+        {officialLinks.map((l) => (
           <li class="card link-card">
             <a href={l.href} target="_blank" rel="noopener">
               <span class="link-thumb">
