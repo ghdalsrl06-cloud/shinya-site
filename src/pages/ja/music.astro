@@ -49,8 +49,8 @@ const albumLd = {
       <ArtImg class="page-banner-art" src="images/music-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
-        <h1 class="page-banner-title">深夜 MUSIC</h1>
-        <p class="page-banner-sub" data-sub-main="ダークエレクトロニックJ-POP 5枚 + SHINYA CLUB · 全43曲 + ミックス" data-sub-club="SHINYA CLUB — ジャージークラブライン · 全7曲 + ミックス">ダークエレクトロニックJ-POP 5枚 + SHINYA CLUB · 全43曲 + ミックス</p>
+        <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB">深夜 MUSIC</h1>
+        <p class="page-banner-sub" data-sub-main="ダークエレクトロニックJ-POP 5枚 + SHINYA CLUB · 全43曲 + ミックス" data-sub-club="ジャージークラブライン · 全7曲 + ミックス">ダークエレクトロニックJ-POP 5枚 + SHINYA CLUB · 全43曲 + ミックス</p>
       </div>
     </section>
 
@@ -450,6 +450,8 @@ const albumLd = {
       });
       const sub = document.querySelector('.page-banner-sub');
       if (sub) sub.textContent = n === '6' ? sub.dataset.subClub : sub.dataset.subMain;
+      const title = document.querySelector('.page-banner-title');
+      if (title) title.textContent = n === '6' ? title.dataset.titleClub : title.dataset.titleMain;
     };
     bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
@@ -458,7 +460,8 @@ const albumLd = {
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     }));
     const m = location.hash.match(/^#album-([1-6])$/);
-    if (m) select(m[1]);
+    const active = document.querySelector('[data-album-tab].active');
+    select(m ? m[1] : (active ? active.dataset.albumTab : '6'));
   };
   initAlbumTabs();
   document.addEventListener('astro:page-load', initAlbumTabs);
