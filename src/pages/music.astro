@@ -50,16 +50,21 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title">深夜 MUSIC</h1>
-        <p class="page-banner-sub">Dark electronic J-pop · 6 albums · 43 tracks + mixes</p>
+        <p class="page-banner-sub">Dark electronic J-pop · 5 albums + SHINYA CLUB · 43 tracks + mixes</p>
       </div>
     </section>
 
 
-    <div class="album-tabs" role="tablist" aria-label="Albums">
+    <p class="album-line-label">SHINYA CLUB — Jersey club</p>
+    <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA CLUB">
       <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="6">
-        <ArtImg class="album-tab-art" src="images/covers/album-6.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">CLUB</span><span class="album-tab-name">Paper Luck</span></span>
+        <ArtImg class="album-tab-art" src="images/covers/album-6.jpg" width={2048} sizes="48px" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">CLUB 1st</span><span class="album-tab-name">Paper Luck</span></span>
       </button>
+    </div>
+
+    <p class="album-line-label">SHINYA 深夜 — dark electronic</p>
+    <div class="album-tabs" role="tablist" aria-label="Albums">
       <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="5">
         <ArtImg class="album-tab-art" src="images/covers/album-5.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">5th</span><span class="album-tab-name">誰かの部屋で</span></span>
@@ -430,11 +435,11 @@ const albumLd = {
 
 <script>
   const initAlbumTabs = () => {
-    const bar = document.querySelector('.album-tabs');
-    if (!bar || bar.dataset.bound) return;
-    bar.dataset.bound = '1';
+    const bars = Array.from(document.querySelectorAll('.album-tabs'));
+    if (!bars.length || bars[0].dataset.bound) return;
+    bars[0].dataset.bound = '1';
     const select = (n) => {
-      bar.querySelectorAll('[data-album-tab]').forEach((b) => {
+      document.querySelectorAll('[data-album-tab]').forEach((b) => {
         const on = b.dataset.albumTab === n;
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', String(on));
@@ -443,12 +448,12 @@ const albumLd = {
         p.hidden = p.dataset.albumPanel !== n;
       });
     };
-    bar.addEventListener('click', (e) => {
+    bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
       if (!b) return;
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
-    });
+    }));
     const m = location.hash.match(/^#album-([1-6])$/);
     if (m) select(m[1]);
   };
