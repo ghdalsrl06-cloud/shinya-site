@@ -5,15 +5,15 @@ import { HYPERFOLLOW, isOut } from '../lib/presave';
 
 // Set `image` (e.g. `images/character-small.png` under /public) to show a
 // small character thumbnail on a link card; empty shows placeholder art.
-const links = [
-  ...HYPERFOLLOW.map((e) => ({
-    label: `${isOut(e) ? 'Streaming' : 'Pre-Save'} — ${e.title}`,
-    href: e.url,
-    note: isOut(e)
-      ? 'Listen on Spotify, Apple Music, and every major store'
-      : `Streaming release on ${e.dateLabel} — pre-save and it lands in your library at midnight`,
-    image: `images/covers/album-${e.n}.jpg`,
-  })),
+const streamLinks = HYPERFOLLOW.map((e) => ({
+  label: `${isOut(e) ? 'Streaming' : 'Pre-Save'} — ${e.title}`,
+  href: e.url,
+  note: isOut(e)
+    ? 'Listen on Spotify, Apple Music, and every major store'
+    : `Streaming release on ${e.dateLabel} — pre-save and it lands in your library at midnight`,
+  image: `images/covers/album-${e.n}.jpg`,
+}));
+const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: 'Follow the artist page — every release in one place', image: 'images/character-thumb.jpg' },
   { label: 'YouTube Music — SHINYA 深夜', href: 'https://music.youtube.com/@shinyatokyo', note: 'Official artist channel ♪ — albums and tracks in one place', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'Original late night music & mixes', image: 'images/character-thumb.jpg' },
@@ -34,10 +34,34 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       </div>
     </section>
 
-    <section class="section" style="max-width: 560px; margin: 0 auto;">
-      <h2>Links</h2>
+    <section class="section" style="max-width: 560px; margin: 0 auto; padding-bottom: 0;">
+      <h2>Streaming · Pre-Save</h2>
       <ul class="post-list">
-        {links.map((l) => (
+        {streamLinks.map((l) => (
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" style="max-width: 560px; margin: 0 auto;">
+      <h2>Official Links</h2>
+      <ul class="post-list">
+        {officialLinks.map((l) => (
           <li class="card link-card">
             <a href={l.href} target="_blank" rel="noopener">
               <span class="link-thumb">

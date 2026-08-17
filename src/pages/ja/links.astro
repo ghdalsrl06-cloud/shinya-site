@@ -5,15 +5,15 @@ import { HYPERFOLLOW, isOut } from '../../lib/presave';
 
 // imageに/public配下のパス(例: images/character-small.png)を入れると、
 // リンクカードに小さなキャラクターサムネイルが表示されます。空ならプレースホルダー。
-const links = [
-  ...HYPERFOLLOW.map((e) => ({
-    label: `${isOut(e) ? 'ストリーミング' : 'プレセーブ'} — ${e.title}`,
-    href: e.url,
-    note: isOut(e)
-      ? 'Spotify・Apple Musicなど各ストアで聴く'
-      : `${e.dateLabel}ストリーミングリリース — プレセーブで発売と同時にライブラリへ`,
-    image: `images/covers/album-${e.n}.jpg`,
-  })),
+const streamLinks = HYPERFOLLOW.map((e) => ({
+  label: `${isOut(e) ? 'ストリーミング' : 'プレセーブ'} — ${e.title}`,
+  href: e.url,
+  note: isOut(e)
+    ? 'Spotify・Apple Musicなど各ストアで聴く'
+    : `${e.dateLabel}ストリーミングリリース — プレセーブで発売と同時にライブラリへ`,
+  image: `images/covers/album-${e.n}.jpg`,
+}));
+const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: 'アーティストページをフォロー — すべてのリリースをひとつに', image: 'images/character-thumb.jpg' },
   { label: 'YouTube Music — SHINYA 深夜', href: 'https://music.youtube.com/@shinyatokyo', note: '公式アーティストチャンネル ♪ — アルバムと曲をまとめて聴く', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'オリジナル深夜音楽 & ミックス', image: 'images/character-thumb.jpg' },
@@ -34,10 +34,34 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
       </div>
     </section>
 
-    <section class="section" style="max-width: 560px; margin: 0 auto;">
-      <h2>リンク</h2>
+    <section class="section" style="max-width: 560px; margin: 0 auto; padding-bottom: 0;">
+      <h2>ストリーミング · プレセーブ</h2>
       <ul class="post-list">
-        {links.map((l) => (
+        {streamLinks.map((l) => (
+          <li class="card link-card">
+            <a href={l.href} target="_blank" rel="noopener">
+              <span class="link-thumb">
+                {l.image ? (
+                  <img src={resolve(l.image)} alt="" loading="lazy" />
+                ) : (
+                  <span class="link-thumb-kanji" aria-hidden="true">夜</span>
+                )}
+              </span>
+              <span class="link-body">
+                <strong>{l.label}</strong>
+                <span class="link-note">{l.note}</span>
+              </span>
+              <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" style="max-width: 560px; margin: 0 auto;">
+      <h2>公式リンク</h2>
+      <ul class="post-list">
+        {officialLinks.map((l) => (
           <li class="card link-card">
             <a href={l.href} target="_blank" rel="noopener">
               <span class="link-thumb">
