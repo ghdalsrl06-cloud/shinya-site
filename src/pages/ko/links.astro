@@ -15,6 +15,7 @@ const streamLinks = HYPERFOLLOW.map((e) => ({
 }));
 const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: '아티스트 페이지 팔로우 — 모든 발매를 한곳에서', image: 'images/character-thumb.jpg' },
+  { label: 'Apple Music — SHINYA 深夜', href: 'https://music.apple.com/kr/artist/shinya-%E6%B7%B1%E5%A4%9C/6800007121', note: '인증된 아티스트 페이지 — 앨범 전곡 듣기', image: 'images/character-thumb.jpg' },
   { label: 'YouTube Music — SHINYA 深夜', href: 'https://music.youtube.com/@shinyatokyo', note: '공식 아티스트 채널 ♪ — 앨범과 곡을 모아서 듣기', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: '오리지널 심야 음악 & 믹스', image: 'images/character-thumb.jpg' },
   { label: '네이버 블로그', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: 'images/character-thumb.jpg' },
@@ -56,9 +57,6 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
           </li>
         ))}
       </ul>
-      <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
-        Apple Music은 아티스트 인증이 끝나면 추가됩니다.
-      </p>
     </section>
 
     <section class="section" style="max-width: 1000px; margin: 0 auto;">

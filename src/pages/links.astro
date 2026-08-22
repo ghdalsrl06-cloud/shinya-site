@@ -15,6 +15,7 @@ const streamLinks = HYPERFOLLOW.map((e) => ({
 }));
 const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: 'Follow the artist page — every release in one place', image: 'images/character-thumb.jpg' },
+  { label: 'Apple Music — SHINYA 深夜', href: 'https://music.apple.com/kr/artist/shinya-%E6%B7%B1%E5%A4%9C/6800007121', note: 'Verified artist page — every album in full', image: 'images/character-thumb.jpg' },
   { label: 'YouTube Music — SHINYA 深夜', href: 'https://music.youtube.com/@shinyatokyo', note: 'Official artist channel ♪ — albums and tracks in one place', image: 'images/character-thumb.jpg' },
   { label: 'YouTube — SHINYA / 深夜', href: 'https://www.youtube.com/@shinyatokyo', note: 'Original late night music & mixes', image: 'images/character-thumb.jpg' },
   { label: 'Naver Blog (한국어)', href: '#', note: '밤에 듣는 음악 이야기 — 준비 중', image: 'images/character-thumb.jpg' },
@@ -56,9 +57,6 @@ const resolve = (p: string) => (p.startsWith('http') ? p : `${base}/${p.replace(
           </li>
         ))}
       </ul>
-      <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.85rem;">
-        Apple Music will be added once the artist page is verified.
-      </p>
     </section>
 
     <section class="section" style="max-width: 1000px; margin: 0 auto;">
