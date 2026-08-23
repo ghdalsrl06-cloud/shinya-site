@@ -7,12 +7,23 @@ on:
     - cron: '5 0 * * *'
     # Album release nights: rebuild at 15:00 UTC (00:00 KST next day),
     # one minute after the 23:59 KST release, so covers/videos flip right away.
+    # GitHub's scheduler routinely skips or delays these, so each release gets
+    # three attempts 20 minutes apart — the first to land does the flip and the
+    # rest are cheap no-ops. The daily 00:05 UTC build remains the backstop.
     - cron: '0 15 14 8 *' # 2nd album — Aug 14
     - cron: '0 15 21 8 *' # 3rd album — Aug 21
     - cron: '0 15 28 8 *' # 4th album — Aug 28
+    - cron: '20 15 28 8 *'
+    - cron: '40 15 28 8 *'
     - cron: '0 15 4 9 *' # 5th album — Sep 4
+    - cron: '20 15 4 9 *'
+    - cron: '40 15 4 9 *'
     - cron: '0 15 11 9 *' # SHINYA CLUB 1st — Sep 11
+    - cron: '20 15 11 9 *'
+    - cron: '40 15 11 9 *'
     - cron: '0 15 18 9 *' # SHINYA CLUB 2nd — Sep 18
+    - cron: '20 15 18 9 *'
+    - cron: '40 15 18 9 *'
   workflow_dispatch:
 
 permissions:
