@@ -27,6 +27,9 @@ const playlist5 = releases.find((r) => r.data.kind === 'playlist' && r.data.albu
 const singles6 = allSingles.filter((r) => r.data.album === 6).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const album6Out = singles6.length > 0 && isReleased(singles6[0]);
 const playlist6 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 6);
+const singles7 = allSingles.filter((r) => r.data.album === 7).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const album7Out = singles7.length > 0 && isReleased(singles7[0]);
+const playlist7 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 7);
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -50,14 +53,18 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB">深夜 MUSIC</h1>
-        <p class="page-banner-sub" data-sub-main="다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 43곡 + 믹스" data-sub-club="저지 클럽 라인 · 7곡 + 믹스">다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 43곡 + 믹스</p>
+        <p class="page-banner-sub" data-sub-main="다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 50곡 + 믹스" data-sub-club="저지 클럽 라인 · 14곡 + 믹스">다크 일렉트로닉 J-POP 5장 + SHINYA CLUB · 50곡 + 믹스</p>
       </div>
     </section>
 
 
     <p class="album-line-label">SHINYA CLUB — 저지 클럽 라인</p>
     <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA CLUB">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="6">
+      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="7">
+        <ArtImg class="album-tab-art" src="images/covers/album-7.jpg" width={2048} sizes="48px" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">CLUB 2집</span><span class="album-tab-name">Second Wind</span></span>
+      </button>
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="6">
         <ArtImg class="album-tab-art" src="images/covers/album-6.jpg" width={2048} sizes="48px" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">CLUB 1집</span><span class="album-tab-name">Paper Luck</span></span>
       </button>
@@ -87,7 +94,65 @@ const albumLd = {
       </button>
     </div>
 
-    <div data-album-panel="6">
+    <div data-album-panel="7">
+    {singles7.length > 0 && (
+      <>
+      <section class="section" style="padding-bottom: 0;">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-7.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Second Wind 앨범 커버" />
+          <div class="album-head-info">
+            <h2>SHINYA CLUB 2집 「Second Wind」 — 두 번째 숨</h2>
+            <p class="album-note">{album7Out ? '머리가 허락하기 전에 몸이 먼저 답한다. 128 BPM 저지 클럽 7곡이 하룻밤을 순서대로 지난다 — 못 움직이는 밤에서, 이유 없이 돌아온 숨을 지나, 안 자고 맞은 아침까지.' : '머리가 허락하기 전에 몸이 먼저 답한다. 128 BPM 저지 클럽 7곡이 하룻밤을 순서대로 지난다 — 못 움직이는 밤에서, 이유 없이 돌아온 숨을 지나, 안 자고 맞은 아침까지. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
+          </div>
+        </div>
+      </section>
+      {playlist7 && (
+      <section class="section">
+        <h2>{t('ko', 'section.playlist')}</h2>
+          <div class="card playlist-card">
+            <span class="badge">{isReleased(playlist7) ? playlist7.data.releaseDate : t('ko', 'badge.coming')}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist7.data.title}</h3>
+            {playlist7.data.titleKo && <p class="card-title-ja">{playlist7.data.titleKo}</p>}
+            <p class="card-desc">{playlist7.data.descriptionKo ?? playlist7.data.description}</p>
+            {isReleased(playlist7) && playlist7.data.youtubeId ? (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist7.data.youtubeId} title={playlist7.data.title} poster={coverOf(playlist7)} />
+              </div>
+            ) : coverOf(playlist7) && (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist7)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist7.data.title} />
+              </div>
+            )}
+          </div>
+      </section>
+        )}
+      <section class="section">
+        <h2>{t('ko', 'section.singles')}</h2>
+        <div class="card-grid">
+          {singles7.map((r) => (
+            <div class="card">
+              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
+              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
+              {isReleased(r) && r.data.youtubeId ? (
+                <div class="card-media">
+                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
+                </div>
+              ) : coverOf(r) && (
+                <div class="card-media">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+      </>
+    )}
+    </div>
+
+    <div data-album-panel="6" hidden>
     {singles6.length > 0 && (
       <>
       <section class="section" style="padding-bottom: 0;">
@@ -448,9 +513,9 @@ const albumLd = {
         p.hidden = p.dataset.albumPanel !== n;
       });
       const sub = document.querySelector('.page-banner-sub');
-      if (sub) sub.textContent = n === '6' ? sub.dataset.subClub : sub.dataset.subMain;
+      if (sub) sub.textContent = (n === '6' || n === '7') ? sub.dataset.subClub : sub.dataset.subMain;
       const title = document.querySelector('.page-banner-title');
-      if (title) title.textContent = n === '6' ? title.dataset.titleClub : title.dataset.titleMain;
+      if (title) title.textContent = (n === '6' || n === '7') ? title.dataset.titleClub : title.dataset.titleMain;
     };
     bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
@@ -458,9 +523,9 @@ const albumLd = {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     }));
-    const m = location.hash.match(/^#album-([1-6])$/);
+    const m = location.hash.match(/^#album-([1-7])$/);
     const active = document.querySelector('[data-album-tab].active');
-    select(m ? m[1] : (active ? active.dataset.albumTab : '6'));
+    select(m ? m[1] : (active ? active.dataset.albumTab : '7'));
   };
   initAlbumTabs();
   document.addEventListener('astro:page-load', initAlbumTabs);
