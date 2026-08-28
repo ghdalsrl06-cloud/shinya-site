@@ -39,4 +39,24 @@ const music = defineCollection({
   }),
 });
 
-export const collections = { blog, music };
+// Webtoon episodes. Panel art carries Korean dialogue, so the same images serve
+// every locale and only the surrounding copy is translated.
+const webtoon = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/webtoon' }),
+  schema: z.object({
+    episode: z.number(),
+    title: z.string(),
+    titleKo: z.string().optional(),
+    titleJa: z.string().optional(),
+    description: z.string(),
+    descriptionKo: z.string().optional(),
+    descriptionJa: z.string().optional(),
+    date: z.coerce.date(),
+    cover: z.string(),
+    // Panel image paths under /public, top to bottom.
+    panels: z.array(z.string()).min(1),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, music, webtoon };
