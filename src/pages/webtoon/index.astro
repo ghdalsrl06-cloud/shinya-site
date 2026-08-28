@@ -5,38 +5,81 @@ import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const L = 'en';
 const episodes = (await getCollection('webtoon'))
   .filter((e) => !e.data.draft && e.data.date.valueOf() <= Date.now())
   .sort((a, b) => b.data.episode - a.data.episode);
-const L = 'en';
+const tags = t(L, 'webtoon.series.tags').split(',').map((s) => s.trim());
+// UP badge on the newest episode when it landed within the last week
+const newest = episodes[0]?.data.episode;
+const fresh = (d) => Date.now() - d.valueOf() < 7 * 864e5;
+const epLabel = (n) => (L === 'ko' ? `${n}화` : L === 'ja' ? `第${n}話` : `Ep. ${n}`);
+const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
 ---
 
-<Base lang="en" title="Webtoon — SHINYA / 深夜">
+<Base lang="en" title="Webtoon — SHINYA / 深夜" description={t(L, 'webtoon.series.desc')}>
   <div class="container">
-    <section class="section">
-      <h1 class="webtoon-heading">{t(L, 'webtoon.title')}</h1>
-      <p class="webtoon-sub">{t(L, 'webtoon.sub')}</p>
-
-      {episodes.length === 0 ? (
-        <p class="card-desc">{t(L, 'webtoon.empty')}</p>
-      ) : (
-        <ul class="webtoon-grid">
-          {episodes.map((e) => (
-            <li class="card webtoon-card">
-              <a href={`${base}/webtoon/${e.id}/`}>
-                <span class="webtoon-card-art">
-                  <ArtImg src={e.data.cover} width={1080} sizes="(min-width: 700px) 360px, 100vw" alt={e.data.title ?? e.data.title} />
-                </span>
-                <span class="webtoon-card-body">
-                  <span class="webtoon-no">{L === 'ko' ? `${e.data.episode}${t(L, 'webtoon.episode')}` : L === 'ja' ? `第${e.data.episode}${t(L, 'webtoon.episode')}` : `${t(L, 'webtoon.episode')} ${e.data.episode}`}</span>
-                  <strong>{e.data.title ?? e.data.title}</strong>
-                  <span class="card-desc">{e.data.description ?? e.data.description}</span>
-                </span>
-              </a>
-            </li>
-          ))}
+    <section class="section wt-series">
+      <ArtImg class="wt-series-cover" src="images/webtoon/series-cover.jpg" width={720} sizes="(min-width: 700px) 200px, 40vw" alt={t(L, 'webtoon.series.title')} loading="eager" />
+      <div class="wt-series-info">
+        <h1 class="wt-series-title">{t(L, 'webtoon.series.title')}</h1>
+        <p class="wt-series-author">{t(L, 'webtoon.series.author')}</p>
+        <p class="wt-series-desc">{t(L, 'webtoon.series.desc')}</p>
+        <ul class="wt-tags">
+          {tags.map((tag) => <li>#{tag}</li>)}
         </ul>
-      )}
+      </div>
     </section>
+
+    {episodes.length === 0 ? (
+      <p class="card-desc">{t(L, 'webtoon.empty')}</p>
+    ) : (
+      <>
+      <div class="wt-listbar">
+        <span class="wt-total">{`${episodes.length} ${t(L, 'webtoon.count')}`}</span>
+        <div class="wt-sort" role="group">
+          <button type="button" class="active" data-sort="desc">{t(L, 'webtoon.sort.desc')}</button>
+          <button type="button" data-sort="asc">{t(L, 'webtoon.sort.asc')}</button>
+        </div>
+      </div>
+
+      <ul class="wt-eplist" data-eplist>
+        {episodes.map((e) => (
+          <li>
+            <a href={`${base}/webtoon/${e.id}/`}>
+              <span class="wt-ep-thumb">
+                <ArtImg src={e.data.cover} width={1080} sizes="(min-width: 700px) 96px, 22vw" alt="" />
+              </span>
+              <span class="wt-ep-body">
+                <span class="wt-ep-title">
+                  {epLabel(e.data.episode)}. {e.data.title ?? e.data.title}
+                  {e.data.episode === newest && fresh(e.data.date) && <span class="wt-up">{t(L, 'webtoon.up')}</span>}
+                </span>
+                <span class="wt-ep-date">{shortDate(e.data.date)}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      </>
+    )}
   </div>
 </Base>
+
+<script>
+  // Sort toggle: reverse the rendered rows in place, no navigation.
+  const initWtSort = () => {
+    const bar = document.querySelector('.wt-sort');
+    const list = document.querySelector('[data-eplist]');
+    if (!bar || !list || bar.dataset.bound) return;
+    bar.dataset.bound = '1';
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-sort]');
+      if (!b || b.classList.contains('active')) return;
+      bar.querySelectorAll('[data-sort]').forEach((x) => x.classList.toggle('active', x === b));
+      list.append(...[...list.children].reverse());
+    });
+  };
+  initWtSort();
+  document.addEventListener('astro:page-load', initWtSort);
+</script>
