@@ -221,7 +221,11 @@ a:focus-visible, .btn:focus-visible {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
+  transition: transform 0.3s ease;
 }
+/* Webtoon reader: the bar slides out of the way while reading downward. */
+.site-nav.nav-hidden { transform: translateY(-100%); }
+@media (prefers-reduced-motion: reduce) { .site-nav { transition: none; } }
 .site-nav .inner {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0.9rem 1.25rem; max-width: 960px; margin: 0 auto;
