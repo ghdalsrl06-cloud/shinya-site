@@ -25,7 +25,7 @@ const L = 'ko';
             <li class="card webtoon-card">
               <a href={`${base}/ko/webtoon/${e.id}/`}>
                 <span class="webtoon-card-art">
-                  <ArtImg src={e.data.cover} width={1280} sizes="(min-width: 700px) 360px, 100vw" alt={e.data.titleKo ?? e.data.title} />
+                  <ArtImg src={e.data.cover} width={1080} sizes="(min-width: 700px) 360px, 100vw" alt={e.data.titleKo ?? e.data.title} />
                 </span>
                 <span class="webtoon-card-body">
                   <span class="webtoon-no">{L === 'ko' ? `${e.data.episode}${t(L, 'webtoon.episode')}` : L === 'ja' ? `第${e.data.episode}${t(L, 'webtoon.episode')}` : `${t(L, 'webtoon.episode')} ${e.data.episode}`}</span>
