@@ -33,7 +33,7 @@ const epLabel = L === 'ko' ? `${entry.data.episode}${t(L, 'webtoon.episode')}`
       {note && <p class="webtoon-note">{note}</p>}
     </section>
 
-    <div class="webtoon-strip">
+    <div class="webtoon-strip" data-reader>
       {entry.data.panels.map((p, i) => (
         <ArtImg src={p} width={1080} sizes="(min-width: 900px) 860px, 100vw" alt={`${heading} ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} />
       ))}
