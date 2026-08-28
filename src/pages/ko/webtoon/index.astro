@@ -1,0 +1,42 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ArtImg from '../../../components/ArtImg.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../../../i18n/ui';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const episodes = (await getCollection('webtoon'))
+  .filter((e) => !e.data.draft && e.data.date.valueOf() <= Date.now())
+  .sort((a, b) => b.data.episode - a.data.episode);
+const L = 'ko';
+---
+
+<Base lang="ko" title="웹툰 — SHINYA / 深夜">
+  <div class="container">
+    <section class="section">
+      <h1 class="webtoon-heading">{t(L, 'webtoon.title')}</h1>
+      <p class="webtoon-sub">{t(L, 'webtoon.sub')}</p>
+
+      {episodes.length === 0 ? (
+        <p class="card-desc">{t(L, 'webtoon.empty')}</p>
+      ) : (
+        <ul class="webtoon-grid">
+          {episodes.map((e) => (
+            <li class="card webtoon-card">
+              <a href={`${base}/ko/webtoon/${e.id}/`}>
+                <span class="webtoon-card-art">
+                  <ArtImg src={e.data.cover} width={1280} sizes="(min-width: 700px) 360px, 100vw" alt={e.data.titleKo ?? e.data.title} />
+                </span>
+                <span class="webtoon-card-body">
+                  <span class="webtoon-no">{L === 'ko' ? `${e.data.episode}${t(L, 'webtoon.episode')}` : L === 'ja' ? `第${e.data.episode}${t(L, 'webtoon.episode')}` : `${t(L, 'webtoon.episode')} ${e.data.episode}`}</span>
+                  <strong>{e.data.titleKo ?? e.data.title}</strong>
+                  <span class="card-desc">{e.data.descriptionKo ?? e.data.description}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </div>
+</Base>
