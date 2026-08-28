@@ -30,6 +30,9 @@ const playlist6 = releases.find((r) => r.data.kind === 'playlist' && r.data.albu
 const singles7 = allSingles.filter((r) => r.data.album === 7).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
 const album7Out = singles7.length > 0 && isReleased(singles7[0]);
 const playlist7 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 7);
+const singles8 = allSingles.filter((r) => r.data.album === 8).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+const album8Out = singles8.length > 0 && isReleased(singles8[0]);
+const playlist8 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 8);
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
@@ -52,15 +55,23 @@ const albumLd = {
       <ArtImg class="page-banner-art" src="images/music-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
-        <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB">深夜 MUSIC</h1>
-        <p class="page-banner-sub" data-sub-main="Dark electronic J-pop · 5 albums + SHINYA CLUB · 50 tracks + mixes" data-sub-club="Jersey club line · 14 tracks + mixes">Dark electronic J-pop · 5 albums + SHINYA CLUB · 50 tracks + mixes</p>
+        <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB" data-title-after="SHINYA AFTER">深夜 MUSIC</h1>
+        <p class="page-banner-sub" data-sub-main="Dark electronic J-pop · 5 albums + SHINYA CLUB + AFTER · 57 tracks + mixes" data-sub-after="Dark R&B line · 7 tracks + mix" data-sub-club="Jersey club line · 14 tracks + mixes">Dark electronic J-pop · 5 albums + SHINYA CLUB + AFTER · 57 tracks + mixes</p>
       </div>
     </section>
 
 
+    <p class="album-line-label">SHINYA AFTER — dark R&B</p>
+    <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA AFTER">
+      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="8">
+        <ArtImg class="album-tab-art" src="images/covers/album-8.jpg" width={2048} sizes="48px" alt="" />
+        <span class="album-tab-text"><span class="album-tab-no">AFTER 1st</span><span class="album-tab-name">Blue Hour</span></span>
+      </button>
+    </div>
+
     <p class="album-line-label">SHINYA CLUB — Jersey club</p>
     <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA CLUB">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="7">
+      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="7">
         <ArtImg class="album-tab-art" src="images/covers/album-7.jpg" width={2048} sizes="48px" alt="" />
         <span class="album-tab-text"><span class="album-tab-no">CLUB 2nd</span><span class="album-tab-name">Second Wind</span></span>
       </button>
@@ -94,7 +105,65 @@ const albumLd = {
       </button>
     </div>
 
-    <div data-album-panel="7">
+    <div data-album-panel="8">
+    {singles8.length > 0 && (
+      <>
+      <section class="section" style="padding-bottom: 0;">
+        <div class="album-head">
+          <ArtImg class="album-jacket" src="images/covers/album-8.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Blue Hour album cover" />
+          <div class="album-head-info">
+            <h2>SHINYA AFTER 1st 「Blue Hour」 — 青い時間</h2>
+            <p class="album-note">{album8Out ? "A third line begins — SHINYA AFTER, for the hour after the club empties. Seven dark R&B tracks at 72 BPM inside the blue hour before sunrise, where two people stay in a room that is ending. Out now." : "A third line begins — SHINYA AFTER, for the hour after the club empties. Seven dark R&B tracks at 72 BPM inside the blue hour before sunrise, where two people stay in a room that is ending. Coming soon."}</p>
+          </div>
+        </div>
+      </section>
+      {playlist8 && (
+      <section class="section">
+        <h2>{t("en", "section.playlist")}</h2>
+          <div class="card playlist-card">
+            <span class="badge">{isReleased(playlist8) ? playlist8.data.releaseDate : t("en", "badge.coming")}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist8.data.title}</h3>
+            {playlist8.data.titleEn && <p class="card-title-ja">{playlist8.data.titleEn}</p>}
+            <p class="card-desc">{playlist8.data.description}</p>
+            {isReleased(playlist8) && playlist8.data.youtubeId ? (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <LiteYouTube id={playlist8.data.youtubeId} title={playlist8.data.title} poster={coverOf(playlist8)} />
+              </div>
+            ) : coverOf(playlist8) && (
+              <div class="card-media" style="margin-top: 1.2rem;">
+                <ArtImg src={coverOf(playlist8)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist8.data.title} />
+              </div>
+            )}
+          </div>
+      </section>
+        )}
+      <section class="section">
+        <h2>{t("en", "section.singles")}</h2>
+        <div class="card-grid">
+          {singles8.map((r) => (
+            <div class="card">
+              <span class="badge">{isReleased(r) ? r.data.releaseDate : t("en", "badge.coming")}</span>
+              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/music/${r.id}/`}>{r.data.title}</a></h3>
+              {r.data.titleJa && <p class="card-title-ja">{r.data.titleJa}</p>}
+              <p class="card-desc">{r.data.description}</p>
+              {isReleased(r) && r.data.youtubeId ? (
+                <div class="card-media">
+                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
+                </div>
+              ) : coverOf(r) && (
+                <div class="card-media">
+                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+      </>
+    )}
+    </div>
+
+    <div data-album-panel="7" hidden>
     {singles7.length > 0 && (
       <>
       <section class="section" style="padding-bottom: 0;">
@@ -513,9 +582,9 @@ const albumLd = {
         p.hidden = p.dataset.albumPanel !== n;
       });
       const sub = document.querySelector('.page-banner-sub');
-      if (sub) sub.textContent = (n === '6' || n === '7') ? sub.dataset.subClub : sub.dataset.subMain;
+      if (sub) sub.textContent = n === '8' ? sub.dataset.subAfter : ((n === '6' || n === '7') ? sub.dataset.subClub : sub.dataset.subMain);
       const title = document.querySelector('.page-banner-title');
-      if (title) title.textContent = (n === '6' || n === '7') ? title.dataset.titleClub : title.dataset.titleMain;
+      if (title) title.textContent = n === '8' ? title.dataset.titleAfter : ((n === '6' || n === '7') ? title.dataset.titleClub : title.dataset.titleMain);
     };
     bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
@@ -523,9 +592,9 @@ const albumLd = {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     }));
-    const m = location.hash.match(/^#album-([1-7])$/);
+    const m = location.hash.match(/^#album-([1-8])$/);
     const active = document.querySelector('[data-album-tab].active');
-    select(m ? m[1] : (active ? active.dataset.albumTab : '7'));
+    select(m ? m[1] : (active ? active.dataset.albumTab : '8'));
   };
   initAlbumTabs();
   document.addEventListener('astro:page-load', initAlbumTabs);
