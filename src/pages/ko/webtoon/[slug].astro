@@ -37,6 +37,10 @@ const note = t(L, 'webtoon.dialogue');
       ))}
     </div>
 
+    <p class="webtoon-rights">
+      {t(L, 'webtoon.rights')}<br />ⓒ {entry.data.date.getFullYear()} SHINYA
+    </p>
+
     <nav class="webtoon-nav">
       {prev ? <a href={`${base}/ko/webtoon/${prev.id}/`}>{t(L, 'webtoon.prev')}</a> : <span></span>}
       <a href={`${base}/ko/webtoon/`}>{t(L, 'webtoon.back')}</a>
