@@ -195,18 +195,24 @@ const GOATCOUNTER_CODE = 'shinya';
         queue();
       }, { passive: true });
 
-      // Webtoon reader: the sticky nav gets out of the way while the reader
-      // scrolls down through panels, and returns on the first upward scroll.
-      // Only pages carrying [data-reader] opt in.
+      // Webtoon reader: the site chrome — sticky nav above, mix player and rain
+      // toggle below — gets out of the way while the reader scrolls down through
+      // panels, and returns on the first upward scroll. Only pages carrying
+      // [data-reader] opt in. The floating controls carry transition:persist,
+      // so the reset has to clear them too or they stay hidden after leaving.
+      const CHROME = '.rain-toggle, .mini-player';
       let navY = 0;
       let navRaf = 0;
+      const setChrome = (hidden) => {
+        document.querySelector('.site-nav')?.classList.toggle('nav-hidden', hidden);
+        document.querySelectorAll(CHROME).forEach((el) => el.classList.toggle('chrome-hidden', hidden));
+      };
       const navScroll = () => {
         navRaf = 0;
-        const nav = document.querySelector('.site-nav');
-        if (!nav || !document.querySelector('[data-reader]')) return;
+        if (!document.querySelector('.site-nav') || !document.querySelector('[data-reader]')) return;
         const y = Math.max(0, scrollY);
-        if (y > navY + 6 && y > 200) nav.classList.add('nav-hidden');
-        else if (y < navY - 6) nav.classList.remove('nav-hidden');
+        if (y > navY + 6 && y > 200) setChrome(true);
+        else if (y < navY - 6) setChrome(false);
         navY = y;
       };
       addEventListener('scroll', () => {
@@ -214,7 +220,7 @@ const GOATCOUNTER_CODE = 'shinya';
       }, { passive: true });
       const initNavHide = () => {
         navY = Math.max(0, scrollY);
-        document.querySelector('.site-nav')?.classList.remove('nav-hidden');
+        setChrome(false);
       };
 
       // 深夜 mode extras: entry flash, tab chrome, and darker copy.
