@@ -53,6 +53,8 @@ const webtoon = defineCollection({
     descriptionJa: z.string().optional(),
     date: z.coerce.date(),
     cover: z.string(),
+    part: z.number().default(1),
+    finale: z.boolean().default(false), // closes its part: labelled, not numbered
     // Panel image paths under /public, top to bottom.
     panels: z.array(z.string()).min(1),
     draft: z.boolean().default(false),

@@ -774,9 +774,13 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
   display: flex; align-items: center; justify-content: center;
   background: var(--bg-card); border: 1px solid var(--line);
   color: var(--text-dim); cursor: pointer;
-  transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s, opacity 0.3s;
 }
 .rain-toggle:hover { color: var(--neon-purple); border-color: var(--line-bright); transform: translateY(-2px); }
+/* Webtoon reader: the floating controls clear the page while scrolling down.
+   Opacity rather than transform, so the hover lift doesn't fight it. */
+.rain-toggle.chrome-hidden,
+.mini-player.chrome-hidden:not(.is-open) { opacity: 0; pointer-events: none; }
 .rain-toggle.is-on {
   color: var(--neon-pink); border-color: var(--neon-pink);
   box-shadow: 0 0 18px var(--neon-glow);
@@ -1104,7 +1108,7 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 }
 
 /* ---- mini player (60-min mix) ---- */
-.mini-player { position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 60; }
+.mini-player { position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 60; transition: opacity 0.3s; }
 .mp-open {
   display: inline-flex; align-items: center; gap: 0.45rem;
   background: rgba(7, 11, 22, 0.85); border: 1px solid var(--line-bright);
