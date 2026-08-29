@@ -1,11 +1,11 @@
 ---
-import Base from '../../layouts/Base.astro';
-import ArtImg from '../../components/ArtImg.astro';
+import Base from '../../../layouts/Base.astro';
+import ArtImg from '../../../components/ArtImg.astro';
 import { getCollection } from 'astro:content';
-import { t } from '../../i18n/ui';
+import { t } from '../../../i18n/ui';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const L = 'en';
+const L = 'ja';
 const episodes = (await getCollection('webtoon'))
   .filter((e) => !e.data.draft && e.data.date.valueOf() <= Date.now())
   .sort((a, b) => b.data.episode - a.data.episode);
@@ -17,7 +17,7 @@ const epLabel = (n) => (L === 'ko' ? `${n}화` : L === 'ja' ? `第${n}話` : `Ep
 const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
 ---
 
-<Base lang="en" title="Webtoon — SHINYA / 深夜" description={t(L, 'webtoon.series.desc')}>
+<Base lang="ja" title="ウェブトゥーン — SHINYA / 深夜" description={t(L, 'webtoon.series.desc')}>
   <div class="container">
     <section class="section wt-series">
       <ArtImg class="wt-series-cover" src="images/webtoon/series-cover.jpg" width={720} sizes="(min-width: 700px) 200px, 40vw" alt={t(L, 'webtoon.series.title')} loading="eager" />
@@ -36,7 +36,7 @@ const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
     ) : (
       <>
       <div class="wt-listbar">
-        <span class="wt-total">{`${episodes.length} ${t(L, 'webtoon.count')}`}</span>
+        <span class="wt-total">{`全${episodes.length}${t(L, 'webtoon.count')}`}</span>
         <div class="wt-sort" role="group">
           <button type="button" class="active" data-sort="desc">{t(L, 'webtoon.sort.desc')}</button>
           <button type="button" data-sort="asc">{t(L, 'webtoon.sort.asc')}</button>
@@ -46,13 +46,13 @@ const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
       <ul class="wt-eplist" data-eplist>
         {episodes.map((e) => (
           <li>
-            <a href={`${base}/webtoon/${e.id}/`}>
+            <a href={`${base}/ja/webtoon/${e.id}/`}>
               <span class="wt-ep-thumb">
-                <ArtImg src={e.data.cover} width={1080} sizes="(min-width: 700px) 96px, 22vw" alt="" />
+                <ArtImg src={e.data.cover} width={900} sizes="(min-width: 700px) 96px, 22vw" alt="" />
               </span>
               <span class="wt-ep-body">
                 <span class="wt-ep-title">
-                  {epLabel(e.data.episode)}. {e.data.title ?? e.data.title}
+                  {epLabel(e.data.episode)}. {e.data.titleJa ?? e.data.title}
                   {e.data.episode === newest && fresh(e.data.date) && <span class="wt-up">{t(L, 'webtoon.up')}</span>}
                 </span>
                 <span class="wt-ep-date">{shortDate(e.data.date)}</span>
