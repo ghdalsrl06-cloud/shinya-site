@@ -27,6 +27,11 @@ on:
     - cron: '0 15 25 9 *' # SHINYA AFTER 1st — Sep 25
     - cron: '20 15 25 9 *'
     - cron: '40 15 25 9 *'
+    # Webtoon serialization: an episode every third day at 09:00 KST
+    # (00:00 UTC the same date), Sep 1 through Sep 28. Two attempts ten
+    # minutes apart; the daily 00:05 build is a third chance at 09:05 KST.
+    - cron: '0 0 1,4,7,10,13,16,19,22,25,28 9 *'
+    - cron: '10 0 1,4,7,10,13,16,19,22,25,28 9 *'
   workflow_dispatch:
 
 permissions:
