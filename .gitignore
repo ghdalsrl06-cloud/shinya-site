@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # generated responsive image variants (rebuilt at astro build)
 public/images/opt/
+
+# webtoon art staged from private/ at build time (scripts/stage-webtoon.mjs)
+public/images/webtoon/
