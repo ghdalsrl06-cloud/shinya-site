@@ -12,9 +12,13 @@ interface Props {
   description?: string;
   lang?: Lang;
   ogImage?: string;
+  // False for pages that exist in one language only (404, the 5am egg). Their
+  // language switcher points at the locale home instead of a translated path
+  // that was never built, and they advertise no hreflang alternates.
+  localized?: boolean;
 }
 
-const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Dark electronic J-pop for the late night. Original music by SHINYA / 深夜.', lang = 'en', ogImage: ogImageProp } = Astro.props;
+const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Dark electronic J-pop for the late night. Original music by SHINYA / 深夜.', lang = 'en', ogImage: ogImageProp, localized = true } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
@@ -33,7 +37,8 @@ const isActive = (href: string) => {
 };
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
 const rest = localeMatch ? current.slice(base.length + 3) : current.slice(base.length);
-const urlFor = (l: Lang) => `${base}${l === 'en' ? '' : `/${l}`}${rest || '/'}`;
+const urlFor = (l: Lang) =>
+  `${base}${l === 'en' ? '' : `/${l}`}${localized ? rest || '/' : '/'}`;
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const canonical = `${site}${current}`;
 const altUrl = (l: Lang) => `${site}${urlFor(l)}`;
@@ -67,10 +72,10 @@ const GOATCOUNTER_CODE = 'shinya';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="en" href={altUrl('en')} />
-    <link rel="alternate" hreflang="ko" href={altUrl('ko')} />
-    <link rel="alternate" hreflang="ja" href={altUrl('ja')} />
-    <link rel="alternate" hreflang="x-default" href={altUrl('en')} />
+    {localized && <link rel="alternate" hreflang="en" href={altUrl('en')} />}
+    {localized && <link rel="alternate" hreflang="ko" href={altUrl('ko')} />}
+    {localized && <link rel="alternate" hreflang="ja" href={altUrl('ja')} />}
+    {localized && <link rel="alternate" hreflang="x-default" href={altUrl('en')} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
