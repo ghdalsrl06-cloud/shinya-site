@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import ShareRow from '../../components/ShareRow.astro';
 import ArtImg from '../../components/ArtImg.astro';
-import Comments from '../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -72,7 +71,6 @@ const postLd = {
         </nav>
       )}
       <ShareRow title={`${post.data.title} — SHINYA / 深夜`} lang="en" />
-      <Comments lang="en" />
     </article>
   </div>
 </Base>
