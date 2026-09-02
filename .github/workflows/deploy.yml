@@ -7,9 +7,12 @@ on:
     - cron: '5 0 * * *'
     # Album release nights: rebuild at 15:00 UTC (00:00 KST next day),
     # one minute after the 23:59 KST release, so covers/videos flip right away.
-    # GitHub's scheduler routinely skips or delays these, so each release gets
-    # three attempts 20 minutes apart — the first to land does the flip and the
-    # rest are cheap no-ops. The daily 00:05 UTC build remains the backstop.
+    # GitHub's scheduler does not skip these, it runs them late: over 14 days
+    # of history not one scheduled build started on time, and the delay ran
+    # from 1h37m to 11h05m. Extra attempts minutes apart therefore buy nothing
+    # — they queue behind the same backlog — so newer releases get a single
+    # cron. Anything that has to flip on the minute needs an outside trigger.
+    # The daily 00:05 UTC build remains the backstop.
     - cron: '0 15 14 8 *' # 2nd album — Aug 14
     - cron: '0 15 21 8 *' # 3rd album — Aug 21
     - cron: '0 15 28 8 *' # 4th album — Aug 28
@@ -27,6 +30,7 @@ on:
     - cron: '0 15 25 9 *' # SHINYA AFTER 1st — Sep 25
     - cron: '20 15 25 9 *'
     - cron: '40 15 25 9 *'
+    - cron: '0 15 2 10 *' # SHINYA AFTER 2nd — Oct 2
     # Webtoon serialization: an episode every third day at 09:00 KST
     # (00:00 UTC the same date), Sep 1 through Sep 28. Two attempts ten
     # minutes apart; the daily 00:05 build is a third chance at 09:05 KST.
