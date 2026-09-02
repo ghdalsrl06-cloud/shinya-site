@@ -18,6 +18,7 @@ export const HYPERFOLLOW: HyperFollow[] = [
   { n: 6, title: 'Paper Luck', url: 'https://distrokid.com/hyperfollow/shinya1/paper-luck', releaseAt: '2026-09-11T00:00:00+09:00', dateLabel: '9/11' },
   { n: 7, title: 'Second Wind', url: 'https://distrokid.com/hyperfollow/shinya1/second-wind', releaseAt: '2026-09-18T00:00:00+09:00', dateLabel: '9/18' },
   { n: 8, title: 'Blue Hour', url: 'https://distrokid.com/hyperfollow/shinya1/blue-hour', releaseAt: '2026-09-25T00:00:00+09:00', dateLabel: '9/25' },
+  { n: 9, title: 'Empty Room', url: 'https://distrokid.com/hyperfollow/shinya1/empty-room', releaseAt: '2026-10-02T00:00:00+09:00', dateLabel: '10/2' },
 ];
 
 export const isOut = (e: HyperFollow): boolean => Date.now() >= new Date(e.releaseAt).valueOf();
