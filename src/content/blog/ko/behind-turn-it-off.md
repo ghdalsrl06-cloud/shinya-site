@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #7 — Turn It Off: 울리는 방이 이�
 description: "불을 끄고 나갑니다 — 드럼이 빠지고 마지막 울림을 페이드가 아니라 잘라 냈습니다."
 date: 2026-10-10
 tags: [behind, dark r&b]
+cover: images/covers/turn-it-off.jpg
 ---
 
 앨범은 시작할 때 갖고 있던 것을 거둬들이며 닫힙니다.

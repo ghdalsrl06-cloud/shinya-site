@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #3 — Didn't Fit in the Box"
 description: "One object refuses both the box and the bin — the driest, smallest sound on the album."
 date: 2026-10-06
 tags: [behind, dark r&b]
+cover: images/covers/didnt-fit-in-the-box.jpg
 ---
 
 The hardest thing to pack is the thing you have no reason to keep.

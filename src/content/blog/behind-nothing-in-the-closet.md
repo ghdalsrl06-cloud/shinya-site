@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #2 — Nothing in the Closet"
 description: "She knows the closet is empty and opens it again — the first track where the 808 comes in."
 date: 2026-10-05
 tags: [behind, dark r&b]
+cover: images/covers/nothing-in-the-closet.jpg
 ---
 
 A habit outlives the thing it was for.

@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #1 — Empty Room: 響きはじめる�
 description: "段ボール三つ、そして急に響きはじめる部屋 — ドラムがなく、響きが最も広い。"
 date: 2026-10-04
 tags: [behind, dark r&b]
+cover: images/covers/empty-room.jpg
 ---
 
 アルバムは荷物がすでに運び出された夜から始まります。

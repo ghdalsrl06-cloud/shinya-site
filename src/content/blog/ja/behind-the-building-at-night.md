@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #5 — The Building at Night: うるさ
 description: "ずっとうるさいと思っていた音を、最後にわざと聴く — 打楽器を建物の生活音でつくりました。"
 date: 2026-10-08
 tags: [behind, dark r&b]
+cover: images/covers/the-building-at-night.jpg
 ---
 
 建物は出ていくことを知らず、いつも通りに続きます。

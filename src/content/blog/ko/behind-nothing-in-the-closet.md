@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #2 — Nothing in the Closet: 비었는�
 description: "비었다는 걸 아는데 또 엽니다 — 808이 앨범에서 처음 들어오는 곡."
 date: 2026-10-05
 tags: [behind, dark r&b]
+cover: images/covers/nothing-in-the-closet.jpg
 ---
 
 습관이 그 대상보다 오래 남습니다.

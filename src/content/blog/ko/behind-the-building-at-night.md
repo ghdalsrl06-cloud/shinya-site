@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #5 — The Building at Night: 시끄럽�
 description: "늘 시끄럽다고 여기던 소리를 마지막으로 일부러 듣습니다 — 타악을 건물의 생활 소음으로 만들었습니다."
 date: 2026-10-08
 tags: [behind, dark r&b]
+cover: images/covers/the-building-at-night.jpg
 ---
 
 건물은 그가 떠나는 걸 모르고, 늘 하던 그대로 계속됩니다.

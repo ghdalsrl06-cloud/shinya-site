@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #6 — Curtains Down"
 description: "With nothing left to cover the window, the room shows its real colour — the only track in a major key."
 date: 2026-10-09
 tags: [behind, dark r&b]
+cover: images/covers/curtains-down.jpg
 ---
 
 The record opens up exactly once, and it happens here.

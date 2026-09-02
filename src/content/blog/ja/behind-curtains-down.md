@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #6 — Curtains Down: アルバムで�
 description: "遮るものがなくなって部屋が本当の色を見せる — アルバムで唯一の長調。"
 date: 2026-10-09
 tags: [behind, dark r&b]
+cover: images/covers/curtains-down.jpg
 ---
 
 アルバムが一度だけ開きます。それがこの曲です。

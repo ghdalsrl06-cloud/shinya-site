@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #1 — Empty Room: 울리기 시작하는
 description: "상자 세 개, 그리고 갑자기 울리기 시작하는 방 — 드럼이 아예 없고 울림이 가장 넓다."
 date: 2026-10-04
 tags: [behind, dark r&b]
+cover: images/covers/empty-room.jpg
 ---
 
 앨범은 짐이 이미 다 나간 밤에서 시작합니다.

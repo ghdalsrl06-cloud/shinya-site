@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #1 — Empty Room"
 description: "Three boxes, and a room that suddenly echoes — no drums at all, and the widest reverb on the record."
 date: 2026-10-04
 tags: [behind, dark r&b]
+cover: images/covers/empty-room.jpg
 ---
 
 The album opens on the night everything has already been carried out.

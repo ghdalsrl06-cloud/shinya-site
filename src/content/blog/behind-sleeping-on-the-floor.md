@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #4 — Sleeping on the Floor"
 description: "The bed is gone, so the ceiling is visible for the first time — the lowest sub bass on the album."
 date: 2026-10-07
 tags: [behind, dark r&b]
+cover: images/covers/sleeping-on-the-floor.jpg
 ---
 
 Two years of looking up at the same ceiling, and this is the first time she sees it.

@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #5 — The Building at Night"
 description: "The noise she always resented, listened to on purpose for the last time — percussion built from the building itself."
 date: 2026-10-08
 tags: [behind, dark r&b]
+cover: images/covers/the-building-at-night.jpg
 ---
 
 The building does not know she is leaving, and carries on exactly as usual.

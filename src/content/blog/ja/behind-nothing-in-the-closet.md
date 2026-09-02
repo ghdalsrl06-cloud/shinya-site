@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #2 — Nothing in the Closet: 空なの
 description: "空だと分かっているのにまた開ける — 808がアルバムで初めて入る曲。"
 date: 2026-10-05
 tags: [behind, dark r&b]
+cover: images/covers/nothing-in-the-closet.jpg
 ---
 
 習慣は、その対象より長く残ります。

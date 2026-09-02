@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #4 — Sleeping on the Floor: 남은 시�
 description: "침대가 없어서 천장이 처음 보입니다 — 앨범에서 서브베이스가 가장 낮은 곡."
 date: 2026-10-07
 tags: [behind, dark r&b]
+cover: images/covers/sleeping-on-the-floor.jpg
 ---
 
 이 년 동안 같은 천장을 봤는데, 오늘 처음 봅니다.

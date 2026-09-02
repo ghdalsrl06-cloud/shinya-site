@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #3 — Didn't Fit in the Box: 捨てら
 description: "箱にもゴミ箱にも入らない一つ — アルバムで最も乾いた小さな音。"
 date: 2026-10-06
 tags: [behind, dark r&b]
+cover: images/covers/didnt-fit-in-the-box.jpg
 ---
 
 いちばん荷造りが難しいのは、持つ理由のないものです。

@@ -11937,6 +11937,9 @@
       "Empty room",
       "there's just nothing in it"
     ],
+    "poster": "images/covers/empty-room.jpg",
+    "posterPre": "images/covers/empty-room-pre.jpg",
+    "youtubeId": "OEZ2-PlGBhE",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -12123,6 +12126,9 @@
       "Nothing in there",
       "only the shape"
     ],
+    "poster": "images/covers/nothing-in-the-closet.jpg",
+    "posterPre": "images/covers/nothing-in-the-closet-pre.jpg",
+    "youtubeId": "YhEjHj10AY0",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -12324,6 +12330,9 @@
       "can't throw it out",
       "can't carry it either"
     ],
+    "poster": "images/covers/didnt-fit-in-the-box.jpg",
+    "posterPre": "images/covers/didnt-fit-in-the-box-pre.jpg",
+    "youtubeId": "OUCWVMO6cFM",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -12510,6 +12519,9 @@
       "On the floor",
       "just for tonight"
     ],
+    "poster": "images/covers/sleeping-on-the-floor.jpg",
+    "posterPre": "images/covers/sleeping-on-the-floor-pre.jpg",
+    "youtubeId": "pBgjGzzapSY",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -12696,6 +12708,9 @@
       "This building",
       "goes on tomorrow"
     ],
+    "poster": "images/covers/the-building-at-night.jpg",
+    "posterPre": "images/covers/the-building-at-night-pre.jpg",
+    "youtubeId": "VwElT5xHHa4",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -12882,6 +12897,9 @@
       "Curtains down",
       "nothing left to hide"
     ],
+    "poster": "images/covers/curtains-down.jpg",
+    "posterPre": "images/covers/curtains-down-pre.jpg",
+    "youtubeId": "lKZxzh0Fpig",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -13068,6 +13086,9 @@
       "Turn it off",
       "for something that small"
     ],
+    "poster": "images/covers/turn-it-off.jpg",
+    "posterPre": "images/covers/turn-it-off-pre.jpg",
+    "youtubeId": "G44KT_OMTlY",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00"
   },
@@ -13075,15 +13096,18 @@
     "id": "shinya-mix-after2",
     "title": "Empty Room",
     "titleKo": "빈 방 · SHINYA AFTER 2집 7곡 연속 믹스",
-    "titleEn": "Empty Room — SHINYA AFTER 2nd Mix",
     "titleJa": "空っぽの部屋 — SHINYA AFTERミックス",
     "kind": "playlist",
+    "album": 9,
     "status": "coming-soon",
     "description": "The last night in a room already emptied, at 72 BPM: seven dark R&B tracks in the order the night runs, played through three times, ending where the echo stops.",
     "descriptionKo": "짐을 다 뺀 방에서 보내는 마지막 밤, 72 BPM 다크 R&B 일곱 곡 — 하룻밤의 시간 순서 그대로 세 바퀴, 울림이 끊기는 자리에서 끝난다.",
     "descriptionJa": "荷物を出し終えた部屋で過ごす最後の夜、72BPMのダークR&B7曲 — 一晩の時間順のまま三周し、響きが途切れるところで終わる。",
+    "poster": "images/covers/shinya-mix-after2.jpg",
+    "posterPre": "images/covers/shinya-mix-after2-pre.jpg",
+    "youtubeId": "NLvf6PsS6hM",
     "releaseDate": "2026-10-02",
     "releaseAt": "2026-10-02T23:59:00+09:00",
-    "album": 9
+    "titleEn": "Empty Room — SHINYA AFTER 2nd Mix"
   }
 ]

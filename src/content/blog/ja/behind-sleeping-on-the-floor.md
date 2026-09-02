@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #4 — Sleeping on the Floor: 余った
 description: "ベッドがなくて天井が初めて見える — アルバムでサブベースが最も低い曲。"
 date: 2026-10-07
 tags: [behind, dark r&b]
+cover: images/covers/sleeping-on-the-floor.jpg
 ---
 
 二年間おなじ天井を見てきて、今夜はじめて見ます。

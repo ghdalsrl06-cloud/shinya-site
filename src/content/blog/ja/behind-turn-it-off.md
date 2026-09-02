@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2nd ビハインド #7 — Turn It Off: 響く部屋がも�
 description: "電気を消して出ていく — ドラムが抜け、最後の響きをフェードせず切りました。"
 date: 2026-10-10
 tags: [behind, dark r&b]
+cover: images/covers/turn-it-off.jpg
 ---
 
 アルバムは、始まりに持っていたものを取り上げて閉じます。

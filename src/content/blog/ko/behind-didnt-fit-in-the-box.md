@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #3 — Didn't Fit in the Box: 버릴 수�
 description: "상자에도 쓰레기통에도 안 들어가는 물건 하나 — 앨범에서 가장 마르고 작은 소리."
 date: 2026-10-06
 tags: [behind, dark r&b]
+cover: images/covers/didnt-fit-in-the-box.jpg
 ---
 
 가장 싸기 어려운 건, 가질 이유가 없는 물건입니다.

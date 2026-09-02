@@ -3,6 +3,7 @@ title: "SHINYA AFTER 2집 비하인드 #6 — Curtains Down: 앨범에서 유일
 description: "가릴 게 없어지자 방이 진짜 색을 드러냅니다 — 앨범에서 유일한 장조."
 date: 2026-10-09
 tags: [behind, dark r&b]
+cover: images/covers/curtains-down.jpg
 ---
 
 앨범이 딱 한 번 열립니다. 그게 이 곡입니다.

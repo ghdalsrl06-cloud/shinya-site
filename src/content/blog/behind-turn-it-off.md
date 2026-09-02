@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA AFTER 2nd) #7 — Turn It Off"
 description: "She turns the light off and goes — the drums drop away and the final reverb is cut, not faded."
 date: 2026-10-10
 tags: [behind, dark r&b]
+cover: images/covers/turn-it-off.jpg
 ---
 
 The album closes by taking away the one thing it opened with.
