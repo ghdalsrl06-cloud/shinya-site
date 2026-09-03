@@ -27,15 +27,37 @@ jobs:
             -H "Accept-Language: en" \
             "https://www.youtube.com/@${CHANNEL_HANDLE}")
           echo "page bytes: ${#page}"
-          cid=$(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | head -1)
-          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP '"(channelId|externalId|browseId)":"\K(UC[0-9A-Za-z_-]{22})' | head -1)
-          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP 'channel_id=\K(UC[0-9A-Za-z_-]{22})' | head -1)
+
+          # A channel page links out to other channels, so the first
+          # youtube.com/channel/UC... in the HTML is not reliably ours — taking it
+          # on faith is what made this job fail on Sep 1 and Sep 3, resolving an id
+          # whose feed 404s. Collect every candidate, most authoritative first, and
+          # accept the first one that actually returns a feed.
+          cands=$( { echo "$page" | grep -oP '"rssUrl":"[^"]*channel_id=\K(UC[0-9A-Za-z_-]{22})'
+                     echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})'
+                     echo "$page" | grep -oP '"channelId":"\K(UC[0-9A-Za-z_-]{22})'
+                     echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})'
+                   } | awk '!seen[$0]++' )
+
+          if [ -z "$cands" ]; then
+            echo "::error::No channel id candidates found on the page for @${CHANNEL_HANDLE}"
+            exit 1
+          fi
+
+          cid=
+          for c in $cands; do
+            code=$(curl -s -o /tmp/feed.xml -w '%{http_code}' \
+              "https://www.youtube.com/feeds/videos.xml?channel_id=$c")
+            echo "  candidate $c -> $code"
+            if [ "$code" = "200" ] && grep -q '<entry>' /tmp/feed.xml; then cid=$c; break; fi
+          done
+
           if [ -z "$cid" ]; then
-            echo "::error::Could not resolve channel id for @${CHANNEL_HANDLE}"
+            echo "::error::None of these ids returned a feed for @${CHANNEL_HANDLE}: $(echo $cands)"
+            rm -f /tmp/feed.xml
             exit 1
           fi
           echo "Channel id: $cid"
-          curl -fsSL "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml
       - name: Ensure label exists
         run: gh label create youtube-sync --color FF2D6E --description "Auto-detected new YouTube video" || true
       - name: Open issues for unregistered videos

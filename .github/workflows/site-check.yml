@@ -10,42 +10,48 @@ permissions: {}
 jobs:
   check:
     runs-on: ubuntu-latest
-    env:
-      CHANNEL_HANDLE: shinyatokyo
     steps:
-      - name: Compare channel-id extraction strategies
+      - name: Is the feeds endpoint blocked, or is it this channel?
         run: |
-          page=$(curl -fsSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-            -H "Accept-Language: en" "https://www.youtube.com/@${CHANNEL_HANDLE}")
-          echo "page bytes: ${#page}"
+          OURS=UCt3dNqlRzF_MeHKzNr7bywQ
+          # Two long-lived, very large channels as controls.
+          YT=UCBR8-60-B28hp2BmDPdntcQ   # YouTube's own channel
+          GOOG=UCK8sQmJBp8GCxrOtXWBpyEA # Google
 
-          echo
-          echo "== current strategy: first youtube.com/channel/UC... link =="
-          echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | head -5 | sed 's/^/  /'
-          echo "  distinct ids on page: $(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | sort -u | wc -l)"
-
-          echo
-          echo "== candidate A: rssUrl in the page =="
-          echo "$page" | grep -oP '"rssUrl":"\K[^"]+' | head -3 | sed 's/^/  /'
-
-          echo
-          echo "== candidate B: channelMetadataRenderer externalId =="
-          echo "$page" | grep -oP '"channelMetadataRenderer":\{.*?"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -3 | sed 's/^/  /'
-
-          echo
-          echo "== candidate C: og:url / canonical =="
-          echo "$page" | grep -oP '<link rel="canonical" href="\K[^"]+' | head -3 | sed 's/^/  /'
-          echo "$page" | grep -oP '<meta property="og:url" content="\K[^"]+' | head -3 | sed 's/^/  /'
-
-          echo
-          echo "== candidate D: first \"externalId\" anywhere =="
-          echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -3 | sed 's/^/  /'
-
-          echo
-          echo "== which ids actually return a feed? =="
-          for cid in $(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | sort -u | head -6) \
-                     $(echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | sort -u | head -3) ; do
-            code=$(curl -s -o /tmp/f.xml -w '%{http_code}' "https://www.youtube.com/feeds/videos.xml?channel_id=$cid")
-            name=$(grep -oP '<name>\K[^<]+' /tmp/f.xml 2>/dev/null | head -1)
-            printf '  %s  %s  %s\n' "$cid" "$code" "${name:-—}"
+          echo "== plain curl, no headers =="
+          for id in $OURS $YT $GOOG; do
+            printf '  %-26s %s\n' "$id" "$(curl -s -o /dev/null -w '%{http_code}' "https://www.youtube.com/feeds/videos.xml?channel_id=$id")"
           done
+
+          echo
+          echo "== with a browser UA =="
+          for id in $OURS $YT $GOOG; do
+            printf '  %-26s %s\n' "$id" "$(curl -s -o /dev/null -w '%{http_code}' \
+              -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
+              "https://www.youtube.com/feeds/videos.xml?channel_id=$id")"
+          done
+
+          echo
+          echo "== our channel: response body and headers =="
+          curl -s -D - -o /tmp/body.txt \
+            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
+            "https://www.youtube.com/feeds/videos.xml?channel_id=$OURS" | head -20
+          echo "  --- first 400 bytes of body ---"
+          head -c 400 /tmp/body.txt; echo
+
+          echo
+          echo "== alternative feed spellings for our channel =="
+          for u in "https://www.youtube.com/feeds/videos.xml?channel_id=$OURS" \
+                   "https://youtube.com/feeds/videos.xml?channel_id=$OURS" \
+                   "https://www.youtube.com/feeds/videos.xml?user=shinyatokyo" \
+                   "https://www.youtube.com/@shinyatokyo/videos" \
+                   "https://www.youtube.com/channel/$OURS" ; do
+            printf '  %-70s %s\n' "$u" "$(curl -s -o /dev/null -w '%{http_code}' -A 'Mozilla/5.0' "$u")"
+          done
+
+          echo
+          echo "== does the channel page still list videos? =="
+          n=$(curl -fsSL -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' -H 'Accept-Language: en' \
+                "https://www.youtube.com/@shinyatokyo/videos" \
+              | grep -oP '"videoId":"\K[0-9A-Za-z_-]{11}' | sort -u | wc -l)
+          echo "  distinct videoIds on /videos: $n"
