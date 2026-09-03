@@ -1,0 +1,51 @@
+name: Site check
+
+on:
+  push:
+    paths:
+      - .github/workflows/site-check.yml
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      CHANNEL_HANDLE: shinyatokyo
+    steps:
+      - name: Compare channel-id extraction strategies
+        run: |
+          page=$(curl -fsSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Accept-Language: en" "https://www.youtube.com/@${CHANNEL_HANDLE}")
+          echo "page bytes: ${#page}"
+
+          echo
+          echo "== current strategy: first youtube.com/channel/UC... link =="
+          echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | head -5 | sed 's/^/  /'
+          echo "  distinct ids on page: $(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | sort -u | wc -l)"
+
+          echo
+          echo "== candidate A: rssUrl in the page =="
+          echo "$page" | grep -oP '"rssUrl":"\K[^"]+' | head -3 | sed 's/^/  /'
+
+          echo
+          echo "== candidate B: channelMetadataRenderer externalId =="
+          echo "$page" | grep -oP '"channelMetadataRenderer":\{.*?"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -3 | sed 's/^/  /'
+
+          echo
+          echo "== candidate C: og:url / canonical =="
+          echo "$page" | grep -oP '<link rel="canonical" href="\K[^"]+' | head -3 | sed 's/^/  /'
+          echo "$page" | grep -oP '<meta property="og:url" content="\K[^"]+' | head -3 | sed 's/^/  /'
+
+          echo
+          echo "== candidate D: first \"externalId\" anywhere =="
+          echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -3 | sed 's/^/  /'
+
+          echo
+          echo "== which ids actually return a feed? =="
+          for cid in $(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | sort -u | head -6) \
+                     $(echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | sort -u | head -3) ; do
+            code=$(curl -s -o /tmp/f.xml -w '%{http_code}' "https://www.youtube.com/feeds/videos.xml?channel_id=$cid")
+            name=$(grep -oP '<name>\K[^<]+' /tmp/f.xml 2>/dev/null | head -1)
+            printf '  %s  %s  %s\n' "$cid" "$code" "${name:-—}"
+          done
