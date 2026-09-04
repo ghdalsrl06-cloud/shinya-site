@@ -10,33 +10,24 @@ permissions: {}
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      UA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
     steps:
-      - uses: actions/checkout@v4
-      - name: List the channel's 30 most recent videos with registration status
+      - name: Compare the registered 3집 mix id against the one on the channel
         run: |
-          curl -fsSL --max-time 30 \
-            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
-            -H 'Accept-Language: en' "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
-
-          python3 scripts/youtube_videos.py page /tmp/videos.html > /tmp/videos.json
-
-          python3 - <<'PY'
-          import json, re
-
-          videos = json.load(open('/tmp/videos.json'))
-          rel = json.load(open('src/content/music/releases.json'))
-          by_yt = {e['youtubeId']: e for e in rel if e.get('youtubeId')}
-
-          print('channel order is newest first\n')
-          for i, (v, t) in enumerate(videos, 1):
-              e = by_yt.get(v)
-              mark = f"album {e.get('album', 1)} {e.get('kind', 'single')} {e['id']}" if e else '*** NOT REGISTERED ***'
-              print(f'{i:2}. {v}  {mark}')
-              print(f'    {t[:88]}')
-
-          print('\n--- is the currently registered 3집 mix still on the page? ---')
-          ids = {v for v, _ in videos}
-          for e in rel:
-              if e.get('album') == 3 and e.get('kind') == 'playlist':
-                  print(f"  {e['id']} -> {e.get('youtubeId')}  on page: {e.get('youtubeId') in ids}")
-          PY
+          for v in SAwzpriQhqo M4s5tCBoHoY ; do
+            echo "=== $v ==="
+            # oEmbed answers 200 only for a video that is public and playable.
+            printf '  oembed:   %s\n' \
+              "$(curl -s -o /tmp/oe.json -w '%{http_code}' \
+                 "https://www.youtube.com/oembed?url=https://youtu.be/$v&format=json")"
+            head -c 300 /tmp/oe.json; echo
+            printf '  watch page: %s\n' \
+              "$(curl -s -o /tmp/w.html -w '%{http_code}' -A "$UA" "https://www.youtube.com/watch?v=$v")"
+            grep -oP '<meta name="title" content="\K[^"]+' /tmp/w.html | head -1 | sed 's/^/  title: /'
+            grep -oP '"ownerChannelName":"\K[^"]+' /tmp/w.html | head -1 | sed 's/^/  owner: /'
+            grep -oP '"lengthSeconds":"\K[0-9]+' /tmp/w.html | head -1 | sed 's/^/  seconds: /'
+            grep -oq 'isUnlisted' /tmp/w.html && echo '  (has isUnlisted flag)'
+            grep -oP '"status":"\K[A-Z_]+' /tmp/w.html | head -2 | sed 's/^/  status: /'
+            echo
+          done
