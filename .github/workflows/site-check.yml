@@ -1,0 +1,42 @@
+name: Site check
+
+on:
+  push:
+    paths:
+      - .github/workflows/site-check.yml
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: List the channel's 30 most recent videos with registration status
+        run: |
+          curl -fsSL --max-time 30 \
+            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
+            -H 'Accept-Language: en' "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
+
+          python3 scripts/youtube_videos.py page /tmp/videos.html > /tmp/videos.json
+
+          python3 - <<'PY'
+          import json, re
+
+          videos = json.load(open('/tmp/videos.json'))
+          rel = json.load(open('src/content/music/releases.json'))
+          by_yt = {e['youtubeId']: e for e in rel if e.get('youtubeId')}
+
+          print('channel order is newest first\n')
+          for i, (v, t) in enumerate(videos, 1):
+              e = by_yt.get(v)
+              mark = f"album {e.get('album', 1)} {e.get('kind', 'single')} {e['id']}" if e else '*** NOT REGISTERED ***'
+              print(f'{i:2}. {v}  {mark}')
+              print(f'    {t[:88]}')
+
+          print('\n--- is the currently registered 3집 mix still on the page? ---')
+          ids = {v for v, _ in videos}
+          for e in rel:
+              if e.get('album') == 3 and e.get('kind') == 'playlist':
+                  print(f"  {e['id']} -> {e.get('youtubeId')}  on page: {e.get('youtubeId') in ids}")
+          PY
