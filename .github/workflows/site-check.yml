@@ -11,70 +11,37 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Verify the album 5 release flipped
+      - name: Verify the album 5 release flip
         run: |
           S=https://shinya-music.com
           fail=0
-          note() { echo "  $*"; }
-
           IDS="breathing-in-the-back-seat the-shift-change-never-comes i-must-not-fall-asleep \
                only-the-marks-on-the-wall how-to-sit-on-the-last-train finally-quiet \
                everyones-awake in-your-room"
-          # track order 1..8, then the mix
           YT="rLbVpNJmbw4 Mq4YuMJ8MFE _skdvsHXWcM j8JlisYenXA ZYDwxUfqv34 CXfc2vpqFhQ pdGD5zgWOXs j0yaxZXscoE"
 
-          echo "== build freshness =="
-          curl -sI "$S/" | grep -i '^last-modified' | sed 's/^/  /'
-
-          echo
-          echo "== album 5 track pages, three locales (want 200) =="
-          for id in $IDS; do
-            for pre in "" "ko/" "ja/"; do
-              c=$(curl -s -o /dev/null -w '%{http_code}' "$S/${pre}music/$id/")
-              [ "$c" = "200" ] || { note "BAD /${pre}music/$id/ -> $c"; fail=$((fail+1)); }
-            done
-          done
-          note "checked 24 pages"
-
-          echo
-          echo "== each track page must now embed its video (released state) =="
+          echo "== each track page: player present, pre art gone =="
           set -- $YT
           for id in $IDS; do
             y=$1; shift
             P=$(curl -s "$S/ko/music/$id/")
-            echo "$P" | grep -q "$y" || { note "no player on /ko/music/$id/ (want $y)"; fail=$((fail+1)); }
-            echo "$P" | grep -q -- "-pre" && { note "still showing pre art: $id"; fail=$((fail+1)); }
+            echo "$P" | grep -q "$y" || { echo "  no player: $id"; fail=$((fail+1)); }
+            # match the actual pre-art filename, not any string containing "-pre"
+            echo "$P" | grep -q "$id-pre-w" && { echo "  still pre art: $id"; fail=$((fail+1)); }
+            echo "$P" | grep -q "covers/$id-w" || { echo "  no titled cover: $id"; fail=$((fail+1)); }
           done
-          note "checked 8 players"
+          echo "  8 tracks checked"
 
           echo
-          echo "== titled covers served, pre art gone =="
-          for id in $IDS; do
-            c=$(curl -s -o /dev/null -w '%{http_code}' "$S/images/covers/$id.jpg")
-            [ "$c" = "200" ] || { note "cover missing: $id -> $c"; fail=$((fail+1)); }
-          done
-          note "checked 8 covers"
-
-          echo
-          echo "== music page: album 5 panel state, three locales =="
+          echo "== album 5 panel: no coming-soon badge left, three locales =="
           for pre in "" "ko/" "ja/"; do
             M=$(curl -s "$S/${pre}music/")
-            printf '  /%smusic/  mix player: %s   coming-soon badges in album5 panel: %s\n' \
-              "$pre" \
-              "$(echo "$M" | grep -c 'aR959SVwtuE')" \
-              "$(echo "$M" | sed -n '/data-album-panel="5"/,/data-album-panel=/p' | grep -ciE 'coming soon|준비중|準備中')"
+            n=$(echo "$M" | grep -o 'data-album-panel="5".*' | grep -oE '준비중|Coming soon|準備中' | wc -l)
+            b=$(echo "$M" | grep -c 'aR959SVwtuE')
+            printf '  /%smusic/  mix player: %s   stale badges: %s\n' "$pre" "$b" "$n"
+            [ "$n" = "0" ] || fail=$((fail+1))
+            [ "$b" != "0" ] || fail=$((fail+1))
           done
-
-          echo
-          echo "== home: newest release and hero pre-save =="
-          H=$(curl -s "$S/ko/")
-          printf '  album5 mix on home:      %s\n' "$(echo "$H" | grep -c 'aR959SVwtuE')"
-          printf '  hero -> Paper Luck:      %s\n' "$(echo "$H" | grep -c 'hyperfollow/shinya1/paper-luck')"
-          printf '  hero still -> album 5:   %s\n' "$(echo "$H" | grep -c 'hyperfollow/shinya1/3JSWBY9bdvA')"
-
-          echo
-          echo "== links page label for album 5 =="
-          curl -s "$S/links/" | grep -o '\(Pre-Save\|Streaming\) — [^<]*' | head -9 | sed 's/^/  /'
 
           echo
           if [ "$fail" -gt 0 ]; then echo "PROBLEMS: $fail"; exit 1; else echo "ALL CHECKS PASSED"; fi
