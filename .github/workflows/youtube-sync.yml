@@ -1,8 +1,8 @@
 name: YouTube sync
 
-# Checks the channel RSS feed daily and opens an issue for any video that
-# is not yet registered in releases.json. No automatic commits — a human
-# (or a Claude session) registers the video afterwards.
+# Checks the channel daily and opens an issue for any video that is not yet
+# registered in releases.json. No automatic commits — a human (or a Claude
+# session) registers the video afterwards.
 
 on:
   schedule:
@@ -21,62 +21,111 @@ jobs:
       CHANNEL_HANDLE: shinyatokyo
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch channel feed
+
+      - name: Collect the channel's recent videos
         run: |
-          page=$(curl -fsSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-            -H "Accept-Language: en" \
-            "https://www.youtube.com/@${CHANNEL_HANDLE}")
-          echo "page bytes: ${#page}"
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
 
-          # A channel page links out to other channels, so the first
-          # youtube.com/channel/UC... in the HTML is not reliably ours — taking it
-          # on faith is what made this job fail on Sep 1 and Sep 3, resolving an id
-          # whose feed 404s. Collect every candidate, most authoritative first, and
-          # accept the first one that actually returns a feed.
-          cands=$( { echo "$page" | grep -oP '"rssUrl":"[^"]*channel_id=\K(UC[0-9A-Za-z_-]{22})'
-                     echo "$page" | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})'
-                     echo "$page" | grep -oP '"channelId":"\K(UC[0-9A-Za-z_-]{22})'
-                     echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})'
-                   } | awk '!seen[$0]++' )
-
-          if [ -z "$cands" ]; then
-            echo "::error::No channel id candidates found on the page for @${CHANNEL_HANDLE}"
-            exit 1
-          fi
-
-          cid=
-          for c in $cands; do
-            code=$(curl -s -o /tmp/feed.xml -w '%{http_code}' \
-              "https://www.youtube.com/feeds/videos.xml?channel_id=$c")
-            echo "  candidate $c -> $code"
-            if [ "$code" = "200" ] && grep -q '<entry>' /tmp/feed.xml; then cid=$c; break; fi
-          done
-
-          if [ -z "$cid" ]; then
-            echo "::error::None of these ids returned a feed for @${CHANNEL_HANDLE}: $(echo $cands)"
+          # youtube.com/feeds/videos.xml used to be the source here, but it now
+          # answers 404 for every channel — YouTube's own and Google's included
+          # — so it cannot be relied on. The channel page still serves the list,
+          # with the videos embedded in its ytInitialData blob. Try the feed
+          # first in case it comes back, then fall back to the page.
+          if curl -fsSL --max-time 20 -A "$UA" \
+               "https://www.youtube.com/feeds/videos.xml?channel_id=$(curl -fsSL -A "$UA" -H 'Accept-Language: en' \
+                 "https://www.youtube.com/@${CHANNEL_HANDLE}" \
+                 | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -1)" \
+               -o /tmp/feed.xml 2>/dev/null && grep -q '<entry>' /tmp/feed.xml; then
+            echo "source: RSS feed"
+          else
+            echo "source: channel page (feed unavailable)"
             rm -f /tmp/feed.xml
-            exit 1
+            curl -fsSL --max-time 30 -A "$UA" -H 'Accept-Language: en' \
+              "https://www.youtube.com/@${CHANNEL_HANDLE}/videos" -o /tmp/videos.html
           fi
-          echo "Channel id: $cid"
+
+          python3 - <<'PY'
+          import json, os, re, sys
+
+          def from_feed(path):
+              import xml.etree.ElementTree as ET
+              ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
+              root = ET.parse(path).getroot()
+              return [(e.find('yt:videoId', ns).text, e.find('a:title', ns).text)
+                      for e in root.findall('a:entry', ns)]
+
+          def balanced(s, start):
+              """Slice the JSON object beginning at s[start] == '{'."""
+              depth, i, instr, esc = 0, start, False, False
+              while i < len(s):
+                  c = s[i]
+                  if instr:
+                      if esc: esc = False
+                      elif c == '\\': esc = True
+                      elif c == '"': instr = False
+                  elif c == '"': instr = True
+                  elif c == '{': depth += 1
+                  elif c == '}':
+                      depth -= 1
+                      if depth == 0:
+                          return s[start:i + 1]
+                  i += 1
+              raise ValueError('unbalanced ytInitialData')
+
+          def from_page(path):
+              html = open(path, encoding='utf-8', errors='replace').read()
+              m = re.search(r'ytInitialData"?\]?\s*=\s*', html)
+              if not m:
+                  raise ValueError('no ytInitialData on the channel page')
+              data = json.loads(balanced(html, html.index('{', m.end())))
+              out = []
+
+              def walk(n):
+                  if isinstance(n, dict):
+                      for key in ('videoRenderer', 'gridVideoRenderer', 'reelItemRenderer'):
+                          vr = n.get(key)
+                          if isinstance(vr, dict) and vr.get('videoId'):
+                              t = vr.get('title', {})
+                              title = t.get('simpleText') or ''.join(
+                                  r.get('text', '') for r in t.get('runs', []))
+                              out.append((vr['videoId'], title))
+                      for v in n.values():
+                          walk(v)
+                  elif isinstance(n, list):
+                      for v in n:
+                          walk(v)
+
+              walk(data)
+              return out
+
+          entries = from_feed('/tmp/feed.xml') if os.path.exists('/tmp/feed.xml') else from_page('/tmp/videos.html')
+
+          seen, videos = set(), []
+          for vid, title in entries:
+              if vid and vid not in seen:
+                  seen.add(vid)
+                  videos.append((vid, title or vid))
+
+          print(f'videos found: {len(videos)}')
+          if not videos:
+              # Better to fail loudly than to silently report nothing new for weeks.
+              sys.exit('::error::No videos parsed — the page layout probably changed')
+
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
+          new = [(v, t) for v, t in videos if v not in known]
+          print(f'registered: {len(known)}, unregistered: {len(new)}')
+          json.dump(new, open('/tmp/new.json', 'w'))
+          PY
+
       - name: Ensure label exists
         run: gh label create youtube-sync --color FF2D6E --description "Auto-detected new YouTube video" || true
+
       - name: Open issues for unregistered videos
         run: |
-          [ -f /tmp/feed.xml ] || exit 0
           python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          import json, re, subprocess
+          import json, subprocess
 
-          ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
-          root = ET.parse('/tmp/feed.xml').getroot()
-          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
-          entries = [
-              (e.find('yt:videoId', ns).text, e.find('a:title', ns).text)
-              for e in root.findall('a:entry', ns)
-          ]
-          new = [(v, t) for v, t in entries if v not in known]
-          print(f'feed: {len(entries)} videos, unregistered: {len(new)}')
-          for vid, title in new:
+          for vid, title in json.load(open('/tmp/new.json')):
               # skip if an issue (open or closed) already mentions this video id
               r = subprocess.run(
                   ['gh', 'issue', 'list', '--state', 'all', '--search', f'"youtube-id: {vid}" in:body', '--json', 'number'],
