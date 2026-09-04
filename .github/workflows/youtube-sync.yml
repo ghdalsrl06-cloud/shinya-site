@@ -19,100 +19,47 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       CHANNEL_HANDLE: shinyatokyo
+      UA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
     steps:
       - uses: actions/checkout@v4
 
       - name: Collect the channel's recent videos
         run: |
-          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
+          # The Atom feed is tried first only because it is the cleaner source;
+          # it has been answering 404 for every channel since early September,
+          # so the channel page is what actually carries this job.
+          cid=$(curl -fsSL --max-time 20 -A "$UA" -H 'Accept-Language: en' \
+                  "https://www.youtube.com/@${CHANNEL_HANDLE}" \
+                | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -1 || true)
 
-          # youtube.com/feeds/videos.xml used to be the source here, but it now
-          # answers 404 for every channel — YouTube's own and Google's included
-          # — so it cannot be relied on. The channel page still serves the list,
-          # with the videos embedded in its ytInitialData blob. Try the feed
-          # first in case it comes back, then fall back to the page.
-          if curl -fsSL --max-time 20 -A "$UA" \
-               "https://www.youtube.com/feeds/videos.xml?channel_id=$(curl -fsSL -A "$UA" -H 'Accept-Language: en' \
-                 "https://www.youtube.com/@${CHANNEL_HANDLE}" \
-                 | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -1)" \
-               -o /tmp/feed.xml 2>/dev/null && grep -q '<entry>' /tmp/feed.xml; then
-            echo "source: RSS feed"
+          src=
+          if [ -n "$cid" ] && curl -fsSL --max-time 20 -A "$UA" \
+               "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml \
+               && grep -q '<entry>' /tmp/feed.xml; then
+            src="feed /tmp/feed.xml"
+            echo "source: Atom feed (channel ${cid})"
           else
-            echo "source: channel page (feed unavailable)"
             rm -f /tmp/feed.xml
             curl -fsSL --max-time 30 -A "$UA" -H 'Accept-Language: en' \
               "https://www.youtube.com/@${CHANNEL_HANDLE}/videos" -o /tmp/videos.html
+            src="page /tmp/videos.html"
+            echo "source: channel page (feed unavailable)"
           fi
 
+          python3 scripts/youtube_videos.py $src > /tmp/videos.json
           python3 - <<'PY'
-          import json, os, re, sys
+          import json, re, sys
 
-          def from_feed(path):
-              import xml.etree.ElementTree as ET
-              ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
-              root = ET.parse(path).getroot()
-              return [(e.find('yt:videoId', ns).text, e.find('a:title', ns).text)
-                      for e in root.findall('a:entry', ns)]
-
-          def balanced(s, start):
-              """Slice the JSON object beginning at s[start] == '{'."""
-              depth, i, instr, esc = 0, start, False, False
-              while i < len(s):
-                  c = s[i]
-                  if instr:
-                      if esc: esc = False
-                      elif c == '\\': esc = True
-                      elif c == '"': instr = False
-                  elif c == '"': instr = True
-                  elif c == '{': depth += 1
-                  elif c == '}':
-                      depth -= 1
-                      if depth == 0:
-                          return s[start:i + 1]
-                  i += 1
-              raise ValueError('unbalanced ytInitialData')
-
-          def from_page(path):
-              html = open(path, encoding='utf-8', errors='replace').read()
-              m = re.search(r'ytInitialData"?\]?\s*=\s*', html)
-              if not m:
-                  raise ValueError('no ytInitialData on the channel page')
-              data = json.loads(balanced(html, html.index('{', m.end())))
-              out = []
-
-              def walk(n):
-                  if isinstance(n, dict):
-                      for key in ('videoRenderer', 'gridVideoRenderer', 'reelItemRenderer'):
-                          vr = n.get(key)
-                          if isinstance(vr, dict) and vr.get('videoId'):
-                              t = vr.get('title', {})
-                              title = t.get('simpleText') or ''.join(
-                                  r.get('text', '') for r in t.get('runs', []))
-                              out.append((vr['videoId'], title))
-                      for v in n.values():
-                          walk(v)
-                  elif isinstance(n, list):
-                      for v in n:
-                          walk(v)
-
-              walk(data)
-              return out
-
-          entries = from_feed('/tmp/feed.xml') if os.path.exists('/tmp/feed.xml') else from_page('/tmp/videos.html')
-
-          seen, videos = set(), []
-          for vid, title in entries:
-              if vid and vid not in seen:
-                  seen.add(vid)
-                  videos.append((vid, title or vid))
-
+          videos = json.load(open('/tmp/videos.json'))
           print(f'videos found: {len(videos)}')
           if not videos:
-              # Better to fail loudly than to silently report nothing new for weeks.
-              sys.exit('::error::No videos parsed — the page layout probably changed')
+              # Reporting "nothing new" forever is worse than a failed run, so
+              # an empty parse is treated as a broken parse.
+              sys.exit('::error::No videos parsed — the source layout probably changed')
 
-          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
-          new = [(v, t) for v, t in videos if v not in known]
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"',
+                                 open('src/content/music/releases.json').read()))
+          new = [[v, t] for v, t in videos if v not in known]
           print(f'registered: {len(known)}, unregistered: {len(new)}')
           json.dump(new, open('/tmp/new.json', 'w'))
           PY

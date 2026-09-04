@@ -10,82 +10,39 @@ permissions: {}
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      UA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
     steps:
-      - name: Discover where the video ids actually live
+      - uses: actions/checkout@v4
+      - name: Exercise scripts/youtube_videos.py against the live channel
         run: |
-          curl -fsSL -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
-            -H 'Accept-Language: en' "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
+          curl -fsSL --max-time 30 -A "$UA" -H 'Accept-Language: en' \
+            "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
+          echo "page bytes: $(wc -c < /tmp/videos.html)"
+
+          python3 scripts/youtube_videos.py page /tmp/videos.html > /tmp/videos.json
 
           python3 - <<'PY'
-          import json, re
-          from collections import Counter
+          import json, re, sys
 
+          videos = json.load(open('/tmp/videos.json'))
           html = open('/tmp/videos.html', encoding='utf-8', errors='replace').read()
-          ids = set(re.findall(r'"videoId":"([0-9A-Za-z_-]{11})"', html))
-          print('raw videoIds in html:', len(ids))
+          raw = len(set(re.findall(r'"videoId":"([0-9A-Za-z_-]{11})"', html)))
 
-          def balanced(s, start):
-              depth, i, instr, esc = 0, start, False, False
-              while i < len(s):
-                  c = s[i]
-                  if instr:
-                      if esc: esc = False
-                      elif c == '\\': esc = True
-                      elif c == '"': instr = False
-                  elif c == '"': instr = True
-                  elif c == '{': depth += 1
-                  elif c == '}':
-                      depth -= 1
-                      if depth == 0: return s[start:i+1]
-                  i += 1
+          print(f'parsed: {len(videos)}   raw ids in page: {raw}')
+          for v, t in videos[:10]:
+              print(f'  {v}  {t[:64]}')
 
-          # There may be several ytInitialData-ish assignments; inspect them all.
-          for m in re.finditer(r'(ytInitialData|ytInitialPlayerResponse)"?\]?\s*=\s*', html):
-              name = m.group(1)
-              blob = balanced(html, html.index('{', m.end()))
-              inside = set(re.findall(r'"videoId":"([0-9A-Za-z_-]{11})"', blob))
-              print(f'{name}: {len(blob)} bytes, videoIds inside: {len(inside)}')
-              if not inside:
-                  continue
-              data = json.loads(blob)
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"',
+                                 open('src/content/music/releases.json').read()))
+          new = [(v, t) for v, t in videos if v not in known]
+          print(f'registered: {len(known)}   unregistered: {len(new)}')
+          for v, t in new:
+              print(f'  NEW  {v}  {t[:64]}')
 
-              # Find every dict that carries a video id, and report the key it hangs off.
-              hits = Counter()
-              samples = {}
-              def walk(n, parent_key=None):
-                  if isinstance(n, dict):
-                      vid = n.get('videoId') or n.get('contentId')
-                      if isinstance(vid, str) and re.fullmatch(r'[0-9A-Za-z_-]{11}', vid):
-                          hits[parent_key] += 1
-                          samples.setdefault(parent_key, (vid, sorted(n.keys())[:14]))
-                      for k, v in n.items():
-                          walk(v, k)
-                  elif isinstance(n, list):
-                      for v in n:
-                          walk(v, parent_key)
-              walk(data)
-
-              print('  containers holding a video id:')
-              for k, c in hits.most_common(12):
-                  vid, keys = samples[k]
-                  print(f'    {k}  x{c}  e.g. {vid}  keys={keys}')
-
-              # Where does a title live next to one of those?
-              for key in ('lockupViewModel', 'videoRenderer', 'richItemRenderer'):
-                  if key in hits:
-                      def find(n):
-                          if isinstance(n, dict):
-                              if key in n and isinstance(n[key], dict):
-                                  return n[key]
-                              for v in n.values():
-                                  r = find(v)
-                                  if r: return r
-                          elif isinstance(n, list):
-                              for v in n:
-                                  r = find(v)
-                                  if r: return r
-                      node = find(data)
-                      print(f'  --- sample {key} (truncated) ---')
-                      print('  ' + json.dumps(node, ensure_ascii=False)[:1500])
-                      break
+          assert videos, 'parser produced nothing'
+          assert len(videos) == raw, f'parsed {len(videos)} but the page has {raw}'
+          missing = [v for v, t in videos if not t or t == v]
+          assert not missing, f'no title for: {missing}'
+          print('PARSER OK')
           PY
