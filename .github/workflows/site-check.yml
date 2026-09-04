@@ -11,47 +11,48 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Is the feeds endpoint blocked, or is it this channel?
+      - uses: actions/checkout@v4
+      - name: Validate a scraper that replaces the dead RSS feed
         run: |
-          OURS=UCt3dNqlRzF_MeHKzNr7bywQ
-          # Two long-lived, very large channels as controls.
-          YT=UCBR8-60-B28hp2BmDPdntcQ   # YouTube's own channel
-          GOOG=UCK8sQmJBp8GCxrOtXWBpyEA # Google
+          curl -fsSL -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
+            -H 'Accept-Language: en' "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
+          echo "page bytes: $(wc -c < /tmp/videos.html)"
 
-          echo "== plain curl, no headers =="
-          for id in $OURS $YT $GOOG; do
-            printf '  %-26s %s\n' "$id" "$(curl -s -o /dev/null -w '%{http_code}' "https://www.youtube.com/feeds/videos.xml?channel_id=$id")"
-          done
+          python3 - <<'PY'
+          import json, re
 
-          echo
-          echo "== with a browser UA =="
-          for id in $OURS $YT $GOOG; do
-            printf '  %-26s %s\n' "$id" "$(curl -s -o /dev/null -w '%{http_code}' \
-              -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
-              "https://www.youtube.com/feeds/videos.xml?channel_id=$id")"
-          done
+          html = open('/tmp/videos.html', encoding='utf-8', errors='replace').read()
+          m = re.search(r'ytInitialData\s*=\s*(\{.*?\})\s*;\s*</script>', html, re.S)
+          print('ytInitialData found:', bool(m))
+          data = json.loads(m.group(1))
 
-          echo
-          echo "== our channel: response body and headers =="
-          curl -s -D - -o /tmp/body.txt \
-            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
-            "https://www.youtube.com/feeds/videos.xml?channel_id=$OURS" | head -20
-          echo "  --- first 400 bytes of body ---"
-          head -c 400 /tmp/body.txt; echo
+          found = []
+          def walk(node):
+              if isinstance(node, dict):
+                  vr = node.get('videoRenderer') or node.get('gridVideoRenderer')
+                  if isinstance(vr, dict) and vr.get('videoId'):
+                      t = vr.get('title', {})
+                      title = t.get('simpleText') or ''.join(r.get('text','') for r in t.get('runs', []))
+                      found.append((vr['videoId'], title))
+                  for v in node.values():
+                      walk(v)
+              elif isinstance(node, list):
+                  for v in node:
+                      walk(v)
+          walk(data)
 
-          echo
-          echo "== alternative feed spellings for our channel =="
-          for u in "https://www.youtube.com/feeds/videos.xml?channel_id=$OURS" \
-                   "https://youtube.com/feeds/videos.xml?channel_id=$OURS" \
-                   "https://www.youtube.com/feeds/videos.xml?user=shinyatokyo" \
-                   "https://www.youtube.com/@shinyatokyo/videos" \
-                   "https://www.youtube.com/channel/$OURS" ; do
-            printf '  %-70s %s\n' "$u" "$(curl -s -o /dev/null -w '%{http_code}' -A 'Mozilla/5.0' "$u")"
-          done
+          seen, vids = set(), []
+          for v, t in found:
+              if v not in seen:
+                  seen.add(v); vids.append((v, t))
+          print(f'videos parsed: {len(vids)}')
+          for v, t in vids[:8]:
+              print(f'  {v}  {t[:60]}')
 
-          echo
-          echo "== does the channel page still list videos? =="
-          n=$(curl -fsSL -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' -H 'Accept-Language: en' \
-                "https://www.youtube.com/@shinyatokyo/videos" \
-              | grep -oP '"videoId":"\K[0-9A-Za-z_-]{11}' | sort -u | wc -l)
-          echo "  distinct videoIds on /videos: $n"
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
+          print(f'registered in releases.json: {len(known)}')
+          new = [(v, t) for v, t in vids if v not in known]
+          print(f'unregistered: {len(new)}')
+          for v, t in new:
+              print(f'  NEW  {v}  {t[:60]}')
+          PY
