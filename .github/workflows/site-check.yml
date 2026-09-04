@@ -10,24 +10,71 @@ permissions: {}
 jobs:
   check:
     runs-on: ubuntu-latest
-    env:
-      UA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
     steps:
-      - name: Compare the registered 3집 mix id against the one on the channel
+      - name: Verify the album 5 release flipped
         run: |
-          for v in SAwzpriQhqo M4s5tCBoHoY ; do
-            echo "=== $v ==="
-            # oEmbed answers 200 only for a video that is public and playable.
-            printf '  oembed:   %s\n' \
-              "$(curl -s -o /tmp/oe.json -w '%{http_code}' \
-                 "https://www.youtube.com/oembed?url=https://youtu.be/$v&format=json")"
-            head -c 300 /tmp/oe.json; echo
-            printf '  watch page: %s\n' \
-              "$(curl -s -o /tmp/w.html -w '%{http_code}' -A "$UA" "https://www.youtube.com/watch?v=$v")"
-            grep -oP '<meta name="title" content="\K[^"]+' /tmp/w.html | head -1 | sed 's/^/  title: /'
-            grep -oP '"ownerChannelName":"\K[^"]+' /tmp/w.html | head -1 | sed 's/^/  owner: /'
-            grep -oP '"lengthSeconds":"\K[0-9]+' /tmp/w.html | head -1 | sed 's/^/  seconds: /'
-            grep -oq 'isUnlisted' /tmp/w.html && echo '  (has isUnlisted flag)'
-            grep -oP '"status":"\K[A-Z_]+' /tmp/w.html | head -2 | sed 's/^/  status: /'
-            echo
+          S=https://shinya-music.com
+          fail=0
+          note() { echo "  $*"; }
+
+          IDS="breathing-in-the-back-seat the-shift-change-never-comes i-must-not-fall-asleep \
+               only-the-marks-on-the-wall how-to-sit-on-the-last-train finally-quiet \
+               everyones-awake in-your-room"
+          # track order 1..8, then the mix
+          YT="rLbVpNJmbw4 Mq4YuMJ8MFE _skdvsHXWcM j8JlisYenXA ZYDwxUfqv34 CXfc2vpqFhQ pdGD5zgWOXs j0yaxZXscoE"
+
+          echo "== build freshness =="
+          curl -sI "$S/" | grep -i '^last-modified' | sed 's/^/  /'
+
+          echo
+          echo "== album 5 track pages, three locales (want 200) =="
+          for id in $IDS; do
+            for pre in "" "ko/" "ja/"; do
+              c=$(curl -s -o /dev/null -w '%{http_code}' "$S/${pre}music/$id/")
+              [ "$c" = "200" ] || { note "BAD /${pre}music/$id/ -> $c"; fail=$((fail+1)); }
+            done
           done
+          note "checked 24 pages"
+
+          echo
+          echo "== each track page must now embed its video (released state) =="
+          set -- $YT
+          for id in $IDS; do
+            y=$1; shift
+            P=$(curl -s "$S/ko/music/$id/")
+            echo "$P" | grep -q "$y" || { note "no player on /ko/music/$id/ (want $y)"; fail=$((fail+1)); }
+            echo "$P" | grep -q -- "-pre" && { note "still showing pre art: $id"; fail=$((fail+1)); }
+          done
+          note "checked 8 players"
+
+          echo
+          echo "== titled covers served, pre art gone =="
+          for id in $IDS; do
+            c=$(curl -s -o /dev/null -w '%{http_code}' "$S/images/covers/$id.jpg")
+            [ "$c" = "200" ] || { note "cover missing: $id -> $c"; fail=$((fail+1)); }
+          done
+          note "checked 8 covers"
+
+          echo
+          echo "== music page: album 5 panel state, three locales =="
+          for pre in "" "ko/" "ja/"; do
+            M=$(curl -s "$S/${pre}music/")
+            printf '  /%smusic/  mix player: %s   coming-soon badges in album5 panel: %s\n' \
+              "$pre" \
+              "$(echo "$M" | grep -c 'aR959SVwtuE')" \
+              "$(echo "$M" | sed -n '/data-album-panel="5"/,/data-album-panel=/p' | grep -ciE 'coming soon|준비중|準備中')"
+          done
+
+          echo
+          echo "== home: newest release and hero pre-save =="
+          H=$(curl -s "$S/ko/")
+          printf '  album5 mix on home:      %s\n' "$(echo "$H" | grep -c 'aR959SVwtuE')"
+          printf '  hero -> Paper Luck:      %s\n' "$(echo "$H" | grep -c 'hyperfollow/shinya1/paper-luck')"
+          printf '  hero still -> album 5:   %s\n' "$(echo "$H" | grep -c 'hyperfollow/shinya1/3JSWBY9bdvA')"
+
+          echo
+          echo "== links page label for album 5 =="
+          curl -s "$S/links/" | grep -o '\(Pre-Save\|Streaming\) — [^<]*' | head -9 | sed 's/^/  /'
+
+          echo
+          if [ "$fail" -gt 0 ]; then echo "PROBLEMS: $fail"; exit 1; else echo "ALL CHECKS PASSED"; fi
