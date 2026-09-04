@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate a scraper that replaces the dead RSS feed
+      - name: Validate the scraper, take two
         run: |
           curl -fsSL -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36' \
             -H 'Accept-Language: en' "https://www.youtube.com/@shinyatokyo/videos" -o /tmp/videos.html
@@ -22,37 +22,63 @@ jobs:
           import json, re
 
           html = open('/tmp/videos.html', encoding='utf-8', errors='replace').read()
-          m = re.search(r'ytInitialData\s*=\s*(\{.*?\})\s*;\s*</script>', html, re.S)
-          print('ytInitialData found:', bool(m))
-          data = json.loads(m.group(1))
+
+          def balanced(s, start):
+              """Slice the JSON object beginning at s[start] == '{'."""
+              depth, i, instr, esc = 0, start, False, False
+              while i < len(s):
+                  c = s[i]
+                  if instr:
+                      if esc: esc = False
+                      elif c == '\\': esc = True
+                      elif c == '"': instr = False
+                  elif c == '"': instr = True
+                  elif c == '{': depth += 1
+                  elif c == '}':
+                      depth -= 1
+                      if depth == 0: return s[start:i+1]
+                  i += 1
+              return None
+
+          m = re.search(r'ytInitialData"?\]?\s*=\s*', html)
+          print('assignment found:', bool(m))
+          blob = balanced(html, html.index('{', m.end())) if m else None
+          print('balanced blob bytes:', len(blob) if blob else 0)
+          data = json.loads(blob)
 
           found = []
-          def walk(node):
-              if isinstance(node, dict):
-                  vr = node.get('videoRenderer') or node.get('gridVideoRenderer')
-                  if isinstance(vr, dict) and vr.get('videoId'):
-                      t = vr.get('title', {})
-                      title = t.get('simpleText') or ''.join(r.get('text','') for r in t.get('runs', []))
-                      found.append((vr['videoId'], title))
-                  for v in node.values():
-                      walk(v)
-              elif isinstance(node, list):
-                  for v in node:
-                      walk(v)
+          def walk(n):
+              if isinstance(n, dict):
+                  for key in ('videoRenderer', 'gridVideoRenderer', 'reelItemRenderer'):
+                      vr = n.get(key)
+                      if isinstance(vr, dict) and vr.get('videoId'):
+                          t = vr.get('title', {})
+                          title = t.get('simpleText') or ''.join(r.get('text','') for r in t.get('runs', []))
+                          found.append((vr['videoId'], title))
+                  for v in n.values(): walk(v)
+              elif isinstance(n, list):
+                  for v in n: walk(v)
           walk(data)
 
           seen, vids = set(), []
           for v, t in found:
               if v not in seen:
                   seen.add(v); vids.append((v, t))
+
           print(f'videos parsed: {len(vids)}')
-          for v, t in vids[:8]:
+          for v, t in vids[:10]:
               print(f'  {v}  {t[:60]}')
 
+          raw = len(set(re.findall(r'"videoId":"([0-9A-Za-z_-]{11})"', html)))
+          print(f'distinct videoIds in raw html: {raw}')
+
           known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
-          print(f'registered in releases.json: {len(known)}')
           new = [(v, t) for v, t in vids if v not in known]
-          print(f'unregistered: {len(new)}')
+          print(f'registered: {len(known)}   unregistered: {len(new)}')
           for v, t in new:
               print(f'  NEW  {v}  {t[:60]}')
+
+          assert vids, 'parser produced nothing'
+          assert all(t for _, t in vids), 'some titles came back empty'
+          print('PARSER OK')
           PY
