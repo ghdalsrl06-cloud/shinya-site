@@ -1,8 +1,8 @@
 name: YouTube sync
 
-# Checks the channel RSS feed daily and opens an issue for any video that
-# is not yet registered in releases.json. No automatic commits — a human
-# (or a Claude session) registers the video afterwards.
+# Checks the channel daily and opens an issue for any video that is not yet
+# registered in releases.json. No automatic commits — a human (or a Claude
+# session) registers the video afterwards.
 
 on:
   schedule:
@@ -19,42 +19,60 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       CHANNEL_HANDLE: shinyatokyo
+      UA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch channel feed
+
+      - name: Collect the channel's recent videos
         run: |
-          page=$(curl -fsSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-            -H "Accept-Language: en" \
-            "https://www.youtube.com/@${CHANNEL_HANDLE}")
-          echo "page bytes: ${#page}"
-          cid=$(echo "$page" | grep -oP 'youtube\.com/channel/\K(UC[0-9A-Za-z_-]{22})' | head -1)
-          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP '"(channelId|externalId|browseId)":"\K(UC[0-9A-Za-z_-]{22})' | head -1)
-          [ -z "$cid" ] && cid=$(echo "$page" | grep -oP 'channel_id=\K(UC[0-9A-Za-z_-]{22})' | head -1)
-          if [ -z "$cid" ]; then
-            echo "::error::Could not resolve channel id for @${CHANNEL_HANDLE}"
-            exit 1
+          # The Atom feed is tried first only because it is the cleaner source;
+          # it has been answering 404 for every channel since early September,
+          # so the channel page is what actually carries this job.
+          cid=$(curl -fsSL --max-time 20 -A "$UA" -H 'Accept-Language: en' \
+                  "https://www.youtube.com/@${CHANNEL_HANDLE}" \
+                | grep -oP '"externalId":"\K(UC[0-9A-Za-z_-]{22})' | head -1 || true)
+
+          src=
+          if [ -n "$cid" ] && curl -fsSL --max-time 20 -A "$UA" \
+               "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml \
+               && grep -q '<entry>' /tmp/feed.xml; then
+            src="feed /tmp/feed.xml"
+            echo "source: Atom feed (channel ${cid})"
+          else
+            rm -f /tmp/feed.xml
+            curl -fsSL --max-time 30 -A "$UA" -H 'Accept-Language: en' \
+              "https://www.youtube.com/@${CHANNEL_HANDLE}/videos" -o /tmp/videos.html
+            src="page /tmp/videos.html"
+            echo "source: channel page (feed unavailable)"
           fi
-          echo "Channel id: $cid"
-          curl -fsSL "https://www.youtube.com/feeds/videos.xml?channel_id=${cid}" -o /tmp/feed.xml
+
+          python3 scripts/youtube_videos.py $src > /tmp/videos.json
+          python3 - <<'PY'
+          import json, re, sys
+
+          videos = json.load(open('/tmp/videos.json'))
+          print(f'videos found: {len(videos)}')
+          if not videos:
+              # Reporting "nothing new" forever is worse than a failed run, so
+              # an empty parse is treated as a broken parse.
+              sys.exit('::error::No videos parsed — the source layout probably changed')
+
+          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"',
+                                 open('src/content/music/releases.json').read()))
+          new = [[v, t] for v, t in videos if v not in known]
+          print(f'registered: {len(known)}, unregistered: {len(new)}')
+          json.dump(new, open('/tmp/new.json', 'w'))
+          PY
+
       - name: Ensure label exists
         run: gh label create youtube-sync --color FF2D6E --description "Auto-detected new YouTube video" || true
+
       - name: Open issues for unregistered videos
         run: |
-          [ -f /tmp/feed.xml ] || exit 0
           python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          import json, re, subprocess
+          import json, subprocess
 
-          ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
-          root = ET.parse('/tmp/feed.xml').getroot()
-          known = set(re.findall(r'"youtubeId":\s*"([^"]+)"', open('src/content/music/releases.json').read()))
-          entries = [
-              (e.find('yt:videoId', ns).text, e.find('a:title', ns).text)
-              for e in root.findall('a:entry', ns)
-          ]
-          new = [(v, t) for v, t in entries if v not in known]
-          print(f'feed: {len(entries)} videos, unregistered: {len(new)}')
-          for vid, title in new:
+          for vid, title in json.load(open('/tmp/new.json')):
               # skip if an issue (open or closed) already mentions this video id
               r = subprocess.run(
                   ['gh', 'issue', 'list', '--state', 'all', '--search', f'"youtube-id: {vid}" in:body', '--json', 'number'],
