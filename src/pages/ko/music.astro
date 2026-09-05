@@ -5,44 +5,44 @@ import ArtImg from '../../components/ArtImg.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
+import { ALBUMS, LINES, jacketOf, jacketAlt } from '../../lib/albums';
 
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
-const playlist = releases.find((r) => r.data.kind === 'playlist' && (r.data.album ?? 1) === 1);
-const playlist2 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 2);
-const allSingles = releases.filter((r) => r.data.kind !== 'playlist');
-const singles = allSingles.filter((r) => (r.data.album ?? 1) === 1).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const singles2 = allSingles.filter((r) => r.data.album === 2).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album2Out = singles2.length > 0 && isReleased(singles2[0]);
-const singles3 = allSingles.filter((r) => r.data.album === 3).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album3Out = singles3.length > 0 && isReleased(singles3[0]);
-const playlist3 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 3);
-const singles4 = allSingles.filter((r) => r.data.album === 4).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album4Out = singles4.length > 0 && isReleased(singles4[0]);
-const playlist4 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 4);
-const singles5 = allSingles.filter((r) => r.data.album === 5).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album5Out = singles5.length > 0 && isReleased(singles5[0]);
-const playlist5 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 5);
-const singles6 = allSingles.filter((r) => r.data.album === 6).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album6Out = singles6.length > 0 && isReleased(singles6[0]);
-const playlist6 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 6);
-const singles7 = allSingles.filter((r) => r.data.album === 7).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album7Out = singles7.length > 0 && isReleased(singles7[0]);
-const playlist7 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 7);
-const singles8 = allSingles.filter((r) => r.data.album === 8).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album8Out = singles8.length > 0 && isReleased(singles8[0]);
-const playlist8 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 8);
-const singles9 = allSingles.filter((r) => r.data.album === 9).sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
-const album9Out = singles9.length > 0 && isReleased(singles9[0]);
-const playlist9 = releases.find((r) => r.data.kind === 'playlist' && r.data.album === 9);
+const albums = ALBUMS.map((meta) => {
+  const mine = (r) => (r.data.album ?? 1) === meta.n;
+  const singles = releases
+    .filter((r) => r.data.kind !== 'playlist' && mine(r))
+    .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+  return {
+    meta,
+    singles,
+    playlist: releases.find((r) => r.data.kind === 'playlist' && mine(r)),
+    out: singles.length > 0 && isReleased(singles[0]),
+  };
+}).filter((a) => a.singles.length > 0);
+
+// Newest album overall opens the page, and each line lists newest first.
+const ordered = [...albums].sort((a, b) => b.meta.n - a.meta.n);
+const current = ordered[0].meta.n;
+const groups = LINES.map((line) => ({ line, items: ordered.filter((a) => a.meta.line === line.id) }))
+  .filter((g) => g.items.length > 0);
+const firstAlbum = albums.find((a) => a.meta.n === 1);
+// Banner counts come from the data so they cannot fall behind a new album.
+const lineAlbums = (id) => albums.filter((a) => a.meta.line === id).length;
+const lineTracks = (id) => albums.filter((a) => a.meta.line === id).reduce((n, a) => n + a.singles.length, 0);
+const totalTracks = albums.reduce((n, a) => n + a.singles.length, 0);
+// Tabs wrap into balanced rows — six albums read better as 3 + 3 than 5 + 1 —
+// while each tab keeps the same width whatever the count.
+const tabCols = (n) => (n <= 5 ? n : Math.ceil(n / Math.ceil(n / 5)));
 const albumLd = {
   '@context': 'https://schema.org',
   '@type': 'MusicAlbum',
   name: 'SHINYA 深夜',
   byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
-  numTracks: singles.length,
-  track: singles.map((r) => ({
+  numTracks: firstAlbum.singles.length,
+  track: firstAlbum.singles.map((r) => ({
     '@type': 'MusicRecording',
     name: r.data.title,
     position: r.data.track,
@@ -59,572 +59,92 @@ const albumLd = {
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
         <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB" data-title-after="SHINYA AFTER">深夜 MUSIC</h1>
-        <p class="page-banner-sub" data-sub-main="다크 일렉트로닉 J-POP 5장 + SHINYA CLUB + AFTER · 64곡 + 믹스" data-sub-after="다크 R&B 라인 · 14곡 + 믹스" data-sub-club="저지 클럽 라인 · 14곡 + 믹스">다크 일렉트로닉 J-POP 5장 + SHINYA CLUB + AFTER · 64곡 + 믹스</p>
+        <p class="page-banner-sub" data-sub-main={`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`} data-sub-after={`다크 R&B 라인 · ${lineTracks('after')}곡 + 믹스`} data-sub-club={`저지 클럽 라인 · ${lineTracks('club')}곡 + 믹스`}>{`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`}</p>
       </div>
     </section>
 
 
-    <p class="album-line-label">SHINYA AFTER — 다크 R&B 라인</p>
-    <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA AFTER">
-      <button type="button" role="tab" class="album-tab active" aria-selected="true" data-album-tab="9">
-        <ArtImg class="album-tab-art" src="images/covers/album-9.jpg" width={2048} sizes="48px" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">AFTER 2집</span><span class="album-tab-name">Empty Room</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="8">
-        <ArtImg class="album-tab-art" src="images/covers/album-8.jpg" width={2048} sizes="48px" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">AFTER 1집</span><span class="album-tab-name">Blue Hour</span></span>
-      </button>
-    </div>
-
-    <p class="album-line-label">SHINYA CLUB — 저지 클럽 라인</p>
-    <div class="album-tabs album-tabs-club" role="tablist" aria-label="SHINYA CLUB">
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="7">
-        <ArtImg class="album-tab-art" src="images/covers/album-7.jpg" width={2048} sizes="48px" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">CLUB 2집</span><span class="album-tab-name">Second Wind</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="6">
-        <ArtImg class="album-tab-art" src="images/covers/album-6.jpg" width={2048} sizes="48px" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">CLUB 1집</span><span class="album-tab-name">Paper Luck</span></span>
-      </button>
-    </div>
-
-    <p class="album-line-label">SHINYA 深夜 — 다크 일렉트로닉</p>
-    <div class="album-tabs" role="tablist" aria-label="앨범">
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="5">
-        <ArtImg class="album-tab-art" src="images/covers/album-5.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">5집</span><span class="album-tab-name">誰かの部屋で</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="4">
-        <ArtImg class="album-tab-art" src="images/covers/album-4.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">4집</span><span class="album-tab-name">おやすみのあとで</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="3">
-        <ArtImg class="album-tab-art" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">3집</span><span class="album-tab-name">怖いままで</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="2">
-        <ArtImg class="album-tab-art" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">2집</span><span class="album-tab-name">始発まで</span></span>
-      </button>
-      <button type="button" role="tab" class="album-tab" aria-selected="false" data-album-tab="1">
-        <ArtImg class="album-tab-art" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-        <span class="album-tab-text"><span class="album-tab-no">1집</span><span class="album-tab-name">SHINYA 深夜</span></span>
-      </button>
-    </div>
-
-    <div data-album-panel="9">
-    {singles9.length > 0 && (
+{groups.map(({ line, items }) => (
       <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-9.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Empty Room 앨범 커버" />
-          <div class="album-head-info">
-            <h2>SHINYA AFTER 2집 「Empty Room」 — 빈 방</h2>
-            <p class="album-note">{album9Out ? '두 번째 AFTER — 짐을 다 뺀 방에서 보내는 마지막 밤. 72 BPM 다크 R&B 7곡이 하룻밤을 시간 순서대로 지난다. 바닥의 상자 세 개에서, 불을 끄고 나가기까지.' : '두 번째 AFTER — 짐을 다 뺀 방에서 보내는 마지막 밤. 72 BPM 다크 R&B 7곡이 하룻밤을 시간 순서대로 지난다. 바닥의 상자 세 개에서, 불을 끄고 나가기까지. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
+        <p class="album-line-label">{line.label['ko']}</p>
+        <div class:list={['album-tabs', items.length <= 2 && 'album-tabs-club']} style={`--tab-cols:${tabCols(items.length)}`} role="tablist" aria-label={line.label['ko']}>
+          {items.map(({ meta }) => (
+            <button
+              type="button"
+              role="tab"
+              class:list={['album-tab', meta.n === current && 'active']}
+              aria-selected={String(meta.n === current)}
+              data-album-tab={meta.n}
+              data-album-line={meta.line}
+            >
+              <ArtImg class="album-tab-art" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
+              <span class="album-tab-text"><span class="album-tab-no">{meta.tabNo['ko']}</span><span class="album-tab-name">{meta.name}</span></span>
+            </button>
+          ))}
         </div>
-      </section>
-      {playlist9 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
+      </>
+    ))}
+
+    {ordered.map(({ meta, singles, playlist, out }) => (
+      <div data-album-panel={meta.n} hidden={meta.n !== current}>
+        <section class="section" style="padding-bottom: 0;">
+          <div class="album-head">
+            <ArtImg class="album-jacket" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 280px, 80vw" alt={jacketAlt(meta, 'ko')} />
+            <div class="album-head-info">
+              <h2>{meta.heading['ko']}</h2>
+              <p class="album-note">{out ? meta.noteOut['ko'] : meta.noteSoon['ko']}</p>
+            </div>
+          </div>
+        </section>
+        {playlist && (
+        <section class="section">
+          <h2>{t('ko', 'section.playlist')}</h2>
           <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist9) ? playlist9.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist9.data.title}</h3>
-            {playlist9.data.titleKo && <p class="card-title-ja">{playlist9.data.titleKo}</p>}
-            <p class="card-desc">{playlist9.data.descriptionKo ?? playlist9.data.description}</p>
-            {isReleased(playlist9) && playlist9.data.youtubeId ? (
+            <span class="badge">{isReleased(playlist) ? playlist.data.releaseDate : t('ko', 'badge.coming')}</span>
+            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist.data.title}</h3>
+            {(playlist.data.titleKo) && <p class="card-title-ja">{playlist.data.titleKo}</p>}
+            <p class="card-desc">{playlist.data.descriptionKo ?? playlist.data.description}</p>
+            {isReleased(playlist) && playlist.data.youtubeId ? (
               <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist9.data.youtubeId} title={playlist9.data.title} poster={coverOf(playlist9)} />
+                <LiteYouTube id={playlist.data.youtubeId} title={playlist.data.title} poster={coverOf(playlist)} />
               </div>
-            ) : coverOf(playlist9) && (
+            ) : coverOf(playlist) && (
               <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist9)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist9.data.title} />
+                <ArtImg src={coverOf(playlist)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist.data.title} />
               </div>
             )}
           </div>
-      </section>
+        </section>
         )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles9.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="8" hidden>
-    {singles8.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-8.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Blue Hour 앨범 커버" />
-          <div class="album-head-info">
-            <h2>SHINYA AFTER 1집 「Blue Hour」 — 파란 시간</h2>
-            <p class="album-note">{album8Out ? '세 번째 라인 SHINYA AFTER의 시작 — 클럽이 끝난 뒤의 한 시간. 해뜨기 직전 블루아워 안에서만 일어나는 72 BPM 다크 R&B 7곡. 끝나는 중인 방에 둘이 있다.' : '세 번째 라인 SHINYA AFTER의 시작 — 클럽이 끝난 뒤의 한 시간. 해뜨기 직전 블루아워 안에서만 일어나는 72 BPM 다크 R&B 7곡. 끝나는 중인 방에 둘이 있다. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist8 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist8) ? playlist8.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist8.data.title}</h3>
-            {playlist8.data.titleKo && <p class="card-title-ja">{playlist8.data.titleKo}</p>}
-            <p class="card-desc">{playlist8.data.descriptionKo ?? playlist8.data.description}</p>
-            {isReleased(playlist8) && playlist8.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist8.data.youtubeId} title={playlist8.data.title} poster={coverOf(playlist8)} />
-              </div>
-            ) : coverOf(playlist8) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist8)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist8.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles8.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="7" hidden>
-    {singles7.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-7.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Second Wind 앨범 커버" />
-          <div class="album-head-info">
-            <h2>SHINYA CLUB 2집 「Second Wind」 — 두 번째 숨</h2>
-            <p class="album-note">{album7Out ? '머리가 허락하기 전에 몸이 먼저 답한다. 128 BPM 저지 클럽 7곡이 하룻밤을 순서대로 지난다 — 못 움직이는 밤에서, 이유 없이 돌아온 숨을 지나, 안 자고 맞은 아침까지.' : '머리가 허락하기 전에 몸이 먼저 답한다. 128 BPM 저지 클럽 7곡이 하룻밤을 순서대로 지난다 — 못 움직이는 밤에서, 이유 없이 돌아온 숨을 지나, 안 자고 맞은 아침까지. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist7 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist7) ? playlist7.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist7.data.title}</h3>
-            {playlist7.data.titleKo && <p class="card-title-ja">{playlist7.data.titleKo}</p>}
-            <p class="card-desc">{playlist7.data.descriptionKo ?? playlist7.data.description}</p>
-            {isReleased(playlist7) && playlist7.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist7.data.youtubeId} title={playlist7.data.title} poster={coverOf(playlist7)} />
-              </div>
-            ) : coverOf(playlist7) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist7)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist7.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles7.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="6" hidden>
-    {singles6.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-6.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="Paper Luck 앨범 커버" />
-          <div class="album-head-info">
-            <h2>SHINYA CLUB 1집 「Paper Luck」 — 종이의 운</h2>
-            <p class="album-note">{album6Out ? '새 라인 SHINYA CLUB의 시작 — 128 BPM 저지 클럽 7곡. 복권, 접힌 확률, 한 손에 쥘 수 있는 운. 종이의 운.' : '새 라인 SHINYA CLUB의 시작 — 128 BPM 저지 클럽 7곡. 복권, 접힌 확률, 한 손에 쥘 수 있는 운. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist6 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist6) ? playlist6.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist6.data.title}</h3>
-            {playlist6.data.titleKo && <p class="card-title-ja">{playlist6.data.titleKo}</p>}
-            <p class="card-desc">{playlist6.data.descriptionKo ?? playlist6.data.description}</p>
-            {isReleased(playlist6) && playlist6.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist6.data.youtubeId} title={playlist6.data.title} poster={coverOf(playlist6)} />
-              </div>
-            ) : coverOf(playlist6) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist6)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist6.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles6.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="5" hidden>
-    {singles5.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-5.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="おやすみのあとで 앨범 커버" />
-          <div class="album-head-info">
-            <h2>5th Album 「誰かの部屋で」 — 누군가의 방에서</h2>
-            <p class="album-note">{album5Out ? '같은 새벽 세 시, 여덟 개의 방 — 처음으로 남의 밤을 부른다. 마지막 방은 당신의 방.' : '같은 새벽 세 시, 여덟 개의 방 — 처음으로 남의 밤을 부른다. 마지막 방은 당신의 방. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist5 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist5) ? playlist5.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist5.data.title}</h3>
-            {playlist5.data.titleKo && <p class="card-title-ja">{playlist5.data.titleKo}</p>}
-            <p class="card-desc">{playlist5.data.descriptionKo ?? playlist5.data.description}</p>
-            {isReleased(playlist5) && playlist5.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist5.data.youtubeId} title={playlist5.data.title} poster={coverOf(playlist5)} />
-              </div>
-            ) : coverOf(playlist5) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist5)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist5.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles5.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="4" hidden>
-    {singles4.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-4.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="おやすみのあとで 앨범 커버" />
-          <div class="album-head-info">
-            <h2>4th Album 「おやすみのあとで」 — 잘 자, 그 뒤에</h2>
-            <p class="album-note">{album4Out ? '함께가 된 뒤의 하룻밤 일곱 곡 — 끊지 못하는 통화에서 둘이서 배웅하는 첫차까지.' : '함께가 된 뒤의 하룻밤 일곱 곡 — 끊지 못하는 통화에서 둘이서 배웅하는 첫차까지. 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist4 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist4) ? playlist4.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist4.data.title}</h3>
-            {playlist4.data.titleKo && <p class="card-title-ja">{playlist4.data.titleKo}</p>}
-            <p class="card-desc">{playlist4.data.descriptionKo ?? playlist4.data.description}</p>
-            {isReleased(playlist4) && playlist4.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist4.data.youtubeId} title={playlist4.data.title} poster={coverOf(playlist4)} />
-              </div>
-            ) : coverOf(playlist4) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist4)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist4.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles4.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="3" hidden>
-    {singles3.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-3.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="怖いままで 앨범 커버" />
-          <div class="album-head-info">
-            <h2>3rd Album 「怖いままで」 — 무서운 채로</h2>
-            <p class="album-note">{album3Out ? '새벽 1시부터 5시까지, 또 좋아하게 되는 게 무서운 하룻밤의 일곱 곡.' : '새벽 1시부터 5시까지, 또 좋아하게 되는 게 무서운 하룻밤의 일곱 곡 — 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist3 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist3) ? playlist3.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist3.data.title}</h3>
-            {playlist3.data.titleKo && <p class="card-title-ja">{playlist3.data.titleKo}</p>}
-            <p class="card-desc">{playlist3.data.descriptionKo ?? playlist3.data.description}</p>
-            {isReleased(playlist3) && playlist3.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist3.data.youtubeId} title={playlist3.data.title} poster={coverOf(playlist3)} />
-              </div>
-            ) : coverOf(playlist3) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist3)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist3.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles3.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="2" hidden>
-    {singles2.length > 0 && (
-      <>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-2.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="始発まで 앨범 커버" />
-          <div class="album-head-info">
-            <h2>2nd Album 「始発まで」 — 첫차까지</h2>
-            <p class="album-note">{album2Out ? '자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡.' : '자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡 — 커밍순. 가사는 미리 읽어볼 수 있어요.'}</p>
-          </div>
-        </div>
-      </section>
-      {playlist2 && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-          <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist2) ? playlist2.data.releaseDate : t('ko', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.1rem;">{playlist2.data.title}</h3>
-            {playlist2.data.titleKo && <p class="card-title-ja">{playlist2.data.titleKo}</p>}
-            <p class="card-desc">{playlist2.data.descriptionKo ?? playlist2.data.description}</p>
-            {isReleased(playlist2) && playlist2.data.youtubeId ? (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <LiteYouTube id={playlist2.data.youtubeId} title={playlist2.data.title} poster={coverOf(playlist2)} />
-              </div>
-            ) : coverOf(playlist2) && (
-              <div class="card-media" style="margin-top: 1.2rem;">
-                <ArtImg src={coverOf(playlist2)} width={1280} sizes="(min-width: 1000px) 1100px, 100vw" alt={playlist2.data.title} />
-              </div>
-            )}
-          </div>
-      </section>
-        )}
-      <section class="section">
-        <h2>{t('ko', 'section.singles')}</h2>
-        <div class="card-grid">
-          {singles2.map((r) => (
-            <div class="card">
-              <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
-              <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-              {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
-              <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-              {isReleased(r) && r.data.youtubeId ? (
-                <div class="card-media">
-                  <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
-                </div>
-              ) : coverOf(r) && (
-                <div class="card-media">
-                  <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-      </>
-    )}
-    </div>
-
-    <div data-album-panel="1" hidden>
-      <section class="section" style="padding-bottom: 0;">
-        <div class="album-head">
-          <ArtImg class="album-jacket" src="images/covers/album-1.jpg" width={2048} sizes="(min-width: 700px) 280px, 80vw" alt="SHINYA 深夜 앨범 커버" />
-          <div class="album-head-info">
-            <h2>1st Album 「SHINYA 深夜」</h2>
-            <p class="album-note">자정 이후의 시간을 위한 일곱 곡 — 밤이 시작되는 앨범.</p>
-          </div>
-        </div>
-      </section>
-    {playlist && (
-      <section class="section">
-        <h2>{t('ko', 'section.playlist')}</h2>
-        <div class="card playlist-card">
-          <span class="badge">{isReleased(playlist) ? playlist.data.releaseDate : t('ko', 'badge.coming')}</span>
-          <h3 style="margin: 0.8rem 0 0.1rem;">{playlist.data.title}</h3>
-          {playlist.data.titleKo && <p class="card-title-ja">{playlist.data.titleKo}</p>}
-          <p class="card-desc">{playlist.data.descriptionKo ?? playlist.data.description}</p>
-          {playlist.data.youtubeId && (
-            <div style="margin-top: 1.2rem;">
-              <LiteYouTube id={playlist.data.youtubeId} title={playlist.data.title} poster={coverOf(playlist)} />
-            </div>
-          )}
-        </div>
-      </section>
-    )}
-
-    <section class="section">
-      <h2>{playlist ? t('ko', 'section.singles') : t('ko', 'section.discography')}</h2>
-      <div class="card-grid">
-        {singles.map((r) => (
-          <div class="card">
+        <section class="section">
+          <h2>{t('ko', 'section.singles')}</h2>
+          <div class="card-grid">
+            {singles.map((r) => (
+              <div class="card">
             <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ko', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ko/music/${r.id}/`}>{r.data.title}</a></h3>
-            {r.data.titleKo && <p class="card-title-ja">{r.data.titleKo}</p>}
+            {(r.data.titleKo) && <p class="card-title-ja">{r.data.titleKo}</p>}
             <p class="card-desc">{r.data.descriptionKo ?? r.data.description}</p>
-            {r.data.youtubeId && (
+            {isReleased(r) && r.data.youtubeId ? (
               <div class="card-media">
                 <LiteYouTube id={r.data.youtubeId} title={r.data.title} poster={coverOf(r)} />
               </div>
+            ) : coverOf(r) && (
+              <div class="card-media">
+                <ArtImg src={coverOf(r)} width={1280} sizes="(min-width: 1000px) 300px, 100vw" alt={r.data.title} />
+              </div>
             )}
+              </div>
+            ))}
           </div>
-        ))}
+          {meta.story && (
+          <p style="margin-top: 0.8rem;">
+            <a href={`${base}/ko/album/`}>{meta.story['ko']}</a>
+          </p>
+          )}
+        </section>
       </div>
-      <p style="margin-top: 0.8rem;">
-        <a href={`${base}/ko/album/`}>하룻밤, 일곱 곡 — 앨범 스토리 읽기 →</a>
-      </p>
-    </section>
-    </div>
+    ))}
 
       <p style="margin-top: 2.5rem; margin-bottom: 4rem; color: var(--text-dim);">
         {t('ko', 'music.subscribe.pre')} <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">유튜브</a>를 {t('ko', 'music.subscribe.post')}
@@ -637,19 +157,24 @@ const albumLd = {
     const bars = Array.from(document.querySelectorAll('.album-tabs'));
     if (!bars.length || bars[0].dataset.bound) return;
     bars[0].dataset.bound = '1';
+    const title = document.querySelector('.page-banner-title');
+    const sub = document.querySelector('.page-banner-sub');
+    const cap = (s) => s[0].toUpperCase() + s.slice(1);
     const select = (n) => {
+      // The banner follows whichever line the album belongs to, read off the
+      // tab itself, so adding an album never means editing a list of numbers.
+      let line = 'main';
       document.querySelectorAll('[data-album-tab]').forEach((b) => {
         const on = b.dataset.albumTab === n;
+        if (on) line = b.dataset.albumLine || 'main';
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', String(on));
       });
       document.querySelectorAll('[data-album-panel]').forEach((p) => {
         p.hidden = p.dataset.albumPanel !== n;
       });
-      const sub = document.querySelector('.page-banner-sub');
-      if (sub) sub.textContent = n === '8' ? sub.dataset.subAfter : ((n === '6' || n === '7') ? sub.dataset.subClub : sub.dataset.subMain);
-      const title = document.querySelector('.page-banner-title');
-      if (title) title.textContent = n === '8' ? title.dataset.titleAfter : ((n === '6' || n === '7') ? title.dataset.titleClub : title.dataset.titleMain);
+      if (sub) sub.textContent = sub.dataset['sub' + cap(line)] || sub.textContent;
+      if (title) title.textContent = title.dataset['title' + cap(line)] || title.textContent;
     };
     bars.forEach((bar) => bar.addEventListener('click', (e) => {
       const b = e.target.closest('[data-album-tab]');
@@ -657,9 +182,10 @@ const albumLd = {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
     }));
-    const m = location.hash.match(/^#album-([1-8])$/);
+    const m = location.hash.match(/^#album-(\d+)$/);
+    const linked = m && document.querySelector('[data-album-tab="' + m[1] + '"]') ? m[1] : null;
     const active = document.querySelector('[data-album-tab].active');
-    select(m ? m[1] : (active ? active.dataset.albumTab : '8'));
+    select(linked || (active ? active.dataset.albumTab : bars[0].querySelector('[data-album-tab]').dataset.albumTab));
   };
   initAlbumTabs();
   document.addEventListener('astro:page-load', initAlbumTabs);
