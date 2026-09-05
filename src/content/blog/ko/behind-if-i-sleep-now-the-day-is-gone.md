@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #6 — If I Sleep Now the Day Is Gone:
 description: "4시의 계산이 원을 그리며 제자리로 돌아옵니다 — 가장 빠르고 붐비는 곡."
 date: 2026-10-16
 tags: [behind, dark electronic]
+cover: images/covers/if-i-sleep-now-the-day-is-gone.jpg
 ---
 
 새벽 4시에 하는 계산입니다.

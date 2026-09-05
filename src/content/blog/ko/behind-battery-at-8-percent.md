@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #3 — Battery at 8%: 기계 쪽이 �
 description: "사람보다 폰이 먼저 끝납니다 — 앨범에서 가장 마른 믹스."
 date: 2026-10-13
 tags: [behind, dark electronic]
+cover: images/covers/battery-at-8-percent.jpg
 ---
 
 사람보다 물건이 먼저 지칩니다.

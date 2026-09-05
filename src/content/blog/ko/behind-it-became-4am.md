@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #1 — It Became 4 A.M.: 이름이 없
 description: "숫자만 바뀌고 나머지는 그대로다 — 앨범에서 가장 비어 있는 곡."
 date: 2026-10-11
 tags: [behind, dark electronic]
+cover: images/covers/it-became-4am.jpg
 ---
 
 앨범은 폰을 한 번 본 것에서 시작합니다.

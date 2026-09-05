@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #1 — It Became 4 A.M.: 名前の�
 description: "数字だけが変わって他は何も — アルバムで最も空いた曲。"
 date: 2026-10-11
 tags: [behind, dark electronic]
+cover: images/covers/it-became-4am.jpg
 ---
 
 アルバムはスマホを一度見たところから始まります。

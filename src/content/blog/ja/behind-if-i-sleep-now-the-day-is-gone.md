@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #6 — If I Sleep Now the Day Is Gon
 description: "午前4時の計算が円を描いて元に戻る — 最も速く密な曲。"
 date: 2026-10-16
 tags: [behind, dark electronic]
+cover: images/covers/if-i-sleep-now-the-day-is-gone.jpg
 ---
 
 午前4時にする計算です。

@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #3 — Battery at 8%: 機械のほ�
 description: "人より先にスマホが終わる — アルバムで最も乾いたミックス。"
 date: 2026-10-13
 tags: [behind, dark electronic]
+cover: images/covers/battery-at-8-percent.jpg
 ---
 
 人より先に物が疲れます。

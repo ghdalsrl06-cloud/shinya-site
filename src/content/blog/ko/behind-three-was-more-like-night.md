@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #4 — Three Was More Like Night: 앞 
 description: "어둠은 그대로고 이름만 바뀌었습니다 — 가장 느리고 넓은 곡, 유일한 B단조."
 date: 2026-10-14
 tags: [behind, dark electronic]
+cover: images/covers/three-was-more-like-night.jpg
 ---
 
 앨범의 중심이자, 제목의 시각이 정면으로 설명되는 유일한 자리입니다.

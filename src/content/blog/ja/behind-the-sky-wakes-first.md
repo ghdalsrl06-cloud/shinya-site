@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #5 — The Sky Wakes First: アル�
 description: "夜が自分の決定なしに終わる — 唯一上に開く曲、一つだけの長調。"
 date: 2026-10-15
 tags: [behind, dark electronic]
+cover: images/covers/the-sky-wakes-first.jpg
 ---
 
 アルバムが一度だけ開きます。その理由は窓の外にあります。

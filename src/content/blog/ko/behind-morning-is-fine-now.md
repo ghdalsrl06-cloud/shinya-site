@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #7 — Morning Is Fine Now: 포기가 
 description: "머리보다 몸이 먼저 정합니다 — 마지막 울림이 닫히지 않고 열립니다."
 date: 2026-10-17
 tags: [behind, dark electronic]
+cover: images/covers/morning-is-fine-now.jpg
 ---
 
 앨범은 여섯 곡 내내 지켜 온 것을 놓으면서 끝납니다.

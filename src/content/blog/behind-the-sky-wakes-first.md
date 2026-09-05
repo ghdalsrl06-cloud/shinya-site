@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #5 — The Sky Wakes First"
 description: "The night ends without her deciding it — the only track that opens upward, and the only major key."
 date: 2026-10-15
 tags: [behind, dark electronic]
+cover: images/covers/the-sky-wakes-first.jpg
 ---
 
 The record opens up exactly once, and the reason is outside the window.

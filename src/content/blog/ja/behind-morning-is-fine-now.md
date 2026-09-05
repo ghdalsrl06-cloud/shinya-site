@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #7 — Morning Is Fine Now: 諦め�
 description: "頭より先に体が決める — 最後の残響が閉じずに開きます。"
 date: 2026-10-17
 tags: [behind, dark electronic]
+cover: images/covers/morning-is-fine-now.jpg
 ---
 
 アルバムは六曲かけて守ってきたものを手放して終わります。

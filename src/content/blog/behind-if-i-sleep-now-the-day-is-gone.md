@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #6 — If I Sleep Now the Day Is 
 description: "The arithmetic of 4 a.m., circling back to where it started — the fastest and busiest track."
 date: 2026-10-16
 tags: [behind, dark electronic]
+cover: images/covers/if-i-sleep-now-the-day-is-gone.jpg
 ---
 
 This is the maths you do at four in the morning.

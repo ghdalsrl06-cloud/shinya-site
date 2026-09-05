@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #5 — The Sky Wakes First: 앨범에�
 description: "밤이 내 결정 없이 끝납니다 — 유일하게 위로 열리는 곡, 하나뿐인 장조."
 date: 2026-10-15
 tags: [behind, dark electronic]
+cover: images/covers/the-sky-wakes-first.jpg
 ---
 
 앨범이 딱 한 번 열립니다. 그 이유는 창밖에 있습니다.

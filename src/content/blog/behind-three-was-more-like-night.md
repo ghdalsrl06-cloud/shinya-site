@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #4 — Three Was More Like Night"
 description: "The dark is unchanged and only its name moved — the slowest, widest track, and the only one in B minor."
 date: 2026-10-14
 tags: [behind, dark electronic]
+cover: images/covers/three-was-more-like-night.jpg
 ---
 
 This is the centre of the record, and the one place the album title is explained head-on.

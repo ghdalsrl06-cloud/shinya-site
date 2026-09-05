@@ -3,6 +3,7 @@ title: "SHINYA Original 6집 비하인드 #2 — Sleeping Feels Like Losing: 상
 description: "깨어 있을 이유를 찾는데 없습니다 — 킥이 처음 들어오는 곡."
 date: 2026-10-12
 tags: [behind, dark electronic]
+cover: images/covers/sleeping-feels-like-losing.jpg
 ---
 
 이유가 없다는 것이 이유가 됩니다.

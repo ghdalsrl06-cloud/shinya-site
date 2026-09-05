@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #2 — Sleeping Feels Like Losing
 description: "She looks for a reason to be awake and there is none — the first track with a kick."
 date: 2026-10-12
 tags: [behind, dark electronic]
+cover: images/covers/sleeping-feels-like-losing.jpg
 ---
 
 Not having a reason turns out to be the reason.

@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #7 — Morning Is Fine Now"
 description: "The body decides before the head does — and the last reverb opens instead of closing."
 date: 2026-10-17
 tags: [behind, dark electronic]
+cover: images/covers/morning-is-fine-now.jpg
 ---
 
 The album ends by giving up the thing it spent six tracks defending.

@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #4 — Three Was More Like Night: �
 description: "暗さは同じで名前だけが変わった — 最も遅く広い曲、唯一のBマイナー。"
 date: 2026-10-14
 tags: [behind, dark electronic]
+cover: images/covers/three-was-more-like-night.jpg
 ---
 
 アルバムの中心であり、タイトルの時刻が正面から説明される唯一の場所です。

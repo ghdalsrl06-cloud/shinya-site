@@ -3,6 +3,7 @@ title: "SHINYA Original 6th ビハインド #2 — Sleeping Feels Like Losing: �
 description: "起きている理由を探してもない — キックが初めて入る曲。"
 date: 2026-10-12
 tags: [behind, dark electronic]
+cover: images/covers/sleeping-feels-like-losing.jpg
 ---
 
 理由がないことが理由になります。

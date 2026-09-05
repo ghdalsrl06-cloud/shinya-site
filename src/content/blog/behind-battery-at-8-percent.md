@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #3 — Battery at 8%"
 description: "The phone runs out before she does — the driest mix on the record."
 date: 2026-10-13
 tags: [behind, dark electronic]
+cover: images/covers/battery-at-8-percent.jpg
 ---
 
 An object gets tired before the person does.

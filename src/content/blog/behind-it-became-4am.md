@@ -3,6 +3,7 @@ title: "Behind the Track (SHINYA Original 6th) #1 — It Became 4 A.M."
 description: "The number changed and nothing else did — the emptiest track on the record."
 date: 2026-10-11
 tags: [behind, dark electronic]
+cover: images/covers/it-became-4am.jpg
 ---
 
 The album opens on a glance at a phone.
