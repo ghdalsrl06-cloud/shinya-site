@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import { ymd, whenKst } from '../../../lib/dates';
 import ArtImg from '../../../components/ArtImg.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../../i18n/ui';
@@ -14,7 +15,10 @@ const tags = t(L, 'webtoon.series.tags').split(',').map((s) => s.trim());
 // UP badge on the newest episode when it landed within the last week
 const newest = episodes[0]?.data.episode;
 const fresh = (d) => Date.now() - d.valueOf() < 7 * 864e5;
-const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
+// The next scheduled episode, to say when it opens.
+const nextEp = (await getCollection('webtoon'))
+  .filter((e) => !e.data.draft && e.data.date.valueOf() > Date.now())
+  .sort((a, b) => a.data.episode - b.data.episode)[0];
 ---
 
 <Base lang="ko" title="웹툰 — SHINYA / 深夜" description={t(L, 'webtoon.series.desc')}>
@@ -36,7 +40,7 @@ const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
     ) : (
       <>
       <div class="wt-listbar">
-        <span class="wt-total">{`총 ${episodes.length}${t(L, 'webtoon.count')}`}</span>
+        <span class="wt-total">{`총 ${episodes.length}${t(L, 'webtoon.count')}`}{nextEp && <b class="wt-next">· {t(L, 'home.webtoon.next')} {whenKst(nextEp.data.date, L)}</b>}</span>
         <div class="wt-sort" role="group">
           <button type="button" class="active" data-sort="desc">{t(L, 'webtoon.sort.desc')}</button>
           <button type="button" data-sort="asc">{t(L, 'webtoon.sort.asc')}</button>
@@ -55,7 +59,7 @@ const shortDate = (d) => d.toISOString().slice(2, 10).replace(/-/g, '.');
                   {epLabel(L, e.data)}. {e.data.titleKo ?? e.data.title}
                   {e.data.episode === newest && fresh(e.data.date) && <span class="wt-up">{t(L, 'webtoon.up')}</span>}
                 </span>
-                <span class="wt-ep-date">{shortDate(e.data.date)}</span>
+                <span class="wt-ep-date">{ymd(e.data.date)}</span>
               </span>
             </a>
           </li>

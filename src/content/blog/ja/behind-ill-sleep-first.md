@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #7 — I'll Sleep First: 初めて私が先だ"
 description: "初めて私が先に終わります — カーテンは閉じ、残響は閉じません。"
 date: 2026-10-24
+cover: images/covers/ill-sleep-first.jpg
 tags: [behind, dark r&b]
 ---
 

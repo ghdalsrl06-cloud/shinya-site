@@ -1,0 +1,30 @@
+---
+// Every album as a row of jackets, newest first, each linking to its tab on
+// the music page — the music page's grid, reduced to a glance.
+import ArtImg from './ArtImg.astro';
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { albumsFrom, jacketOf, dateBadge } from '../lib/albums';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const albums = albumsFrom(await getCollection('music')).sort((a, b) => b.meta.n - a.meta.n);
+---
+
+<section class="section">
+  <h2>{t(lang, 'section.discography')}</h2>
+  <div class="album-strip">
+    {albums.map(({ meta, singles, out }) => (
+      <a class:list={['album-tile', !out && 'soon']} href={`${base}${prefix}/music/#album-${meta.n}`}>
+        <span class="album-tile-art">
+          <ArtImg src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 150px, 120px" alt="" />
+          {!out && <span class="album-tile-date">{dateBadge(singles[0])}</span>}
+        </span>
+        <span class="album-tile-no" data-line={meta.line}>{meta.tabNo[lang]}</span>
+        <span class="album-tile-name">{meta.name}</span>
+      </a>
+    ))}
+  </div>
+  <p class="section-more"><a href={`${base}${prefix}/music/`}>{t(lang, 'home.discography.all')} →</a></p>
+</section>

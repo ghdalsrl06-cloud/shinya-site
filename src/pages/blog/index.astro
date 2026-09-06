@@ -1,38 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const posts = (await getCollection('blog'))
-  .filter((p) => !p.id.includes('/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const tagSlug = (tag: string) => tag.replace(/\s+/g, '-');
+import BlogList from '../../components/BlogList.astro';
 ---
 
 <Base title="Blog — SHINYA / 深夜">
   <div class="container">
     <section class="section">
       <h2>Blog</h2>
-      <ul class="post-list">
-        {posts.map((p) => (
-          <li class="card">
-            <p class="post-meta">
-              {p.data.date.toISOString().slice(0, 10)} · {Math.max(1, Math.round((p.body ?? '').split(/\s+/).length / 200))} min read
-            </p>
-            <h3 style="margin: 0.3rem 0;">
-              <a href={`${base}/blog/${p.id}/`}>{p.data.title}</a>
-            </h3>
-            <p class="card-desc">{p.data.description}</p>
-            {p.data.tags.length > 0 && (
-              <ul class="tag-list">
-                {p.data.tags.map((tag) => (
-                  <li><a class="tag" href={`${base}/blog/tag/${tagSlug(tag)}/`}>#{tag}</a></li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
+      <BlogList lang="en" />
     </section>
   </div>
 </Base>

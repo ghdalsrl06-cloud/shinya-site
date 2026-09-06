@@ -1,0 +1,52 @@
+---
+// The newest published webtoon episode on the home page, with the date the
+// next one opens. Episodes are scheduled in the collection, so this reads
+// the calendar rather than repeating it.
+import ArtImg from './ArtImg.astro';
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { epLabel } from '../lib/webtoon';
+import { ymd, whenKst } from '../lib/dates';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+
+const episodes = (await getCollection('webtoon'))
+  .filter((e) => !e.data.draft)
+  .sort((a, b) => a.data.episode - b.data.episode);
+const published = episodes.filter((e) => e.data.date.valueOf() <= Date.now());
+const latest = published[published.length - 1];
+const next = episodes.find((e) => e.data.date.valueOf() > Date.now());
+// UP on the newest episode while it is less than a week old, as on the list.
+const fresh = latest && Date.now() - latest.data.date.valueOf() < 7 * 864e5;
+
+const title = (e: any) => (lang === 'ko' ? e.data.titleKo : lang === 'ja' ? e.data.titleJa : null) ?? e.data.title;
+const desc = (e: any) => (lang === 'ko' ? e.data.descriptionKo : lang === 'ja' ? e.data.descriptionJa : null) ?? e.data.description;
+
+const when = (d: Date) => whenKst(d, lang);
+---
+
+{latest && (
+  <section class="section">
+    <h2>{t(lang, 'home.webtoon')}</h2>
+    <a class="card home-webtoon" href={`${base}${prefix}/webtoon/${latest.id}/`}>
+      <span class="home-webtoon-cover">
+        <ArtImg src={latest.data.cover} width={900} sizes="(min-width: 700px) 160px, 96px" alt="" />
+      </span>
+      <span class="home-webtoon-body">
+        <span class="album-eyebrow"><span>{t(lang, 'webtoon.series.title')}</span></span>
+        <span class="home-webtoon-title">
+          {epLabel(lang, latest.data)}. {title(latest)}
+          {fresh && <span class="wt-up">{t(lang, 'webtoon.up')}</span>}
+        </span>
+        <span class="card-desc">{desc(latest)}</span>
+        <span class="album-meta">
+          <span>{ymd(latest.data.date)}</span>
+          {next && <span>{t(lang, 'home.webtoon.next')} {when(next.data.date)}</span>}
+        </span>
+      </span>
+    </a>
+    <p class="section-more"><a href={`${base}${prefix}/webtoon/`}>{t(lang, 'home.webtoon.all')} →</a></p>
+  </section>
+)}

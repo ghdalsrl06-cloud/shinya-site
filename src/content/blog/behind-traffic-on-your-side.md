@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #3 — Traffic on Your Side"
 description: "Their daytime comes down the phone line — the only track that lets the outside in."
 date: 2026-10-20
+cover: images/covers/traffic-on-your-side.jpg
 tags: [behind, dark r&b]
 ---
 

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { ymd } from '../../lib/dates';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import TokyoClock from '../../components/TokyoClock.astro';
@@ -7,6 +8,9 @@ import LiteYouTube from '../../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
 import { heroFollow } from '../../lib/presave';
+import HomeNext from '../../components/HomeNext.astro';
+import AlbumStrip from '../../components/AlbumStrip.astro';
+import HomeWebtoon from '../../components/HomeWebtoon.astro';
 
 const hf = heroFollow();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -59,6 +63,8 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
   </div>
 
   <div class="container">
+    <HomeNext lang="ja" />
+
     <section class="section">
       <h2>{t('ja', 'section.mood')}</h2>
       <div class="card mood-card has-art" data-moods={JSON.stringify(moods)}>
@@ -73,12 +79,16 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       </div>
     </section>
 
+    <HomeWebtoon lang="ja" />
+
     {latestVideoId && (
       <section class="section">
         <h2>{t('ja', 'section.video')}</h2>
         <LiteYouTube id={latestVideoId} title="SHINYA" poster={latest ? coverOf(latest) : undefined} />
       </section>
     )}
+
+    <AlbumStrip lang="ja" />
 
     <section class="section">
       <h2>スタジオにて</h2>
@@ -107,21 +117,6 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       </div>
     </section>
 
-    <section class="section">
-      <h2>{t('ja', 'section.latest')}</h2>
-      {latest && (
-        <div class="card has-art">
-          <ArtImg class="card-art" src="images/home/studio.jpg" width={1600} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" />
-          <div class="card-art-scrim" aria-hidden="true"></div>
-          <div class="card-art-content">
-            <span class="badge">{isReleased(latest) ? t('ja', 'badge.new') : t('ja', 'badge.coming')}</span>
-            <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
-            {latest.data.titleJa && <p class="card-title-ja">{latest.data.titleJa}</p>}
-            <p class="card-desc">{latest.data.descriptionJa ?? latest.data.description}</p>
-          </div>
-        </div>
-      )}
-    </section>
 
     <section class="section">
       <h2>{t('ja', 'section.blog')}</h2>
@@ -131,7 +126,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
         <ul class="post-list">
         {posts.map((p) => (
           <li class="card">
-            <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
+            <p class="post-meta">{ymd(p.data.date)}</p>
             <h3 style="margin: 0.3rem 0;">
               <a href={`${base}/ja/blog/${p.id.replace(/^ja\//, '')}/`}>{p.data.title}</a>
             </h3>

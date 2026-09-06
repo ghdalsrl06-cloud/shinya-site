@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #6 — You're at Work: 천문학의 문제"
 description: "답이 늦는 건 마음이 아니라 천문학입니다 — 가장 빠르고 분주한 곡."
 date: 2026-10-23
+cover: images/covers/youre-at-work.jpg
 tags: [behind, dark r&b]
 ---
 

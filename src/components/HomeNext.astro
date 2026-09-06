@@ -1,0 +1,59 @@
+---
+// The home page's release block: the next album due, with its D-day and
+// pre-save, and the ones queued behind it. Once nothing is upcoming it turns
+// into the newest album with its stores. Everything comes from the album
+// table and the collection, so it moves on by itself on release night.
+import ArtImg from './ArtImg.astro';
+import ReleaseCountdown from './ReleaseCountdown.astro';
+import { getCollection } from 'astro:content';
+import { HYPERFOLLOW, isOut } from '../lib/presave';
+import { t, type Lang } from '../i18n/ui';
+import { albumsFrom, jacketOf, jacketAlt, lineName, tabParts, dateBadge } from '../lib/albums';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+
+const albums = albumsFrom(await getCollection('music'));
+const at = (a: any) => new Date(a.singles[0].data.releaseAt ?? a.singles[0].data.releaseDate ?? 0).valueOf();
+const upcoming = albums.filter((a) => !a.out).sort((a, b) => at(a) - at(b));
+const next = upcoming[0] ?? [...albums].sort((a, b) => b.meta.n - a.meta.n)[0];
+const then = upcoming.slice(1);
+
+const COUNT = { en: (n: number) => `${n} tracks`, ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
+const released = next.singles[0].data.releaseDate?.replaceAll('-', '.');
+const releaseAt = next.singles[0].data.releaseAt;
+const follow = HYPERFOLLOW.find((e) => e.n === next.meta.n);
+const href = (n: number) => `${base}${prefix}/music/#album-${n}`;
+---
+
+<section class="section">
+  <h2>{t(lang, next.out ? 'home.latest' : 'home.next')}</h2>
+  <div class="next-release">
+    <a class="next-release-art" href={href(next.meta.n)}>
+      <ArtImg src={jacketOf(next.meta)} width={2048} sizes="(min-width: 700px) 240px, 70vw" alt={jacketAlt(next.meta, lang)} />
+    </a>
+    <div class="next-release-info">
+      <p class="album-eyebrow"><span>{lineName(next.meta)}</span><span class="album-eyebrow-no">{tabParts(next.meta, lang).no}</span></p>
+      <h3 class="next-release-name">{next.meta.name}</h3>
+      <p class="album-note">{next.out ? next.meta.noteOut[lang] : next.meta.noteSoon[lang]}</p>
+      <p class="album-meta">
+        <span>{COUNT[lang](next.singles.length)}</span>
+        {released && <span>{released} {t(lang, next.out ? 'album.released' : 'album.upcoming')}</span>}
+        {!next.out && releaseAt && <ReleaseCountdown releaseAt={releaseAt} lang={lang} />}
+      </p>
+      <p class="album-cta">
+        {follow && (
+          <a class="btn btn-sm" href={follow.url} target="_blank" rel="noopener">{t(lang, isOut(follow) ? 'album.stream' : 'album.presave')}</a>
+        )}
+        <a class="btn btn-sm btn-ghost" href={href(next.meta.n)}>{t(lang, 'home.album')}</a>
+      </p>
+      {then.length > 0 && (
+        <p class="next-release-then">
+          <span>{t(lang, 'home.then')}</span>
+          {then.map((a) => <a href={href(a.meta.n)}>{a.meta.name}<b>{dateBadge(a.singles[0])}</b></a>)}
+        </p>
+      )}
+    </div>
+  </div>
+</section>

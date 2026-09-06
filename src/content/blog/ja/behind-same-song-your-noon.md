@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #5 — Same Song, Your Noon: このチャンネルについての曲"
 description: "一つのメロディを二つの音色で二度 — 歌は聴かれる時間を選べないからです。"
 date: 2026-10-22
+cover: images/covers/same-song-your-noon.jpg
 tags: [behind, dark r&b]
 ---
 

@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #2 — Minus Twelve: 숫자가 멀다"
 description: "계산이 습관이 됐고, 쉬워질수록 거리가 또렷해집니다."
 date: 2026-10-19
+cover: images/covers/minus-twelve.jpg
 tags: [behind, dark r&b]
 ---
 

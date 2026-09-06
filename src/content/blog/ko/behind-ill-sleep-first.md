@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #7 — I'll Sleep First: 처음으로 내가 먼저다"
 description: "처음으로 내가 먼저 끝냅니다 — 커튼은 닫히고 울림은 닫히지 않습니다."
 date: 2026-10-24
+cover: images/covers/ill-sleep-first.jpg
 tags: [behind, dark r&b]
 ---
 

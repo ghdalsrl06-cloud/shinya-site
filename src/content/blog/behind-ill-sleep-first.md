@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #7 — I'll Sleep First"
 description: "For once she is the one who ends first — the curtain closes, and the reverb does not."
 date: 2026-10-24
+cover: images/covers/ill-sleep-first.jpg
 tags: [behind, dark r&b]
 ---
 

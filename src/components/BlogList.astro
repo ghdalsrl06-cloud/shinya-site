@@ -1,0 +1,106 @@
+---
+// The blog index: every published post in this language, newest first, with
+// its cover and the album it belongs to, a row of album chips to narrow the
+// list, and a page of twelve at a time. All posts are in the HTML; the chips
+// and "show more" only toggle which are on show.
+import ArtImg from './ArtImg.astro';
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { ALBUMS } from '../lib/albums';
+import { ymd } from '../lib/dates';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const PAGE = 12;
+
+const mine = (id: string) => (lang === 'en' ? !id.includes('/') : id.startsWith(`${lang}/`));
+const posts = (await getCollection('blog'))
+  .filter((p) => mine(p.id) && !p.data.draft && p.data.date.valueOf() <= Date.now())
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// A behind-the-track post is named after its track, and the track names its album.
+const releases = await getCollection('music');
+const albumOf = (p: any) => {
+  const track = releases.find((r) => r.id === p.id.replace(/^(ko|ja)\//, '').replace(/^behind-/, ''));
+  return track ? ALBUMS.find((a) => a.n === (track.data.album ?? 1)) : undefined;
+};
+const chips = ALBUMS.filter((a) => posts.some((p) => albumOf(p)?.n === a.n)).sort((a, b) => b.n - a.n);
+const count = (n: number) => posts.filter((p) => albumOf(p)?.n === n).length;
+
+const slug = (p: any) => p.id.replace(/^(ko|ja)\//, '');
+// Reading time, by the measure each language's pages already use.
+const readMin = (body: string) =>
+  lang === 'ja'
+    ? Math.max(1, Math.round(body.length / 600))
+    : Math.max(1, Math.round(body.split(/\s+/).length / (lang === 'en' ? 200 : 130)));
+const readLabel = (n: number) => (lang === 'en' ? `${n} min read` : `${n}${t(lang, 'read.suffix')}`);
+---
+
+<div class="blog-filter" role="group" aria-label={t(lang, 'album.all')}>
+  <button type="button" class="album-filter-btn active" data-blog-filter="all" aria-pressed="true">{t(lang, 'album.all')} <b>{posts.length}</b></button>
+  {chips.map((a) => (
+    <button type="button" class="album-filter-btn" data-blog-filter={a.n} aria-pressed="false">{a.tabNo[lang]} <b>{count(a.n)}</b></button>
+  ))}
+</div>
+
+<ul class="post-list" data-blog-list data-page={PAGE}>
+  {posts.map((p, i) => {
+    const album = albumOf(p);
+    const href = `${base}${prefix}/blog/${slug(p)}/`;
+    return (
+      <li class:list={['card', 'post-card', !p.data.cover && 'post-card-plain']} data-album={album?.n ?? ''} hidden={i >= PAGE}>
+        {p.data.cover && (
+          <a class="post-card-cover" href={href} tabindex="-1" aria-hidden="true">
+            <ArtImg src={p.data.cover} width={1280} sizes="(min-width: 700px) 200px, 96px" alt="" />
+          </a>
+        )}
+        <div class="post-card-body">
+          <p class="post-meta">
+            {album && <><a class="song-album" href={`${base}${prefix}/music/#album-${album.n}`}>{album.tabNo[lang]}</a> · </>}
+            {ymd(p.data.date)} · {readLabel(readMin(p.body ?? ''))}
+          </p>
+          <h3><a href={href}>{p.data.title}</a></h3>
+          <p class="card-desc">{p.data.description}</p>
+        </div>
+      </li>
+    );
+  })}
+</ul>
+<p class="blog-more" hidden={posts.length <= PAGE}>
+  <button type="button" class="btn btn-sm btn-ghost" data-blog-more>{t(lang, 'blog.more')}</button>
+</p>
+
+<script>
+  const initBlogList = () => {
+    const list = document.querySelector('[data-blog-list]');
+    if (!list || list.dataset.bound) return;
+    list.dataset.bound = '1';
+    const cards = Array.from(list.children);
+    const page = Number(list.dataset.page) || 12;
+    const chips = Array.from(document.querySelectorAll('[data-blog-filter]'));
+    const more = document.querySelector('[data-blog-more]');
+    let filter = 'all';
+    let shown = page;
+    const apply = () => {
+      const match = cards.filter((c) => filter === 'all' || c.dataset.album === filter);
+      cards.forEach((c) => { c.hidden = true; });
+      match.slice(0, shown).forEach((c) => { c.hidden = false; });
+      if (more) more.parentElement.hidden = match.length <= shown;
+      // cards that just appeared in view get their entrance from the scroll reveal
+      window.dispatchEvent(new Event('scroll'));
+    };
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      filter = chip.dataset.blogFilter;
+      shown = page;
+      chips.forEach((c) => {
+        c.classList.toggle('active', c === chip);
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      apply();
+    }));
+    more?.addEventListener('click', () => { shown += page; apply(); });
+  };
+  initBlogList();
+  document.addEventListener('astro:page-load', initBlogList);
+</script>

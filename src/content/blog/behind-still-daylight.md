@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #1 — Still Daylight"
 description: "A reply arrives with short shadows in the photo — the emptiest track here."
 date: 2026-10-18
+cover: images/covers/still-daylight.jpg
 tags: [behind, dark r&b]
 ---
 

@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #2 — Minus Twelve: 数字が遠い"
 description: "計算が習慣になり、簡単になるほど距離がはっきりします。"
 date: 2026-10-19
+cover: images/covers/minus-twelve.jpg
 tags: [behind, dark r&b]
 ---
 
