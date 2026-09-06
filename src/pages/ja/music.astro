@@ -3,9 +3,10 @@ import Base from '../../layouts/Base.astro';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
+import AlbumHead from '../../components/AlbumHead.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
-import { ALBUMS, LINES, jacketOf, jacketAlt } from '../../lib/albums';
+import { ALBUMS, LINES, jacketOf } from '../../lib/albums';
 
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -68,7 +69,7 @@ const albumLd = {
       <>
         <p class="album-line-label">{line.label['ja']}</p>
         <div class:list={['album-tabs', items.length <= 2 && 'album-tabs-club']} style={`--tab-cols:${tabCols(items.length)}`} role="tablist" aria-label={line.label['ja']}>
-          {items.map(({ meta }) => (
+          {items.map(({ meta, out }) => (
             <button
               type="button"
               role="tab"
@@ -78,7 +79,7 @@ const albumLd = {
               data-album-line={meta.line}
             >
               <ArtImg class="album-tab-art" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-              <span class="album-tab-text"><span class="album-tab-no">{meta.tabNo['ja']}</span><span class="album-tab-name">{meta.name}</span></span>
+              <span class="album-tab-text"><span class="album-tab-no">{meta.tabNo['ja']}{!out && <span class="album-tab-soon">{t('ja', 'album.soon')}</span>}</span><span class="album-tab-name">{meta.name}</span></span>
             </button>
           ))}
         </div>
@@ -88,13 +89,7 @@ const albumLd = {
     {ordered.map(({ meta, singles, playlist, out }) => (
       <div data-album-panel={meta.n} hidden={meta.n !== current}>
         <section class="section" style="padding-bottom: 0;">
-          <div class="album-head">
-            <ArtImg class="album-jacket" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 280px, 80vw" alt={jacketAlt(meta, 'ja')} />
-            <div class="album-head-info">
-              <h2>{meta.heading['ja']}</h2>
-              <p class="album-note">{out ? meta.noteOut['ja'] : meta.noteSoon['ja']}</p>
-            </div>
-          </div>
+          <AlbumHead lang="ja" meta={meta} singles={singles} playlist={playlist} out={out} />
         </section>
         {playlist && (
         <section class="section">
@@ -121,6 +116,7 @@ const albumLd = {
           <div class="card-grid">
             {singles.map((r) => (
               <div class="card">
+            <span class="card-no" aria-hidden="true">{String(r.data.track ?? 0).padStart(2, '0')}</span>
             <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ja', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
             {(r.data.titleJa) && <p class="card-title-ja">{r.data.titleJa}</p>}

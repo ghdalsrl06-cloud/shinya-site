@@ -463,6 +463,8 @@ a:focus-visible, .btn:focus-visible {
    intrinsic size can overflow the card and get clipped by its overflow:hidden. */
 .card-media img { display: block; width: 100%; height: auto; border-radius: 4px; }
 
+/* track number in the top corner of a single's card */
+.card-no { position: absolute; top: 1.15rem; right: 1.3rem; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--text-dim); opacity: 0.7; }
 .card-title-ja { font-family: var(--font-jp); color: var(--text-dim); }
 .card-desc { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.6rem; }
 
@@ -490,16 +492,54 @@ a:focus-visible, .btn:focus-visible {
 .disco-sub { margin: 0; color: var(--text-dim); font-size: 0.85rem; letter-spacing: 0.04em; }
 
 /* ---- album head: square jacket + intro at the top of each album tab ---- */
-.album-head { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; gap: 2.2rem; align-items: center; margin-bottom: 2.4rem; }
+.album-head {
+  position: relative; display: grid; grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: 2.4rem; align-items: start; margin-bottom: 2.4rem; padding: 1.2rem 0;
+}
+/* The jacket, blurred wide and faint, tints the block in the album's own
+   colours. Paint from a filter never adds scrollable overflow, so nothing
+   here needs clipping. */
+.album-head::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--jacket) center / cover no-repeat;
+  filter: blur(70px) saturate(1.4); opacity: 0.22;
+  mask-image: radial-gradient(ellipse at 30% 50%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 30% 50%, #000 30%, transparent 75%);
+}
 .album-head .album-jacket {
   width: 100%; height: auto; display: block; border-radius: 6px;
-  border: 1px solid var(--line); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--line); box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
 }
-.album-head-info h2 { margin-top: 0; }
-.album-head-info .album-note { margin-bottom: 0; }
+.album-head-info { min-width: 0; }
+.album-head-info h2 { margin-top: 0.2rem; }
+.album-eyebrow {
+  display: flex; align-items: center; gap: 0.7rem; margin: 0;
+  font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-dim);
+}
+.album-eyebrow-no { color: var(--neon-pink); border: 1px solid rgba(255, 45, 110, 0.45); border-radius: 3px; padding: 0.05rem 0.5rem; letter-spacing: 0.18em; }
+.album-head-info .album-note { margin-bottom: 0.9rem; }
+.album-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0; margin: 0 0 1.1rem; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-dim); }
+.album-meta span + span::before { content: '·'; margin: 0 0.6rem; opacity: 0.6; }
+.album-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1.5rem; }
+
+/* compact tracklist: number, title and the other-language name, two columns
+   on desktop so eight tracks sit beside the jacket instead of below it */
+.album-tracks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 1.6rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.album-tracks a {
+  display: flex; align-items: baseline; gap: 0.7rem; padding: 0.3rem 0.4rem; margin: 0 -0.4rem;
+  border-radius: 4px; color: var(--text); text-decoration: none; transition: background 0.2s, color 0.2s;
+}
+.album-tracks a:hover { background: rgba(255, 255, 255, 0.04); color: var(--neon-pink); }
+.album-track-no { flex: none; font-size: 0.68rem; letter-spacing: 0.15em; color: var(--text-dim); min-width: 1.4rem; }
+.album-tracks a:hover .album-track-no { color: var(--neon-pink); }
+.album-track-text { display: flex; flex-direction: column; min-width: 0; }
+.album-track-title { font-size: 0.9rem; line-height: 1.4; }
+.album-track-sub { font-size: 0.74rem; color: var(--text-dim); line-height: 1.4; }
 @media (max-width: 700px) {
-  .album-head { grid-template-columns: 1fr; gap: 1.4rem; }
+  .album-head { grid-template-columns: 1fr; gap: 1.4rem; padding: 0.6rem 0; }
+  .album-head::before { mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); }
   .album-head .album-jacket { max-width: 300px; }
+  .album-tracks { grid-template-columns: 1fr; }
 }
 
 /* ---- album tabs (music page): jacket thumb + number + title ---- */
@@ -514,7 +554,7 @@ a:focus-visible, .btn:focus-visible {
   border: 1px solid var(--line); border-radius: 6px; color: var(--text-dim);
   padding: 0.55rem 0.9rem; letter-spacing: 0.06em;
   display: flex; align-items: center; gap: 0.8rem; text-align: left;
-  transition: border-color 0.25s, color 0.25s, background 0.25s;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .album-tab-art { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; flex: none; opacity: 0.85; transition: opacity 0.25s; }
 .album-tab-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
@@ -522,8 +562,12 @@ a:focus-visible, .btn:focus-visible {
 .album-tab-name { font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .album-tab:hover { border-color: var(--line-bright); color: var(--text); }
 .album-tab:hover .album-tab-art, .album-tab.active .album-tab-art { opacity: 1; }
-.album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); }
+.album-tab:hover { transform: translateY(-1px); }
+.album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); box-shadow: 0 0 20px rgba(255, 45, 110, 0.12); }
 .album-tab.active .album-tab-no { color: var(--neon-pink); }
+/* an album that is not out yet says so on its tab */
+.album-tab-soon { margin-left: 0.5rem; color: var(--neon-purple); font-size: 0.6rem; letter-spacing: 0.18em; }
+.album-tab.active .album-tab-soon { color: var(--neon-pink); opacity: 0.8; }
 @media (max-width: 700px) {
   .album-tabs { gap: 0.6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .album-tab { flex-direction: column; align-items: center; text-align: center; gap: 0.55rem; padding: 0.7rem 0.4rem 0.8rem; }
@@ -579,6 +623,10 @@ a:focus-visible, .btn:focus-visible {
   box-shadow: 0 0 28px var(--neon-glow), 0 0 60px var(--purple-glow);
   transform: translateY(-1px);
 }
+/* smaller pair for the album head; the ghost one is the secondary action */
+.btn-sm { padding: 0.5rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.2em; }
+.btn-ghost { border-color: var(--line-bright); color: var(--text-dim); background: transparent; }
+.btn-ghost:hover { color: var(--text); }
 
 /* ---- blog ---- */
 .post-list { display: flex; flex-direction: column; gap: 1.2rem; list-style: none; }

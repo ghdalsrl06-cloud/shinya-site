@@ -1,0 +1,82 @@
+---
+// The top of an album panel on the music page: jacket, line and number,
+// heading, blurb, a meta row, the store buttons and a compact tracklist.
+// Everything comes from the album table and the collection, so the three
+// music pages render this once per album and pass the language.
+import ArtImg from './ArtImg.astro';
+import { HYPERFOLLOW, isOut } from '../lib/presave';
+import { t, type Lang } from '../i18n/ui';
+import { jacketOf, jacketAlt, type AlbumMeta } from '../lib/albums';
+import { isReleased } from '../lib/covers';
+
+interface Props {
+  lang: Lang;
+  meta: AlbumMeta;
+  singles: any[];
+  playlist?: any;
+  out: boolean;
+}
+
+const { lang, meta, singles, playlist, out } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+
+const LINE_NAME = { main: 'SHINYA 深夜', club: 'SHINYA CLUB', after: 'SHINYA AFTER' };
+// The CLUB and AFTER tab labels carry the line name already ("AFTER 2집");
+// next to the line name itself only the number is wanted.
+const number = meta.tabNo[lang].replace(/^(CLUB|AFTER)\s*/, '');
+const COUNT = { en: (n: number) => `${n} tracks`, ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
+
+const released = singles[0]?.data.releaseDate?.replaceAll('-', '.');
+const follow = HYPERFOLLOW.find((e) => e.n === meta.n);
+const mixUrl = playlist && isReleased(playlist) && playlist.data.youtubeId
+  ? `https://www.youtube.com/watch?v=${playlist.data.youtubeId}`
+  : null;
+
+// The line under each title follows the card convention: the English page
+// shows the name in the other script, ko its Korean, ja its Japanese.
+const sub = (r: any) =>
+  lang === 'ko' ? r.data.titleKo : lang === 'ja' ? r.data.titleJa : (r.data.titleEn ?? r.data.titleJa);
+
+// A blurred copy of the jacket sits behind the whole block so each album
+// tints its own panel. The 480px variant is plenty under a 70px blur.
+const glow = `${base}/images/opt/covers/album-${meta.n}-w480.webp`;
+---
+
+<div class="album-head" style={`--jacket: url('${glow}')`}>
+  <ArtImg class="album-jacket" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 280px, 80vw" alt={jacketAlt(meta, lang)} />
+  <div class="album-head-info">
+    <p class="album-eyebrow"><span>{LINE_NAME[meta.line]}</span><span class="album-eyebrow-no">{number}</span></p>
+    <h2>{meta.heading[lang]}</h2>
+    <p class="album-note">{out ? meta.noteOut[lang] : meta.noteSoon[lang]}</p>
+    <p class="album-meta">
+      <span>{COUNT[lang](singles.length)}</span>
+      {released && <span>{released} {t(lang, out ? 'album.released' : 'album.upcoming')}</span>}
+    </p>
+    {(follow || mixUrl) && (
+      <p class="album-cta">
+        {follow && (
+          <a class="btn btn-sm" href={follow.url} target="_blank" rel="noopener">
+            {t(lang, isOut(follow) ? 'album.stream' : 'album.presave')}
+          </a>
+        )}
+        {mixUrl && (
+          <a class="btn btn-sm btn-ghost" href={mixUrl} target="_blank" rel="noopener">{t(lang, 'album.youtube')}</a>
+        )}
+      </p>
+    )}
+    <ol class="album-tracks" aria-label={t(lang, 'album.tracklist')}>
+      {singles.map((r) => (
+        <li>
+          <a href={`${base}${prefix}/music/${r.id}/`}>
+            <span class="album-track-no">{String(r.data.track ?? 0).padStart(2, '0')}</span>
+            <span class="album-track-text">
+              <span class="album-track-title">{r.data.title}</span>
+              {sub(r) && <span class="album-track-sub">{sub(r)}</span>}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
