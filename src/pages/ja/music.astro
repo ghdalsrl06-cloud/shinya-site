@@ -3,9 +3,11 @@ import Base from '../../layouts/Base.astro';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
+import AlbumHead from '../../components/AlbumHead.astro';
+import MusicOutro from '../../components/MusicOutro.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
-import { ALBUMS, LINES, jacketOf, jacketAlt } from '../../lib/albums';
+import { ALBUMS, LINES, jacketOf, tabParts } from '../../lib/albums';
 
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -28,7 +30,6 @@ const ordered = [...albums].sort((a, b) => b.meta.n - a.meta.n);
 const current = ordered[0].meta.n;
 const groups = LINES.map((line) => ({ line, items: ordered.filter((a) => a.meta.line === line.id) }))
   .filter((g) => g.items.length > 0);
-const firstAlbum = albums.find((a) => a.meta.n === 1);
 // Banner counts come from the data so they cannot fall behind a new album.
 const lineAlbums = (id) => albums.filter((a) => a.meta.line === id).length;
 const lineTracks = (id) => albums.filter((a) => a.meta.line === id).reduce((n, a) => n + a.singles.length, 0);
@@ -36,20 +37,27 @@ const totalTracks = albums.reduce((n, a) => n + a.singles.length, 0);
 // Tabs wrap into balanced rows — six albums read better as 3 + 3 than 5 + 1 —
 // while each tab keeps the same width whatever the count.
 const tabCols = (n) => (n <= 5 ? n : Math.ceil(n / Math.ceil(n / 5)));
+// One MusicAlbum per album, so search engines see the whole discography,
+// with each recording's running time where the data has it.
+const isoDuration = (d) => `PT${Number(d.split(':')[0])}M${Number(d.split(':')[1])}S`;
 const albumLd = {
   '@context': 'https://schema.org',
-  '@type': 'MusicAlbum',
-  name: 'SHINYA 深夜',
-  byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
-  numTracks: firstAlbum.singles.length,
-  track: firstAlbum.singles.map((r) => ({
-    '@type': 'MusicRecording',
-    name: r.data.title,
-    position: r.data.track,
-    url: `${site}${base}/ja/music/${r.id}/`,
+  '@graph': albums.map(({ meta, singles }) => ({
+    '@type': 'MusicAlbum',
+    name: meta.name,
+    byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
+    image: `${site}${base}/images/covers/album-${meta.n}.jpg`,
+    datePublished: singles[0].data.releaseDate,
+    numTracks: singles.length,
+    track: singles.map((r) => ({
+      '@type': 'MusicRecording',
+      name: r.data.title,
+      position: r.data.track,
+      duration: r.data.duration ? isoDuration(r.data.duration) : undefined,
+      url: `${site}${base}/ja/music/${r.id}/`,
+    })),
   })),
-};
----
+};---
 
 <Base lang="ja" title="ミュージック — SHINYA / 深夜">
   <script type="application/ld+json" set:html={JSON.stringify(albumLd)} />
@@ -68,17 +76,20 @@ const albumLd = {
       <>
         <p class="album-line-label">{line.label['ja']}</p>
         <div class:list={['album-tabs', items.length <= 2 && 'album-tabs-club']} style={`--tab-cols:${tabCols(items.length)}`} role="tablist" aria-label={line.label['ja']}>
-          {items.map(({ meta }) => (
+          {items.map(({ meta, out }) => (
             <button
               type="button"
               role="tab"
+              id={`album-tab-${meta.n}`}
               class:list={['album-tab', meta.n === current && 'active']}
               aria-selected={String(meta.n === current)}
+              aria-controls={`album-panel-${meta.n}`}
+              tabindex={meta.n === current ? 0 : -1}
               data-album-tab={meta.n}
               data-album-line={meta.line}
             >
               <ArtImg class="album-tab-art" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-              <span class="album-tab-text"><span class="album-tab-no">{meta.tabNo['ja']}</span><span class="album-tab-name">{meta.name}</span></span>
+              <span class="album-tab-text"><span class="album-tab-no">{tabParts(meta, 'ja').line && <span class="album-tab-line">{tabParts(meta, 'ja').line} </span>}{tabParts(meta, 'ja').no}{!out && <span class="album-tab-soon">{t('ja', 'album.soon')}</span>}</span><span class="album-tab-name">{meta.name}</span></span>
             </button>
           ))}
         </div>
@@ -86,15 +97,9 @@ const albumLd = {
     ))}
 
     {ordered.map(({ meta, singles, playlist, out }) => (
-      <div data-album-panel={meta.n} hidden={meta.n !== current}>
+      <div data-album-panel={meta.n} id={`album-panel-${meta.n}`} role="tabpanel" aria-labelledby={`album-tab-${meta.n}`} hidden={meta.n !== current}>
         <section class="section" style="padding-bottom: 0;">
-          <div class="album-head">
-            <ArtImg class="album-jacket" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 280px, 80vw" alt={jacketAlt(meta, 'ja')} />
-            <div class="album-head-info">
-              <h2>{meta.heading['ja']}</h2>
-              <p class="album-note">{out ? meta.noteOut['ja'] : meta.noteSoon['ja']}</p>
-            </div>
-          </div>
+          <AlbumHead lang="ja" meta={meta} singles={singles} playlist={playlist} out={out} />
         </section>
         {playlist && (
         <section class="section">
@@ -121,6 +126,7 @@ const albumLd = {
           <div class="card-grid">
             {singles.map((r) => (
               <div class="card">
+            <span class="card-no" aria-hidden="true">{String(r.data.track ?? 0).padStart(2, '0')}</span>
             <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ja', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
             {(r.data.titleJa) && <p class="card-title-ja">{r.data.titleJa}</p>}
@@ -146,10 +152,7 @@ const albumLd = {
       </div>
     ))}
 
-      <p style="margin-top: 2.5rem; margin-bottom: 4rem; color: var(--text-dim);">
-        {t('ja', 'music.subscribe.pre')}
-        <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a>{t('ja', 'music.subscribe.post')}
-      </p>
+      <MusicOutro lang="ja" />
   </div>
 </Base>
 
@@ -170,6 +173,9 @@ const albumLd = {
         if (on) line = b.dataset.albumLine || 'main';
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        // On the mobile strip, bring the chosen tab into view (a no-op on the desktop grid).
+        if (on) b.parentElement.scrollLeft = Math.max(0, b.offsetLeft - b.parentElement.offsetLeft - 20);
       });
       document.querySelectorAll('[data-album-panel]').forEach((p) => {
         p.hidden = p.dataset.albumPanel !== n;
@@ -182,6 +188,19 @@ const albumLd = {
       if (!b) return;
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
+    }));
+    // Arrow keys move along the tabs of a line; Home and End jump to its ends.
+    bars.forEach((bar) => bar.addEventListener('keydown', (e) => {
+      const tabs = Array.from(bar.querySelectorAll('[data-album-tab]'));
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      const step = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+      if (step === undefined) return;
+      e.preventDefault();
+      const to = tabs[(i + step + tabs.length) % tabs.length];
+      to.focus();
+      select(to.dataset.albumTab);
+      history.replaceState(null, '', location.pathname + '#album-' + to.dataset.albumTab);
     }));
     const m = location.hash.match(/^#album-(\d+)$/);
     const linked = m && document.querySelector('[data-album-tab="' + m[1] + '"]') ? m[1] : null;

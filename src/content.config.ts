@@ -30,6 +30,8 @@ const music = defineCollection({
     posterPre: z.string().optional(), // text-free art shown until releaseDate
     releaseDate: z.string().optional(),
     releaseAt: z.string().optional(), // exact release moment (ISO, with offset) when it isn't midnight UTC of releaseDate
+    duration: z.string().optional(), // running time as m:ss, from the album document
+    bpm: z.number().optional(),
     description: z.string(),
     descriptionKo: z.string().optional(),
     descriptionJa: z.string().optional(),

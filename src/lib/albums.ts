@@ -47,12 +47,14 @@ export const LINES: { id: LineId; label: Record<Lang, string> }[] = [
 const COVER_ALT: Record<Lang, string> = { en: 'album cover', ko: '앨범 커버', ja: 'アルバムジャケット' };
 
 export const jacketOf = (a: AlbumMeta) => `images/covers/album-${a.n}.jpg`;
+/** The tab label split into the line name it may start with ("CLUB", "AFTER")
+ *  and the number, so the line can be dropped where it is already stated. */
+export const tabParts = (a: AlbumMeta, lang: Lang) => {
+  const m = a.tabNo[lang].match(/^(CLUB|AFTER)\s+(.*)$/);
+  return m ? { line: m[1], no: m[2] } : { line: '', no: a.tabNo[lang] };
+};
 export const jacketAlt = (a: AlbumMeta, lang: Lang) => `${a.name} ${COVER_ALT[lang]}`;
 
-// SHINYA AFTER 3rd 「Still Daylight」 (n: 11, line 'after') is registered in
-// releases.json and its track pages build, but it is deliberately not listed
-// here yet: a tab and a panel both render images/covers/album-11.jpg, and the
-// jacket has not arrived. Add the block back the moment it does.
 export const ALBUMS: AlbumMeta[] = [
   {
     n: 1,
@@ -263,6 +265,27 @@ export const ALBUMS: AlbumMeta[] = [
       en: 'The second AFTER record — the last night in a room already emptied. Seven dark R&B tracks at 72 BPM run the night in order, from three boxes on the floor to the light going off. Coming soon.',
       ko: '두 번째 AFTER — 짐을 다 뺀 방에서 보내는 마지막 밤. 72 BPM 다크 R&B 7곡이 하룻밤을 시간 순서대로 지난다. 바닥의 상자 세 개에서, 불을 끄고 나가기까지. 커밍순. 가사는 미리 읽어볼 수 있어요.',
       ja: '二枚目の AFTER — 荷物を出し終えた部屋で過ごす最後の夜。72 BPMのダークR&B7曲が一晩を時間順に進む。床の段ボール三つから、電気を消して出ていくまで。カミングスーン。歌詞は先に読めます。',
+    },
+  },
+  {
+    n: 11,
+    line: 'after',
+    name: 'Still Daylight',
+    tabNo: { en: 'AFTER 3rd', ko: 'AFTER 3집', ja: 'AFTER 3rd' },
+    heading: {
+      en: 'SHINYA AFTER 3rd 「Still Daylight」 — そっちはまだ昼',
+      ko: 'SHINYA AFTER 3집 「Still Daylight」 — 거긴 아직 낮',
+      ja: 'SHINYA AFTER 3rd 「Still Daylight」 — そっちはまだ昼',
+    },
+    noteOut: {
+      en: 'The third AFTER record — the hour a night ends on one side of the earth while an afternoon carries on at the other. Seven dark R&B tracks between 68 and 78 BPM on the one fact that does not move: only I am ending. Out now.',
+      ko: '세 번째 AFTER — 지구 한쪽에서 밤이 끝나고 반대쪽에서는 오후가 이어지는 한 시간. 68~78 BPM 다크 R&B 7곡이 움직이지 않는 사실 하나를 일곱 번 만진다 — 끝나는 건 나뿐이다.',
+      ja: '三枚目の AFTER — 地球の片側で夜が終わり、反対側では午後が続く一時間。68〜78BPMのダークR&B7曲が、動かない事実を七回触る — 終わるのは私だけ。',
+    },
+    noteSoon: {
+      en: 'The third AFTER record — the hour a night ends on one side of the earth while an afternoon carries on at the other. Seven dark R&B tracks between 68 and 78 BPM on the one fact that does not move: only I am ending. Coming soon.',
+      ko: '세 번째 AFTER — 지구 한쪽에서 밤이 끝나고 반대쪽에서는 오후가 이어지는 한 시간. 68~78 BPM 다크 R&B 7곡이 움직이지 않는 사실 하나를 일곱 번 만진다 — 끝나는 건 나뿐이다. 커밍순. 가사는 미리 읽어볼 수 있어요.',
+      ja: '三枚目の AFTER — 地球の片側で夜が終わり、反対側では午後が続く一時間。68〜78BPMのダークR&B7曲が、動かない事実を七回触る — 終わるのは私だけ。カミングスーン。歌詞は先に読めます。',
     },
   },
 ];

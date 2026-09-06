@@ -13270,7 +13270,9 @@
     "posterPre": "images/covers/it-became-4am-pre.jpg",
     "youtubeId": "9Qo3hmXI0_o",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:00",
+    "bpm": 72
   },
   {
     "id": "sleeping-feels-like-losing",
@@ -13450,7 +13452,9 @@
     "posterPre": "images/covers/sleeping-feels-like-losing-pre.jpg",
     "youtubeId": "sYo6jTbtT78",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:05",
+    "bpm": 88
   },
   {
     "id": "battery-at-8-percent",
@@ -13621,7 +13625,9 @@
     "posterPre": "images/covers/battery-at-8-percent-pre.jpg",
     "youtubeId": "9xVcKQj0GEM",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:11",
+    "bpm": 80
   },
   {
     "id": "three-was-more-like-night",
@@ -13789,7 +13795,9 @@
     "posterPre": "images/covers/three-was-more-like-night-pre.jpg",
     "youtubeId": "-qexew0Fpj0",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:37",
+    "bpm": 68
   },
   {
     "id": "the-sky-wakes-first",
@@ -13978,7 +13986,9 @@
     "posterPre": "images/covers/the-sky-wakes-first-pre.jpg",
     "youtubeId": "5QQ6wMNqZSI",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:34",
+    "bpm": 84
   },
   {
     "id": "if-i-sleep-now-the-day-is-gone",
@@ -14164,7 +14174,9 @@
     "posterPre": "images/covers/if-i-sleep-now-the-day-is-gone-pre.jpg",
     "youtubeId": "Jy7E6ekw7_w",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:08",
+    "bpm": 96
   },
   {
     "id": "morning-is-fine-now",
@@ -14329,7 +14341,9 @@
     "posterPre": "images/covers/morning-is-fine-now-pre.jpg",
     "youtubeId": "BgkpmaYR8KU",
     "releaseDate": "2026-10-09",
-    "releaseAt": "2026-10-09T23:59:00+09:00"
+    "releaseAt": "2026-10-09T23:59:00+09:00",
+    "duration": "3:15",
+    "bpm": 72
   },
   {
     "id": "shinya-mix-vol6",
@@ -14505,8 +14519,12 @@
       "Still daylight",
       "the night ends"
     ],
+    "poster": "images/covers/still-daylight.jpg",
+    "posterPre": "images/covers/still-daylight-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:12",
+    "bpm": 72
   },
   {
     "id": "minus-twelve",
@@ -14682,8 +14700,12 @@
       "Minus twelve",
       "the number is far"
     ],
+    "poster": "images/covers/minus-twelve.jpg",
+    "posterPre": "images/covers/minus-twelve-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "2:39",
+    "bpm": 70
   },
   {
     "id": "traffic-on-your-side",
@@ -14859,8 +14881,12 @@
       "the quiet on my side",
       "is suddenly loud"
     ],
+    "poster": "images/covers/traffic-on-your-side.jpg",
+    "posterPre": "images/covers/traffic-on-your-side-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:01",
+    "bpm": 74
   },
   {
     "id": "somewhere-its-four",
@@ -15018,8 +15044,12 @@
       "Somewhere it’s four",
       "the longest hour there is"
     ],
+    "poster": "images/covers/somewhere-its-four.jpg",
+    "posterPre": "images/covers/somewhere-its-four-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 68
   },
   {
     "id": "same-song-your-noon",
@@ -15204,8 +15234,12 @@
       "Same song, your noon",
       "over here a night one"
     ],
+    "poster": "images/covers/same-song-your-noon.jpg",
+    "posterPre": "images/covers/same-song-your-noon-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:15",
+    "bpm": 76
   },
   {
     "id": "youre-at-work",
@@ -15381,8 +15415,12 @@
       "You’re at work",
       "isn’t what I call it"
     ],
+    "poster": "images/covers/youre-at-work.jpg",
+    "posterPre": "images/covers/youre-at-work-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 78
   },
   {
     "id": "ill-sleep-first",
@@ -15540,8 +15578,12 @@
       "I’ll sleep first",
       "I end here"
     ],
+    "poster": "images/covers/ill-sleep-first.jpg",
+    "posterPre": "images/covers/ill-sleep-first-pre.jpg",
     "releaseDate": "2026-10-16",
-    "releaseAt": "2026-10-16T23:59:00+09:00"
+    "releaseAt": "2026-10-16T23:59:00+09:00",
+    "duration": "3:10",
+    "bpm": 72
   },
   {
     "id": "shinya-mix-after3",
@@ -15551,9 +15593,11 @@
     "kind": "playlist",
     "album": 11,
     "status": "coming-soon",
-    "description": "The hour a night ends on one side of the earth and an afternoon carries on at the other: seven dark R&B tracks between 68 and 76 BPM, ending with the curtain closed and the sound left open.",
+    "description": "The hour a night ends on one side of the earth and an afternoon carries on at the other: seven dark R&B tracks between 68 and 78 BPM, ending with the curtain closed and the sound left open.",
     "descriptionKo": "지구 한쪽에서 밤이 끝나고 반대쪽에서는 오후가 이어지는 한 시간 — 68~78 BPM 다크 R&B 일곱 곡이 커튼을 닫고, 소리는 열어 둔 채 끝난다.",
     "descriptionJa": "地球の片側で夜が終わり、反対側では午後が続く一時間 — 68〜78BPMのダークR&B七曲が、カーテンを閉めて音は開いたまま終わる。",
+    "poster": "images/covers/shinya-mix-after3.jpg",
+    "posterPre": "images/covers/shinya-mix-after3-pre.jpg",
     "releaseDate": "2026-10-16",
     "releaseAt": "2026-10-16T23:59:00+09:00",
     "titleEn": "Still Daylight — SHINYA AFTER 3rd Mix"

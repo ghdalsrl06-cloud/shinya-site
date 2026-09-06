@@ -1,0 +1,24 @@
+---
+// The closing block of the music page: where new music lands, with the
+// channel to follow and the next pre-save — or the newest album's stores
+// once everything is out.
+import { HYPERFOLLOW, isOut } from '../lib/presave';
+import { t, type Lang } from '../i18n/ui';
+
+const { lang } = Astro.props as { lang: Lang };
+const next = HYPERFOLLOW.find((e) => !isOut(e));
+const latest = HYPERFOLLOW[HYPERFOLLOW.length - 1];
+---
+
+<section class="music-outro">
+  <p class="music-outro-title">{t(lang, 'outro.title')}</p>
+  <p class="music-outro-body">{t(lang, 'outro.body')}</p>
+  <p class="album-cta">
+    <a class="btn btn-sm" href="https://www.youtube.com/@shinyatokyo?sub_confirmation=1" target="_blank" rel="noopener">{t(lang, 'outro.subscribe')}</a>
+    {next ? (
+      <a class="btn btn-sm btn-ghost" href={next.url} target="_blank" rel="noopener">{t(lang, 'outro.presave')} — {next.title} ({next.dateLabel})</a>
+    ) : (
+      <a class="btn btn-sm btn-ghost" href={latest.url} target="_blank" rel="noopener">{t(lang, 'outro.stream')} — {latest.title}</a>
+    )}
+  </p>
+</section>

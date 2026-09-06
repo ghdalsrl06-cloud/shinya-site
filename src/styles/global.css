@@ -251,6 +251,12 @@ a:focus-visible, .btn:focus-visible {
 .nav-links a:hover, .nav-links a.active { color: var(--neon-pink); }
 .nav-links a:hover::after, .nav-links a.active::after { right: 0; }
 .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+/* Japanese labels run long enough to fold the bar at desktop widths, and
+   nothing in the bar should ever break inside a word. */
+html[lang="ja"] .nav-links { gap: 1rem; }
+html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
+.brand { flex: none; white-space: nowrap; }
+.lang-switch a { white-space: nowrap; }
 .lang-switch {
   display: flex; align-items: center; gap: 0.4rem;
   font-size: 0.72rem; letter-spacing: 0.12em; color: var(--line-bright);
@@ -463,6 +469,8 @@ a:focus-visible, .btn:focus-visible {
    intrinsic size can overflow the card and get clipped by its overflow:hidden. */
 .card-media img { display: block; width: 100%; height: auto; border-radius: 4px; }
 
+/* track number in the top corner of a single's card */
+.card-no { position: absolute; top: 1.15rem; right: 1.3rem; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--text-dim); opacity: 0.7; }
 .card-title-ja { font-family: var(--font-jp); color: var(--text-dim); }
 .card-desc { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.6rem; }
 
@@ -490,16 +498,68 @@ a:focus-visible, .btn:focus-visible {
 .disco-sub { margin: 0; color: var(--text-dim); font-size: 0.85rem; letter-spacing: 0.04em; }
 
 /* ---- album head: square jacket + intro at the top of each album tab ---- */
-.album-head { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; gap: 2.2rem; align-items: center; margin-bottom: 2.4rem; }
+.album-head {
+  position: relative; display: grid; grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: 2.4rem; align-items: start; margin-bottom: 2.4rem; padding: 1.2rem 0;
+}
+/* The jacket, blurred wide and faint, tints the block in the album's own
+   colours. Paint from a filter never adds scrollable overflow, so nothing
+   here needs clipping. */
+.album-head::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--jacket) center / cover no-repeat;
+  filter: blur(70px) saturate(1.4); opacity: 0.22;
+  mask-image: radial-gradient(ellipse at 30% 50%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 30% 50%, #000 30%, transparent 75%);
+}
 .album-head .album-jacket {
   width: 100%; height: auto; display: block; border-radius: 6px;
-  border: 1px solid var(--line); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--line); box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
 }
-.album-head-info h2 { margin-top: 0; }
-.album-head-info .album-note { margin-bottom: 0; }
+.album-head-info { min-width: 0; }
+.album-head-info h2 { margin-top: 0.2rem; }
+.album-eyebrow {
+  display: flex; align-items: center; gap: 0.7rem; margin: 0;
+  font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-dim);
+}
+.album-eyebrow-no { color: var(--neon-pink); border: 1px solid rgba(255, 45, 110, 0.45); border-radius: 3px; padding: 0.05rem 0.5rem; letter-spacing: 0.18em; }
+.album-head-info .album-note { margin-bottom: 0.9rem; }
+.album-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0; margin: 0 0 1.1rem; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-dim); }
+.album-meta span + span::before { content: '·'; margin: 0 0.6rem; opacity: 0.6; }
+.album-countdown b { font-weight: 600; color: var(--neon-pink); letter-spacing: 0.12em; }
+.album-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1.5rem; }
+
+/* closing block of the music page */
+.music-outro {
+  margin: 3rem 0 4rem; padding: 1.8rem 2rem; text-align: center;
+  border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, 0.015);
+}
+.music-outro-title { margin: 0 0 0.5rem; font-family: var(--font-tech); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--neon-pink); }
+.music-outro-body { margin: 0 0 1.2rem; color: var(--text-dim); font-size: 0.95rem; }
+.music-outro .album-cta { justify-content: center; margin: 0; }
+/* the album a track belongs to, in the meta line of its page */
+.post-meta .song-album { color: var(--neon-purple); }
+.post-meta .song-album:hover { color: var(--neon-pink); }
+
+/* compact tracklist: number, title and the other-language name, two columns
+   on desktop so eight tracks sit beside the jacket instead of below it */
+.album-tracks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 1.6rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.album-tracks a {
+  display: flex; align-items: baseline; gap: 0.7rem; padding: 0.3rem 0.4rem; margin: 0 -0.4rem;
+  border-radius: 4px; color: var(--text); text-decoration: none; transition: background 0.2s, color 0.2s;
+}
+.album-tracks a:hover { background: rgba(255, 255, 255, 0.04); color: var(--neon-pink); }
+.album-track-no { flex: none; font-size: 0.68rem; letter-spacing: 0.15em; color: var(--text-dim); min-width: 1.4rem; }
+.album-tracks a:hover .album-track-no { color: var(--neon-pink); }
+.album-track-text { display: flex; flex-direction: column; min-width: 0; }
+.album-track-title { font-size: 0.9rem; line-height: 1.4; }
+.album-track-sub { font-size: 0.74rem; color: var(--text-dim); line-height: 1.4; }
+.album-track-time { margin-left: auto; padding-left: 0.6rem; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 @media (max-width: 700px) {
-  .album-head { grid-template-columns: 1fr; gap: 1.4rem; }
+  .album-head { grid-template-columns: 1fr; gap: 1.4rem; padding: 0.6rem 0; }
+  .album-head::before { mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); }
   .album-head .album-jacket { max-width: 300px; }
+  .album-tracks { grid-template-columns: 1fr; }
 }
 
 /* ---- album tabs (music page): jacket thumb + number + title ---- */
@@ -514,29 +574,36 @@ a:focus-visible, .btn:focus-visible {
   border: 1px solid var(--line); border-radius: 6px; color: var(--text-dim);
   padding: 0.55rem 0.9rem; letter-spacing: 0.06em;
   display: flex; align-items: center; gap: 0.8rem; text-align: left;
-  transition: border-color 0.25s, color 0.25s, background 0.25s;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .album-tab-art { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; flex: none; opacity: 0.85; transition: opacity 0.25s; }
 .album-tab-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
-.album-tab-no { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+.album-tab-no { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
 .album-tab-name { font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .album-tab:hover { border-color: var(--line-bright); color: var(--text); }
 .album-tab:hover .album-tab-art, .album-tab.active .album-tab-art { opacity: 1; }
-.album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); }
+.album-tab:hover { transform: translateY(-1px); }
+.album-tab.active { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 45, 110, 0.06); box-shadow: 0 0 20px rgba(255, 45, 110, 0.12); }
 .album-tab.active .album-tab-no { color: var(--neon-pink); }
+/* an album that is not out yet says so on its tab */
+.album-tab-soon { margin-left: 0.5rem; color: var(--neon-purple); font-size: 0.6rem; letter-spacing: 0.18em; }
+.album-tab.active .album-tab-soon { color: var(--neon-pink); opacity: 0.8; }
 @media (max-width: 700px) {
-  .album-tabs { gap: 0.6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .album-tab { flex-direction: column; align-items: center; text-align: center; gap: 0.55rem; padding: 0.7rem 0.4rem 0.8rem; }
-  .album-tab-art { width: 100%; height: auto; aspect-ratio: 1 / 1; }
-  .album-tab-name { font-size: 0.78rem; max-width: 100%; }
-  /* an odd tab count leaves the last one alone — stretch it across both
-     columns with a horizontal layout so the row doesn't look broken */
-  .album-tab:last-child:nth-child(odd) { grid-column: span 2; flex-direction: row; text-align: left; gap: 0.8rem; padding: 0.55rem 0.9rem; }
-  .album-tab:last-child:nth-child(odd) .album-tab-art { width: 48px; }
-  /* the club group holds a single tab — keep it a compact horizontal card */
-  .album-tabs-club { grid-template-columns: minmax(0, 1fr); max-width: none; }
-  .album-tabs-club .album-tab { flex-direction: row; text-align: left; gap: 0.8rem; padding: 0.55rem 0.9rem; }
-  .album-tabs-club .album-tab-art { width: 48px; }
+  /* One horizontal strip per line, bleeding to the screen edges, so ten
+     albums no longer stack into two screens of tabs before the music starts.
+     The page script scrolls the chosen tab into view. */
+  .album-tabs, .album-tabs-club {
+    display: flex; gap: 0.6rem; max-width: none;
+    margin: 0 -1.25rem 1.6rem; padding: 0.15rem 1.25rem 0.5rem;
+    overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-left: 1.25rem;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .album-tabs::-webkit-scrollbar { display: none; }
+  .album-tab { flex: 0 0 auto; width: 168px; scroll-snap-align: start; padding: 0.5rem 0.75rem; gap: 0.65rem; }
+  .album-tab-art { width: 40px; height: 40px; }
+  .album-tab-name { font-size: 0.84rem; }
+  /* the line is named right above the strip, so the tab keeps just the number */
+  .album-tab-line { display: none; }
 }
 
 /* ---- home studio gallery: vertical recording-booth shots ---- */
@@ -579,6 +646,10 @@ a:focus-visible, .btn:focus-visible {
   box-shadow: 0 0 28px var(--neon-glow), 0 0 60px var(--purple-glow);
   transform: translateY(-1px);
 }
+/* smaller pair for the album head; the ghost one is the secondary action */
+.btn-sm { padding: 0.5rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.2em; }
+.btn-ghost { border-color: var(--line-bright); color: var(--text-dim); background: transparent; }
+.btn-ghost:hover { color: var(--text); }
 
 /* ---- blog ---- */
 .post-list { display: flex; flex-direction: column; gap: 1.2rem; list-style: none; }
@@ -1120,11 +1191,18 @@ html.midnight-mode .section-art-panel .card:hover { background: rgba(15, 9, 22, 
 .mp-open:hover { color: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 16px rgba(255, 45, 110, 0.25); }
 .mini-player.is-open .mp-open { display: none; }
 .mp-body {
-  position: relative; width: min(320px, calc(100vw - 2.4rem)); aspect-ratio: 16 / 9;
+  position: relative; width: min(320px, calc(100vw - 2.4rem));
   border: 1px solid var(--line-bright); border-radius: 8px; overflow: hidden;
   background: #000; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
 }
-.mp-frame, .mp-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* what is playing — the default mix, or the album handed over from the music page */
+.mp-now {
+  margin: 0; padding: 0.4rem 2.2rem 0.4rem 0.8rem; background: rgba(7, 11, 22, 0.96);
+  font-family: var(--font-tech); font-size: 0.66rem; letter-spacing: 0.14em; color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mp-frame { position: relative; aspect-ratio: 16 / 9; }
+.mp-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .mp-close {
   position: absolute; top: 0.3rem; right: 0.3rem; z-index: 2;
   width: 24px; height: 24px; border-radius: 50%; border: 0;
