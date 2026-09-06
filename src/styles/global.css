@@ -370,10 +370,12 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
 .hero-character .tokyo-time { justify-content: flex-start; }
 @media (max-width: 640px) {
   .hero-character { min-height: 480px; padding: 4.5rem 0; }
-  .hero-art { object-position: 72% center; opacity: 0.6; }
+  /* keep the face readable on a phone: the art stays brighter and the
+     scrim only darkens the left half, where the text sits */
+  .hero-art { object-position: 78% center; opacity: 0.85; }
   .hero-scrim {
     background:
-      linear-gradient(90deg, rgba(4, 5, 10, 0.85) 0%, rgba(4, 5, 10, 0.5) 55%, rgba(4, 5, 10, 0.35) 100%),
+      linear-gradient(90deg, rgba(4, 5, 10, 0.88) 0%, rgba(4, 5, 10, 0.55) 45%, rgba(4, 5, 10, 0.12) 100%),
       linear-gradient(180deg, rgba(4, 5, 10, 0.5) 0%, transparent 25%, transparent 55%, var(--bg) 100%);
   }
 }
@@ -537,6 +539,47 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
 .music-outro-title { margin: 0 0 0.5rem; font-family: var(--font-tech); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--neon-pink); }
 .music-outro-body { margin: 0 0 1.2rem; color: var(--text-dim); font-size: 0.95rem; }
 .music-outro .album-cta { justify-content: center; margin: 0; }
+/* ---- home: next release ---- */
+.next-release { display: grid; grid-template-columns: minmax(180px, 240px) 1fr; gap: 2rem; align-items: start; }
+.next-release-art { display: block; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55); transition: transform 0.25s; }
+.next-release-art:hover { transform: translateY(-3px); }
+.next-release-art img { display: block; width: 100%; height: auto; }
+.next-release-name { margin: 0.35rem 0 0; font-size: 1.6rem; letter-spacing: 0.04em; }
+.next-release-info .album-note { margin: 0.4rem 0 0.9rem; }
+.next-release-info .album-cta { margin-bottom: 1.1rem; }
+.next-release-then { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; margin: 0; font-size: 0.78rem; letter-spacing: 0.08em; color: var(--text-dim); }
+.next-release-then a { color: var(--text); }
+.next-release-then a:hover { color: var(--neon-pink); }
+.next-release-then a b { font-weight: 400; color: var(--neon-purple); margin-left: 0.35rem; }
+/* "see all" line under a home section */
+.section-more { margin: 1rem 0 0; font-size: 0.8rem; letter-spacing: 0.1em; }
+
+/* ---- home: discography strip (the music page's grid, at a glance) ---- */
+.album-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem 0.9rem; }
+.album-strip .album-tile { display: block; text-decoration: none; }
+
+/* ---- home: latest webtoon episode ---- */
+.home-webtoon { display: grid; grid-template-columns: 160px 1fr; gap: 1.6rem; align-items: center; text-decoration: none; color: var(--text); }
+.home-webtoon-cover { display: block; aspect-ratio: 1 / 1; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+.home-webtoon-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.home-webtoon-body { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.home-webtoon-title { font-size: 1.15rem; font-weight: 600; letter-spacing: 0.01em; }
+.home-webtoon .card-desc { display: block; margin-top: 0; }
+.home-webtoon .album-meta { margin: 0.3rem 0 0; }
+.home-webtoon:hover .home-webtoon-title { color: var(--neon-pink); }
+@media (max-width: 700px) {
+  .next-release { grid-template-columns: 1fr; gap: 1.2rem; }
+  .next-release-art { max-width: 260px; }
+  .album-strip {
+    display: flex; gap: 0.7rem; margin: 0 -1.25rem; padding: 0.2rem 1.25rem 0.6rem;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .album-strip::-webkit-scrollbar { display: none; }
+  .album-strip .album-tile { flex: 0 0 120px; }
+  .home-webtoon { grid-template-columns: 96px 1fr; gap: 1rem; align-items: start; }
+  .home-webtoon-title { font-size: 1rem; }
+}
+
 /* the album a track belongs to, in the meta line of its page */
 .post-meta .song-album { color: var(--neon-purple); }
 .post-meta .song-album:hover { color: var(--neon-pink); }

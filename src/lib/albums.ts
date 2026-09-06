@@ -1,4 +1,5 @@
 import type { Lang } from '../i18n/ui';
+import { isReleased } from './covers';
 
 // Everything the music pages need to know about an album that cannot be derived
 // from releases.json: which line it belongs to, what its tab and heading read,
@@ -51,6 +52,31 @@ export const LINES: { id: LineId; short: string; label: Record<Lang, string> }[]
 const COVER_ALT: Record<Lang, string> = { en: 'album cover', ko: '앨범 커버', ja: 'アルバムジャケット' };
 
 export const jacketOf = (a: AlbumMeta) => `images/covers/album-${a.n}.jpg`;
+/** The line's name as it reads next to an album: SHINYA 深夜 / CLUB / AFTER. */
+export const lineName = (a: AlbumMeta) =>
+  ({ main: 'SHINYA 深夜', club: 'SHINYA CLUB', after: 'SHINYA AFTER' })[a.line];
+
+/** Join the table to the collection: each listed album with its tracks, its
+ *  playlist and whether it is out. Albums with no tracks yet are dropped. */
+export function albumsFrom(releases: any[]) {
+  return ALBUMS.map((meta) => {
+    const mine = (r: any) => (r.data.album ?? 1) === meta.n;
+    const singles = releases
+      .filter((r) => r.data.kind !== 'playlist' && mine(r))
+      .sort((a, b) => (a.data.track ?? 99) - (b.data.track ?? 99));
+    return {
+      meta,
+      singles,
+      playlist: releases.find((r) => r.data.kind === 'playlist' && mine(r)),
+      out: singles.length > 0 && isReleased(singles[0]),
+    };
+  }).filter((a) => a.singles.length > 0);
+}
+/** Release day as M/D, for the badge on the jacket of an album not out yet. */
+export const dateBadge = (r: any) => {
+  const d = r?.data.releaseDate;
+  return d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : '';
+};
 /** The tab label split into the line name it may start with ("CLUB", "AFTER")
  *  and the number, so the line can be dropped where it is already stated. */
 export const tabParts = (a: AlbumMeta, lang: Lang) => {

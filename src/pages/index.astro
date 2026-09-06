@@ -6,6 +6,9 @@ import TokyoClock from '../components/TokyoClock.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
 import { getCollection } from 'astro:content';
 import { heroFollow } from '../lib/presave';
+import HomeNext from '../components/HomeNext.astro';
+import AlbumStrip from '../components/AlbumStrip.astro';
+import HomeWebtoon from '../components/HomeWebtoon.astro';
 
 const hf = heroFollow();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -58,6 +61,8 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
   </div>
 
   <div class="container">
+    <HomeNext lang="en" />
+
     <section class="section">
       <h2>Tonight's Track</h2>
       <div class="card mood-card has-art" data-moods={JSON.stringify(moods)}>
@@ -72,12 +77,16 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       </div>
     </section>
 
+    <HomeWebtoon lang="en" />
+
     {latestVideoId && (
       <section class="section">
         <h2>Latest Video</h2>
         <LiteYouTube id={latestVideoId} title="SHINYA" poster={latest ? coverOf(latest) : undefined} />
       </section>
     )}
+
+    <AlbumStrip lang="en" />
 
     <section class="section">
       <h2>In the Studio</h2>
@@ -106,21 +115,6 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
       </div>
     </section>
 
-    <section class="section">
-      <h2>Latest</h2>
-      {latest && (
-        <div class="card has-art">
-          <ArtImg class="card-art" src="images/home/studio.jpg" width={1600} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" />
-          <div class="card-art-scrim" aria-hidden="true"></div>
-          <div class="card-art-content">
-            <span class="badge">{isReleased(latest) ? 'New Release' : 'Coming Soon'}</span>
-            <h3 style="margin: 0.8rem 0 0.2rem;">{latest.data.title}</h3>
-            {latest.data.titleEn && <p class="card-title-ja">{latest.data.titleEn}</p>}
-            <p class="card-desc">{latest.data.description}</p>
-          </div>
-        </div>
-      )}
-    </section>
 
     <section class="section">
       <h2>From the Blog</h2>

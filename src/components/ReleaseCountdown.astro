@@ -1,0 +1,25 @@
+---
+// D-day for an upcoming release, counted in calendar days of KST, the release
+// zone. It is computed in the browser so a static build never shows a stale
+// number, and once the day has passed the line hides itself.
+import { t, type Lang } from '../i18n/ui';
+
+const { releaseAt, lang } = Astro.props as { releaseAt: string; lang: Lang };
+---
+
+<span class="album-countdown" data-release-at={releaseAt} hidden><b data-dday></b> {t(lang, 'album.countdown')}</span>
+
+<script>
+  const kstDay = (ms) => Math.floor((ms + 9 * 3600e3) / 864e5);
+  const tick = () => {
+    document.querySelectorAll('[data-release-at]').forEach((el) => {
+      const diff = kstDay(new Date(el.dataset.releaseAt).getTime()) - kstDay(Date.now());
+      const label = el.querySelector('[data-dday]');
+      if (Number.isNaN(diff) || diff < 0 || !label) { el.hidden = true; return; }
+      label.textContent = diff === 0 ? 'D-DAY' : `D-${diff}`;
+      el.hidden = false;
+    });
+  };
+  tick();
+  document.addEventListener('astro:page-load', tick);
+</script>
