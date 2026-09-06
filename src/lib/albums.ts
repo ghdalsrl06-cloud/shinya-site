@@ -47,6 +47,12 @@ export const LINES: { id: LineId; label: Record<Lang, string> }[] = [
 const COVER_ALT: Record<Lang, string> = { en: 'album cover', ko: '앨범 커버', ja: 'アルバムジャケット' };
 
 export const jacketOf = (a: AlbumMeta) => `images/covers/album-${a.n}.jpg`;
+/** The tab label split into the line name it may start with ("CLUB", "AFTER")
+ *  and the number, so the line can be dropped where it is already stated. */
+export const tabParts = (a: AlbumMeta, lang: Lang) => {
+  const m = a.tabNo[lang].match(/^(CLUB|AFTER)\s+(.*)$/);
+  return m ? { line: m[1], no: m[2] } : { line: '', no: a.tabNo[lang] };
+};
 export const jacketAlt = (a: AlbumMeta, lang: Lang) => `${a.name} ${COVER_ALT[lang]}`;
 
 // SHINYA AFTER 3rd 「Still Daylight」 (n: 11, line 'after') is registered in

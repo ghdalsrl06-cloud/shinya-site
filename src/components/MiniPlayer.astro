@@ -1,7 +1,12 @@
 ---
-// Sticky mini player for the 60-min SHINYA mix. transition:persist keeps the
-// iframe (and its audio) alive across client-side navigations.
+// Sticky mini player. It opens on the 60-min SHINYA mix, and any page can hand
+// it another video — the music page does this for an album's mix — by
+// dispatching `shinya:play` on the document with { id, title } in detail.
+// transition:persist keeps the iframe (and its audio) alive across
+// client-side navigations.
+import { t, type Lang } from '../i18n/ui';
 const MIX_ID = 'eSuk6hPMKdg';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
 ---
 
 <div class="mini-player" data-mini-player transition:persist="mini-player">
@@ -12,6 +17,7 @@ const MIX_ID = 'eSuk6hPMKdg';
     <span>深夜 MIX</span>
   </button>
   <div class="mp-body" hidden>
+    <p class="mp-now" data-mp-now data-default-label={t(lang, 'player.default')}></p>
     <div class="mp-frame" data-mix-id={MIX_ID}></div>
     <button class="mp-close" type="button" aria-label="Close player">×</button>
   </div>
@@ -25,25 +31,45 @@ const MIX_ID = 'eSuk6hPMKdg';
     const open = root.querySelector('.mp-open');
     const body = root.querySelector('.mp-body');
     const frame = root.querySelector('.mp-frame');
+    const now = root.querySelector('[data-mp-now]');
     const close = root.querySelector('.mp-close');
-    open?.addEventListener('click', () => {
-      if (!frame.querySelector('iframe')) {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube-nocookie.com/embed/${frame.getAttribute('data-mix-id')}?autoplay=1`;
-        iframe.title = 'SHINYA MIX';
-        iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-        iframe.allowFullscreen = true;
-        frame.appendChild(iframe);
-      }
+    const defaultId = frame.getAttribute('data-mix-id');
+
+    const show = () => {
       body.hidden = false;
       open.setAttribute('aria-expanded', 'true');
       root.classList.add('is-open');
+    };
+    const load = (id, label) => {
+      const current = frame.querySelector('iframe');
+      if (current && frame.dataset.playing === id) { show(); return; }
+      frame.replaceChildren();
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+      iframe.title = label;
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+      iframe.allowFullscreen = true;
+      frame.appendChild(iframe);
+      frame.dataset.playing = id;
+      now.textContent = label;
+      show();
+    };
+
+    open?.addEventListener('click', () => {
+      if (frame.querySelector('iframe')) show();
+      else load(defaultId, now.dataset.defaultLabel);
     });
     close?.addEventListener('click', () => {
       frame.replaceChildren();
+      delete frame.dataset.playing;
       body.hidden = true;
       open.setAttribute('aria-expanded', 'false');
       root.classList.remove('is-open');
+    });
+    // The player element persists across navigations, so one listener is enough.
+    document.addEventListener('shinya:play', (e) => {
+      const { id, title } = e.detail || {};
+      if (id) load(id, title || now.dataset.defaultLabel);
     });
   };
   init();
