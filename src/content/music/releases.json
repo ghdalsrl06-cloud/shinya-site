@@ -2407,7 +2407,9 @@
     "posterPre": "images/covers/midnight-alone-pre.jpg",
     "youtubeId": "4S5vl4B_XAs",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "3:09",
+    "bpm": 92
   },
   {
     "id": "like-a-habit",
@@ -2557,7 +2559,9 @@
     "posterPre": "images/covers/like-a-habit-pre.jpg",
     "youtubeId": "4Vl-nvisF5I",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "2:43",
+    "bpm": 88
   },
   {
     "id": "the-one-i-deleted",
@@ -2710,7 +2714,9 @@
     "posterPre": "images/covers/the-one-i-deleted-pre.jpg",
     "youtubeId": "tXjCItF99yw",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 94
   },
   {
     "id": "anyone-would-do",
@@ -2860,7 +2866,9 @@
     "posterPre": "images/covers/anyone-would-do-pre.jpg",
     "youtubeId": "R0-ybcTm35k",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "3:00",
+    "bpm": 100
   },
   {
     "id": "read-at-3am",
@@ -3010,7 +3018,9 @@
     "posterPre": "images/covers/read-at-3am-pre.jpg",
     "youtubeId": "9fYuAlL1u1M",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "2:26",
+    "bpm": 84
   },
   {
     "id": "teach-me-how-to-forget",
@@ -3163,7 +3173,9 @@
     "posterPre": "images/covers/teach-me-how-to-forget-pre.jpg",
     "youtubeId": "TnczQrnNb9U",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "2:39",
+    "bpm": 96
   },
   {
     "id": "the-first-train-comes",
@@ -3319,7 +3331,9 @@
     "posterPre": "images/covers/the-first-train-comes-pre.jpg",
     "youtubeId": "q_eMqO6u8Io",
     "releaseDate": "2026-08-14",
-    "releaseAt": "2026-08-14T23:59:00+09:00"
+    "releaseAt": "2026-08-14T23:59:00+09:00",
+    "duration": "2:59",
+    "bpm": 90
   },
   {
     "id": "shinya-mix-vol3",
@@ -3529,7 +3543,9 @@
     "posterPre": "images/covers/maybe-i-like-you-pre.jpg",
     "youtubeId": "5WjsFJL64oc",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 86
   },
   {
     "id": "notification-at-1am",
@@ -3721,7 +3737,9 @@
     "posterPre": "images/covers/notification-at-1am-pre.jpg",
     "youtubeId": "4vIBsA6kDco",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:02",
+    "bpm": 98
   },
   {
     "id": "the-same-habit",
@@ -3913,7 +3931,9 @@
     "posterPre": "images/covers/the-same-habit-pre.jpg",
     "youtubeId": "kUiFqkdWgf4",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 90
   },
   {
     "id": "the-story-i-couldnt-tell",
@@ -4105,7 +4125,9 @@
     "posterPre": "images/covers/the-story-i-couldnt-tell-pre.jpg",
     "youtubeId": "wAeyK555KEI",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 82
   },
   {
     "id": "worst-case-at-3am",
@@ -4297,7 +4319,9 @@
     "posterPre": "images/covers/worst-case-at-3am-pre.jpg",
     "youtubeId": "n94DaUe-VHg",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 104
   },
   {
     "id": "ready-to-run",
@@ -4489,7 +4513,9 @@
     "posterPre": "images/covers/ready-to-run-pre.jpg",
     "youtubeId": "OV6_85Yzk80",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 94
   },
   {
     "id": "5am-still-here",
@@ -4681,7 +4707,9 @@
     "posterPre": "images/covers/5am-still-here-pre.jpg",
     "youtubeId": "H53Q_EjI4wk",
     "releaseDate": "2026-08-21",
-    "releaseAt": "2026-08-21T23:59:00+09:00"
+    "releaseAt": "2026-08-21T23:59:00+09:00",
+    "duration": "4:05",
+    "bpm": 88
   },
   {
     "id": "shinya-mix-vol4",
@@ -4897,7 +4925,9 @@
     "posterPre": "images/covers/dont-hang-up-pre.jpg",
     "youtubeId": "_GAAhsS_ffQ",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:15",
+    "bpm": 84
   },
   {
     "id": "sleeping-face-at-2am",
@@ -5095,7 +5125,9 @@
     "posterPre": "images/covers/sleeping-face-at-2am-pre.jpg",
     "youtubeId": "dheFylDGYvw",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:16",
+    "bpm": 80
   },
   {
     "id": "afraid-of-being-happy",
@@ -5293,7 +5325,9 @@
     "posterPre": "images/covers/afraid-of-being-happy-pre.jpg",
     "youtubeId": "_zcDHZZ85Y8",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:15",
+    "bpm": 100
   },
   {
     "id": "almost-ran-again",
@@ -5491,7 +5525,9 @@
     "posterPre": "images/covers/almost-ran-again-pre.jpg",
     "youtubeId": "mTaV0yNd2d0",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:15",
+    "bpm": 92
   },
   {
     "id": "imagining-at-4am",
@@ -5689,7 +5725,9 @@
     "posterPre": "images/covers/imagining-at-4am-pre.jpg",
     "youtubeId": "StqSb7DkuiY",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:15",
+    "bpm": 88
   },
   {
     "id": "i-said-im-scared",
@@ -5887,7 +5925,9 @@
     "posterPre": "images/covers/i-said-im-scared-pre.jpg",
     "youtubeId": "SMxU8V15Lhc",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:15",
+    "bpm": 96
   },
   {
     "id": "the-first-train-together",
@@ -6085,7 +6125,9 @@
     "posterPre": "images/covers/the-first-train-together-pre.jpg",
     "youtubeId": "KrtFReIVzp8",
     "releaseDate": "2026-08-28",
-    "releaseAt": "2026-08-28T23:59:00+09:00"
+    "releaseAt": "2026-08-28T23:59:00+09:00",
+    "duration": "4:11",
+    "bpm": 86
   },
   {
     "id": "breathing-in-the-back-seat",
@@ -6259,7 +6301,9 @@
     "posterPre": "images/covers/breathing-in-the-back-seat-pre.jpg",
     "youtubeId": "rLbVpNJmbw4",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "4:16",
+    "bpm": 72
   },
   {
     "id": "the-shift-change-never-comes",
@@ -6436,7 +6480,9 @@
     "posterPre": "images/covers/the-shift-change-never-comes-pre.jpg",
     "youtubeId": "Mq4YuMJ8MFE",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:21",
+    "bpm": 96
   },
   {
     "id": "i-must-not-fall-asleep",
@@ -6613,7 +6659,9 @@
     "posterPre": "images/covers/i-must-not-fall-asleep-pre.jpg",
     "youtubeId": "_skdvsHXWcM",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:56",
+    "bpm": 68
   },
   {
     "id": "only-the-marks-on-the-wall",
@@ -6790,7 +6838,9 @@
     "posterPre": "images/covers/only-the-marks-on-the-wall-pre.jpg",
     "youtubeId": "j8JlisYenXA",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:42",
+    "bpm": 84
   },
   {
     "id": "how-to-sit-on-the-last-train",
@@ -6964,7 +7014,9 @@
     "posterPre": "images/covers/how-to-sit-on-the-last-train-pre.jpg",
     "youtubeId": "ZYDwxUfqv34",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:19",
+    "bpm": 92
   },
   {
     "id": "finally-quiet",
@@ -7141,7 +7193,9 @@
     "posterPre": "images/covers/finally-quiet-pre.jpg",
     "youtubeId": "CXfc2vpqFhQ",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:53",
+    "bpm": 76
   },
   {
     "id": "everyones-awake",
@@ -7315,7 +7369,9 @@
     "posterPre": "images/covers/everyones-awake-pre.jpg",
     "youtubeId": "pdGD5zgWOXs",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:53",
+    "bpm": 88
   },
   {
     "id": "in-your-room",
@@ -7462,7 +7518,9 @@
     "posterPre": "images/covers/in-your-room-pre.jpg",
     "youtubeId": "j0yaxZXscoE",
     "releaseDate": "2026-09-04",
-    "releaseAt": "2026-09-04T23:59:00+09:00"
+    "releaseAt": "2026-09-04T23:59:00+09:00",
+    "duration": "3:00",
+    "bpm": 72
   },
   {
     "id": "shinya-mix-vol5",
@@ -7696,7 +7754,9 @@
     "posterPre": "images/covers/velvet-pickle-pre.jpg",
     "youtubeId": "QdpuzoR3H-E",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:08",
+    "bpm": 128
   },
   {
     "id": "pocket-full-of-odds",
@@ -7915,7 +7975,9 @@
     "posterPre": "images/covers/pocket-full-of-odds-pre.jpg",
     "youtubeId": "AHoyJn1_O-c",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:16",
+    "bpm": 128
   },
   {
     "id": "paper-cup-moon",
@@ -8122,7 +8184,9 @@
     "posterPre": "images/covers/paper-cup-moon-pre.jpg",
     "youtubeId": "TmE7vi1iHAI",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:07",
+    "bpm": 128
   },
   {
     "id": "blue-crayon-dice",
@@ -8344,7 +8408,9 @@
     "posterPre": "images/covers/blue-crayon-dice-pre.jpg",
     "youtubeId": "yd7R2b0y8CU",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:09",
+    "bpm": 128
   },
   {
     "id": "paper-boat-lottery",
@@ -8545,7 +8611,9 @@
     "posterPre": "images/covers/paper-boat-lottery-pre.jpg",
     "youtubeId": "K_G0oPl3J8k",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:26",
+    "bpm": 128
   },
   {
     "id": "lottery-ticket-rain",
@@ -8752,7 +8820,9 @@
     "posterPre": "images/covers/lottery-ticket-rain-pre.jpg",
     "youtubeId": "cCEY1dinHYM",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:17",
+    "bpm": 128
   },
   {
     "id": "paper-cup-parade",
@@ -8941,7 +9011,9 @@
     "posterPre": "images/covers/paper-cup-parade-pre.jpg",
     "youtubeId": "wRysXQYAp5Y",
     "releaseDate": "2026-09-11",
-    "releaseAt": "2026-09-11T23:59:00+09:00"
+    "releaseAt": "2026-09-11T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 128
   },
   {
     "id": "shinya-mix-club1",
@@ -9130,7 +9202,9 @@
     "posterPre": "images/covers/cant-move-yet-pre.jpg",
     "youtubeId": "5Ao2HyqcHFI",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:11",
+    "bpm": 128
   },
   {
     "id": "second-wind",
@@ -9337,7 +9411,9 @@
     "posterPre": "images/covers/second-wind-pre.jpg",
     "youtubeId": "j35DOWu-dYU",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:08",
+    "bpm": 128
   },
   {
     "id": "two-steps-at-a-time",
@@ -9553,7 +9629,9 @@
     "posterPre": "images/covers/two-steps-at-a-time-pre.jpg",
     "youtubeId": "5KfUU-jZEwA",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:06",
+    "bpm": 128
   },
   {
     "id": "green-light-go",
@@ -9769,7 +9847,9 @@
     "posterPre": "images/covers/green-light-go-pre.jpg",
     "youtubeId": "6-vgnzHyXUg",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:26",
+    "bpm": 128
   },
   {
     "id": "nobodys-up",
@@ -9976,7 +10056,9 @@
     "posterPre": "images/covers/nobodys-up-pre.jpg",
     "youtubeId": "Vc7i6ycMXog",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:13",
+    "bpm": 128
   },
   {
     "id": "let-it-cool",
@@ -10183,7 +10265,9 @@
     "posterPre": "images/covers/let-it-cool-pre.jpg",
     "youtubeId": "RkUAfERxdAs",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:24",
+    "bpm": 128
   },
   {
     "id": "morning-anyway",
@@ -10405,7 +10489,9 @@
     "posterPre": "images/covers/morning-anyway-pre.jpg",
     "youtubeId": "ZGeqsYJnR0k",
     "releaseDate": "2026-09-18",
-    "releaseAt": "2026-09-18T23:59:00+09:00"
+    "releaseAt": "2026-09-18T23:59:00+09:00",
+    "duration": "3:10",
+    "bpm": 128
   },
   {
     "id": "shinya-mix-club2",
@@ -10612,7 +10698,9 @@
     "posterPre": "images/covers/blue-hour-pre.jpg",
     "youtubeId": "AgEr9d70JqY",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:27",
+    "bpm": 72
   },
   {
     "id": "dont-turn-the-light-on",
@@ -10801,7 +10889,9 @@
     "posterPre": "images/covers/dont-turn-the-light-on-pre.jpg",
     "youtubeId": "I_tnd3a5suc",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 72
   },
   {
     "id": "half-asleep",
@@ -10984,7 +11074,9 @@
     "posterPre": "images/covers/half-asleep-pre.jpg",
     "youtubeId": "MuOPkiv2mx0",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:06",
+    "bpm": 72
   },
   {
     "id": "say-it-again",
@@ -11173,7 +11265,9 @@
     "posterPre": "images/covers/say-it-again-pre.jpg",
     "youtubeId": "gAbJCzEagxY",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:11",
+    "bpm": 72
   },
   {
     "id": "your-coat-is-still-here",
@@ -11353,7 +11447,9 @@
     "posterPre": "images/covers/your-coat-is-still-here-pre.jpg",
     "youtubeId": "aRNNZTZCNiY",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:19",
+    "bpm": 72
   },
   {
     "id": "light-gets-in",
@@ -11557,7 +11653,9 @@
     "posterPre": "images/covers/light-gets-in-pre.jpg",
     "youtubeId": "PrjGNmsYjtM",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:09",
+    "bpm": 72
   },
   {
     "id": "go-then",
@@ -11734,7 +11832,9 @@
     "posterPre": "images/covers/go-then-pre.jpg",
     "youtubeId": "LEiCyLX9TkU",
     "releaseDate": "2026-09-25",
-    "releaseAt": "2026-09-25T23:59:00+09:00"
+    "releaseAt": "2026-09-25T23:59:00+09:00",
+    "duration": "3:08",
+    "bpm": 72
   },
   {
     "id": "shinya-mix-after1",
@@ -11941,7 +12041,9 @@
     "posterPre": "images/covers/empty-room-pre.jpg",
     "youtubeId": "OEZ2-PlGBhE",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "3:39",
+    "bpm": 72
   },
   {
     "id": "nothing-in-the-closet",
@@ -12130,7 +12232,9 @@
     "posterPre": "images/covers/nothing-in-the-closet-pre.jpg",
     "youtubeId": "YhEjHj10AY0",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "2:38",
+    "bpm": 72
   },
   {
     "id": "didnt-fit-in-the-box",
@@ -12334,7 +12438,9 @@
     "posterPre": "images/covers/didnt-fit-in-the-box-pre.jpg",
     "youtubeId": "OUCWVMO6cFM",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "3:09",
+    "bpm": 72
   },
   {
     "id": "sleeping-on-the-floor",
@@ -12523,7 +12629,9 @@
     "posterPre": "images/covers/sleeping-on-the-floor-pre.jpg",
     "youtubeId": "pBgjGzzapSY",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "3:13",
+    "bpm": 72
   },
   {
     "id": "the-building-at-night",
@@ -12712,7 +12820,9 @@
     "posterPre": "images/covers/the-building-at-night-pre.jpg",
     "youtubeId": "VwElT5xHHa4",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "3:08",
+    "bpm": 72
   },
   {
     "id": "curtains-down",
@@ -12901,7 +13011,9 @@
     "posterPre": "images/covers/curtains-down-pre.jpg",
     "youtubeId": "lKZxzh0Fpig",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "2:51",
+    "bpm": 72
   },
   {
     "id": "turn-it-off",
@@ -13090,7 +13202,9 @@
     "posterPre": "images/covers/turn-it-off-pre.jpg",
     "youtubeId": "G44KT_OMTlY",
     "releaseDate": "2026-10-02",
-    "releaseAt": "2026-10-02T23:59:00+09:00"
+    "releaseAt": "2026-10-02T23:59:00+09:00",
+    "duration": "3:03",
+    "bpm": 72
   },
   {
     "id": "shinya-mix-after2",
