@@ -7,7 +7,7 @@ import AlbumHead from '../../components/AlbumHead.astro';
 import MusicOutro from '../../components/MusicOutro.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
-import { ALBUMS, LINES, jacketOf, tabParts } from '../../lib/albums';
+import { ALBUMS, LINES, jacketOf } from '../../lib/albums';
 
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -25,18 +25,18 @@ const albums = ALBUMS.map((meta) => {
   };
 }).filter((a) => a.singles.length > 0);
 
-// Newest album overall opens the page, and each line lists newest first.
+// Newest album overall opens the page, and the grid lists newest first.
 const ordered = [...albums].sort((a, b) => b.meta.n - a.meta.n);
 const current = ordered[0].meta.n;
-const groups = LINES.map((line) => ({ line, items: ordered.filter((a) => a.meta.line === line.id) }))
-  .filter((g) => g.items.length > 0);
 // Banner counts come from the data so they cannot fall behind a new album.
 const lineAlbums = (id) => albums.filter((a) => a.meta.line === id).length;
 const lineTracks = (id) => albums.filter((a) => a.meta.line === id).reduce((n, a) => n + a.singles.length, 0);
 const totalTracks = albums.reduce((n, a) => n + a.singles.length, 0);
-// Tabs wrap into balanced rows — six albums read better as 3 + 3 than 5 + 1 —
-// while each tab keeps the same width whatever the count.
-const tabCols = (n) => (n <= 5 ? n : Math.ceil(n / Math.ceil(n / 5)));
+// Release day as M/D, for the badge on the jacket of an album not out yet.
+const dateBadge = (r) => {
+  const d = r?.data.releaseDate;
+  return d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : '';
+};
 // One MusicAlbum per album, so search engines see the whole discography,
 // with each recording's running time where the data has it.
 const isoDuration = (d) => `PT${Number(d.split(':')[0])}M${Number(d.split(':')[1])}S`;
@@ -72,29 +72,34 @@ const albumLd = {
     </section>
 
 
-{groups.map(({ line, items }) => (
-      <>
-        <p class="album-line-label">{line.label['ja']}</p>
-        <div class:list={['album-tabs', items.length <= 2 && 'album-tabs-club']} style={`--tab-cols:${tabCols(items.length)}`} role="tablist" aria-label={line.label['ja']}>
-          {items.map(({ meta, out }) => (
-            <button
-              type="button"
-              role="tab"
-              id={`album-tab-${meta.n}`}
-              class:list={['album-tab', meta.n === current && 'active']}
-              aria-selected={String(meta.n === current)}
-              aria-controls={`album-panel-${meta.n}`}
-              tabindex={meta.n === current ? 0 : -1}
-              data-album-tab={meta.n}
-              data-album-line={meta.line}
-            >
-              <ArtImg class="album-tab-art" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 48px, 45vw" alt="" />
-              <span class="album-tab-text"><span class="album-tab-no">{tabParts(meta, 'ja').line && <span class="album-tab-line">{tabParts(meta, 'ja').line} </span>}{tabParts(meta, 'ja').no}{!out && <span class="album-tab-soon">{t('ja', 'album.soon')}</span>}</span><span class="album-tab-name">{meta.name}</span></span>
-            </button>
-          ))}
-        </div>
-      </>
-    ))}
+<div class="album-filter" role="group" aria-label={t('ja', 'album.all')}>
+      <button type="button" class="album-filter-btn active" data-album-filter="all" aria-pressed="true">{t('ja', 'album.all')} <b>{albums.length}</b></button>
+      {LINES.filter((l) => lineAlbums(l.id) > 0).map((l) => (
+        <button type="button" class="album-filter-btn" data-album-filter={l.id} aria-pressed="false">{l.short} <b>{lineAlbums(l.id)}</b></button>
+      ))}
+    </div>
+    <div class="album-grid" role="tablist" aria-label={t('ja', 'album.all')}>
+      {ordered.map(({ meta, singles, out }) => (
+        <button
+          type="button"
+          role="tab"
+          id={`album-tab-${meta.n}`}
+          class:list={['album-tile', meta.n === current && 'active', !out && 'soon']}
+          aria-selected={String(meta.n === current)}
+          aria-controls={`album-panel-${meta.n}`}
+          tabindex={meta.n === current ? 0 : -1}
+          data-album-tab={meta.n}
+          data-album-line={meta.line}
+        >
+          <span class="album-tile-art">
+            <ArtImg src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 150px, 30vw" alt="" />
+            {!out && <span class="album-tile-date">{dateBadge(singles[0])}</span>}
+          </span>
+          <span class="album-tile-no" data-line={meta.line}>{meta.tabNo['ja']}</span>
+          <span class="album-tile-name">{meta.name}</span>
+        </button>
+      ))}
+    </div>
 
     {ordered.map(({ meta, singles, playlist, out }) => (
       <div data-album-panel={meta.n} id={`album-panel-${meta.n}`} role="tabpanel" aria-labelledby={`album-tab-${meta.n}`} hidden={meta.n !== current}>
@@ -158,24 +163,23 @@ const albumLd = {
 
 <script>
   const initAlbumTabs = () => {
-    const bars = Array.from(document.querySelectorAll('.album-tabs'));
-    if (!bars.length || bars[0].dataset.bound) return;
-    bars[0].dataset.bound = '1';
+    const grid = document.querySelector('.album-grid');
+    if (!grid || grid.dataset.bound) return;
+    grid.dataset.bound = '1';
     const title = document.querySelector('.page-banner-title');
     const sub = document.querySelector('.page-banner-sub');
     const cap = (s) => s[0].toUpperCase() + s.slice(1);
+    const tiles = Array.from(grid.querySelectorAll('[data-album-tab]'));
     const select = (n) => {
       // The banner follows whichever line the album belongs to, read off the
-      // tab itself, so adding an album never means editing a list of numbers.
+      // tile itself, so adding an album never means editing a list of numbers.
       let line = 'main';
-      document.querySelectorAll('[data-album-tab]').forEach((b) => {
+      tiles.forEach((b) => {
         const on = b.dataset.albumTab === n;
         if (on) line = b.dataset.albumLine || 'main';
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', String(on));
         b.tabIndex = on ? 0 : -1;
-        // On the mobile strip, bring the chosen tab into view (a no-op on the desktop grid).
-        if (on) b.parentElement.scrollLeft = Math.max(0, b.offsetLeft - b.parentElement.offsetLeft - 20);
       });
       document.querySelectorAll('[data-album-panel]').forEach((p) => {
         p.hidden = p.dataset.albumPanel !== n;
@@ -183,29 +187,40 @@ const albumLd = {
       if (sub) sub.textContent = sub.dataset['sub' + cap(line)] || sub.textContent;
       if (title) title.textContent = title.dataset['title' + cap(line)] || title.textContent;
     };
-    bars.forEach((bar) => bar.addEventListener('click', (e) => {
-      const b = e.target.closest('[data-album-tab]');
-      if (!b) return;
+    const go = (b) => {
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
-    }));
-    // Arrow keys move along the tabs of a line; Home and End jump to its ends.
-    bars.forEach((bar) => bar.addEventListener('keydown', (e) => {
-      const tabs = Array.from(bar.querySelectorAll('[data-album-tab]'));
-      const i = tabs.indexOf(document.activeElement);
+    };
+    grid.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-album-tab]');
+      if (b) go(b);
+    });
+    // Arrow keys move across the tiles on show; Home and End jump to the ends.
+    grid.addEventListener('keydown', (e) => {
+      const shown = tiles.filter((b) => !b.hidden);
+      const i = shown.indexOf(document.activeElement);
       if (i < 0) return;
-      const step = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+      const step = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: shown.length - 1 - i }[e.key];
       if (step === undefined) return;
       e.preventDefault();
-      const to = tabs[(i + step + tabs.length) % tabs.length];
+      const to = shown[(i + step + shown.length) % shown.length];
       to.focus();
-      select(to.dataset.albumTab);
-      history.replaceState(null, '', location.pathname + '#album-' + to.dataset.albumTab);
+      go(to);
+    });
+    // The line chips only narrow the grid; the open album stays open.
+    const chips = Array.from(document.querySelectorAll('[data-album-filter]'));
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      const f = chip.dataset.albumFilter;
+      chips.forEach((c) => {
+        c.classList.toggle('active', c === chip);
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      tiles.forEach((b) => { b.hidden = f !== 'all' && b.dataset.albumLine !== f; });
     }));
     const m = location.hash.match(/^#album-(\d+)$/);
-    const linked = m && document.querySelector('[data-album-tab="' + m[1] + '"]') ? m[1] : null;
-    const active = document.querySelector('[data-album-tab].active');
-    select(linked || (active ? active.dataset.albumTab : bars[0].querySelector('[data-album-tab]').dataset.albumTab));
+    const linked = m && tiles.some((b) => b.dataset.albumTab === m[1]) ? m[1] : null;
+    const active = tiles.find((b) => b.classList.contains('active'));
+    select(linked || (active ? active.dataset.albumTab : tiles[0].dataset.albumTab));
   };
   initAlbumTabs();
   document.addEventListener('astro:page-load', initAlbumTabs);
