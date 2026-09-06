@@ -25,17 +25,21 @@ export interface AlbumMeta {
   story?: Record<Lang, string>;
 }
 
-export const LINES: { id: LineId; label: Record<Lang, string> }[] = [
+/** `short` is the chip above the album grid; `label` the full line name. */
+export const LINES: { id: LineId; short: string; label: Record<Lang, string> }[] = [
   {
     id: 'after',
+    short: 'AFTER',
     label: { en: 'SHINYA AFTER — dark R&B', ko: 'SHINYA AFTER — 다크 R&B 라인', ja: 'SHINYA AFTER — ダークR&B' },
   },
   {
     id: 'club',
+    short: 'CLUB',
     label: { en: 'SHINYA CLUB — Jersey club', ko: 'SHINYA CLUB — 저지 클럽 라인', ja: 'SHINYA CLUB — ジャージークラブ' },
   },
   {
     id: 'main',
+    short: '深夜',
     label: {
       en: 'SHINYA 深夜 — dark electronic',
       ko: 'SHINYA 深夜 — 다크 일렉트로닉',
