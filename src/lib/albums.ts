@@ -49,6 +49,10 @@ const COVER_ALT: Record<Lang, string> = { en: 'album cover', ko: '앨범 커버'
 export const jacketOf = (a: AlbumMeta) => `images/covers/album-${a.n}.jpg`;
 export const jacketAlt = (a: AlbumMeta, lang: Lang) => `${a.name} ${COVER_ALT[lang]}`;
 
+// SHINYA AFTER 3rd 「Still Daylight」 (n: 11, line 'after') is registered in
+// releases.json and its track pages build, but it is deliberately not listed
+// here yet: a tab and a panel both render images/covers/album-11.jpg, and the
+// jacket has not arrived. Add the block back the moment it does.
 export const ALBUMS: AlbumMeta[] = [
   {
     n: 1,
