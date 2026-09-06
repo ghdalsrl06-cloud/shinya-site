@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { ymd } from '../../lib/dates';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import TokyoClock from '../../components/TokyoClock.astro';
@@ -125,7 +126,7 @@ const lyricLines = singles.map((s) => (s.data.lyrics ?? []).find((l) => l && l.t
         <ul class="post-list">
         {posts.map((p) => (
           <li class="card">
-            <p class="post-meta">{p.data.date.toISOString().slice(0, 10)}</p>
+            <p class="post-meta">{ymd(p.data.date)}</p>
             <h3 style="margin: 0.3rem 0;">
               <a href={`${base}/ko/blog/${p.id.replace(/^ko\//, '')}/`}>{p.data.title}</a>
             </h3>

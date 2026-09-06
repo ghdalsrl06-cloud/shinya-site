@@ -6,6 +6,7 @@ import ArtImg from './ArtImg.astro';
 import { getCollection } from 'astro:content';
 import { t, type Lang } from '../i18n/ui';
 import { epLabel } from '../lib/webtoon';
+import { ymd, whenKst } from '../lib/dates';
 
 const { lang } = Astro.props as { lang: Lang };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -23,12 +24,7 @@ const fresh = latest && Date.now() - latest.data.date.valueOf() < 7 * 864e5;
 const title = (e: any) => (lang === 'ko' ? e.data.titleKo : lang === 'ja' ? e.data.titleJa : null) ?? e.data.title;
 const desc = (e: any) => (lang === 'ko' ? e.data.descriptionKo : lang === 'ja' ? e.data.descriptionJa : null) ?? e.data.description;
 
-// Dates read in KST, the zone the schedule is written in.
-const kst = (d: Date) => new Date(d.valueOf() + 9 * 3600e3);
-const DAYS = { en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], ko: ['일', '월', '화', '수', '목', '금', '토'], ja: ['日', '月', '火', '水', '木', '金', '土'] };
-const two = (n: number) => String(n).padStart(2, '0');
-const ymd = (d: Date) => { const k = kst(d); return `${k.getUTCFullYear()}.${two(k.getUTCMonth() + 1)}.${two(k.getUTCDate())}`; };
-const when = (d: Date) => { const k = kst(d); return `${k.getUTCMonth() + 1}/${k.getUTCDate()} (${DAYS[lang][k.getUTCDay()]}) ${two(k.getUTCHours())}:${two(k.getUTCMinutes())}`; };
+const when = (d: Date) => whenKst(d, lang);
 ---
 
 {latest && (

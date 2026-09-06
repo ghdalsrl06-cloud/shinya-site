@@ -1,7 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { ymd } from '../../lib/dates';
+import { t } from '../../i18n/ui';
+import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const posts = (await getCollection('blog'))
+  .filter((p) => p.id.startsWith('ja/') && !p.data.draft && p.data.date.valueOf() <= Date.now())
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
 ---
 
 <Base lang="ja" title="検索 — SHINYA / 深夜" description="曲、歌詞、ブログ記事を検索。">
@@ -10,6 +17,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <h2>検索</h2>
       <p class="search-note">曲名、歌詞の一節、ブログ記事を検索できます。</p>
       <div id="search"></div>
+      <div class="search-suggest">
+        <p class="search-hint">{t('ja', 'search.hint')}</p>
+        <h3>{t('ja', 'search.recent')}</h3>
+        <ul>
+          {posts.map((p) => (
+            <li><a href={`${base}/ja/blog/${p.id.replace(/^ja\//, '')}/`}><span>{ymd(p.data.date)}</span>{p.data.title}</a></li>
+          ))}
+        </ul>
+      </div>
     </section>
   </div>
 </Base>

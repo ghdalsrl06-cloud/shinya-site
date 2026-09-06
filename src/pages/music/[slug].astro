@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { ymd } from '../../lib/dates';
 import { coverOf, isReleased } from '../../lib/covers';
 import LyricCard from '../../components/LyricCard.astro';
 import ShareRow from '../../components/ShareRow.astro';
@@ -60,7 +61,7 @@ const ld = {
         {cover && <ArtImg class="song-hero-art" src={cover} width={1280} sizes="(min-width: 900px) 820px, 100vw" />}
         <div class="song-hero-scrim" aria-hidden="true"></div>
         <a class="back-link" href={`${base}/music/#album-${song.data.album ?? 1}`}>{t('en', 'back.music')}</a>
-        <p class="post-meta">{album && <><a class="song-album" href={`${base}/music/#album-${album.n}`}>{album.name}</a> · </>}Track {song.data.track} · {isReleased(song) ? song.data.releaseDate : t('en', 'badge.coming')}</p>
+        <p class="post-meta">{album && <><a class="song-album" href={`${base}/music/#album-${album.n}`}>{album.name}</a> · </>}Track {song.data.track} · {isReleased(song) ? ymd(song.data.releaseDate) : t('en', 'badge.coming')}</p>
         <h1 class="song-title">{song.data.title}</h1>
         {(song.data.titleEn ?? song.data.titleJa) && <p class="song-sub">{song.data.titleEn ?? song.data.titleJa}</p>}
         <p class="song-desc">{song.data.description}</p>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import { ymd } from '../../../lib/dates';
 import ShareRow from '../../../components/ShareRow.astro';
 import ArtImg from '../../../components/ArtImg.astro';
 import { getCollection, render } from 'astro:content';
@@ -42,7 +43,7 @@ const postLd = {
   <div class="container">
     <article class="section prose">
       <a class="back-link" href={`${base}/ja/blog/`}>{t('ja', 'back.blog')}</a>
-      <p class="post-meta">{post.data.date.toISOString().slice(0, 10)} · {minutes}{t('ja', 'read.suffix')}</p>
+      <p class="post-meta">{ymd(post.data.date)} · {minutes}{t('ja', 'read.suffix')}</p>
       <h1>{post.data.title}</h1>
       {post.data.cover && (post.data.cover.startsWith('http')
         ? <img class="post-cover" src={cover} alt="" />

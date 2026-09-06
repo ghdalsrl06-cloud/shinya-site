@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { ymd } from '../../lib/dates';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
@@ -110,7 +111,7 @@ const albumLd = {
         <section class="section">
           <h2>{t('ja', 'section.playlist')}</h2>
           <div class="card playlist-card">
-            <span class="badge">{isReleased(playlist) ? playlist.data.releaseDate : t('ja', 'badge.coming')}</span>
+            <span class="badge">{isReleased(playlist) ? ymd(playlist.data.releaseDate) : t('ja', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;">{playlist.data.title}</h3>
             {(playlist.data.titleJa) && <p class="card-title-ja">{playlist.data.titleJa}</p>}
             <p class="card-desc">{playlist.data.descriptionJa ?? playlist.data.description}</p>
@@ -132,7 +133,7 @@ const albumLd = {
             {singles.map((r) => (
               <div class="card">
             <span class="card-no" aria-hidden="true">{String(r.data.track ?? 0).padStart(2, '0')}</span>
-            <span class="badge">{isReleased(r) ? r.data.releaseDate : t('ja', 'badge.coming')}</span>
+            <span class="badge">{isReleased(r) ? ymd(r.data.releaseDate) : t('ja', 'badge.coming')}</span>
             <h3 style="margin: 0.8rem 0 0.1rem;"><a href={`${base}/ja/music/${r.id}/`}>{r.data.title}</a></h3>
             {(r.data.titleJa) && <p class="card-title-ja">{r.data.titleJa}</p>}
             <p class="card-desc">{r.data.descriptionJa ?? r.data.description}</p>
