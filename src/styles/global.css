@@ -529,6 +529,18 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
 .album-countdown b { font-weight: 600; color: var(--neon-pink); letter-spacing: 0.12em; }
 .album-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1.5rem; }
 
+/* closing block of the music page */
+.music-outro {
+  margin: 3rem 0 4rem; padding: 1.8rem 2rem; text-align: center;
+  border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, 0.015);
+}
+.music-outro-title { margin: 0 0 0.5rem; font-family: var(--font-tech); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--neon-pink); }
+.music-outro-body { margin: 0 0 1.2rem; color: var(--text-dim); font-size: 0.95rem; }
+.music-outro .album-cta { justify-content: center; margin: 0; }
+/* the album a track belongs to, in the meta line of its page */
+.post-meta .song-album { color: var(--neon-purple); }
+.post-meta .song-album:hover { color: var(--neon-pink); }
+
 /* compact tracklist: number, title and the other-language name, two columns
    on desktop so eight tracks sit beside the jacket instead of below it */
 .album-tracks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 1.6rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }

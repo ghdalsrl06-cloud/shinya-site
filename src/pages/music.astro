@@ -4,6 +4,7 @@ import { coverOf, isReleased } from '../lib/covers';
 import ArtImg from '../components/ArtImg.astro';
 import LiteYouTube from '../components/LiteYouTube.astro';
 import AlbumHead from '../components/AlbumHead.astro';
+import MusicOutro from '../components/MusicOutro.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../i18n/ui';
 import { ALBUMS, LINES, jacketOf, tabParts } from '../lib/albums';
@@ -79,8 +80,11 @@ const albumLd = {
             <button
               type="button"
               role="tab"
+              id={`album-tab-${meta.n}`}
               class:list={['album-tab', meta.n === current && 'active']}
               aria-selected={String(meta.n === current)}
+              aria-controls={`album-panel-${meta.n}`}
+              tabindex={meta.n === current ? 0 : -1}
               data-album-tab={meta.n}
               data-album-line={meta.line}
             >
@@ -93,7 +97,7 @@ const albumLd = {
     ))}
 
     {ordered.map(({ meta, singles, playlist, out }) => (
-      <div data-album-panel={meta.n} hidden={meta.n !== current}>
+      <div data-album-panel={meta.n} id={`album-panel-${meta.n}`} role="tabpanel" aria-labelledby={`album-tab-${meta.n}`} hidden={meta.n !== current}>
         <section class="section" style="padding-bottom: 0;">
           <AlbumHead lang="en" meta={meta} singles={singles} playlist={playlist} out={out} />
         </section>
@@ -148,9 +152,7 @@ const albumLd = {
       </div>
     ))}
 
-      <p style="margin-top: 2.5rem; margin-bottom: 4rem; color: var(--text-dim);">
-        {t('en', 'music.subscribe.pre')} <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> {t('en', 'music.subscribe.post')}
-      </p>
+      <MusicOutro lang="en" />
   </div>
 </Base>
 
@@ -171,6 +173,7 @@ const albumLd = {
         if (on) line = b.dataset.albumLine || 'main';
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
         // On the mobile strip, bring the chosen tab into view (a no-op on the desktop grid).
         if (on) b.parentElement.scrollLeft = Math.max(0, b.offsetLeft - b.parentElement.offsetLeft - 20);
       });
@@ -185,6 +188,19 @@ const albumLd = {
       if (!b) return;
       select(b.dataset.albumTab);
       history.replaceState(null, '', location.pathname + '#album-' + b.dataset.albumTab);
+    }));
+    // Arrow keys move along the tabs of a line; Home and End jump to its ends.
+    bars.forEach((bar) => bar.addEventListener('keydown', (e) => {
+      const tabs = Array.from(bar.querySelectorAll('[data-album-tab]'));
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      const step = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+      if (step === undefined) return;
+      e.preventDefault();
+      const to = tabs[(i + step + tabs.length) % tabs.length];
+      to.focus();
+      select(to.dataset.albumTab);
+      history.replaceState(null, '', location.pathname + '#album-' + to.dataset.albumTab);
     }));
     const m = location.hash.match(/^#album-(\d+)$/);
     const linked = m && document.querySelector('[data-album-tab="' + m[1] + '"]') ? m[1] : null;
