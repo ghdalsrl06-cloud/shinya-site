@@ -29,6 +29,13 @@ const behind = (await getCollection('blog')).find(
   (p) => p.id === `behind-${song.id}` && !p.data.draft && p.data.date.valueOf() <= Date.now(),
 );
 const cover = coverOf(song);
+// Original-line tracks are titled in Japanese with titleEn alongside; the CLUB
+// and AFTER lines are titled in English and carry no titleEn. Only bracket the
+// English name when it is actually a second name.
+const enTitle = song.data.titleEn
+  ? `${song.data.title} (${song.data.titleEn})`
+  : song.data.title;
+
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'MusicRecording',
@@ -42,7 +49,7 @@ const ld = {
 };
 ---
 
-<Base title={`${song.data.title} (${song.data.titleEn}) — SHINYA / 深夜`} description={song.data.description} ogImage={cover}>
+<Base title={`${enTitle} — SHINYA / 深夜`} description={song.data.description} ogImage={cover}>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <div class="container">
     <article class="section song-page">
@@ -86,7 +93,7 @@ const ld = {
         )}
       </section>
 
-      <ShareRow title={`${song.data.title} (${song.data.titleEn}) — SHINYA`} lang="en" />
+      <ShareRow title={`${enTitle} — SHINYA`} lang="en" />
 
       {(prev || next) && (
         <nav class="post-nav">

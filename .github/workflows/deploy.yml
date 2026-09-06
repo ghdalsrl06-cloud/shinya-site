@@ -31,6 +31,8 @@ on:
     - cron: '20 15 25 9 *'
     - cron: '40 15 25 9 *'
     - cron: '0 15 2 10 *' # SHINYA AFTER 2nd — Oct 2
+    - cron: '0 15 9 10 *' # SHINYA Original 6th — Oct 9
+    - cron: '0 15 16 10 *' # SHINYA AFTER 3rd — Oct 16
     # Webtoon serialization: an episode every third day at 09:00 KST
     # (00:00 UTC the same date), Sep 1 through Sep 28. Two attempts ten
     # minutes apart; the daily 00:05 build is a third chance at 09:05 KST.
