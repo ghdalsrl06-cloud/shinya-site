@@ -13268,6 +13268,7 @@
     ],
     "poster": "images/covers/it-became-4am.jpg",
     "posterPre": "images/covers/it-became-4am-pre.jpg",
+    "youtubeId": "9Qo3hmXI0_o",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -13447,6 +13448,7 @@
     ],
     "poster": "images/covers/sleeping-feels-like-losing.jpg",
     "posterPre": "images/covers/sleeping-feels-like-losing-pre.jpg",
+    "youtubeId": "sYo6jTbtT78",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -13617,6 +13619,7 @@
     ],
     "poster": "images/covers/battery-at-8-percent.jpg",
     "posterPre": "images/covers/battery-at-8-percent-pre.jpg",
+    "youtubeId": "9xVcKQj0GEM",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -13784,6 +13787,7 @@
     ],
     "poster": "images/covers/three-was-more-like-night.jpg",
     "posterPre": "images/covers/three-was-more-like-night-pre.jpg",
+    "youtubeId": "-qexew0Fpj0",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -13972,6 +13976,7 @@
     ],
     "poster": "images/covers/the-sky-wakes-first.jpg",
     "posterPre": "images/covers/the-sky-wakes-first-pre.jpg",
+    "youtubeId": "5QQ6wMNqZSI",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -14157,6 +14162,7 @@
     ],
     "poster": "images/covers/if-i-sleep-now-the-day-is-gone.jpg",
     "posterPre": "images/covers/if-i-sleep-now-the-day-is-gone-pre.jpg",
+    "youtubeId": "Jy7E6ekw7_w",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -14321,6 +14327,7 @@
     ],
     "poster": "images/covers/morning-is-fine-now.jpg",
     "posterPre": "images/covers/morning-is-fine-now-pre.jpg",
+    "youtubeId": "BgkpmaYR8KU",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00"
   },
@@ -14328,7 +14335,7 @@
     "id": "shinya-mix-vol6",
     "title": "Just Before Morning",
     "titleKo": "아침 바로 앞에서 · SHINYA Original 6집 7곡 연속 믹스",
-    "titleJa": "朝のすぐ手前で — SHINYA Originalミックス",
+    "titleEn": "Just Before Morning — SHINYA Original 6th Mix",
     "kind": "playlist",
     "album": 10,
     "status": "coming-soon",
@@ -14337,8 +14344,9 @@
     "descriptionJa": "午前4時から5時まで、夜で唯一選択が残された一時間 — 68〜96BPMの七曲が三周し、カーテンを開けたまま終わる。",
     "poster": "images/covers/shinya-mix-vol6.jpg",
     "posterPre": "images/covers/shinya-mix-vol6-pre.jpg",
+    "youtubeId": "VPN1dF68Qmc",
     "releaseDate": "2026-10-09",
     "releaseAt": "2026-10-09T23:59:00+09:00",
-    "titleEn": "Just Before Morning — SHINYA Original 6th Mix"
+    "titleJa": "朝のすぐ手前で — SHINYA Originalミックス"
   }
 ]
