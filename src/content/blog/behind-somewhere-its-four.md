@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #4 — Somewhere It's Four"
 description: "Her four o’clock becomes somebody else’s — the slowest track, with clock ticks deliberately out of phase."
 date: 2026-10-21
+cover: images/covers/somewhere-its-four.jpg
 tags: [behind, dark r&b]
 ---
 

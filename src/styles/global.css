@@ -700,6 +700,20 @@ html.midnight-mode .album-tile-no[data-line="club"] { color: #f0a35e; }
 .post-list .card a { color: var(--text); }
 .post-list .card:hover h3 a { color: var(--neon-pink); }
 .post-meta { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+/* blog index: cover beside each post, album chips above, twelve at a time */
+.blog-filter { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; margin: 0 0 1.4rem; }
+.post-card { display: grid; grid-template-columns: 200px 1fr; gap: 1.4rem; align-items: start; }
+.post-card-cover { display: block; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+.post-card-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.post-card:hover .post-card-cover img { transform: scale(1.03); }
+.post-card h3 { margin: 0.3rem 0; }
+.post-card-body { min-width: 0; }
+.post-card-plain { grid-template-columns: 1fr; }
+.blog-more { margin: 1.6rem 0 0; text-align: center; }
+@media (max-width: 700px) {
+  .post-card { grid-template-columns: 96px 1fr; gap: 0.9rem; }
+  .post-card-cover { aspect-ratio: 1 / 1; }
+}
 
 .back-link {
   display: inline-flex; align-items: center; gap: 0.4rem;

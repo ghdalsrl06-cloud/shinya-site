@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #1 — Still Daylight: 終わるのは私だけ"
 description: "写真の影が短い返事が届きます — アルバムで最も空いた曲。"
 date: 2026-10-18
+cover: images/covers/still-daylight.jpg
 tags: [behind, dark r&b]
 ---
 

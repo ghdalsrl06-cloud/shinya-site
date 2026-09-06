@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #2 — Minus Twelve"
 description: "The arithmetic became a habit, and the easier it got the further it read."
 date: 2026-10-19
+cover: images/covers/minus-twelve.jpg
 tags: [behind, dark r&b]
 ---
 

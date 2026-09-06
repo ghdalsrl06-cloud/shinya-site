@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #6 — You're at Work"
 description: "A slow reply is astronomy, not feeling — the fastest and busiest track here."
 date: 2026-10-23
+cover: images/covers/youre-at-work.jpg
 tags: [behind, dark r&b]
 ---
 

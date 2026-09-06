@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #1 — Still Daylight: 끝나는 건 나뿐이다"
 description: "사진 속 그림자가 짧은 답장이 옵니다 — 앨범에서 가장 비어 있는 곡."
 date: 2026-10-18
+cover: images/covers/still-daylight.jpg
 tags: [behind, dark r&b]
 ---
 

@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA AFTER 3rd) #5 — Same Song, Your Noon"
 description: "One melody played twice in two timbres, because a song cannot choose the hour it is heard in."
 date: 2026-10-22
+cover: images/covers/same-song-your-noon.jpg
 tags: [behind, dark r&b]
 ---
 

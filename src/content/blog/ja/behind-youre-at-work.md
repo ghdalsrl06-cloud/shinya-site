@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #6 — You're at Work: 天文学の問題"
 description: "返事が遅いのは心ではなく天文学です — 最も速く忙しい曲。"
 date: 2026-10-23
+cover: images/covers/youre-at-work.jpg
 tags: [behind, dark r&b]
 ---
 

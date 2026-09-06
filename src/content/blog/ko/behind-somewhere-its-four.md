@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #4 — Somewhere It's Four: 내 4시가 남의 것이 된다"
 description: "내 4시가 남의 4시가 됩니다 — 가장 느린 곡, 시계 틱을 일부러 어긋나게 겹쳤습니다."
 date: 2026-10-21
+cover: images/covers/somewhere-its-four.jpg
 tags: [behind, dark r&b]
 ---
 

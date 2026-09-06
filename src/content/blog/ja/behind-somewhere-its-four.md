@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #4 — Somewhere It's Four: 私の四時が誰かのものになる"
 description: "私の四時が誰かの四時になります — 最も遅い曲、時計のティックをわざとずらして重ねました。"
 date: 2026-10-21
+cover: images/covers/somewhere-its-four.jpg
 tags: [behind, dark r&b]
 ---
 

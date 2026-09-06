@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #3 — Traffic on Your Side: 소음이 안부다"
 description: "통화 너머로 저쪽의 낮이 들어옵니다 — 유일하게 바깥 소리가 들어오는 곡."
 date: 2026-10-20
+cover: images/covers/traffic-on-your-side.jpg
 tags: [behind, dark r&b]
 ---
 

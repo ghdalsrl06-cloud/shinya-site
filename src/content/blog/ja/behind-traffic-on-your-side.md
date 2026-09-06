@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3rd ビハインド #3 — Traffic on Your Side: 騒音が無事の知らせ"
 description: "電話越しにそっちの昼が入ってきます — 唯一、外の音が入る曲。"
 date: 2026-10-20
+cover: images/covers/traffic-on-your-side.jpg
 tags: [behind, dark r&b]
 ---
 

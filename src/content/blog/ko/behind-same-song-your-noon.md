@@ -2,6 +2,7 @@
 title: "SHINYA AFTER 3집 비하인드 #5 — Same Song, Your Noon: 이 채널에 대한 곡"
 description: "하나의 멜로디를 두 음색으로 두 번 — 노래는 듣는 시간을 고를 수 없으니까요."
 date: 2026-10-22
+cover: images/covers/same-song-your-noon.jpg
 tags: [behind, dark r&b]
 ---
 
