@@ -24,6 +24,7 @@ on:
     - cron: '0 15 11 9 *' # SHINYA CLUB 1st — Sep 11
     - cron: '20 15 11 9 *'
     - cron: '40 15 11 9 *'
+    - cron: '0 15 12 9 *' # SHINYA SPECIAL 「今夜も開演」 — Sep 12
     - cron: '0 15 18 9 *' # SHINYA CLUB 2nd — Sep 18
     - cron: '20 15 18 9 *'
     - cron: '40 15 18 9 *'

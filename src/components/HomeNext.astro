@@ -3,12 +3,12 @@
 // pre-save, and the ones queued behind it. Once nothing is upcoming it turns
 // into the newest album with its stores. Everything comes from the album
 // table and the collection, so it moves on by itself on release night.
-import ArtImg from './ArtImg.astro';
+import Jacket from './Jacket.astro';
 import ReleaseCountdown from './ReleaseCountdown.astro';
 import { getCollection } from 'astro:content';
 import { HYPERFOLLOW, isOut } from '../lib/presave';
 import { t, type Lang } from '../i18n/ui';
-import { albumsFrom, jacketOf, jacketAlt, lineName, tabParts, dateBadge } from '../lib/albums';
+import { albumsFrom, newestFirst, lineName, tabParts, dateBadge } from '../lib/albums';
 
 const { lang } = Astro.props as { lang: Lang };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -17,10 +17,10 @@ const prefix = lang === 'en' ? '' : `/${lang}`;
 const albums = albumsFrom(await getCollection('music'));
 const at = (a: any) => new Date(a.singles[0].data.releaseAt ?? a.singles[0].data.releaseDate ?? 0).valueOf();
 const upcoming = albums.filter((a) => !a.out).sort((a, b) => at(a) - at(b));
-const next = upcoming[0] ?? [...albums].sort((a, b) => b.meta.n - a.meta.n)[0];
+const next = upcoming[0] ?? newestFirst(albums)[0];
 const then = upcoming.slice(1);
 
-const COUNT = { en: (n: number) => `${n} tracks`, ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
+const COUNT = { en: (n: number) => (n === 1 ? '1 track' : `${n} tracks`), ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
 const released = next.singles[0].data.releaseDate?.replaceAll('-', '.');
 const releaseAt = next.singles[0].data.releaseAt;
 const follow = HYPERFOLLOW.find((e) => e.n === next.meta.n);
@@ -31,10 +31,10 @@ const href = (n: number) => `${base}${prefix}/music/#album-${n}`;
   <h2>{t(lang, next.out ? 'home.latest' : 'home.next')}</h2>
   <div class="next-release">
     <a class="next-release-art" href={href(next.meta.n)}>
-      <ArtImg src={jacketOf(next.meta)} width={2048} sizes="(min-width: 700px) 240px, 70vw" alt={jacketAlt(next.meta, lang)} />
+      <Jacket meta={next.meta} lang={lang} sizes="(min-width: 700px) 240px, 70vw" />
     </a>
     <div class="next-release-info">
-      <p class="album-eyebrow"><span>{lineName(next.meta)}</span><span class="album-eyebrow-no">{tabParts(next.meta, lang).no}</span></p>
+      <p class="album-eyebrow"><span>{lineName(next.meta)}</span>{tabParts(next.meta, lang).no && <span class="album-eyebrow-no">{tabParts(next.meta, lang).no}</span>}</p>
       <h3 class="next-release-name">{next.meta.name}</h3>
       <p class="album-note">{next.out ? next.meta.noteOut[lang] : next.meta.noteSoon[lang]}</p>
       <p class="album-meta">

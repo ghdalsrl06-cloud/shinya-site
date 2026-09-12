@@ -1,0 +1,29 @@
+---
+// An album's jacket, wherever one is shown. Until the art for a record is in,
+// a lettered plate stands in for it so the tile, the strip and the panel all
+// keep their shape — set `art: false` on the album and remove it when the
+// jacket lands.
+import ArtImg from './ArtImg.astro';
+import { jacketOf, jacketAlt, hasArt, lineName, type AlbumMeta } from '../lib/albums';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  meta: AlbumMeta;
+  lang: Lang;
+  sizes?: string;
+  class?: string;
+  alt?: string;
+}
+
+const { meta, lang, sizes = '100vw', class: cls, alt } = Astro.props;
+const label = alt ?? jacketAlt(meta, lang);
+---
+
+{hasArt(meta) ? (
+  <ArtImg class={cls} src={jacketOf(meta)} width={2048} sizes={sizes} alt={label} />
+) : (
+  <span class:list={['jacket-plate', cls]} data-line={meta.line} role="img" aria-label={label}>
+    <span class="jacket-plate-line">{lineName(meta)}</span>
+    <span class="jacket-plate-name">{meta.name}</span>
+  </span>
+)}
