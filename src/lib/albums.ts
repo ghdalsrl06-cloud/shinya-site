@@ -9,13 +9,15 @@ import { isReleased } from './covers';
 // Adding an album is one block here plus its entries in releases.json — the
 // three music pages loop over this list and need no edit.
 
-export type LineId = 'main' | 'club' | 'after';
+export type LineId = 'main' | 'club' | 'after' | 'special';
 
 export interface AlbumMeta {
   n: number;
   line: LineId;
   /** Shown in the tab and used to build the jacket's alt text. */
   name: string;
+  /** False while the jacket art is still to come: a lettered plate stands in. */
+  art?: boolean;
   /** The small label above the name in the tab. */
   tabNo: Record<Lang, string>;
   heading: Record<Lang, string>;
@@ -47,14 +49,25 @@ export const LINES: { id: LineId; short: string; label: Record<Lang, string> }[]
       ja: 'SHINYA 深夜 — ダークエレクトロニック',
     },
   },
+  {
+    id: 'special',
+    short: 'SPECIAL',
+    label: {
+      en: 'SHINYA SPECIAL — outside the lines',
+      ko: 'SHINYA SPECIAL — 라인 밖 스페셜',
+      ja: 'SHINYA SPECIAL — ラインの外',
+    },
+  },
 ];
 
 const COVER_ALT: Record<Lang, string> = { en: 'album cover', ko: '앨범 커버', ja: 'アルバムジャケット' };
 
 export const jacketOf = (a: AlbumMeta) => `images/covers/album-${a.n}.jpg`;
+/** Whether the jacket art is in yet. `<Jacket>` draws a plate when it is not. */
+export const hasArt = (a: AlbumMeta) => a.art !== false;
 /** The line's name as it reads next to an album: SHINYA 深夜 / CLUB / AFTER. */
 export const lineName = (a: AlbumMeta) =>
-  ({ main: 'SHINYA 深夜', club: 'SHINYA CLUB', after: 'SHINYA AFTER' })[a.line];
+  ({ main: 'SHINYA 深夜', club: 'SHINYA CLUB', after: 'SHINYA AFTER', special: 'SHINYA SPECIAL' })[a.line];
 
 /** Join the table to the collection: each listed album with its tracks, its
  *  playlist and whether it is out. Albums with no tracks yet are dropped. */
@@ -72,15 +85,23 @@ export function albumsFrom(releases: any[]) {
     };
   }).filter((a) => a.singles.length > 0);
 }
+/** When a record lands, read off its first track. */
+export const albumAt = (a: { singles: any[] }) =>
+  new Date(a.singles[0].data.releaseAt ?? a.singles[0].data.releaseDate ?? 0).valueOf();
+/** Newest first, by release date rather than by `n` — a one-off special slots
+ *  in where it was released instead of always sorting to the front. */
+export const newestFirst = <T extends { singles: any[] }>(albums: T[]) =>
+  [...albums].sort((a, b) => albumAt(b) - albumAt(a));
 /** Release day as M/D, for the badge on the jacket of an album not out yet. */
 export const dateBadge = (r: any) => {
   const d = r?.data.releaseDate;
   return d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : '';
 };
-/** The tab label split into the line name it may start with ("CLUB", "AFTER")
- *  and the number, so the line can be dropped where it is already stated. */
+/** The tab label split into the line name it may start with ("CLUB", "AFTER",
+ *  "SPECIAL") and the number, so the line can be dropped where it is already
+ *  stated. A special carries no number, and `no` comes back empty. */
 export const tabParts = (a: AlbumMeta, lang: Lang) => {
-  const m = a.tabNo[lang].match(/^(CLUB|AFTER)\s+(.*)$/);
+  const m = a.tabNo[lang].match(/^(CLUB|AFTER|SPECIAL|스페셜)\s*(.*)$/);
   return m ? { line: m[1], no: m[2] } : { line: '', no: a.tabNo[lang] };
 };
 export const jacketAlt = (a: AlbumMeta, lang: Lang) => `${a.name} ${COVER_ALT[lang]}`;
@@ -316,6 +337,28 @@ export const ALBUMS: AlbumMeta[] = [
       en: 'The third AFTER record — the hour a night ends on one side of the earth while an afternoon carries on at the other. Seven dark R&B tracks between 68 and 78 BPM on the one fact that does not move: only I am ending. Coming soon.',
       ko: '세 번째 AFTER — 지구 한쪽에서 밤이 끝나고 반대쪽에서는 오후가 이어지는 한 시간. 68~78 BPM 다크 R&B 7곡이 움직이지 않는 사실 하나를 일곱 번 만진다 — 끝나는 건 나뿐이다. 커밍순. 가사는 미리 읽어볼 수 있어요.',
       ja: '三枚目の AFTER — 地球の片側で夜が終わり、反対側では午後が続く一時間。68〜78BPMのダークR&B7曲が、動かない事実を七回触る — 終わるのは私だけ。カミングスーン。歌詞は先に読めます。',
+    },
+  },
+  {
+    n: 12,
+    line: 'special',
+    name: '今夜も開演',
+    art: false,
+    tabNo: { en: 'SPECIAL', ko: '스페셜', ja: 'SPECIAL' },
+    heading: {
+      en: 'SPECIAL 「今夜も開演」 — Tonight, the Curtain Rises',
+      ko: 'SPECIAL 「今夜も開演」 — 오늘 밤도 막이 오른다',
+      ja: 'SPECIAL 「今夜も開演」',
+    },
+    noteOut: {
+      en: 'Outside the three lines — one bright song at 136 BPM, with the channel’s first full music video. At ten at night the daytime face goes into a drawer, the city’s windows come on like seats, and the front row is kept for you. Out now.',
+      ko: '세 라인 밖의 한 곡 — 처음으로 밝은 136 BPM 싱글, 채널의 첫 풀 뮤직비디오와 함께. 밤 열 시에 낮의 얼굴을 서랍에 넣고, 도시의 창문이 객석처럼 켜지고, 맨 앞줄은 당신 자리로 비워 둔다.',
+      ja: '三つのラインの外側の一曲 — はじめて明るい136 BPMのシングル、チャンネル初のフルMVとともに。夜十時に昼の顔を引き出しにしまい、街の窓が客席のように灯り、最前列は君のために空けてある。',
+    },
+    noteSoon: {
+      en: 'Outside the three lines — one bright song at 136 BPM, with the channel’s first full music video. At ten at night the daytime face goes into a drawer, the city’s windows come on like seats, and the front row is kept for you. Coming soon.',
+      ko: '세 라인 밖의 한 곡 — 처음으로 밝은 136 BPM 싱글, 채널의 첫 풀 뮤직비디오와 함께. 밤 열 시에 낮의 얼굴을 서랍에 넣고, 도시의 창문이 객석처럼 켜지고, 맨 앞줄은 당신 자리로 비워 둔다. 커밍순. 가사는 미리 읽어볼 수 있어요.',
+      ja: '三つのラインの外側の一曲 — はじめて明るい136 BPMのシングル、チャンネル初のフルMVとともに。夜十時に昼の顔を引き出しにしまい、街の窓が客席のように灯り、最前列は君のために空けてある。カミングスーン。歌詞は先に読めます。',
     },
   },
 ];

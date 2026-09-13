@@ -7,8 +7,11 @@ export interface HyperFollow {
   url: string;
   releaseAt: string; // release moment, matching the releaseAt in releases.json
   dateLabel: string; // short display date, e.g. "8/14"
+  image?: string; // thumbnail on the links page, when there is no album jacket
 }
 
+// Kept in release order: the hero, the music outro and the links page all read
+// the first entry that is not out yet as "what is next".
 export const HYPERFOLLOW: HyperFollow[] = [
   { n: 1, title: 'SHINYA 深夜', url: 'https://distrokid.com/hyperfollow/shinya1/shinya-', releaseAt: '2026-08-13T23:59:00+09:00', dateLabel: '8/13' },
   { n: 2, title: '始発まで', url: 'https://distrokid.com/hyperfollow/shinya1/sEMe3DtLGgo', releaseAt: '2026-08-14T23:59:00+09:00', dateLabel: '8/14' },
@@ -16,9 +19,12 @@ export const HYPERFOLLOW: HyperFollow[] = [
   { n: 4, title: 'おやすみのあとで', url: 'https://distrokid.com/hyperfollow/shinya1/iJ8VRBa3JwR', releaseAt: '2026-08-28T23:59:00+09:00', dateLabel: '8/28' },
   { n: 5, title: '誰かの部屋で', url: 'https://distrokid.com/hyperfollow/shinya1/3JSWBY9bdvA', releaseAt: '2026-09-04T23:59:00+09:00', dateLabel: '9/4' },
   { n: 6, title: 'Paper Luck', url: 'https://distrokid.com/hyperfollow/shinya1/paper-luck', releaseAt: '2026-09-11T23:59:00+09:00', dateLabel: '9/11' },
+  { n: 12, title: '今夜も開演', url: 'https://distrokid.com/hyperfollow/shinya1/JgSXi5iMahb', releaseAt: '2026-09-12T23:59:00+09:00', dateLabel: '9/12', image: 'images/character-thumb.jpg' },
   { n: 7, title: 'Second Wind', url: 'https://distrokid.com/hyperfollow/shinya1/second-wind', releaseAt: '2026-09-18T23:59:00+09:00', dateLabel: '9/18' },
   { n: 8, title: 'Blue Hour', url: 'https://distrokid.com/hyperfollow/shinya1/blue-hour', releaseAt: '2026-09-25T23:59:00+09:00', dateLabel: '9/25' },
   { n: 9, title: 'Empty Room', url: 'https://distrokid.com/hyperfollow/shinya1/empty-room', releaseAt: '2026-10-02T23:59:00+09:00', dateLabel: '10/2' },
+  { n: 10, title: '朝のすぐ手前で', url: 'https://distrokid.com/hyperfollow/shinya1/mChmYcpMb2M', releaseAt: '2026-10-09T23:59:00+09:00', dateLabel: '10/9' },
+  { n: 11, title: 'Still Daylight', url: 'https://distrokid.com/hyperfollow/shinya1/still-daylight', releaseAt: '2026-10-16T23:59:00+09:00', dateLabel: '10/16' },
 ];
 
 export const isOut = (e: HyperFollow): boolean => Date.now() >= new Date(e.releaseAt).valueOf();

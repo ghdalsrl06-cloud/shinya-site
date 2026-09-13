@@ -11,7 +11,7 @@ const streamLinks = HYPERFOLLOW.map((e) => ({
   note: isOut(e)
     ? 'Spotify · Apple Music 등 모든 스토어에서 듣기'
     : `${e.dateLabel} 스트리밍 발매 — 미리 저장하면 발매와 동시에 라이브러리에 추가돼요`,
-  image: `images/covers/album-${e.n}.jpg`,
+  image: e.image ?? `images/covers/album-${e.n}.jpg`,
 }));
 const officialLinks = [
   { label: 'Spotify — SHINYA 深夜', href: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH', note: '아티스트 페이지 팔로우 — 모든 발매를 한곳에서', image: 'images/character-thumb.jpg' },

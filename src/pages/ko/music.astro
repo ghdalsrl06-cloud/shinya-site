@@ -3,12 +3,13 @@ import Base from '../../layouts/Base.astro';
 import { ymd } from '../../lib/dates';
 import { coverOf, isReleased } from '../../lib/covers';
 import ArtImg from '../../components/ArtImg.astro';
+import Jacket from '../../components/Jacket.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 import AlbumHead from '../../components/AlbumHead.astro';
 import MusicOutro from '../../components/MusicOutro.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/ui';
-import { ALBUMS, LINES, jacketOf } from '../../lib/albums';
+import { ALBUMS, LINES, newestFirst, hasArt } from '../../lib/albums';
 
 const releases = await getCollection('music');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -26,8 +27,8 @@ const albums = ALBUMS.map((meta) => {
   };
 }).filter((a) => a.singles.length > 0);
 
-// Newest album overall opens the page, and the grid lists newest first.
-const ordered = [...albums].sort((a, b) => b.meta.n - a.meta.n);
+// Newest release overall opens the page, and the grid lists newest first.
+const ordered = newestFirst(albums);
 const current = ordered[0].meta.n;
 // Banner counts come from the data so they cannot fall behind a new album.
 const lineAlbums = (id) => albums.filter((a) => a.meta.line === id).length;
@@ -47,7 +48,7 @@ const albumLd = {
     '@type': 'MusicAlbum',
     name: meta.name,
     byArtist: { '@type': 'MusicGroup', name: 'SHINYA / 深夜' },
-    image: `${site}${base}/images/covers/album-${meta.n}.jpg`,
+    image: hasArt(meta) ? `${site}${base}/images/covers/album-${meta.n}.jpg` : undefined,
     datePublished: singles[0].data.releaseDate,
     numTracks: singles.length,
     track: singles.map((r) => ({
@@ -67,8 +68,8 @@ const albumLd = {
       <ArtImg class="page-banner-art" src="images/music-banner.jpg" width={1920} sizes="(min-width: 1800px) 1160px, (min-width: 1000px) 920px, 100vw" loading="eager" />
       <div class="page-banner-scrim" aria-hidden="true"></div>
       <div class="page-banner-inner">
-        <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB" data-title-after="SHINYA AFTER">深夜 MUSIC</h1>
-        <p class="page-banner-sub" data-sub-main={`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`} data-sub-after={`다크 R&B 라인 · ${lineTracks('after')}곡 + 믹스`} data-sub-club={`저지 클럽 라인 · ${lineTracks('club')}곡 + 믹스`}>{`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`}</p>
+        <h1 class="page-banner-title" data-title-main="深夜 MUSIC" data-title-club="SHINYA CLUB" data-title-after="SHINYA AFTER" data-title-special="SHINYA SPECIAL">深夜 MUSIC</h1>
+        <p class="page-banner-sub" data-sub-main={`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`} data-sub-after={`다크 R&B 라인 · ${lineTracks('after')}곡 + 믹스`} data-sub-club={`저지 클럽 라인 · ${lineTracks('club')}곡 + 믹스`} data-sub-special="라인 밖 스페셜 · 한 곡 + 풀 뮤직비디오">{`다크 일렉트로닉 J-POP ${lineAlbums('main')}장 + SHINYA CLUB + AFTER · ${totalTracks}곡 + 믹스`}</p>
       </div>
     </section>
 
@@ -93,7 +94,7 @@ const albumLd = {
           data-album-line={meta.line}
         >
           <span class="album-tile-art">
-            <ArtImg src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 150px, 30vw" alt="" />
+            <Jacket meta={meta} lang="ko" sizes="(min-width: 700px) 150px, 30vw" alt="" />
             {!out && <span class="album-tile-date">{dateBadge(singles[0])}</span>}
           </span>
           <span class="album-tile-no" data-line={meta.line}>{meta.tabNo['ko']}</span>

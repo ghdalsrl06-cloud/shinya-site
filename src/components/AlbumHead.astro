@@ -3,11 +3,11 @@
 // heading, blurb, a meta row, the store buttons and a compact tracklist.
 // Everything comes from the album table and the collection, so the three
 // music pages render this once per album and pass the language.
-import ArtImg from './ArtImg.astro';
+import Jacket from './Jacket.astro';
 import ReleaseCountdown from './ReleaseCountdown.astro';
 import { HYPERFOLLOW, isOut } from '../lib/presave';
 import { t, type Lang } from '../i18n/ui';
-import { jacketOf, jacketAlt, lineName, tabParts, type AlbumMeta } from '../lib/albums';
+import { hasArt, lineName, tabParts, type AlbumMeta } from '../lib/albums';
 import { isReleased } from '../lib/covers';
 
 interface Props {
@@ -24,7 +24,7 @@ const prefix = lang === 'en' ? '' : `/${lang}`;
 
 // Next to the line name only the number is wanted.
 const number = tabParts(meta, lang).no;
-const COUNT = { en: (n: number) => `${n} tracks`, ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
+const COUNT = { en: (n: number) => (n === 1 ? '1 track' : `${n} tracks`), ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
 
 const released = singles[0]?.data.releaseDate?.replaceAll('-', '.');
 const releaseAt = singles[0]?.data.releaseAt;
@@ -47,13 +47,13 @@ const sub = (r: any) =>
 
 // A blurred copy of the jacket sits behind the whole block so each album
 // tints its own panel. The 480px variant is plenty under a 70px blur.
-const glow = `${base}/images/opt/covers/album-${meta.n}-w480.webp`;
+const glow = hasArt(meta) ? `${base}/images/opt/covers/album-${meta.n}-w480.webp` : null;
 ---
 
-<div class="album-head" style={`--jacket: url('${glow}')`}>
-  <ArtImg class="album-jacket" src={jacketOf(meta)} width={2048} sizes="(min-width: 700px) 280px, 80vw" alt={jacketAlt(meta, lang)} />
+<div class="album-head" style={glow ? `--jacket: url('${glow}')` : undefined}>
+  <Jacket class="album-jacket" meta={meta} lang={lang} sizes="(min-width: 700px) 280px, 80vw" />
   <div class="album-head-info">
-    <p class="album-eyebrow"><span>{lineName(meta)}</span><span class="album-eyebrow-no">{number}</span></p>
+    <p class="album-eyebrow"><span>{lineName(meta)}</span>{number && <span class="album-eyebrow-no">{number}</span>}</p>
     <h2>{meta.heading[lang]}</h2>
     <p class="album-note">{out ? meta.noteOut[lang] : meta.noteSoon[lang]}</p>
     <p class="album-meta">
