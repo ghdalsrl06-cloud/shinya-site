@@ -2,6 +2,7 @@
 title: "Behind the Track (SHINYA SPECIAL) — Tonight, the Curtain Rises"
 description: "The channel's first bright song, and its first full music video — the stage turns out to be the city's lit windows."
 date: 2026-09-14
+cover: images/covers/tonight-the-curtain-rises.jpg
 tags: [behind, j-pop]
 ---
 

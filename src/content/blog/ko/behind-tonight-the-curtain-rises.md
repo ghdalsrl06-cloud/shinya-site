@@ -2,6 +2,7 @@
 title: "SHINYA SPECIAL 비하인드 — 今夜も開演: 무대는 도시의 창문이었다"
 description: "채널이 처음으로 밝은 곡을 부르고, 처음으로 풀 뮤직비디오를 만들었습니다."
 date: 2026-09-14
+cover: images/covers/tonight-the-curtain-rises.jpg
 tags: [behind, j-pop]
 ---
 

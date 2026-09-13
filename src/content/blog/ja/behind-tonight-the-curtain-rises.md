@@ -2,6 +2,7 @@
 title: "SHINYA SPECIAL ビハインド — 今夜も開演: 舞台は街の窓だった"
 description: "チャンネル初の明るい曲、そして初のフルMV。"
 date: 2026-09-14
+cover: images/covers/tonight-the-curtain-rises.jpg
 tags: [behind, j-pop]
 ---
 
