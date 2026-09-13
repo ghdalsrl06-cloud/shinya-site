@@ -29,7 +29,10 @@ const COUNT = { en: (n: number) => (n === 1 ? '1 track' : `${n} tracks`), ko: (n
 const released = singles[0]?.data.releaseDate?.replaceAll('-', '.');
 const releaseAt = singles[0]?.data.releaseAt;
 const follow = HYPERFOLLOW.find((e) => e.n === meta.n);
-const mix = playlist && isReleased(playlist) && playlist.data.youtubeId ? playlist : null;
+// The second button plays the album's continuous mix. A one-track record has
+// no mix, so its own video stands in and the button says so instead.
+const single = singles.length === 1 && isReleased(singles[0]) && singles[0].data.youtubeId ? singles[0] : null;
+const mix = playlist && isReleased(playlist) && playlist.data.youtubeId ? playlist : single;
 
 // Running time and tempo range, shown only once every track carries them.
 const secs = (d: string) => d.split(':').reduce((n, p) => n * 60 + Number(p), 0);
@@ -77,8 +80,8 @@ const glow = hasArt(meta) ? `${base}/images/opt/covers/album-${meta.n}-w480.webp
             target="_blank"
             rel="noopener"
             data-play-mix={mix.data.youtubeId}
-            data-play-title={`${meta.name} — MIX`}
-          ><span aria-hidden="true">▶</span> {t(lang, 'album.play')}</a>
+            data-play-title={mix === single ? meta.name : `${meta.name} — MIX`}
+          ><span aria-hidden="true">▶</span> {t(lang, mix === single ? 'album.watch' : 'album.play')}</a>
         )}
       </p>
     )}
