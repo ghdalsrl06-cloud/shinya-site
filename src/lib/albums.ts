@@ -343,7 +343,6 @@ export const ALBUMS: AlbumMeta[] = [
     n: 12,
     line: 'special',
     name: '今夜も開演',
-    art: false,
     tabNo: { en: 'SPECIAL', ko: '스페셜', ja: 'SPECIAL' },
     heading: {
       en: 'SPECIAL 「今夜も開演」 — Tonight, the Curtain Rises',
