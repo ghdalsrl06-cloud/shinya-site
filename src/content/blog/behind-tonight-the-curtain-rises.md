@@ -20,7 +20,7 @@ The whole song has exactly one event, and it is 「夜の名前を 取り出す�
 
 ## Sound notes
 
-「今夜も 開演」 lands seven times, 「夜にしか」 six, 「最前列」 three. Verse 2 is four lines packed 1.8 seconds apart and is over in **seven seconds** — the daytime is short, and 「誰にも気づかれない 交差点」 is all of it.
+「今夜も 開演」 lands six times, 「夜にしか」 six, 「最前列」 three. Verse 2 is four lines packed 1.8 seconds apart and is over in **seven seconds** — the daytime is short, and 「誰にも気づかれない 交差点」 is all of it.
 
 After the bridge's 「拍手は 聞こえないけど / 君が眠れた なら / それが アンコール」 there is a **16.5-second build with no words at all.** The final chorus starts 7 seconds down at -18dB and the full band arrives at 2:07. Then 15.7 seconds of outro after 「明日も 開演」.
 
