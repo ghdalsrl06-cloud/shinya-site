@@ -17,12 +17,10 @@ jobs:
         run: |
           set -u
           BASE=https://shinya-music.com
-
           say() { printf '\n===== %s =====\n' "$1"; }
+          text() { sed 's/></>\n</g' | sed 's/<[^>]*>/ /g' | tr -s ' \n' '  '; }
 
-          head_code() { curl -sS -o /dev/null -w '%{http_code} %{size_download}\n' -L "$1"; }
-
-          say 'status codes'
+          say 'status code + bytes'
           for p in \
             /music/tonight-the-curtain-rises/ \
             /ko/music/tonight-the-curtain-rises/ \
@@ -34,49 +32,40 @@ jobs:
             /images/covers/tonight-the-curtain-rises.jpg \
             /images/opt/covers/album-12-w480.webp \
             /images/opt/covers/tonight-the-curtain-rises-w1280.webp ; do
-            printf '%-55s %s' "$p" "$(head_code "$BASE$p")"
+            printf '%-58s %s' "$p" "$(curl -sS -o /dev/null -w '%{http_code}  %{size_download} bytes\n' -L "$BASE$p")"
           done
 
-          say 'song page (ko) — key fields'
-          curl -sS -L "$BASE/ko/music/tonight-the-curtain-rises/" > /tmp/song.html
-          grep -o '<title>[^<]*' /tmp/song.html
-          grep -o 'data-video-id="[^"]*"' /tmp/song.html | head -1
-          grep -o 'class="song-hero-art"[^>]*' /tmp/song.html | head -c 200; echo
-          grep -o 'property="og:image" content="[^"]*"' /tmp/song.html | head -1
-          echo "lyric lines: $(grep -c 'lyrics-block' /tmp/song.html) blocks"
-          grep -o '今夜も 開演' /tmp/song.html | wc -l | sed 's/^/hook count: /'
+          say 'song page (ko)'
+          curl -sS -L "$BASE/ko/music/tonight-the-curtain-rises/" > song.html
+          grep -o '<title>[^<]*' song.html
+          grep -o 'data-video-id="[^"]*"' song.html | head -1
+          grep -o 'song-hero-art[^>]*' song.html | head -c 300; echo
+          grep -o 'property="og:image" content="[^"]*"' song.html | head -1
+          printf 'lyrics blocks: '; grep -c 'lyrics-block' song.html
+          printf 'hook line count: '; grep -o '今夜も 開演' song.html | wc -l
 
-          say 'music page (en) — tabs, chips, panel 12'
-          curl -sS -L "$BASE/music/" > /tmp/music.html
-          grep -o 'data-album-tab="[0-9]*" *data-album-line="[a-z]*"' /tmp/music.html | tr '\n' ' '; echo
-          grep -o 'data-album-filter="[a-z]*"' /tmp/music.html | tr '\n' ' '; echo
-          echo "jacket-plate left on page: $(grep -c 'jacket-plate' /tmp/music.html)"
-          python3 - <<'PY'
-import re, html
-s = open('/tmp/music.html', encoding='utf-8').read()
-i = s.index('data-album-panel="12"')
-blk = s[i:i+4000]
-def txt(m): return re.sub(r'\s+', ' ', re.sub('<[^>]*>', ' ', m)).strip()
-for name, pat in [('eyebrow', r'<p class="album-eyebrow">.*?</p>'),
-                  ('heading', r'<h2>.*?</h2>'),
-                  ('meta', r'<p class="album-meta">.*?</p>'),
-                  ('cta', r'<p class="album-cta">.*?</p>')]:
-    m = re.search(pat, blk, re.S)
-    print(f'{name:8}: {html.unescape(txt(m.group(0))) if m else "MISSING"}')
-m = re.search(r'class="album-jacket"[^>]*src="([^"]+)"', blk) or re.search(r'src="([^"]+)"[^>]*class="album-jacket"', blk)
-print('jacket  :', m.group(1) if m else 'MISSING')
-PY
+          say 'music page (en) — tab order'
+          curl -sS -L "$BASE/music/" > music.html
+          grep -o 'data-album-tab="[0-9]*" data-album-line="[a-z]*"' music.html | tr '\n' ' '; echo
+          printf '\nchips: '; grep -o 'data-album-filter="[a-z]*"' music.html | tr '\n' ' '; echo
+          printf 'jacket-plate placeholders left: '; grep -c 'jacket-plate' music.html || true
 
-          say 'about page — discography count'
+          say 'music page — panel 12 text'
+          sed 's/></>\n</g' music.html | sed -n '/data-album-panel="12"/,/album-tracks/p' | sed 's/<[^>]*>/ /g' | tr -s ' \n' '  '; echo
+          printf '\npanel 12 jacket: '
+          sed 's/></>\n</g' music.html | sed -n '/data-album-panel="12"/,/album-tracks/p' | grep -o 'src="[^"]*album-12[^"]*"' | head -1
+
+          say 'about page — album links'
           curl -sS -L "$BASE/about/" | grep -o 'href="/music/#album-[0-9]*"' | sort -u | tr '\n' ' '; echo
 
-          say 'links page — stream/pre-save rows'
-          curl -sS -L "$BASE/links/" | grep -o '<strong>\(Pre-Save\|Streaming\) — [^<]*' | sed 's/<strong>//'
+          say 'links page rows'
+          curl -sS -L "$BASE/links/" | grep -o '<strong>[^<]*</strong>' | sed 's/<[^>]*>//g'
 
-          say 'blog index (ko) — special post'
-          curl -sS -L "$BASE/ko/blog/" > /tmp/blog.html
-          grep -o 'data-blog-filter="[a-z0-9]*"' /tmp/blog.html | tr '\n' ' '; echo
-          grep -c 'tonight-the-curtain-rises' /tmp/blog.html | sed 's/^/special post refs: /'
+          say 'blog index (ko)'
+          curl -sS -L "$BASE/ko/blog/" > blog.html
+          grep -o 'data-blog-filter="[a-z0-9]*"' blog.html | tr '\n' ' '; echo
+          printf 'special post refs: '; grep -c 'tonight-the-curtain-rises' blog.html || true
 
           say 'sitemap'
-          curl -sS -L "$BASE/sitemap-0.xml" | grep -c 'tonight-the-curtain-rises' | sed 's/^/sitemap entries: /'
+          printf 'sitemap entries for the special: '
+          curl -sS -L "$BASE/sitemap-0.xml" | grep -o 'tonight-the-curtain-rises' | wc -l
