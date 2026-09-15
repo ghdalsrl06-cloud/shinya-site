@@ -1,0 +1,82 @@
+# Temporary: fetches the live site from a runner so a session behind an egress
+# proxy can read it. Delete once the check has run.
+name: Site check
+
+on:
+  push:
+    branches: [claude/blog-check-159lvt]
+    paths: ['.github/workflows/site-check.yml']
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch the SPECIAL pages
+        run: |
+          set -u
+          BASE=https://shinya-music.com
+
+          say() { printf '\n===== %s =====\n' "$1"; }
+
+          head_code() { curl -sS -o /dev/null -w '%{http_code} %{size_download}\n' -L "$1"; }
+
+          say 'status codes'
+          for p in \
+            /music/tonight-the-curtain-rises/ \
+            /ko/music/tonight-the-curtain-rises/ \
+            /ja/music/tonight-the-curtain-rises/ \
+            /music/ /ko/music/ /about/ /links/ \
+            /blog/behind-tonight-the-curtain-rises/ \
+            /ko/blog/behind-tonight-the-curtain-rises/ \
+            /images/covers/album-12.jpg \
+            /images/covers/tonight-the-curtain-rises.jpg \
+            /images/opt/covers/album-12-w480.webp \
+            /images/opt/covers/tonight-the-curtain-rises-w1280.webp ; do
+            printf '%-55s %s' "$p" "$(head_code "$BASE$p")"
+          done
+
+          say 'song page (ko) — key fields'
+          curl -sS -L "$BASE/ko/music/tonight-the-curtain-rises/" > /tmp/song.html
+          grep -o '<title>[^<]*' /tmp/song.html
+          grep -o 'data-video-id="[^"]*"' /tmp/song.html | head -1
+          grep -o 'class="song-hero-art"[^>]*' /tmp/song.html | head -c 200; echo
+          grep -o 'property="og:image" content="[^"]*"' /tmp/song.html | head -1
+          echo "lyric lines: $(grep -c 'lyrics-block' /tmp/song.html) blocks"
+          grep -o '今夜も 開演' /tmp/song.html | wc -l | sed 's/^/hook count: /'
+
+          say 'music page (en) — tabs, chips, panel 12'
+          curl -sS -L "$BASE/music/" > /tmp/music.html
+          grep -o 'data-album-tab="[0-9]*" *data-album-line="[a-z]*"' /tmp/music.html | tr '\n' ' '; echo
+          grep -o 'data-album-filter="[a-z]*"' /tmp/music.html | tr '\n' ' '; echo
+          echo "jacket-plate left on page: $(grep -c 'jacket-plate' /tmp/music.html)"
+          python3 - <<'PY'
+import re, html
+s = open('/tmp/music.html', encoding='utf-8').read()
+i = s.index('data-album-panel="12"')
+blk = s[i:i+4000]
+def txt(m): return re.sub(r'\s+', ' ', re.sub('<[^>]*>', ' ', m)).strip()
+for name, pat in [('eyebrow', r'<p class="album-eyebrow">.*?</p>'),
+                  ('heading', r'<h2>.*?</h2>'),
+                  ('meta', r'<p class="album-meta">.*?</p>'),
+                  ('cta', r'<p class="album-cta">.*?</p>')]:
+    m = re.search(pat, blk, re.S)
+    print(f'{name:8}: {html.unescape(txt(m.group(0))) if m else "MISSING"}')
+m = re.search(r'class="album-jacket"[^>]*src="([^"]+)"', blk) or re.search(r'src="([^"]+)"[^>]*class="album-jacket"', blk)
+print('jacket  :', m.group(1) if m else 'MISSING')
+PY
+
+          say 'about page — discography count'
+          curl -sS -L "$BASE/about/" | grep -o 'href="/music/#album-[0-9]*"' | sort -u | tr '\n' ' '; echo
+
+          say 'links page — stream/pre-save rows'
+          curl -sS -L "$BASE/links/" | grep -o '<strong>\(Pre-Save\|Streaming\) — [^<]*' | sed 's/<strong>//'
+
+          say 'blog index (ko) — special post'
+          curl -sS -L "$BASE/ko/blog/" > /tmp/blog.html
+          grep -o 'data-blog-filter="[a-z0-9]*"' /tmp/blog.html | tr '\n' ' '; echo
+          grep -c 'tonight-the-curtain-rises' /tmp/blog.html | sed 's/^/special post refs: /'
+
+          say 'sitemap'
+          curl -sS -L "$BASE/sitemap-0.xml" | grep -c 'tonight-the-curtain-rises' | sed 's/^/sitemap entries: /'
