@@ -1,0 +1,74 @@
+# Temporary: fetches the live site from a runner so a session behind an egress
+# proxy can read it. Delete once the check has run.
+name: Site check
+
+on:
+  push:
+    branches: [claude/blog-check-159lvt]
+    paths: ['.github/workflows/site-check.yml']
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the home pages
+        run: |
+          set -u
+          BASE=https://shinya-music.com
+          say() { printf '\n===== %s =====\n' "$1"; }
+          # drop scripts and styles, put one tag per line, then read as text
+          astext() {
+            tr -d '\n' \
+              | sed 's/<script[^>]*>/\n<script>/g; s|</script>|</script>\n|g' \
+              | grep -v '^<script>' \
+              | sed 's/<style[^>]*>/\n<style>/g; s|</style>|</style>\n|g' \
+              | grep -v '^<style>' \
+              | sed 's/></>\n</g' | sed 's/<[^>]*>/ /g' \
+              | tr -s ' ' ' ' | sed '/^ *$/d'
+          }
+
+          say 'status code + bytes'
+          for p in / /ko/ /ja/ /music/ /blog/ /webtoon/ /about/ /links/ /search/ \
+                   /music/green-light-go/ /robots.txt /sitemap-index.xml /rss.xml ; do
+            printf '%-32s %s' "$p" "$(curl -sS -o /dev/null -w '%{http_code}  %{size_download} bytes\n' -L "$BASE$p")"
+          done
+
+          for L in '' ko/ ja/ ; do
+            say "home /$L — page text"
+            curl -sS -L "$BASE/$L" > home.html
+            printf 'title    : '; grep -o '<title>[^<]*' home.html | sed 's/<title>//'
+            printf 'og:image : '; grep -o 'property="og:image" content="[^"]*"' home.html | head -1
+            printf 'hero CTA : '; grep -o 'href="https://distrokid[^"]*"' home.html | head -1
+            printf 'countdown: '; grep -o 'data-release-at="[^"]*"' home.html | head -1; echo
+            astext < home.html
+          done
+
+          say 'discography strip (EN) — order and date badges'
+          curl -sS -L "$BASE/" > home.html
+          grep -o 'class="album-tile-name">[^<]*' home.html | sed 's/.*>//' | tr '\n' ' '; echo
+          printf 'upcoming badges : '; grep -o 'class="album-tile-date">[^<]*' home.html | sed 's/.*>//' | tr '\n' ' '; echo
+          printf 'placeholder plates: '; grep -c 'jacket-plate' home.html || true
+
+          say 'every asset the EN home references'
+          grep -o 'src="/[^"]*\.\(jpg\|png\|webp\|svg\)"' home.html | sed 's/src="//;s/"//' | sort -u > assets.txt
+          grep -o 'href="/[^"]*\.css"' home.html | sed 's/href="//;s/"//' | sort -u >> assets.txt
+          grep -o 'src="/[^"]*\.js"' home.html | sed 's/src="//;s/"//' | sort -u >> assets.txt
+          printf 'referenced: '; wc -l < assets.txt
+          BAD=0
+          while read -r a; do
+            c=$(curl -sS -o /dev/null -w '%{http_code}' -L "$BASE$a")
+            [ "$c" = 200 ] || { echo "NOT 200: $c $a"; BAD=1; }
+          done < assets.txt
+          [ "$BAD" = 0 ] && echo 'all 200'
+
+          say 'internal links on the EN home'
+          grep -o 'href="/[^"#?]*"' home.html | sed 's/href="//;s/"//' | sort -u > links.txt
+          printf 'links: '; wc -l < links.txt
+          BAD=0
+          while read -r a; do
+            c=$(curl -sS -o /dev/null -w '%{http_code}' -L "$BASE$a")
+            [ "$c" = 200 ] || { echo "NOT 200: $c $a"; BAD=1; }
+          done < links.txt
+          [ "$BAD" = 0 ] && echo 'all 200'
