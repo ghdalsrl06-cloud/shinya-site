@@ -50,6 +50,14 @@ jobs:
           python3 - <<'PY'
           import json, re, sys
 
+          # releases.json holds album tracks and their continuous mixes, and
+          # nothing else. Videos the channel posts that can never be registered
+          # there would otherwise be reported every day and leave an issue open
+          # for good, so they are skipped by title. Keep this list short and
+          # specific: anything not matched here still gets an issue, which is
+          # the safe direction to fail.
+          NOT_A_RELEASE = ('#shorts', 'fan-made', 'fanmade')
+
           videos = json.load(open('/tmp/videos.json'))
           print(f'videos found: {len(videos)}')
           if not videos:
@@ -59,9 +67,16 @@ jobs:
 
           known = set(re.findall(r'"youtubeId":\s*"([^"]+)"',
                                  open('src/content/music/releases.json').read()))
-          new = [[v, t] for v, t in videos if v not in known]
-          print(f'registered: {len(known)}, unregistered: {len(new)}')
-          json.dump(new, open('/tmp/new.json', 'w'))
+          new, skipped = [], []
+          for v, t in videos:
+              if v in known:
+                  continue
+              hit = next((w for w in NOT_A_RELEASE if w in t.lower()), None)
+              (skipped if hit else new).append((v, t, hit))
+          for v, t, hit in skipped:
+              print(f'skip ({hit}): {v} {t}')
+          print(f'registered: {len(known)}, not a release: {len(skipped)}, unregistered: {len(new)}')
+          json.dump([[v, t] for v, t, _ in new], open('/tmp/new.json', 'w'))
           PY
 
       - name: Ensure label exists
