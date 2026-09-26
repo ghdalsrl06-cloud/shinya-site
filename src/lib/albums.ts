@@ -340,6 +340,27 @@ export const ALBUMS: AlbumMeta[] = [
     },
   },
   {
+    n: 13,
+    line: 'after',
+    name: "Tomorrow's Problem",
+    tabNo: { en: 'AFTER 4th', ko: 'AFTER 4집', ja: 'AFTER 4th' },
+    heading: {
+      en: "SHINYA AFTER 4th 「Tomorrow's Problem」 — 明日の私",
+      ko: "SHINYA AFTER 4집 「Tomorrow's Problem」 — 내일의 나",
+      ja: "SHINYA AFTER 4th 「Tomorrow's Problem」 — 明日の私",
+    },
+    noteOut: {
+      en: 'The fourth AFTER record, and the first fast one — eight alt R&B tracks at 100 BPM, the tempo of a body that held still and then moved. The other three took an ending that came to them; this one goes out and makes one, and leaves the clearing up to tomorrow. Out now.',
+      ko: '네 번째 AFTER, 그리고 처음으로 빠른 앨범 — 100 BPM 얼터너티브 R&B 여덟 곡. 한 번 참았다가 움직이는 몸의 속도다. 앞의 셋은 찾아온 끝을 받아들였고, 이번엔 내가 끝을 만든다. 수습은 내일의 나에게 맡긴다.',
+      ja: '四枚目の AFTER、そして初めて速い一枚 — 100 BPMのオルタナティブR&B八曲。一度我慢してから動く体の速さだ。前の三枚は訪れた終わりを受け入れたが、今回は自分で終わりを作る。後始末は明日の私に任せる。',
+    },
+    noteSoon: {
+      en: 'The fourth AFTER record, and the first fast one — eight alt R&B tracks at 100 BPM, the tempo of a body that held still and then moved. The other three took an ending that came to them; this one goes out and makes one, and leaves the clearing up to tomorrow. Coming soon.',
+      ko: '네 번째 AFTER, 그리고 처음으로 빠른 앨범 — 100 BPM 얼터너티브 R&B 여덟 곡. 한 번 참았다가 움직이는 몸의 속도다. 앞의 셋은 찾아온 끝을 받아들였고, 이번엔 내가 끝을 만든다. 수습은 내일의 나에게 맡긴다. 커밍순. 가사는 미리 읽어볼 수 있어요.',
+      ja: '四枚目の AFTER、そして初めて速い一枚 — 100 BPMのオルタナティブR&B八曲。一度我慢してから動く体の速さだ。前の三枚は訪れた終わりを受け入れたが、今回は自分で終わりを作る。後始末は明日の私に任せる。カミングスーン。歌詞は先に読めます。',
+    },
+  },
+  {
     n: 12,
     line: 'special',
     name: '今夜も開演',
