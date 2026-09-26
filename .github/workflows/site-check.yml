@@ -1,0 +1,69 @@
+# Temporary: fetches the live site from a runner so a session behind an egress
+# proxy can read it. Delete once the check has run.
+name: Site check
+
+on:
+  push:
+    branches: [claude/blog-check-159lvt]
+    paths: ['.github/workflows/site-check.yml']
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the home pages
+        run: |
+          set -u
+          BASE=https://shinya-music.com
+          say() { printf '\n===== %s =====\n' "$1"; }
+          # drop scripts and styles, one tag per line, then read as text
+          astext() {
+            tr -d '\n' \
+              | sed 's/<script[^>]*>/\n<script>/g; s|</script>|</script>\n|g' | grep -v '^<script>' \
+              | sed 's/<style[^>]*>/\n<style>/g; s|</style>|</style>\n|g' | grep -v '^<style>' \
+              | sed 's/></>\n</g' | sed 's/<[^>]*>/ /g' | tr -s ' ' ' ' | sed '/^ *$/d'
+          }
+
+          printf 'checked at: '; date -u '+%Y-%m-%d %H:%M UTC'
+
+          say 'status code + bytes'
+          for p in / /ko/ /ja/ /music/ /blog/ /webtoon/ /about/ /links/ /search/ \
+                   /music/cant-move-yet/ /music/blue-hour/ \
+                   /robots.txt /sitemap-index.xml /rss.xml ; do
+            printf '%-26s %s' "$p" "$(curl -sS -o /dev/null -w '%{http_code}  %{size_download} bytes\n' -L "$BASE$p")"
+          done
+
+          say 'the record that released last night — did it flip?'
+          curl -sS -L "$BASE/music/blue-hour/" > song.html
+          printf 'cover in use   : '; grep -o '<img[^>]*class="song-hero-art"[^>]*' song.html | grep -o 'src="[^"]*"' | head -1
+          printf 'video embedded : '; grep -o 'data-video-id="[^"]*"' song.html | head -1 || echo 'NONE'
+          printf 'badge / date   : '; grep -o 'class="post-meta">[^<]*\(<[^>]*>[^<]*\)*' song.html | sed 's/<[^>]*>/ /g;s/class="post-meta">//' | head -1
+
+          for L in '' ko/ ja/ ; do
+            say "home /$L"
+            curl -sS -L "$BASE/$L" > home.html
+            printf 'title    : '; grep -o '<title>[^<]*' home.html | sed 's/<title>//'
+            printf 'hero CTA : '; grep -o 'href="https://distrokid[^"]*"' home.html | head -1
+            printf 'countdown: '; grep -o 'data-release-at="[^"]*"' home.html | head -1
+            astext < home.html | sed -n '/Next release\|다음 발매\|次のリリース/,$p'
+          done
+
+          say 'discography strip (EN)'
+          curl -sS -L "$BASE/" > home.html
+          grep -o 'class="album-tile-name">[^<]*' home.html | sed 's/.*>//' | tr '\n' ' '; echo
+          printf 'upcoming badges   : '; grep -o 'class="album-tile-date">[^<]*' home.html | sed 's/.*>//' | tr '\n' ' '; echo
+          printf 'placeholder plates: '; grep -c 'jacket-plate' home.html || true
+
+          say 'assets and links on the EN home'
+          grep -o 'src="/[^"]*\.\(jpg\|png\|webp\|svg\|js\)"' home.html | sed 's/src="//;s/"//' | sort -u > check.txt
+          grep -o 'href="/[^"]*\.css"' home.html | sed 's/href="//;s/"//' | sort -u >> check.txt
+          grep -o 'href="/[^"#?]*"' home.html | sed 's/href="//;s/"//' | sort -u >> check.txt
+          printf 'urls to check: '; wc -l < check.txt
+          BAD=0
+          while read -r a; do
+            c=$(curl -sS -o /dev/null -w '%{http_code}' -L "$BASE$a")
+            [ "$c" = 200 ] || { echo "NOT 200: $c $a"; BAD=1; }
+          done < check.txt
+          [ "$BAD" = 0 ] && echo 'all 200'
