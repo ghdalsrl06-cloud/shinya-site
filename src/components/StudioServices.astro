@@ -1,0 +1,39 @@
+---
+// The four things on offer. Each cell ends with the piece that proves it and
+// links there — the song page for the music video, the studio channel for the
+// drama and the trailer, the music page for the records.
+import { getCollection } from 'astro:content';
+import StudioHead from './StudioHead.astro';
+import type { Lang } from '../i18n/ui';
+import { albumsFrom } from '../lib/albums';
+import { CHANNELS, COPY, FEATURED_MV, VIDEOS, studioCounts, ytUrl } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const c = COPY[lang];
+const counts = studioCounts(albumsFrom(await getCollection('music')), await getCollection('webtoon'));
+
+const firstDrama = VIDEOS.filter((v) => v.type === 'drama').sort((a, b) => a.date.localeCompare(b.date))[0];
+const trailer = VIDEOS.find((v) => v.type === 'trailer');
+const proof: Record<string, { href: string; external?: boolean }> = {
+  mv: { href: `${base}${prefix}/music/${FEATURED_MV}/` },
+  drama: { href: firstDrama ? ytUrl(firstDrama) : CHANNELS.studio.url, external: true },
+  trailer: { href: trailer ? ytUrl(trailer) : CHANNELS.studio.url, external: true },
+  album: { href: `${base}${prefix}/music/` },
+};
+---
+
+<section class="section studio-section" id="services">
+  <StudioHead kicker={c.services.kicker} title={c.services.title} sub={c.services.sub} />
+  <div class="studio-svc">
+    {c.services.items.map((s) => (
+      <a href={proof[s.type].href} target={proof[s.type].external ? '_blank' : undefined} rel={proof[s.type].external ? 'noopener' : undefined}>
+        <span class="k">{s.k}</span>
+        <h3>{s.title}</h3>
+        <p>{s.desc}</p>
+        <span class="ref"><b>{typeof s.refName === 'function' ? s.refName(counts) : s.refName}</b> · {s.ref}</span>
+      </a>
+    ))}
+  </div>
+</section>

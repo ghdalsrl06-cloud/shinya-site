@@ -1,0 +1,33 @@
+---
+// The whole studio home in one place; the three locale index pages only pick
+// the language. Hero and ticker run full width, the rest sits in the container.
+import Base from '../layouts/Base.astro';
+import '../styles/studio.css'; // after Base, so it layers over global.css
+import StudioHero from './StudioHero.astro';
+import StudioTicker from './StudioTicker.astro';
+import StudioServices from './StudioServices.astro';
+import StudioWorks from './StudioWorks.astro';
+import StudioProcess from './StudioProcess.astro';
+import StudioIp from './StudioIp.astro';
+import StudioNotes from './StudioNotes.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+import { albumsFrom } from '../lib/albums';
+import { COPY, studioCounts } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const c = COPY[lang];
+const counts = studioCounts(albumsFrom(await getCollection('music')), await getCollection('webtoon'));
+---
+
+<Base lang={lang} title={c.title} description={c.description(counts)}>
+  <StudioHero lang={lang} />
+  <StudioTicker lang={lang} />
+  <div class="container">
+    <StudioServices lang={lang} />
+    <StudioWorks lang={lang} />
+    <StudioProcess lang={lang} />
+    <StudioIp lang={lang} />
+    <StudioNotes lang={lang} />
+  </div>
+</Base>

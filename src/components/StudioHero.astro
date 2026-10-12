@@ -1,0 +1,45 @@
+---
+// The studio home's opening: the character art the site has always led with,
+// now behind a pitch — what the studio makes, in one line, and the numbers
+// that back it, counted from the collections.
+import ArtImg from './ArtImg.astro';
+import TokyoClock from './TokyoClock.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+import { albumsFrom } from '../lib/albums';
+import { CHANNELS, COPY, studioCounts } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const c = COPY[lang];
+const counts = studioCounts(albumsFrom(await getCollection('music')), await getCollection('webtoon'));
+const stats: [number, string][] = [
+  [counts.albums, c.stats.albums],
+  [counts.tracks, c.stats.tracks],
+  [counts.episodes, c.stats.episodes],
+  [counts.dramas, c.stats.dramas],
+];
+---
+
+<section class="hero hero-character studio-hero">
+  <ArtImg class="hero-art" src="images/hero-character.jpg" width={2560} sizes="100vw" loading="eager" />
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="studio-eyebrow">
+      <span>{c.hero.eyebrow}</span>
+      <span class="studio-eyebrow-sep" aria-hidden="true">·</span>
+      <span>Tokyo / Seoul</span>
+      <TokyoClock lang={lang} />
+    </div>
+    <h1 class="studio-h1">{c.hero.h1[0]}<br />{c.hero.h1[1]}<em>{c.hero.h1[2]}</em></h1>
+    <p class="studio-lede">{c.hero.lede}</p>
+    <p class="hero-cta">
+      <a class="btn" href="#works">{c.hero.works}</a>
+      <a class="btn btn-ghost" href={CHANNELS.studio.url} target="_blank" rel="noopener">{c.hero.channel}</a>
+    </p>
+    <ul class="studio-stats">
+      {stats.map(([n, label]) => (
+        <li><b>{n}</b><span>{label}</span></li>
+      ))}
+    </ul>
+  </div>
+</section>

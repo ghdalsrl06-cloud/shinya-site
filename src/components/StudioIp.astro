@@ -1,0 +1,110 @@
+---
+// 深夜 as the studio's own IP: the character, the facts, what is coming next
+// and the newest jackets. The release line is the old home block reduced to a
+// row, read from the album table so it moves on by itself on release night;
+// the rotating lyric is the surface the 4:44 whisper in Base needs.
+import ArtImg from './ArtImg.astro';
+import Jacket from './Jacket.astro';
+import ReleaseCountdown from './ReleaseCountdown.astro';
+import StudioHead from './StudioHead.astro';
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { albumsFrom, newestFirst, albumAt, lineName, tabParts } from '../lib/albums';
+import { isReleased } from '../lib/covers';
+import { HYPERFOLLOW, isOut } from '../lib/presave';
+import { COPY, studioCounts } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const c = COPY[lang];
+
+const releases = await getCollection('music');
+const albums = albumsFrom(releases);
+const counts = studioCounts(albums, await getCollection('webtoon'));
+const facts = c.ip.facts(counts);
+
+// Six newest jackets that can be heard today.
+const jackets = newestFirst(albums.filter((a) => a.out)).slice(0, 6);
+
+const upcoming = albums.filter((a) => !a.out).sort((a, b) => albumAt(a) - albumAt(b));
+const next = upcoming[0] ?? newestFirst(albums)[0];
+const follow = HYPERFOLLOW.find((e) => e.n === next.meta.n);
+const releaseAt = next.singles[0].data.releaseAt;
+const released = next.singles[0].data.releaseDate?.replaceAll('-', '.');
+const no = tabParts(next.meta, lang).no;
+
+const lyricLines = releases
+  .filter((r) => r.data.kind !== 'playlist' && isReleased(r))
+  .map((s) => (s.data.lyrics ?? []).find((l) => l && l.trim()))
+  .filter(Boolean);
+const href = (n: number) => `${base}${prefix}/music/#album-${n}`;
+---
+
+<section class="section studio-section" id="shinya">
+  <div class="studio-ip">
+    <div class="studio-ip-art">
+      <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 760px) 300px, 80vw" alt="SHINYA / 深夜" />
+      <span class="studio-ip-tag">{c.ip.tag}</span>
+    </div>
+    <div class="studio-ip-body">
+      <StudioHead kicker={c.ip.kicker} title={c.ip.title} mark="深夜" />
+      <p class="studio-lede-sm">{c.ip.lede}</p>
+      <ul class="studio-facts">
+        {facts.map(([head, sub]) => (
+          <li><b>{head}</b>{sub}</li>
+        ))}
+      </ul>
+      <p class="studio-next">
+        <span class="k">{t(lang, next.out ? 'home.latest' : 'home.next')}</span>
+        <a href={href(next.meta.n)}><b>{next.meta.name}</b></a>
+        <span>{lineName(next.meta)}{no && ` ${no}`}</span>
+        {released && <span>{released}</span>}
+        {!next.out && releaseAt && <ReleaseCountdown releaseAt={releaseAt} lang={lang} />}
+        {follow && (
+          <a class="btn btn-sm" href={follow.url} target="_blank" rel="noopener">{t(lang, isOut(follow) ? 'album.stream' : 'album.presave')}</a>
+        )}
+      </p>
+      <div class="studio-jackets">
+        {jackets.map(({ meta }) => (
+          <a href={href(meta.n)} title={meta.name}><Jacket meta={meta} lang={lang} sizes="(min-width: 760px) 100px, 30vw" /></a>
+        ))}
+      </div>
+      <p class="studio-ip-links">
+        <a href={`${base}${prefix}/music/`}>{c.ip.links.music} →</a>
+        <a href={`${base}${prefix}/webtoon/`}>{c.ip.links.webtoon} →</a>
+        <a href={`${base}${prefix}/blog/`}>{c.ip.links.blog} →</a>
+        <a href={`${base}${prefix}/about/`}>{c.ip.links.about} →</a>
+      </p>
+      {lyricLines.length > 0 && <p class="studio-lyric" data-lyric-lines={JSON.stringify(lyricLines)} aria-hidden="true"></p>}
+    </div>
+  </div>
+</section>
+
+<script>
+  // One opening line per released track, changed every five seconds with the
+  // site's glitch flicker. Base's 4:44 check locks it for that minute.
+  const init = () => {
+    const el = document.querySelector('[data-lyric-lines]');
+    if (!el || el.dataset.bound) return;
+    el.dataset.bound = '1';
+    const lines = JSON.parse(el.getAttribute('data-lyric-lines'));
+    let i = Math.floor(Math.random() * lines.length);
+    const show = () => {
+      if (el.dataset.locked) return;
+      el.textContent = lines[i % lines.length];
+      el.classList.remove('lyric-glitch');
+      void el.offsetWidth;
+      el.classList.add('lyric-glitch');
+      i++;
+    };
+    show();
+    if (window.__shinyaLyricTimer) clearInterval(window.__shinyaLyricTimer);
+    window.__shinyaLyricTimer = setInterval(() => {
+      if (!document.contains(el)) { clearInterval(window.__shinyaLyricTimer); return; }
+      show();
+    }, 5000);
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
