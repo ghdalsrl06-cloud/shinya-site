@@ -6,6 +6,7 @@ import RainToggle from '../components/RainToggle.astro';
 import RainCanvas from '../components/RainCanvas.astro';
 import MiniPlayer from '../components/MiniPlayer.astro';
 import { t, type Lang } from '../i18n/ui';
+import { CHANNELS, STORES } from '../lib/studio';
 
 interface Props {
   title?: string;
@@ -18,23 +19,32 @@ interface Props {
   localized?: boolean;
 }
 
-const { title = 'SHINYA / 深夜 — Late Night Music from Tokyo', description = 'Dark electronic J-pop for the late night. Original music by SHINYA / 深夜.', lang = 'en', ogImage: ogImageProp, localized = true } = Astro.props;
+const {
+  title = 'SHINYA Studio — AI music videos, short dramas, trailers & original music | 深夜',
+  description = 'AI content studio: music videos, short dramas, trailers and original music — generated with AI, directed by people. Home of SHINYA / 深夜.',
+  lang = 'en',
+  ogImage: ogImageProp,
+  localized = true,
+} = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
+// The studio's pitch comes first (both anchors on the home), then the 深夜
+// work itself. The brand mark is the way home; the links page lives in the footer.
 const links = [
-  { href: `${base}${prefix}/`, label: t(lang, 'nav.home') },
+  { href: `${base}${prefix}/#services`, label: t(lang, 'nav.services') },
+  { href: `${base}${prefix}/#works`, label: t(lang, 'nav.works') },
   { href: `${base}${prefix}/music/`, label: t(lang, 'nav.music') },
-  { href: `${base}${prefix}/blog/`, label: t(lang, 'nav.blog') },
   { href: `${base}${prefix}/webtoon/`, label: t(lang, 'nav.webtoon') },
+  { href: `${base}${prefix}/blog/`, label: t(lang, 'nav.blog') },
   { href: `${base}${prefix}/about/`, label: t(lang, 'nav.about') },
-  { href: `${base}${prefix}/links/`, label: t(lang, 'nav.links') },
   { href: `${base}${prefix}/search/`, label: t(lang, 'nav.search') },
 ];
-const isActive = (href: string) => {
-  if (href === `${base}${prefix}/`) return current === `${base}${prefix}/` || current === `${base}${prefix}`;
-  return current.startsWith(href);
-};
+const siteLinks = [
+  ...links.filter((l) => !l.href.includes('#')),
+  { href: `${base}${prefix}/links/`, label: t(lang, 'nav.links') },
+];
+const isActive = (href: string) => !href.includes('#') && current.startsWith(href);
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
 const rest = localeMatch ? current.slice(base.length + 3) : current.slice(base.length);
 const urlFor = (l: Lang) =>
@@ -55,7 +65,17 @@ const artistLd = {
   alternateName: '深夜',
   genre: 'Dark Electronic J-Pop',
   url: `${site}${base}/`,
-  sameAs: ['https://www.youtube.com/@shinyatokyo'],
+  sameAs: [CHANNELS.music.url, ...STORES.map((s) => s.url)],
+};
+const studioLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SHINYA Studio',
+  alternateName: '深夜',
+  url: `${site}${base}/`,
+  logo: `${site}${base}/images/og.png`,
+  sameAs: [CHANNELS.studio.url, CHANNELS.music.url],
+  brand: { '@type': 'Brand', name: 'SHINYA / 深夜' },
 };
 // 무료 방문자 통계(GoatCounter): https://www.goatcounter.com 에서 가입 후
 // 사이트 코드(예: 'shinya')를 아래에 넣으면 활성화됩니다.
@@ -90,6 +110,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='80' fill='%23ff2d6e'%3E%E5%A4%9C%3C/text%3E%3C/svg%3E" />
     <link rel="alternate" type="application/rss+xml" title="SHINYA / 深夜 — Blog" href={`${base}/rss.xml`} />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
+    <script type="application/ld+json" set:html={JSON.stringify(studioLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(artistLd)} />
     <ClientRouter />
     <title>{title}</title>
@@ -117,7 +138,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <RainCanvas />
     <nav class="site-nav">
       <div class="inner">
-        <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya</span></a>
+        <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya Studio</span></a>
         <div class="nav-right">
           <ul class="nav-links">
             {links.map((l) => (
@@ -140,9 +161,41 @@ const GOATCOUNTER_CODE = 'shinya';
       <slot />
     </main>
     <footer class="site-footer">
-      <p class="jp">深夜 — 夜はまだ長い</p>
-      <p>{t(lang, 'footer.copy')}</p>
-      <p class="footer-links"><a href={`${base}/rss.xml`}>RSS</a></p>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya Studio</span></a>
+          <p>{t(lang, 'footer.tagline')}</p>
+          <p class="footer-motto">夜はまだ長い</p>
+        </div>
+        <div class="footer-col">
+          <h4>{t(lang, 'footer.channels')}</h4>
+          <ul>
+            <li><a href={CHANNELS.music.url} target="_blank" rel="noopener">{t(lang, 'footer.ytMusic')}</a></li>
+            <li><a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'footer.ytStudio')}</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>{t(lang, 'footer.stores')}</h4>
+          <ul>
+            {STORES.map((s) => (
+              <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>{t(lang, 'footer.site')}</h4>
+          <ul>
+            {siteLinks.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+            <li><a href={`${base}/rss.xml`}>RSS</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>{t(lang, 'footer.copy')}</p>
+        <p><a href={urlFor('en')} lang="en">EN</a> · <a href={urlFor('ko')} lang="ko">한국어</a> · <a href={urlFor('ja')} lang="ja">日本語</a></p>
+      </div>
     </footer>
     <RainToggle />
     <MiniPlayer lang={lang} />
@@ -167,7 +220,7 @@ const GOATCOUNTER_CODE = 'shinya';
       }, { passive: true });
       const initReveal = () => {
         if (reduced()) return;
-        document.querySelectorAll('.card, .scene, .section > h2, .page-banner, .song-hero').forEach((el) => {
+        document.querySelectorAll('.card, .scene, .section > h2, .page-banner, .song-hero, .studio-head, .work, .studio-svc > a, .studio-steps > li, .studio-notes > li').forEach((el) => {
           if (el.dataset.reveal) return;
           el.dataset.reveal = '1';
           if (el.getBoundingClientRect().top < innerHeight * 0.85) return; // already visible: skip

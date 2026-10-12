@@ -1,0 +1,138 @@
+---
+// The portfolio grid: both channels in one place. The music video leads, the
+// studio channel's videos follow newest first, then the three newest records
+// and the webtoon. Pills above filter by kind, in the browser.
+import { getCollection } from 'astro:content';
+import ArtImg from './ArtImg.astro';
+import Jacket from './Jacket.astro';
+import StudioHead from './StudioHead.astro';
+import { t, type Lang } from '../i18n/ui';
+import { albumsFrom, newestFirst, dateBadge } from '../lib/albums';
+import { coverOf } from '../lib/covers';
+import { ymd } from '../lib/dates';
+import { CHANNELS, COPY, FEATURED_MV, VIDEOS, WORK_LABEL, ytThumb, ytUrl, type WorkType } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const c = COPY[lang];
+
+const releases = await getCollection('music');
+const mv = releases.find((r) => r.id === FEATURED_MV);
+const albums = newestFirst(albumsFrom(releases)).slice(0, 3);
+const videos = [...VIDEOS].sort((a, b) => b.date.localeCompare(a.date));
+const episodes = (await getCollection('webtoon')).filter((e) => !e.data.draft && e.data.date.valueOf() <= Date.now());
+const finale = episodes.some((e) => e.data.finale);
+
+const TYPES: WorkType[] = ['mv', 'drama', 'trailer', 'album', 'webtoon'];
+const count: Record<WorkType, number> = {
+  mv: mv ? 1 : 0,
+  drama: videos.filter((v) => v.type === 'drama').length,
+  trailer: videos.filter((v) => v.type === 'trailer').length,
+  album: albums.length,
+  webtoon: episodes.length ? 1 : 0,
+};
+const total = Object.values(count).reduce((a, b) => a + b, 0);
+const COUNT = { en: (n: number) => (n === 1 ? '1 track' : `${n} tracks`), ko: (n: number) => `${n}곡`, ja: (n: number) => `${n}曲` };
+const albumDate = (a: { singles: any[] }) => ymd(a.singles[0].data.releaseAt ?? a.singles[0].data.releaseDate);
+const TILE_SIZES = '(min-width: 900px) 230px, 45vw';
+---
+
+<section class="section studio-section" id="works">
+  <StudioHead kicker={c.works.kicker} title={c.works.title} sub={c.works.sub} />
+  <div data-works>
+    <div class="studio-filters" role="group" aria-label={c.works.title}>
+      <button type="button" data-filter="all" aria-pressed="true">{c.works.all}<b>{total}</b></button>
+      {TYPES.map((ty) => count[ty] > 0 && (
+        <button type="button" data-filter={ty} aria-pressed="false">{c.works.filter[ty]}<b>{count[ty]}</b></button>
+      ))}
+    </div>
+
+    <div class="studio-works">
+      {mv && (
+        <a class="work" data-type="mv" href={`${base}${prefix}/music/${mv.id}/`}>
+          <span class="work-frame">
+            {coverOf(mv) && <ArtImg src={coverOf(mv)!} width={1280} sizes={TILE_SIZES} alt="" />}
+            <span class="work-play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span></span>
+            {mv.data.duration && <span class="work-dur">{mv.data.duration}</span>}
+          </span>
+          <span class="work-cap">
+            <small data-type="mv">{WORK_LABEL.mv}</small>
+            <b>{mv.data.title}</b>
+            <span class="work-meta">{c.works.mvMeta} · {ymd(mv.data.releaseAt ?? mv.data.releaseDate ?? 0)}</span>
+          </span>
+        </a>
+      )}
+
+      {videos.map((v) => (
+        <a class="work" data-type={v.type} href={ytUrl(v)} target="_blank" rel="noopener">
+          <span class:list={['work-frame', v.vertical && 'vert']}>
+            {v.vertical && <img class="work-bg" src={ytThumb(v.id, 'hqdefault')} alt="" aria-hidden="true" loading="lazy" />}
+            <img class="work-fg" src={ytThumb(v.id)} onerror={`this.onerror=null;this.src='${ytThumb(v.id, 'hqdefault')}'`} alt="" loading="lazy" />
+            <span class="work-play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span></span>
+            <span class="work-dur">{v.duration}</span>
+          </span>
+          <span class="work-cap">
+            <small data-type={v.type}>{WORK_LABEL[v.type]}{v.episode && ` · ${v.episode}`}</small>
+            <b>{v.series?.[lang] ?? v.title[lang]}</b>
+            <span class="work-meta">{v.series && `${v.title[lang]} · `}{ymd(v.date)}</span>
+          </span>
+        </a>
+      ))}
+
+      {albums.map(({ meta, singles, out }) => (
+        <a class="work sq" data-type="album" href={`${base}${prefix}/music/#album-${meta.n}`}>
+          <span class="work-frame">
+            <Jacket meta={meta} lang={lang} sizes={TILE_SIZES} alt="" />
+            {!out && <span class="work-badge soon">{dateBadge(singles[0])}</span>}
+          </span>
+          <span class="work-cap">
+            <small data-type="album" data-line={meta.line}>{WORK_LABEL.album} · {meta.tabNo[lang]}</small>
+            <b>{meta.name}</b>
+            <span class="work-meta">{COUNT[lang](singles.length)} · {albumDate({ singles })}</span>
+          </span>
+        </a>
+      ))}
+
+      {episodes.length > 0 && (
+        <a class="work sq" data-type="webtoon" href={`${base}${prefix}/webtoon/`}>
+          <span class="work-frame">
+            <ArtImg src="images/webtoon/series-cover.jpg" width={720} sizes={TILE_SIZES} alt="" />
+          </span>
+          <span class="work-cap">
+            <small data-type="webtoon">{WORK_LABEL.webtoon}</small>
+            <b>{t(lang, 'webtoon.series.title')}</b>
+            <span class="work-meta">{c.works.webtoonMeta(episodes.length, finale)}</span>
+          </span>
+        </a>
+      )}
+    </div>
+
+    <p class="studio-more">
+      <a href={`${base}${prefix}/music/`}>{c.works.more.music} →</a>
+      <a href={`${base}${prefix}/webtoon/`}>{c.works.more.webtoon} →</a>
+      <a href={CHANNELS.studio.url} target="_blank" rel="noopener">{c.works.more.channel} ↗</a>
+    </p>
+  </div>
+</section>
+
+<script>
+  // Filter pills: one pressed at a time, tiles of other kinds hidden.
+  const init = () => {
+    document.querySelectorAll('[data-works]').forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+      const tiles = [...root.querySelectorAll('.work')];
+      const pills = [...root.querySelectorAll('[data-filter]')];
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          const f = pill.dataset.filter;
+          pills.forEach((p) => p.setAttribute('aria-pressed', String(p === pill)));
+          tiles.forEach((tile) => { tile.hidden = f !== 'all' && tile.dataset.type !== f; });
+        });
+      });
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

@@ -1,0 +1,18 @@
+---
+// A section's heading on the studio home: a tech-face kicker with the site's
+// // rule, the title in the display face, and an optional one-line subtitle.
+interface Props {
+  kicker: string;
+  title: string;
+  sub?: string;
+  mark?: string; // a glyph set before the title in the Japanese face, e.g. 深夜
+}
+
+const { kicker, title, sub, mark } = Astro.props;
+---
+
+<div class="studio-head">
+  <p class="studio-kicker">{kicker}</p>
+  <h2 class="studio-title">{mark && <span class="studio-mark">{mark}</span>}{title}</h2>
+  {sub && <p class="studio-sub">{sub}</p>}
+</div>

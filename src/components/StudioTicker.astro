@@ -1,0 +1,30 @@
+---
+// The band under the hero, now reading the work rather than the tracklist:
+// category · title, category · title, across both channels.
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { albumsFrom, newestFirst } from '../lib/albums';
+import { FEATURED_MV, VIDEOS, WORK_LABEL } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const releases = await getCollection('music');
+const mv = releases.find((r) => r.id === FEATURED_MV);
+const albums = newestFirst(albumsFrom(releases)).slice(0, 4);
+
+const items: [string, string][] = [];
+const add = (cat: string, title: string) => {
+  if (title && !items.some(([c, t]) => c === cat && t === title)) items.push([cat, title]);
+};
+if (mv) add(WORK_LABEL.mv, mv.data.title);
+for (const v of VIDEOS) add(WORK_LABEL[v.type], v.series?.[lang] ?? v.title[lang]);
+for (const a of albums) add(WORK_LABEL.album, a.meta.name);
+add(WORK_LABEL.webtoon, t(lang, 'webtoon.series.title'));
+---
+
+<div class="ticker studio-ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {[...items, ...items].map(([cat, title]) => (
+      <span class="ticker-item"><span class="ticker-cat">{cat}</span>{title}<span class="ticker-sep">·</span></span>
+    ))}
+  </div>
+</div>

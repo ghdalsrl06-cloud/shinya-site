@@ -1,0 +1,22 @@
+---
+// How a commission runs, in four numbered steps.
+import StudioHead from './StudioHead.astro';
+import type { Lang } from '../i18n/ui';
+import { COPY } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const c = COPY[lang];
+---
+
+<section class="section studio-section" id="process">
+  <StudioHead kicker={c.process.kicker} title={c.process.title} sub={c.process.sub} />
+  <ol class="studio-steps">
+    {c.process.steps.map((s) => (
+      <li>
+        <b>{s.name}</b>
+        <p>{s.desc}</p>
+        <em>{s.note}</em>
+      </li>
+    ))}
+  </ol>
+</section>
