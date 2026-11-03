@@ -134,6 +134,7 @@ interface Copy {
     tag: string;
   };
   notes: { kicker: string; title: string; more: string };
+  cta: { kicker: string; title: string; sub: string; music: string; studio: string };
 }
 
 export const COPY: Record<Lang, Copy> = {
@@ -194,6 +195,13 @@ export const COPY: Record<Lang, Copy> = {
       tag: '夜更かしの住人',
     },
     notes: { kicker: 'Notes', title: '최근 비하인드', more: '블로그 전체' },
+    cta: {
+      kicker: 'Subscribe',
+      title: '새 작업은 밤에, 두 채널에 먼저 올라옵니다',
+      sub: '음악은 매주 금요일 23:59에, 영상은 완성된 그 밤에. 구독해 두면 놓치지 않습니다.',
+      music: '음악 채널 구독',
+      studio: '스튜디오 채널 구독',
+    },
   },
   en: {
     title: 'SHINYA Studio — AI music videos, short dramas, trailers & original music | 深夜',
@@ -252,6 +260,13 @@ export const COPY: Record<Lang, Copy> = {
       tag: 'Resident of the late night',
     },
     notes: { kicker: 'Notes', title: 'Latest from behind the tracks', more: 'All posts' },
+    cta: {
+      kicker: 'Subscribe',
+      title: 'New work lands at night, on two channels first',
+      sub: 'Music every Friday at 23:59 KST; film the night it is finished. Subscribe and nothing slips past.',
+      music: 'Subscribe · Music',
+      studio: 'Subscribe · Studio',
+    },
   },
   ja: {
     title: 'SHINYA Studio — AIミュージックビデオ · ショートドラマ · トレーラー · 音源制作 | 深夜',
@@ -310,5 +325,12 @@ export const COPY: Record<Lang, Copy> = {
       tag: '夜更かしの住人',
     },
     notes: { kicker: 'Notes', title: '最近のビハインド', more: 'ブログ一覧' },
+    cta: {
+      kicker: 'Subscribe',
+      title: '新しい仕事は夜に、二つのチャンネルへ先に届きます',
+      sub: '音楽は毎週金曜23:59に、映像は完成したその夜に。登録しておけば見逃しません。',
+      music: '音楽チャンネルを登録',
+      studio: 'スタジオチャンネルを登録',
+    },
   },
 };

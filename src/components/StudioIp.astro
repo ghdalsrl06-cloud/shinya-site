@@ -44,28 +44,30 @@ const href = (n: number) => `${base}${prefix}/music/#album-${n}`;
 <section class="section studio-section" id="shinya">
   <div class="studio-ip">
     <div class="studio-ip-art">
-      <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 760px) 300px, 80vw" alt="SHINYA / 深夜" />
+      <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 760px) 320px, 80vw" alt="SHINYA / 深夜" />
       <span class="studio-ip-tag">{c.ip.tag}</span>
     </div>
     <div class="studio-ip-body">
       <StudioHead kicker={c.ip.kicker} title={c.ip.title} mark="深夜" />
       <p class="studio-lede-sm">{c.ip.lede}</p>
-      <ul class="studio-facts">
+      <ul class="studio-facts" data-stagger>
         {facts.map(([head, sub]) => (
           <li><b>{head}</b>{sub}</li>
         ))}
       </ul>
-      <p class="studio-next">
-        <span class="k">{t(lang, next.out ? 'home.latest' : 'home.next')}</span>
-        <a href={href(next.meta.n)}><b>{next.meta.name}</b></a>
-        <span>{lineName(next.meta)}{no && ` ${no}`}</span>
-        {released && <span>{released}</span>}
-        {!next.out && releaseAt && <ReleaseCountdown releaseAt={releaseAt} lang={lang} />}
-        {follow && (
-          <a class="btn btn-sm" href={follow.url} target="_blank" rel="noopener">{t(lang, isOut(follow) ? 'album.stream' : 'album.presave')}</a>
-        )}
-      </p>
-      <div class="studio-jackets">
+      <div class="studio-next">
+        <p class="studio-next-in">
+          <span class="k">{t(lang, next.out ? 'home.latest' : 'home.next')}</span>
+          <a href={href(next.meta.n)}><b>{next.meta.name}</b></a>
+          <span>{lineName(next.meta)}{no && ` ${no}`}</span>
+          {released && <span>{released}</span>}
+          {!next.out && releaseAt && <ReleaseCountdown releaseAt={releaseAt} lang={lang} />}
+          {follow && (
+            <a class="btn btn-sm" href={follow.url} target="_blank" rel="noopener">{t(lang, isOut(follow) ? 'album.stream' : 'album.presave')}</a>
+          )}
+        </p>
+      </div>
+      <div class="studio-jackets" data-stagger>
         {jackets.map(({ meta }) => (
           <a href={href(meta.n)} title={meta.name}><Jacket meta={meta} lang={lang} sizes="(min-width: 760px) 100px, 30vw" /></a>
         ))}

@@ -48,7 +48,7 @@ const TILE_SIZES = '(min-width: 900px) 230px, 45vw';
       ))}
     </div>
 
-    <div class="studio-works">
+    <div class="studio-works" data-stagger>
       {mv && (
         <a class="work" data-type="mv" href={`${base}${prefix}/music/${mv.id}/`}>
           <span class="work-frame">
@@ -67,8 +67,8 @@ const TILE_SIZES = '(min-width: 900px) 230px, 45vw';
       {videos.map((v) => (
         <a class="work" data-type={v.type} href={ytUrl(v)} target="_blank" rel="noopener">
           <span class:list={['work-frame', v.vertical && 'vert']}>
-            {v.vertical && <img class="work-bg" src={ytThumb(v.id, 'hqdefault')} alt="" aria-hidden="true" loading="lazy" />}
-            <img class="work-fg" src={ytThumb(v.id)} onerror={`this.onerror=null;this.src='${ytThumb(v.id, 'hqdefault')}'`} alt="" loading="lazy" />
+            {v.vertical && <img class="work-bg" src={ytThumb(v.id, 'hqdefault')} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+            <img class="work-fg" src={ytThumb(v.id)} onerror={`this.onerror=null;this.src='${ytThumb(v.id, 'hqdefault')}'`} alt="" loading="lazy" decoding="async" />
             <span class="work-play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span></span>
             <span class="work-dur">{v.duration}</span>
           </span>
