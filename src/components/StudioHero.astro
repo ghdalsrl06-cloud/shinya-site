@@ -1,23 +1,14 @@
 ---
 // The studio home's opening: the character art the site has always led with,
-// now behind a pitch — what the studio makes, in one line, and the numbers
-// that back it, counted from the collections.
+// now behind a pitch — what the studio makes, in one line — and the tools it
+// is made with.
 import ArtImg from './ArtImg.astro';
 import TokyoClock from './TokyoClock.astro';
-import { getCollection } from 'astro:content';
 import type { Lang } from '../i18n/ui';
-import { albumsFrom } from '../lib/albums';
-import { CHANNELS, COPY, studioCounts } from '../lib/studio';
+import { CHANNELS, COPY } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
 const c = COPY[lang];
-const counts = studioCounts(albumsFrom(await getCollection('music')), await getCollection('webtoon'));
-const stats: [number, string][] = [
-  [counts.albums, c.stats.albums],
-  [counts.tracks, c.stats.tracks],
-  [counts.episodes, c.stats.episodes],
-  [counts.dramas, c.stats.dramas],
-];
 ---
 
 <section class="hero hero-character studio-hero">
@@ -42,8 +33,8 @@ const stats: [number, string][] = [
       </a>
     </p>
     <ul class="studio-stats">
-      {stats.map(([n, label]) => (
-        <li><b>{n}</b><span>{label}</span></li>
+      {c.hero.tools.map(([tool, role]) => (
+        <li><b>{tool}</b><span>{role}</span></li>
       ))}
     </ul>
   </div>
