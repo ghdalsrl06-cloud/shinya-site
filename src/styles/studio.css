@@ -54,7 +54,7 @@ html[lang="ja"] .studio-h1 { letter-spacing: -0.015em; line-height: 1.2; }
   font-size: 1.05rem; line-height: 1.8; color: var(--text); opacity: 0.8;
   animation: fadeUp 0.9s var(--ease) 0.25s both;
 }
-.hero.studio-hero .hero-cta { margin-top: 2.2rem; gap: 0.8rem; }
+.hero.studio-hero .hero-cta { margin-top: 2.2rem; gap: 1.25rem; }
 .studio-hero .btn { padding: 0.95rem 1.7rem; font-size: 0.8rem; }
 .studio-stats {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; list-style: none;
@@ -310,7 +310,7 @@ html[lang="ja"] .studio-head .studio-title { letter-spacing: -0.01em; }
 .studio-cta h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem, 4.4vw, 3.1rem); line-height: 1.15; letter-spacing: -0.03em; text-wrap: balance; }
 html[lang="ja"] .studio-cta h2 { letter-spacing: -0.01em; }
 .studio-cta p { color: var(--text-dim); font-size: 1rem; line-height: 1.75; max-width: 36em; }
-.studio-cta .hero-cta { margin-top: 0.6rem; justify-content: center; gap: 0.8rem; }
+.studio-cta .hero-cta { margin-top: 0.6rem; justify-content: center; gap: 1.25rem; }
 .studio-cta .btn { padding: 0.95rem 1.7rem; font-size: 0.8rem; }
 .studio-cta-next { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem 0.9rem; margin-top: 0.6rem; font-family: var(--font-tech); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
 .studio-cta-next b { font-weight: 500; color: var(--text); }
