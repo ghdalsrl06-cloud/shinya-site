@@ -1,6 +1,7 @@
 ---
 // The whole studio home in one place; the three locale index pages only pick
-// the language. Hero and ticker run full width, the rest sits in the container.
+// the language. Hero, ticker and the closing band run full width, the rest
+// sits in the container.
 import Base from '../layouts/Base.astro';
 import '../styles/studio.css'; // after Base, so it layers over global.css
 import StudioHero from './StudioHero.astro';
@@ -10,6 +11,7 @@ import StudioWorks from './StudioWorks.astro';
 import StudioProcess from './StudioProcess.astro';
 import StudioIp from './StudioIp.astro';
 import StudioNotes from './StudioNotes.astro';
+import StudioCta from './StudioCta.astro';
 import { getCollection } from 'astro:content';
 import type { Lang } from '../i18n/ui';
 import { albumsFrom } from '../lib/albums';
@@ -21,6 +23,7 @@ const counts = studioCounts(albumsFrom(await getCollection('music')), await getC
 ---
 
 <Base lang={lang} title={c.title} description={c.description(counts)}>
+  <div class="studio-grain" aria-hidden="true"></div>
   <StudioHero lang={lang} />
   <StudioTicker lang={lang} />
   <div class="container">
@@ -30,4 +33,23 @@ const counts = studioCounts(albumsFrom(await getCollection('music')), await getC
     <StudioIp lang={lang} />
     <StudioNotes lang={lang} />
   </div>
+  <StudioCta lang={lang} />
 </Base>
+
+<script>
+  // Scroll entry: each [data-stagger] group's children carry their index, and
+  // the group is marked in once it reaches the viewport — the CSS does the
+  // rest with a delay per index. Without IntersectionObserver everything is
+  // simply shown.
+  const init = () => {
+    const groups = [...document.querySelectorAll('[data-stagger]')];
+    groups.forEach((g) => [...g.children].forEach((el, i) => el.style.setProperty('--i', String(i))));
+    if (!('IntersectionObserver' in window)) { groups.forEach((g) => g.classList.add('sv-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('sv-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    groups.forEach((g) => { if (!g.classList.contains('sv-in')) io.observe(g); });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

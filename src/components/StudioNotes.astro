@@ -1,5 +1,5 @@
 ---
-// The three newest behind-the-track posts in this language, as a row.
+// The three newest behind-the-track posts in this language, as an index.
 import { getCollection } from 'astro:content';
 import StudioHead from './StudioHead.astro';
 import type { Lang } from '../i18n/ui';
@@ -22,7 +22,7 @@ const slug = (id: string) => id.replace(/^(ko|ja)\//, '');
 {posts.length > 0 && (
   <section class="section studio-section" id="notes">
     <StudioHead kicker={c.notes.kicker} title={c.notes.title} />
-    <ul class="studio-notes">
+    <ul class="studio-notes" data-stagger>
       {posts.map((p) => (
         <li>
           <time datetime={p.data.date.toISOString()}>{ymd(p.data.date)}</time>

@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Inter:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Chakra+Petch:wght@400;500;600&display=swap');
+/* Body text is Pretendard (linked from the layout head): one face that sets
+   Korean and Latin together, instead of Inter falling back to the system
+   Korean font mid-sentence. */
 
 :root {
   --bg: #05070d;
@@ -14,8 +17,10 @@
   --neon-glow: rgba(255, 45, 110, 0.35);
   --purple-glow: rgba(62, 230, 240, 0.25);
   --font-jp: 'Zen Old Mincho', serif;
-  --font-en: 'Inter', system-ui, sans-serif;
-  --font-tech: 'Chakra Petch', 'Inter', system-ui, sans-serif;
+  --font-en: 'Pretendard Variable', Pretendard, -apple-system, system-ui, sans-serif;
+  --font-tech: 'Chakra Petch', 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+  /* one spring curve for every hover, press and reveal on the site */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ---- 深夜 mode: the palette inverts after midnight (00:00-04:59 local) ---- */
@@ -160,7 +165,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-en);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.7;
   min-height: 100vh;
   display: flex;
@@ -169,6 +174,10 @@ body {
 }
 
 main { flex: 1; }
+
+/* Korean breaks between words, not inside them (the browser default for
+   Hangul is per syllable); anywhere-wrap still folds an overlong token. */
+html[lang="ko"] body { word-break: keep-all; overflow-wrap: anywhere; }
 
 /* ambient city glow behind everything */
 .bg-glow {
@@ -206,31 +215,37 @@ main { flex: 1; }
 a { color: var(--neon-purple); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--neon-pink); }
 
-a:focus-visible, .btn:focus-visible {
+a:focus-visible {
   outline: 2px solid var(--neon-pink);
   outline-offset: 3px;
   border-radius: 4px;
 }
+.btn:focus-visible { outline: 2px solid var(--neon-pink); outline-offset: 3px; }
 
 .container { max-width: 960px; margin: 0 auto; padding: 0 1.25rem; }
 
-/* ---- nav ---- */
-.site-nav {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(7, 11, 22, 0.8);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
-  transition: transform 0.3s ease;
-}
-/* Webtoon reader: the bar slides out of the way while reading downward. */
-.site-nav.nav-hidden { transform: translateY(-100%); }
-@media (prefers-reduced-motion: reduce) { .site-nav { transition: none; } }
+/* ---- nav: a glass bar floating just under the top edge ---- */
 /* A little wider than the page column: seven links plus the studio mark and
    the language switch sit on one row in every language at laptop widths. */
+.site-nav {
+  position: sticky; top: 0.75rem; z-index: 50;
+  margin: 0.75rem auto 0; width: calc(100% - 1.5rem); max-width: 1080px;
+  border-radius: 999px;
+  background: rgba(10, 14, 26, 0.62);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 16px 40px -18px rgba(5, 7, 13, 0.7);
+  transition: transform 0.5s var(--ease);
+}
+/* Webtoon reader: the bar slides out of the way while reading downward. */
+.site-nav.nav-hidden { transform: translateY(calc(-100% - 1rem)); }
+@media (prefers-reduced-motion: reduce) { .site-nav { transition: none; } }
 .site-nav .inner {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0.9rem 1.25rem; max-width: 1080px; margin: 0 auto;
+  padding: 0.65rem 1.5rem;
 }
 .brand { display: flex; align-items: baseline; gap: 0.5rem; color: var(--text); }
 .brand .jp {
@@ -634,24 +649,36 @@ html.midnight-mode .album-tile-no[data-line="club"] { color: #f0a35e; }
 }
 
 
-/* ---- buttons ---- */
+/* ---- buttons: pills that fill on hover and give under the press ---- */
 .btn {
-  display: inline-block; padding: 0.7rem 1.8rem; border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.78rem 1.6rem; border-radius: 999px; line-height: 1.2;
   border: 1px solid var(--neon-pink); color: var(--neon-pink);
-  font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase;
-  transition: all 0.3s;
-  background: rgba(255, 45, 110, 0.04);
+  font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap;
+  background: rgba(255, 45, 110, 0.05);
+  transition: transform 0.5s var(--ease), background 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.5s var(--ease);
 }
 .btn:hover {
-  background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
-  border-color: transparent; color: var(--bg);
-  box-shadow: 0 0 28px var(--neon-glow), 0 0 60px var(--purple-glow);
-  transform: translateY(-1px);
+  background: var(--neon-pink); border-color: var(--neon-pink); color: #fff;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 16px 32px -14px rgba(255, 45, 110, 0.55);
 }
+.btn:active { transform: scale(0.98); box-shadow: none; }
+/* the filled one is the page's single primary action */
+.btn-primary { background: var(--neon-pink); color: #fff; }
+.btn-primary:hover { background: #ff4a82; border-color: #ff4a82; }
+/* an arrow in its own disc, flush with the pill's inner edge */
+.btn-icon {
+  display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem;
+  margin: -0.35rem -0.75rem -0.35rem 0.4rem; border-radius: 50%;
+  background: rgba(5, 7, 13, 0.28); transition: transform 0.5s var(--ease);
+}
+.btn-ghost .btn-icon { background: rgba(255, 255, 255, 0.08); }
+.btn:hover .btn-icon { transform: translateX(3px); }
 /* smaller pair for the album head; the ghost one is the secondary action */
-.btn-sm { padding: 0.5rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.2em; }
+.btn-sm { padding: 0.5rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.18em; }
 .btn-ghost { border-color: var(--line-bright); color: var(--text-dim); background: transparent; }
-.btn-ghost:hover { color: var(--text); }
+.btn-ghost:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.22); box-shadow: 0 16px 32px -18px rgba(5, 7, 13, 0.8); }
 
 /* ---- blog ---- */
 .post-list { display: flex; flex-direction: column; gap: 1.2rem; list-style: none; }
