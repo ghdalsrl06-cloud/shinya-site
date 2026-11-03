@@ -118,7 +118,8 @@ html[lang="ja"] .studio-head .studio-title { letter-spacing: -0.01em; }
 .studio-svc .bz.mv { grid-column: 1; grid-row: 1 / span 2; }
 .studio-svc .bz.music { grid-column: 2 / span 2; }
 .studio-svc .mv > a { min-height: 400px; justify-content: flex-end; }
-.studio-svc .svc-art { position: absolute; inset: 0; z-index: 0; }
+/* the frame behind the copy sits under everything else in the cell */
+.studio-svc .bz > a > .svc-art { position: absolute; inset: 0; z-index: 0; }
 .studio-svc .svc-art img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.34; transition: transform 0.9s var(--ease), opacity 0.5s var(--ease); }
 .studio-svc .bz:hover .svc-art img { transform: scale(1.04); opacity: 0.44; }
 .studio-svc .svc-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12, 17, 31, 0.15) 0%, rgba(12, 17, 31, 0.93) 72%); }

@@ -1154,6 +1154,8 @@ article.prose::before {
 }
 
 @media (max-width: 640px) {
+  /* three rows on a phone: a softer corner reads better than a capsule */
+  .site-nav { top: 0.5rem; margin-top: 0.5rem; width: calc(100% - 1rem); border-radius: 26px; }
   .site-nav .inner { flex-direction: column; gap: 0.5rem; padding: 0.8rem 1.25rem; }
   .nav-right { gap: 0.7rem 1rem; flex-wrap: wrap; justify-content: center; }
   .lang-switch { padding-left: 1rem; }
