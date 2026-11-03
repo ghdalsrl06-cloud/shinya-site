@@ -667,10 +667,11 @@ html.midnight-mode .album-tile-no[data-line="club"] { color: #f0a35e; }
 /* the filled one is the page's single primary action */
 .btn-primary { background: var(--neon-pink); color: #fff; }
 .btn-primary:hover { background: #ff4a82; border-color: #ff4a82; }
-/* an arrow in its own disc, flush with the pill's inner edge */
+/* an arrow in its own disc: a clear gap after the label, and the disc set
+   in from the pill's edge by about half its own radius */
 .btn-icon {
-  display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem;
-  margin: -0.35rem -0.75rem -0.35rem 0.4rem; border-radius: 50%;
+  display: inline-grid; place-items: center; width: 1.8rem; height: 1.8rem;
+  margin: -0.45rem -1rem -0.45rem 0.45rem; border-radius: 50%;
   background: rgba(5, 7, 13, 0.28); transition: transform 0.5s var(--ease);
 }
 .btn-ghost .btn-icon { background: rgba(255, 255, 255, 0.08); }
