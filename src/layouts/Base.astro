@@ -2,9 +2,6 @@
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import NightSky from '../components/NightSky.astro';
-import RainToggle from '../components/RainToggle.astro';
-import RainCanvas from '../components/RainCanvas.astro';
-import MiniPlayer from '../components/MiniPlayer.astro';
 import { t, type Lang } from '../i18n/ui';
 import { CHANNELS, STORES } from '../lib/studio';
 
@@ -13,9 +10,9 @@ interface Props {
   description?: string;
   lang?: Lang;
   ogImage?: string;
-  // False for pages that exist in one language only (404, the 5am egg). Their
-  // language switcher points at the locale home instead of a translated path
-  // that was never built, and they advertise no hreflang alternates.
+  // False for pages that exist in one language only (404). Their language
+  // switcher points at the locale home instead of a translated path that was
+  // never built, and they advertise no hreflang alternates.
   localized?: boolean;
 }
 
@@ -29,20 +26,12 @@ const {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
-// The studio's pitch comes first (both anchors on the home), then the 深夜
-// work itself. The brand mark is the way home; the links page lives in the footer.
+// Three anchors on the home, then the about page. The brand mark is the way home.
 const links = [
   { href: `${base}${prefix}/#services`, label: t(lang, 'nav.services') },
   { href: `${base}${prefix}/#works`, label: t(lang, 'nav.works') },
-  { href: `${base}${prefix}/music/`, label: t(lang, 'nav.music') },
-  { href: `${base}${prefix}/webtoon/`, label: t(lang, 'nav.webtoon') },
-  { href: `${base}${prefix}/blog/`, label: t(lang, 'nav.blog') },
+  { href: `${base}${prefix}/#process`, label: t(lang, 'nav.process') },
   { href: `${base}${prefix}/about/`, label: t(lang, 'nav.about') },
-  { href: `${base}${prefix}/search/`, label: t(lang, 'nav.search') },
-];
-const siteLinks = [
-  ...links.filter((l) => !l.href.includes('#')),
-  { href: `${base}${prefix}/links/`, label: t(lang, 'nav.links') },
 ];
 const isActive = (href: string) => !href.includes('#') && current.startsWith(href);
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
@@ -58,15 +47,6 @@ const ogImage = ogImageProp
     : `${site}${base}/${ogImageProp.replace(/^\//, '')}`
   : `${site}${base}/images/og.png`;
 const isDefaultOg = !ogImageProp;
-const artistLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MusicGroup',
-  name: 'SHINYA',
-  alternateName: '深夜',
-  genre: 'Dark Electronic J-Pop',
-  url: `${site}${base}/`,
-  sameAs: [CHANNELS.music.url, ...STORES.map((s) => s.url)],
-};
 const studioLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -76,6 +56,14 @@ const studioLd = {
   logo: `${site}${base}/images/og.png`,
   sameAs: [CHANNELS.studio.url, CHANNELS.music.url],
   brand: { '@type': 'Brand', name: 'SHINYA / 深夜' },
+};
+const artistLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  name: 'SHINYA',
+  alternateName: '深夜',
+  url: `${site}${base}/`,
+  sameAs: [CHANNELS.music.url, ...STORES.map((s) => s.url)],
 };
 // 무료 방문자 통계(GoatCounter): https://www.goatcounter.com 에서 가입 후
 // 사이트 코드(예: 'shinya')를 아래에 넣으면 활성화됩니다.
@@ -110,7 +98,6 @@ const GOATCOUNTER_CODE = 'shinya';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='80' fill='%23ff2d6e'%3E%E5%A4%9C%3C/text%3E%3C/svg%3E" />
-    <link rel="alternate" type="application/rss+xml" title="SHINYA / 深夜 — Blog" href={`${base}/rss.xml`} />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
     <script type="application/ld+json" set:html={JSON.stringify(studioLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(artistLd)} />
@@ -137,7 +124,6 @@ const GOATCOUNTER_CODE = 'shinya';
     </script>
     <div class="bg-glow" aria-hidden="true"></div>
     <NightSky />
-    <RainCanvas />
     <nav class="site-nav">
       <div class="inner">
         <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya Studio</span></a>
@@ -159,7 +145,7 @@ const GOATCOUNTER_CODE = 'shinya';
         </div>
       </div>
     </nav>
-    <main data-pagefind-body>
+    <main>
       <slot />
     </main>
     <footer class="site-footer">
@@ -184,52 +170,15 @@ const GOATCOUNTER_CODE = 'shinya';
             ))}
           </ul>
         </div>
-        <div class="footer-col">
-          <h4>{t(lang, 'footer.site')}</h4>
-          <ul>
-            {siteLinks.map((l) => (
-              <li><a href={l.href}>{l.label}</a></li>
-            ))}
-            <li><a href={`${base}/rss.xml`}>RSS</a></li>
-          </ul>
-        </div>
       </div>
       <div class="footer-bottom">
         <p>{t(lang, 'footer.copy')}</p>
         <p><a href={urlFor('en')} lang="en">EN</a> · <a href={urlFor('ko')} lang="ko">한국어</a> · <a href={urlFor('ja')} lang="ja">日本語</a></p>
       </div>
     </footer>
-    <RainToggle />
-    <MiniPlayer lang={lang} />
     <script>
-      // Site-wide effects, re-initialized on every client-side navigation.
+      // Site-wide behaviour, re-initialized on every client-side navigation.
       const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Scroll reveal: cards, scenes, and headings rise in as they enter the viewport.
-      // Scroll-position based (not IntersectionObserver) so nothing can stay stuck hidden.
-      const revealCheck = () => {
-        document.querySelectorAll('.reveal:not(.reveal-in)').forEach((el) => {
-          const r = el.getBoundingClientRect();
-          if (r.top < innerHeight * 0.9 && r.bottom > -innerHeight * 0.2) {
-            el.classList.add('reveal-in');
-            setTimeout(() => el.classList.remove('reveal', 'reveal-in'), 1000);
-          }
-        });
-      };
-      let revealRaf = 0;
-      addEventListener('scroll', () => {
-        if (!revealRaf) revealRaf = requestAnimationFrame(() => { revealRaf = 0; revealCheck(); });
-      }, { passive: true });
-      const initReveal = () => {
-        if (reduced()) return;
-        document.querySelectorAll('.card, .scene, .section > h2, .page-banner, .song-hero').forEach((el) => {
-          if (el.dataset.reveal) return;
-          el.dataset.reveal = '1';
-          if (el.getBoundingClientRect().top < innerHeight * 0.85) return; // already visible: skip
-          el.classList.add('reveal');
-        });
-        revealCheck();
-      };
 
       // Hero parallax: art drifts with the pointer and slides with scroll.
       let heroArt = null;
@@ -255,35 +204,7 @@ const GOATCOUNTER_CODE = 'shinya';
         queue();
       }, { passive: true });
 
-      // Webtoon reader: the site chrome — sticky nav above, mix player and rain
-      // toggle below — gets out of the way while the reader scrolls down through
-      // panels, and returns on the first upward scroll. Only pages carrying
-      // [data-reader] opt in. The floating controls carry transition:persist,
-      // so the reset has to clear them too or they stay hidden after leaving.
-      const CHROME = '.rain-toggle, .mini-player';
-      let navY = 0;
-      let navRaf = 0;
-      const setChrome = (hidden) => {
-        document.querySelector('.site-nav')?.classList.toggle('nav-hidden', hidden);
-        document.querySelectorAll(CHROME).forEach((el) => el.classList.toggle('chrome-hidden', hidden));
-      };
-      const navScroll = () => {
-        navRaf = 0;
-        if (!document.querySelector('.site-nav') || !document.querySelector('[data-reader]')) return;
-        const y = Math.max(0, scrollY);
-        if (y > navY + 6 && y > 200) setChrome(true);
-        else if (y < navY - 6) setChrome(false);
-        navY = y;
-      };
-      addEventListener('scroll', () => {
-        if (!navRaf) navRaf = requestAnimationFrame(navScroll);
-      }, { passive: true });
-      const initNavHide = () => {
-        navY = Math.max(0, scrollY);
-        setChrome(false);
-      };
-
-      // 深夜 mode extras: entry flash, tab chrome, and darker copy.
+      // 深夜 mode: entry flash, tab chrome, and the manual toggle in the nav.
       const isMidnight = () => document.documentElement.classList.contains('midnight-mode');
       const triggerFlicker = () => {
         if (reduced()) return;
@@ -297,12 +218,7 @@ const GOATCOUNTER_CODE = 'shinya';
         if (link) link.href = FAVICON(on ? 'ff2444' : 'ff2d6e');
         const plain = document.title.replace(/^【深夜】 /, '');
         document.title = on ? `【深夜】 ${plain}` : plain;
-        document.querySelectorAll('[data-midnight-text]').forEach((el) => {
-          if (!el.dataset.origText) el.dataset.origText = el.textContent;
-          el.textContent = on ? el.getAttribute('data-midnight-text') : el.dataset.origText;
-        });
       };
-
       const setMidnight = (on, flicker = true) => {
         document.documentElement.classList.toggle('midnight-mode', on);
         try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
@@ -311,8 +227,6 @@ const GOATCOUNTER_CODE = 'shinya';
         applyMidnightChrome();
         dispatchEvent(new CustomEvent('shinya:midnight', { detail: { on } }));
       };
-
-      // Manual 深夜 mode toggle in the nav.
       const initMidnightToggle = () => {
         const btn = document.querySelector('[data-midnight-toggle]');
         if (!btn || btn.dataset.bound) return;
@@ -320,86 +234,6 @@ const GOATCOUNTER_CODE = 'shinya';
         btn.setAttribute('aria-pressed', String(isMidnight()));
         btn.addEventListener('click', () => setMidnight(!isMidnight()));
       };
-
-      // ---- easter eggs ----
-      const eggToast = (msg) => {
-        const el = document.createElement('div');
-        el.className = 'egg-toast';
-        el.textContent = msg;
-        document.body.appendChild(el);
-        requestAnimationFrame(() => el.classList.add('show'));
-        setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 500); }, 3800);
-      };
-
-      // 1) console art for fellow residents of the night
-      console.log(
-        '%c深夜',
-        'color:#ff2d6e;font-size:52px;font-family:serif;font-weight:700;text-shadow:0 0 14px rgba(255,45,110,0.6)',
-      );
-      console.log(
-        '%cまだ起きてるんだ。君も夜の住人だね。\n아직 깨어 있네. 너도 밤의 주민이구나.\n\nヒント: 「4AM」/ 深夜ロゴ×7 / 東京 4:44 / 存在しない時間 …/5am/',
-        'color:#848fa8;font-size:12px;line-height:1.8',
-      );
-
-      // 2) typing "4am" anywhere summons 深夜 mode
-      let keyBuf = '';
-      addEventListener('keydown', (e) => {
-        const t = e.target;
-        if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || e.metaKey || e.ctrlKey || e.altKey) return;
-        keyBuf = (keyBuf + e.key.toLowerCase()).slice(-3);
-        if (keyBuf === '4am') {
-          keyBuf = '';
-          setMidnight(true);
-          eggToast('午前4時のリピート — 深夜モード起動');
-        }
-      });
-
-      // 4) seven rapid clicks on the 深夜 logo (seven tracks).
-      // Capture phase so rapid clicks can cancel the router navigation.
-      let brandCount = 0;
-      let brandLast = 0;
-      document.addEventListener(
-        'click',
-        (e) => {
-          const brand = e.target instanceof Element && e.target.closest('.brand');
-          if (!brand) return;
-          const now = Date.now();
-          if (now - brandLast < 1500) {
-            e.preventDefault();
-            e.stopPropagation();
-            brandCount++;
-          } else {
-            brandCount = 1;
-          }
-          brandLast = now;
-          if (brandCount >= 7) {
-            brandCount = 0;
-            triggerFlicker();
-            eggToast('７曲目の後、また１曲目。夜は終わらない。');
-          }
-        },
-        true,
-      );
-
-      // 3) at exactly 4:44 Tokyo time the hero whispers the seam of the loop
-      const tokyoFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false });
-      const check444 = () => {
-        const lyricEl = document.querySelector('[data-lyric-lines]');
-        if (!lyricEl) return;
-        const is444 = tokyoFmt.format(new Date()) === '04:44';
-        if (is444 && !lyricEl.dataset.locked) {
-          lyricEl.dataset.locked = '1';
-          lyricEl.textContent = '4:44 — ループの継ぎ目。この一分は、どの曲にも入っていない。';
-          lyricEl.classList.remove('lyric-glitch');
-          void lyricEl.offsetWidth;
-          lyricEl.classList.add('lyric-glitch');
-        } else if (!is444 && lyricEl.dataset.locked) {
-          delete lyricEl.dataset.locked;
-        }
-      };
-      setInterval(check444, 10_000);
-      document.addEventListener('astro:page-load', check444);
-
       // Flash once per session when the site loads already in 深夜 mode.
       const initMidnightEntry = () => {
         if (!isMidnight()) return;
@@ -417,7 +251,7 @@ const GOATCOUNTER_CODE = 'shinya';
         window.goatcounter?.count?.({ path: location.pathname });
       };
 
-      const initAll = () => { initReveal(); findHero(); initMidnightToggle(); initMidnightEntry(); applyMidnightChrome(); initNavHide(); countView(); };
+      const initAll = () => { findHero(); initMidnightToggle(); initMidnightEntry(); applyMidnightChrome(); countView(); };
       initAll();
       document.addEventListener('astro:page-load', initAll);
     </script>

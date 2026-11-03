@@ -1,19 +1,10 @@
 ---
-// The closing band: one ask, full width — subscribe to the two channels —
-// with the record that is next (or newest) underneath.
-import { getCollection } from 'astro:content';
-import ReleaseCountdown from './ReleaseCountdown.astro';
-import { t, type Lang } from '../i18n/ui';
-import { albumsFrom, newestFirst, albumAt } from '../lib/albums';
+// The closing band: one ask, full width — subscribe to the two channels.
+import type { Lang } from '../i18n/ui';
 import { CHANNELS, COPY } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
 const c = COPY[lang];
-const albums = albumsFrom(await getCollection('music'));
-const upcoming = albums.filter((a) => !a.out).sort((a, b) => albumAt(a) - albumAt(b));
-const next = upcoming[0] ?? newestFirst(albums)[0];
-const released = next.singles[0].data.releaseDate?.replaceAll('-', '.');
-const releaseAt = next.singles[0].data.releaseAt;
 const sub = (url: string) => `${url}?sub_confirmation=1`;
 ---
 
@@ -31,12 +22,6 @@ const sub = (url: string) => `${url}?sub_confirmation=1`;
         {c.cta.studio}
         <span class="btn-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
       </a>
-    </p>
-    <p class="studio-cta-next">
-      <span>{t(lang, next.out ? 'home.latest' : 'home.next')}</span>
-      <b>{next.meta.name}</b>
-      {released && <span>{released}</span>}
-      {!next.out && releaseAt && <ReleaseCountdown releaseAt={releaseAt} lang={lang} />}
     </p>
   </div>
 </section>

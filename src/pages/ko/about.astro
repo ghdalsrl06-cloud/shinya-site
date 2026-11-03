@@ -1,126 +1,38 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ArtImg from '../../components/ArtImg.astro';
-import { isReleased } from '../../lib/covers';
-import { getCollection } from 'astro:content';
-
-// image에 /public 하위 경로를 넣으면 플레이스홀더 아트가 실제 사진으로 교체됩니다.
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const characterImage = 'images/about/character.jpg';
-const musicReleases = await getCollection('music');
-const albumOut = (n) => musicReleases.some((r) => (r.data.album ?? 1) === n && isReleased(r));
-const discography = [
-  { n: 1, title: 'SHINYA 深夜', sub: '1집' },
-  { n: 2, title: '始発まで', sub: '2집' },
-  { n: 3, title: '怖いままで', sub: '3집' },
-  { n: 4, title: 'おやすみのあとで', sub: '4집' },
-  { n: 5, title: '誰かの部屋で', sub: '5집' },
-  { n: 6, title: 'Paper Luck', sub: 'CLUB 1집' },
-  { n: 7, title: 'Second Wind', sub: 'CLUB 2집' },
-  { n: 8, title: 'Blue Hour', sub: 'AFTER 1집' },
-  { n: 9, title: 'Empty Room', sub: 'AFTER 2집' },
-  { n: 10, title: '朝のすぐ手前で', sub: 'Original 6집' },
-  { n: 11, title: 'Still Daylight', sub: 'AFTER 3집' },
-  { n: 13, title: "Tomorrow's Problem", sub: 'AFTER 4집' },
-  { n: 12, title: '今夜も開演', sub: 'SPECIAL' },
-];
-const scenes = [
-  {
-    cls: 'scene-kissa',
-    kanji: '降',
-    time: '0:00 AM',
-    title: '내려가는 엘리베이터',
-    desc: '거울로 둘러싸인 상자, 붉게 떨어지는 층수, 문이 열리면 시작되는 밤 — 毒でいいの의 첫 호흡이 시작되는 곳.',
-    image: 'images/about/scene-elevator.jpg',
-  },
-  {
-    cls: 'scene-citypop',
-    kanji: '沈',
-    time: '1:00 AM',
-    title: '네온에 잠긴 욕조',
-    desc: '수면 위로 흔들리는 네온, 낮게 울리는 베이스 — 가라앉는 게 아니라 밤에 몸을 맡기는 시간. 夜に溺れて의 방.',
-    image: 'images/about/scene-bathtub.jpg',
-  },
-  {
-    cls: 'scene-lofi',
-    kanji: '朝',
-    time: '5:00 AM',
-    title: '아침이 오면 타인',
-    desc: '꺼져가는 네온, 창백해지는 하늘, 횡단보도를 반대로 걷는 두 사람 — 朝になれば他人의 마지막 장면. 밤은 여기서 끝난다.',
-    image: 'images/about/scene-dawn.jpg',
-  },
-];
+import { CHANNELS } from '../../lib/studio';
 ---
 
-<Base lang="ko" title="소개 — SHINYA / 深夜">
+<Base lang="ko" title="소개 — SHINYA Studio" description="AI로 생성하고 사람이 연출하는 콘텐츠 스튜디오 SHINYA Studio와, 모든 작업의 중심에 있는 캐릭터 深夜.">
   <section class="about-hero">
     <div class="about-hero-art" aria-hidden="true"></div>
-    <p class="about-label">About</p>
-    <h1 class="about-title">深夜 — SHINYA</h1>
+    <p class="about-label">소개</p>
+    <h1 class="about-title">深夜 — SHINYA STUDIO</h1>
     <p class="about-motto">夜はまだ長い。— 밤은 아직 길다.</p>
   </section>
 
   <div class="container">
     <section class="section character-section">
       <div class="character-card">
-        {characterImage ? (
-          <ArtImg src={characterImage} width={810} sizes="(min-width: 700px) 420px, 90vw" alt="SHINYA" />
-        ) : (
-          <span class="character-kanji" aria-hidden="true">深夜</span>
-        )}
+        <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 700px) 420px, 90vw" alt="SHINYA / 深夜" />
         <span class="scene-time">SHINYA</span>
       </div>
       <p class="character-caption">밤을 새우는 사람 — 夜更かしの住人</p>
     </section>
 
-    <section class="section prose about-intro">
+    <section class="section about-intro">
       <p>
-        SHINYA(深夜, 일본어로 "심야")는 자정 이후의 시간을 위한 다크 일렉트로닉 J-POP 프로젝트입니다 —
-        도시가 조용해지고, 네온만 켜져 있고, 모든 것이 조금 더 솔직하게 들리는 그 시간.
-        사운드는 세 개의 장면 속에 있습니다:
-      </p>
-    </section>
-
-    <section class="section scenes">
-      {scenes.map((s, i) => (
-        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
-          <div class={`scene-visual ${s.cls}`}>
-            {s.image ? (
-              <ArtImg src={s.image} width={1400} sizes="(min-width: 1000px) 460px, 100vw" alt={s.title} />
-            ) : (
-              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
-            )}
-            <span class="scene-time">{s.time}</span>
-          </div>
-          <div class="scene-text">
-            <h3>{s.title}</h3>
-            <p>{s.desc}</p>
-          </div>
-        </div>
-      ))}
-    </section>
-
-    <section class="section discography">
-      <h2>디스코그래피</h2>
-      <div class="disco-grid">
-        {discography.map((a) => (
-          <a class="disco-item" href={`${base}/ko/music/#album-${a.n}`}>
-            <ArtImg src={`images/covers/album-${a.n}.jpg`} width={2048} sizes="(min-width: 700px) 320px, 90vw" alt={a.title} />
-            <p class="disco-title">{a.title}</p>
-            <p class="disco-sub">{a.sub} · {albumOut(a.n) ? '발매중' : '커밍순'}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="section prose about-outro">
-      <p>
-        오리지널 트랙과 롱폼 믹스는 생각할 때, 운전할 때, 일할 때,
-        그리고 아직 잠들고 싶지 않은 밤을 위해 만들어집니다.
+        SHINYA Studio는 AI로 생성하고 사람이 연출하는 콘텐츠 스튜디오입니다. 뮤직비디오, 세로형 숏드라마,
+        시네마틱 트레일러, 그리고 그 안에 들어가는 음악까지 — 기획부터 납품까지 한 팀이 맡습니다.
       </p>
       <p>
-        새 음악은 <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">유튜브</a>에
-        올라옵니다 — 언제나 자정에.
+        深夜(SHINYA, 일본어로 "심야")는 스튜디오의 얼굴입니다. 깊은 밤의 도쿄에서 태어난 AI 캐릭터로,
+        첫 풀 뮤직비디오 「今夜も開演」의 주인공이자 모든 작업의 기준이 되는 캐릭터입니다.
+      </p>
+      <p>
+        새 작업은 <a href={CHANNELS.music.url} target="_blank" rel="noopener">YouTube · 음악</a>과
+        <a href={CHANNELS.studio.url} target="_blank" rel="noopener">YouTube · 스튜디오</a>에 먼저 올라옵니다.
       </p>
     </section>
   </div>

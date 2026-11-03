@@ -1,126 +1,40 @@
 ---
 import Base from '../layouts/Base.astro';
 import ArtImg from '../components/ArtImg.astro';
-import { isReleased } from '../lib/covers';
-import { getCollection } from 'astro:content';
-
-// Set `image` to a path under /public (e.g. `${base}/images/kissa.jpg`) to
-// replace a scene's placeholder art with a real photo.
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const characterImage = 'images/about/character.jpg';
-const musicReleases = await getCollection('music');
-const albumOut = (n) => musicReleases.some((r) => (r.data.album ?? 1) === n && isReleased(r));
-const discography = [
-  { n: 1, title: 'SHINYA 深夜', sub: '1st Album' },
-  { n: 2, title: '始発まで', sub: '2nd Album' },
-  { n: 3, title: '怖いままで', sub: '3rd Album' },
-  { n: 4, title: 'おやすみのあとで', sub: '4th Album' },
-  { n: 5, title: '誰かの部屋で', sub: '5th Album' },
-  { n: 6, title: 'Paper Luck', sub: 'CLUB 1st' },
-  { n: 7, title: 'Second Wind', sub: 'CLUB 2nd' },
-  { n: 8, title: 'Blue Hour', sub: 'AFTER 1st' },
-  { n: 9, title: 'Empty Room', sub: 'AFTER 2nd' },
-  { n: 10, title: '朝のすぐ手前で', sub: 'Original 6th' },
-  { n: 11, title: 'Still Daylight', sub: 'AFTER 3rd' },
-  { n: 13, title: "Tomorrow's Problem", sub: 'AFTER 4th' },
-  { n: 12, title: '今夜も開演', sub: 'SPECIAL' },
-];
-const scenes = [
-  {
-    cls: 'scene-kissa',
-    kanji: '降',
-    time: '0:00 AM',
-    title: 'The elevator going down',
-    desc: 'A mirrored box, red floor numbers falling, the night starting when the doors open — where 毒でいいの takes its first breath.',
-    image: 'images/about/scene-elevator.jpg',
-  },
-  {
-    cls: 'scene-citypop',
-    kanji: '沈',
-    time: '1:00 AM',
-    title: 'A bathtub full of neon',
-    desc: 'Neon rippling across the water, bass humming low — not sinking, just letting the night hold you. The room where 夜に溺れて lives.',
-    image: 'images/about/scene-bathtub.jpg',
-  },
-  {
-    cls: 'scene-lofi',
-    kanji: '朝',
-    time: '5:00 AM',
-    title: 'Strangers by morning',
-    desc: 'Neon switching off, a pale sky, two people walking opposite ways across the crossing — the last scene of 朝になれば他人. The night ends here.',
-    image: 'images/about/scene-dawn.jpg',
-  },
-];
+import { CHANNELS } from '../lib/studio';
 ---
 
-<Base title="About — SHINYA / 深夜">
+<Base title="About — SHINYA Studio" description="SHINYA Studio: a content studio where AI generates and people direct, and 深夜, the character at the centre of every piece.">
   <section class="about-hero">
     <div class="about-hero-art" aria-hidden="true"></div>
     <p class="about-label">About</p>
-    <h1 class="about-title">深夜 — SHINYA</h1>
+    <h1 class="about-title">深夜 — SHINYA STUDIO</h1>
     <p class="about-motto">夜はまだ長い。— The night is still long.</p>
   </section>
 
   <div class="container">
     <section class="section character-section">
       <div class="character-card">
-        {characterImage ? (
-          <ArtImg src={characterImage} width={810} sizes="(min-width: 700px) 420px, 90vw" alt="SHINYA" />
-        ) : (
-          <span class="character-kanji" aria-hidden="true">深夜</span>
-        )}
+        <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 700px) 420px, 90vw" alt="SHINYA / 深夜" />
         <span class="scene-time">SHINYA</span>
       </div>
       <p class="character-caption">The one who stays up — 夜更かしの住人</p>
     </section>
 
-    <section class="section prose about-intro">
+    <section class="section about-intro">
       <p>
-        SHINYA (深夜, "late night" in Japanese) is a dark electronic J-pop project for the hours
-        after midnight — when the city goes quiet, the neon stays on, and everything sounds
-        a little more honest. The sound lives in three scenes:
-      </p>
-    </section>
-
-    <section class="section scenes">
-      {scenes.map((s, i) => (
-        <div class={`scene ${i % 2 === 1 ? 'flip' : ''}`}>
-          <div class={`scene-visual ${s.cls}`}>
-            {s.image ? (
-              <ArtImg src={s.image} width={1400} sizes="(min-width: 1000px) 460px, 100vw" alt={s.title} />
-            ) : (
-              <span class="scene-kanji" aria-hidden="true">{s.kanji}</span>
-            )}
-            <span class="scene-time">{s.time}</span>
-          </div>
-          <div class="scene-text">
-            <h3>{s.title}</h3>
-            <p>{s.desc}</p>
-          </div>
-        </div>
-      ))}
-    </section>
-
-    <section class="section discography">
-      <h2>Discography</h2>
-      <div class="disco-grid">
-        {discography.map((a) => (
-          <a class="disco-item" href={`${base}/music/#album-${a.n}`}>
-            <ArtImg src={`images/covers/album-${a.n}.jpg`} width={2048} sizes="(min-width: 700px) 320px, 90vw" alt={a.title} />
-            <p class="disco-title">{a.title}</p>
-            <p class="disco-sub">{a.sub} · {albumOut(a.n) ? 'Out now' : 'Coming soon'}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="section prose about-outro">
-      <p>
-        Original tracks and long-form mixes are made for thinking, driving, working,
-        and the kind of nights when you don't really want to sleep yet.
+        SHINYA Studio is a content studio where AI generates and people direct. Music videos,
+        vertical short dramas, cinematic trailers and the music inside them — one team, from the
+        first page of the brief to delivery.
       </p>
       <p>
-        New music arrives on <a href="https://www.youtube.com/@shinyatokyo" target="_blank" rel="noopener">YouTube</a> — always at midnight.
+        深夜 (SHINYA, "late night" in Japanese) is the studio's face: an AI character born in Tokyo
+        after midnight, the lead of the first full music video 「今夜も開演」, and the reference every
+        piece is measured against.
+      </p>
+      <p>
+        New work lands first on <a href={CHANNELS.music.url} target="_blank" rel="noopener">YouTube · Music</a> and
+        <a href={CHANNELS.studio.url} target="_blank" rel="noopener">YouTube · Studio</a>.
       </p>
     </section>
   </div>

@@ -1,47 +1,35 @@
 ---
 // The four things on offer, as a bento: the music video takes the tall cell
 // with its own frame behind the copy, the drama and the trailer sit beside it
-// over their thumbnails, and the records run wide underneath with the newest
-// jackets. Each cell ends with the piece that proves it and links there.
-import { getCollection } from 'astro:content';
+// over their thumbnails, and music runs wide underneath. Each cell ends with
+// the piece that proves it and links there.
 import ArtImg from './ArtImg.astro';
-import Jacket from './Jacket.astro';
 import StudioHead from './StudioHead.astro';
 import type { Lang } from '../i18n/ui';
-import { albumsFrom, newestFirst } from '../lib/albums';
-import { coverOf } from '../lib/covers';
-import { CHANNELS, COPY, FEATURED_MV, VIDEOS, studioCounts, ytThumb, ytUrl } from '../lib/studio';
+import { CHANNELS, COPY, VIDEOS, ytThumb, ytUrl } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const prefix = lang === 'en' ? '' : `/${lang}`;
 const c = COPY[lang];
 
-const releases = await getCollection('music');
-const albums = albumsFrom(releases);
-const counts = studioCounts(albums, await getCollection('webtoon'));
-const mv = releases.find((r) => r.id === FEATURED_MV);
-const jackets = newestFirst(albums.filter((a) => a.out)).slice(0, 4);
-
+const mv = VIDEOS.find((v) => v.type === 'mv');
 const firstDrama = VIDEOS.filter((v) => v.type === 'drama').sort((a, b) => a.date.localeCompare(b.date))[0];
 const trailer = VIDEOS.find((v) => v.type === 'trailer');
-const proof: Record<string, { href: string; external?: boolean; thumb?: string }> = {
-  mv: { href: `${base}${prefix}/music/${FEATURED_MV}/` },
-  drama: { href: firstDrama ? ytUrl(firstDrama) : CHANNELS.studio.url, external: true, thumb: firstDrama && ytThumb(firstDrama.id, 'hqdefault') },
-  trailer: { href: trailer ? ytUrl(trailer) : CHANNELS.studio.url, external: true, thumb: trailer && ytThumb(trailer.id, 'hqdefault') },
-  album: { href: `${base}${prefix}/music/` },
+const proof: Record<string, { href: string; thumb?: string }> = {
+  mv: { href: mv ? ytUrl(mv) : CHANNELS.music.url },
+  drama: { href: firstDrama ? ytUrl(firstDrama) : CHANNELS.studio.url, thumb: firstDrama && ytThumb(firstDrama.id, 'hqdefault') },
+  trailer: { href: trailer ? ytUrl(trailer) : CHANNELS.studio.url, thumb: trailer && ytThumb(trailer.id, 'hqdefault') },
+  music: { href: CHANNELS.music.url },
 };
-const cell = (type: string) => (type === 'album' ? 'music' : type);
 ---
 
 <section class="section studio-section" id="services">
   <StudioHead kicker={c.services.kicker} title={c.services.title} sub={c.services.sub} />
   <div class="studio-svc" data-stagger>
     {c.services.items.map((s) => (
-      <div class:list={['bz', cell(s.type)]}>
-        <a href={proof[s.type].href} target={proof[s.type].external ? '_blank' : undefined} rel={proof[s.type].external ? 'noopener' : undefined}>
-          {s.type === 'mv' && mv && coverOf(mv) && (
-            <span class="svc-art" aria-hidden="true"><ArtImg src={coverOf(mv)!} width={1280} sizes="(min-width: 900px) 420px, 100vw" alt="" /></span>
+      <div class:list={['bz', s.type]}>
+        <a href={proof[s.type].href} target="_blank" rel="noopener">
+          {s.type === 'mv' && mv?.art && (
+            <span class="svc-art" aria-hidden="true"><ArtImg src={mv.art.src} width={mv.art.width} sizes="(min-width: 900px) 420px, 100vw" alt="" /></span>
           )}
           {proof[s.type].thumb && (
             <span class="svc-art" aria-hidden="true"><img src={proof[s.type].thumb} alt="" loading="lazy" decoding="async" /></span>
@@ -49,18 +37,9 @@ const cell = (type: string) => (type === 'album' ? 'music' : type);
           <span class="k">{s.k}</span>
           <h3>{s.title}</h3>
           <p>{s.desc}</p>
-          {s.type === 'album' && jackets.length > 0 && (
-            <span class="svc-jackets" aria-hidden="true">
-              {jackets.map(({ meta }) => <Jacket meta={meta} lang={lang} sizes="54px" alt="" />)}
-            </span>
-          )}
-          <span class="ref"><b>{typeof s.refName === 'function' ? s.refName(counts) : s.refName}</b> · {s.ref}</span>
+          <span class="ref"><b>{s.refName}</b> · {s.ref}</span>
           <span class="svc-arrow" aria-hidden="true">
-            {proof[s.type].external ? (
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
-            ) : (
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16m-6-6 6 6-6 6" /></svg>
-            )}
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
           </span>
         </a>
       </div>
