@@ -23,128 +23,6 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---- 深夜 mode: the palette inverts after midnight (00:00-04:59 local) ---- */
-html.midnight-mode {
-  --bg: #020307;
-  --bg-raised: #07050c;
-  --bg-card: #090610;
-  --bg-card-hover: #0f0916;
-  --line: #241627;
-  --line-bright: #3c2038;
-  --text: #efdfe4;
-  --text-dim: #a08693;
-  --neon-pink: #ff2444;
-  --neon-purple: #b08cff;
-  --neon-glow: rgba(255, 36, 68, 0.42);
-  --purple-glow: rgba(176, 140, 255, 0.25);
-}
-html.midnight-mode .bg-glow {
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px),
-    radial-gradient(ellipse 55% 45% at 18% -5%, rgba(255, 36, 68, 0.14), transparent 70%),
-    radial-gradient(ellipse 45% 40% at 85% 15%, rgba(176, 140, 255, 0.08), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(190, 30, 60, 0.16), transparent 70%);
-  animation: midnightPulse 4.5s ease-in-out infinite;
-}
-@keyframes midnightPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.72; }
-}
-html.midnight-mode .hero::before {
-  background: radial-gradient(circle, rgba(255, 36, 68, 0.2), transparent 65%);
-}
-html.midnight-mode .hero::after {
-  background: radial-gradient(circle, rgba(176, 140, 255, 0.16), transparent 65%);
-}
-html.midnight-mode .glitch::before { color: rgba(176, 140, 255, 0.85); }
-html.midnight-mode .glitch::after { color: rgba(255, 36, 68, 0.85); }
-html.midnight-mode .star { background: #ff2444; filter: brightness(1.7); }
-
-/* every artwork drops into a blood-red duotone */
-html.midnight-mode .hero-art,
-html.midnight-mode .character-card img,
-html.midnight-mode .work-frame img,
-html.midnight-mode .svc-art img,
-html.midnight-mode .studio-ip-art img {
-  filter: grayscale(0.85) sepia(0.7) hue-rotate(-42deg) saturate(2.4) brightness(0.7) contrast(1.1);
-}
-
-/* tunnel-vision vignette + film grain over everything */
-html.midnight-mode body::before {
-  content: ''; position: fixed; inset: 0; z-index: 40; pointer-events: none;
-  background: radial-gradient(ellipse 78% 72% at 50% 44%, transparent 52%, rgba(0, 0, 0, 0.5) 100%);
-}
-html.midnight-mode body::after {
-  content: ''; position: fixed; inset: -120px; z-index: 40; pointer-events: none;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grainShift 0.9s steps(4) infinite;
-}
-@keyframes grainShift {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-45px, 30px); }
-  50% { transform: translate(30px, -50px); }
-  75% { transform: translate(-25px, -25px); }
-  100% { transform: translate(0, 0); }
-}
-
-/* broken-neon flicker: the brand sign and section headings misfire sometimes */
-@keyframes neonFlicker {
-  0%, 100% { opacity: 1; }
-  41% { opacity: 1; }
-  42% { opacity: 0.35; }
-  43% { opacity: 1; }
-  44.5% { opacity: 0.15; }
-  45% { opacity: 1; }
-  45.8% { opacity: 0.6; }
-  46.2% { opacity: 1; }
-  82% { opacity: 1; }
-  82.6% { opacity: 0.4; }
-  83.2% { opacity: 1; }
-}
-html.midnight-mode .brand .jp {
-  animation: neonFlicker 7s linear infinite;
-  text-shadow: 0 0 16px var(--neon-glow);
-}
-html.midnight-mode h2 { animation: neonFlicker 11s linear infinite 3.2s; }
-html.midnight-mode .jp-title { animation-name: fadeUp, neonBreathe, neonFlicker; animation-duration: 0.9s, 5s, 9s; animation-delay: 0s, 1s, 4s; animation-iteration-count: 1, infinite, infinite; }
-
-/* entry flash: the light dies for a moment when 深夜 mode kicks in */
-html.midnight-flicker body { animation: midnightEnter 0.75s steps(1, end) both; }
-@keyframes midnightEnter {
-  0% { filter: invert(1) hue-rotate(120deg) brightness(1.2); }
-  9% { filter: none; }
-  16% { filter: invert(1) brightness(1.5); }
-  22% { filter: brightness(0.25); }
-  34% { filter: none; }
-  41% { filter: brightness(0.3) saturate(0.2); }
-  52% { filter: none; }
-  100% { filter: none; }
-}
-html.midnight-mode .about-hero-art {
-  background:
-    repeating-linear-gradient(90deg, transparent 0 42px, rgba(176, 140, 255, 0.05) 42px 44px),
-    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(255, 36, 68, 0.16), transparent 65%),
-    radial-gradient(ellipse 55% 45% at 20% -10%, rgba(176, 140, 255, 0.14), transparent 70%),
-    radial-gradient(ellipse 45% 40% at 85% 20%, rgba(190, 30, 60, 0.13), transparent 70%);
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
-  mask-image: linear-gradient(to bottom, black 55%, transparent);
-}
-
-/* nav indicator, visible only while 深夜 mode is on */
-.midnight-flag {
-  display: none;
-  font-family: var(--font-tech); font-size: 0.66rem; letter-spacing: 0.22em;
-  color: var(--neon-pink); border: 1px solid var(--neon-pink);
-  border-radius: 4px; padding: 0.14rem 0.55rem;
-  animation: flagPulse 2.6s ease-in-out infinite;
-}
-html.midnight-mode .midnight-flag { display: inline-block; }
-@keyframes flagPulse {
-  0%, 100% { box-shadow: 0 0 10px var(--neon-glow); opacity: 1; }
-  50% { box-shadow: 0 0 3px var(--neon-glow); opacity: 0.75; }
-}
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -311,7 +189,11 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   color: var(--text-dim); margin-top: 1.5rem; font-size: 1.05rem;
   animation: fadeUp 0.9s ease 0.3s both;
 }
-.hero .hero-cta { margin-top: 2.5rem; animation: fadeUp 0.9s ease 0.45s both; display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.hero .hero-cta { margin-top: 2.5rem; animation: fadeUp 0.9s ease 0.45s both; }
+/* a row of pills spaced by their own margins, not flex gap, so the space
+   holds in browsers that ignore gap on flex (older Safari, some in-app views) */
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; margin: 2.5rem -0.6rem 0; }
+.hero-cta > .btn { margin: 0.4rem 0.6rem; }
 .hero .hero-clock { margin-top: 1.1rem; animation: fadeUp 0.9s ease 0.4s both; }
 
 /* ---- tokyo clock ---- */
@@ -610,19 +492,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
 @media (max-width: 380px) {
   .nav-links { gap: 0.55rem; }
   .nav-links a { font-size: 0.66rem; letter-spacing: 0.08em; }
-}
-
-/* ---- midnight manual toggle ---- */
-.midnight-toggle {
-  background: none; border: 1px solid var(--line); color: var(--text-dim);
-  font-family: var(--font-jp); font-size: 0.7rem; letter-spacing: 0.14em;
-  padding: 0.28rem 0.6rem; border-radius: 4px; cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
-}
-.midnight-toggle:hover { color: var(--neon-pink); border-color: var(--neon-pink); }
-.midnight-toggle[aria-pressed='true'] {
-  color: #ff2444; border-color: #ff2444;
-  box-shadow: 0 0 10px rgba(255, 36, 68, 0.35);
 }
 
 /* ---- large displays (QHD 2560px and up) ---- */

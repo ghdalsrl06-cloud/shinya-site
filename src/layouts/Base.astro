@@ -105,23 +105,6 @@ const GOATCOUNTER_CODE = 'shinya';
     <title>{title}</title>
   </head>
   <body>
-    <script is:inline data-astro-rerun>
-      // 深夜 mode: after midnight (visitor's local time, 00:00-04:59) the
-      // whole palette inverts to blood-red. Preview any time with ?midnight=1;
-      // the nav toggle stores a manual override in localStorage.
-      (function () {
-        var p = new URLSearchParams(location.search);
-        var stored = null;
-        try { stored = localStorage.getItem('shinya-midnight'); } catch (e) {}
-        var h = new Date().getHours();
-        var on = p.has('midnight')
-          ? p.get('midnight') !== '0'
-          : stored !== null
-            ? stored === '1'
-            : h >= 0 && h < 5;
-        document.documentElement.classList.toggle('midnight-mode', on);
-      })();
-    </script>
     <div class="bg-glow" aria-hidden="true"></div>
     <NightSky />
     <nav class="site-nav">
@@ -133,8 +116,6 @@ const GOATCOUNTER_CODE = 'shinya';
               <li><a href={l.href} class={isActive(l.href) ? 'active' : ''}>{l.label}</a></li>
             ))}
           </ul>
-          <button class="midnight-toggle" type="button" data-midnight-toggle aria-pressed="false" title="深夜 MODE">深夜</button>
-          <span class="midnight-flag" aria-hidden="true">深夜 MODE</span>
           <div class="lang-switch" aria-label="Language">
             <a href={urlFor('en')} class={lang === 'en' ? 'active' : ''} lang="en">EN</a>
             <span aria-hidden="true">·</span>
@@ -204,46 +185,6 @@ const GOATCOUNTER_CODE = 'shinya';
         queue();
       }, { passive: true });
 
-      // 深夜 mode: entry flash, tab chrome, and the manual toggle in the nav.
-      const isMidnight = () => document.documentElement.classList.contains('midnight-mode');
-      const triggerFlicker = () => {
-        if (reduced()) return;
-        document.documentElement.classList.add('midnight-flicker');
-        setTimeout(() => document.documentElement.classList.remove('midnight-flicker'), 800);
-      };
-      const FAVICON = (color) => `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='80' fill='%23${color}'%3E%E5%A4%9C%3C/text%3E%3C/svg%3E`;
-      const applyMidnightChrome = () => {
-        const on = isMidnight();
-        const link = document.querySelector("link[rel='icon']");
-        if (link) link.href = FAVICON(on ? 'ff2444' : 'ff2d6e');
-        const plain = document.title.replace(/^【深夜】 /, '');
-        document.title = on ? `【深夜】 ${plain}` : plain;
-      };
-      const setMidnight = (on, flicker = true) => {
-        document.documentElement.classList.toggle('midnight-mode', on);
-        try { localStorage.setItem('shinya-midnight', on ? '1' : '0'); } catch {}
-        if (on && flicker) triggerFlicker();
-        document.querySelector('[data-midnight-toggle]')?.setAttribute('aria-pressed', String(on));
-        applyMidnightChrome();
-        dispatchEvent(new CustomEvent('shinya:midnight', { detail: { on } }));
-      };
-      const initMidnightToggle = () => {
-        const btn = document.querySelector('[data-midnight-toggle]');
-        if (!btn || btn.dataset.bound) return;
-        btn.dataset.bound = '1';
-        btn.setAttribute('aria-pressed', String(isMidnight()));
-        btn.addEventListener('click', () => setMidnight(!isMidnight()));
-      };
-      // Flash once per session when the site loads already in 深夜 mode.
-      const initMidnightEntry = () => {
-        if (!isMidnight()) return;
-        try {
-          if (sessionStorage.getItem('shinya-mflash')) return;
-          sessionStorage.setItem('shinya-mflash', '1');
-        } catch { return; }
-        triggerFlicker();
-      };
-
       // GoatCounter: count client-side navigations too (initial load counts itself).
       let firstLoad = true;
       const countView = () => {
@@ -251,7 +192,7 @@ const GOATCOUNTER_CODE = 'shinya';
         window.goatcounter?.count?.({ path: location.pathname });
       };
 
-      const initAll = () => { findHero(); initMidnightToggle(); initMidnightEntry(); applyMidnightChrome(); countView(); };
+      const initAll = () => { findHero(); countView(); };
       initAll();
       document.addEventListener('astro:page-load', initAll);
     </script>
