@@ -1,8 +1,9 @@
 ---
 // The catalog: one card per series, cover on top, title and a count under it.
+// A series with a video from the last two weeks wears NEW.
 import ArtImg from './ArtImg.astro';
 import type { Lang } from '../i18n/ui';
-import { CHANNEL_LABEL, seriesPath, videoCount, type Series } from '../lib/catalog';
+import { CHANNEL_LABEL, isNew, newUntil, seriesPath, videoCount, type Series } from '../lib/catalog';
 
 interface Props {
   series: Series[];
@@ -22,6 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         ) : (
           <ArtImg src={s.cover} width={s.coverWidth ?? 1280} sizes="(min-width: 900px) 230px, 45vw" alt="" />
         )}
+        {isNew(s) && <span class="scard-new" data-new-until={newUntil(s)}>NEW</span>}
       </span>
       <b class="scard-title">{s.title}</b>
       <span class="scard-meta">{CHANNEL_LABEL[s.channel]} · {videoCount(s.episodes.length, lang)}</span>

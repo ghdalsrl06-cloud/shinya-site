@@ -1,22 +1,42 @@
 ---
-// One series: its banner with the whole description, then every episode as
-// a card that plays in place when clicked.
+// One series: its banner with the whole description, every episode as a card
+// that plays in place when clicked, a share row, and the other series.
 import Base from '../layouts/Base.astro';
 import '../styles/original.css';
 import SeriesBanner from './SeriesBanner.astro';
+import SeriesGrid from './SeriesGrid.astro';
 import { t, type Lang } from '../i18n/ui';
 import { ymd } from '../lib/dates';
-import { episodeUrl, seriesBySlug } from '../lib/catalog';
+import { SERIES, episodeUrl, isoDuration, seriesBySlug, seriesPath, seriesUrl } from '../lib/catalog';
 
 const { lang, slug } = Astro.props as { lang: Lang; slug: string };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
+const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const s = seriesBySlug(slug);
 if (!s) throw new Error(`unknown series: ${slug}`);
 const many = s.episodes.length > 1;
+const others = SERIES.filter((o) => o.id !== s.id).slice(0, 4);
+const pageUrl = encodeURI(`${site}${seriesPath(s, lang, base)}`);
+// Every episode as a VideoObject, so the series can show up as video results.
+const videoLd = {
+  '@context': 'https://schema.org',
+  '@graph': s.episodes.map((e) => ({
+    '@type': 'VideoObject',
+    name: e.title,
+    description: s.description || e.title,
+    thumbnailUrl: e.thumb,
+    uploadDate: e.publishedAt,
+    duration: isoDuration(e.seconds),
+    embedUrl: `https://www.youtube-nocookie.com/embed/${e.id}`,
+    contentUrl: episodeUrl(e),
+    publisher: { '@type': 'Organization', name: 'SHINYA Studio' },
+  })),
+};
 ---
 
 <Base lang={lang} title={`${s.title} — SHINYA ORIGINAL`} description={s.description || t(lang, 'orig.pageDesc')} ogImage={s.cover}>
+  <script type="application/ld+json" set:html={JSON.stringify(videoLd)} slot="head" />
   <div class="container orig">
     <p class="orig-back"><a href={`${base}${prefix}/`}>← {t(lang, 'orig.back')}</a></p>
     <SeriesBanner series={s} lang={lang} full />
@@ -41,13 +61,28 @@ const many = s.episodes.length > 1;
           </article>
         ))}
       </div>
+      <p class="share-row">
+        <span class="share-label">{t(lang, 'orig.share')}</span>
+        <button type="button" class="share-btn" data-copy={pageUrl} data-done={t(lang, 'orig.copied')}>{t(lang, 'orig.copyLink')}</button>
+        <a class="share-btn" href={seriesUrl(s)} target="_blank" rel="noopener">YouTube ↗</a>
+      </p>
     </section>
+
+    {others.length > 0 && (
+      <section class="orig-section" id="more">
+        <div class="orig-sec-head">
+          <h2>{t(lang, 'orig.more')}</h2>
+          <span class="orig-count">{others.length}</span>
+        </div>
+        <SeriesGrid series={others} lang={lang} />
+      </section>
+    )}
   </div>
 </Base>
 
 <script>
-  // A click swaps the thumbnail for the player, autoplaying.
   const init = () => {
+    // A click swaps the thumbnail for the player, autoplaying.
     document.querySelectorAll('[data-eps]').forEach((root) => {
       if (root.dataset.bound) return;
       root.dataset.bound = '1';
@@ -66,6 +101,34 @@ const many = s.episodes.length > 1;
         });
       });
     });
+    // Copy the page's address; the label confirms for a moment. Where the
+    // clipboard is refused, the system share sheet takes over.
+    document.querySelectorAll('[data-copy]').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      const label = btn.textContent;
+      btn.addEventListener('click', async () => {
+        const url = btn.dataset.copy;
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          if (navigator.share) navigator.share({ title: document.title, url }).catch(() => {});
+          return;
+        }
+        btn.textContent = btn.dataset.done;
+        setTimeout(() => { btn.textContent = label; }, 1600);
+      });
+    });
+    // NEW is stamped at build time; it comes off by itself once it is stale.
+    document.querySelectorAll('[data-new-until]').forEach((b) => { if (Date.now() > Date.parse(b.dataset.newUntil)) b.remove(); });
+    // The grid rises in as it reaches the viewport.
+    const groups = [...document.querySelectorAll('[data-stagger]')];
+    groups.forEach((g) => [...g.children].forEach((el, i) => el.style.setProperty('--i', String(i))));
+    if (!('IntersectionObserver' in window)) { groups.forEach((g) => g.classList.add('sv-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('sv-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    groups.forEach((g) => { if (!g.classList.contains('sv-in')) io.observe(g); });
   };
   init();
   document.addEventListener('astro:page-load', init);

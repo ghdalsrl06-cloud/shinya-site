@@ -42,6 +42,9 @@
   font-size: 0.66rem; letter-spacing: 0.04em; padding: 0.22rem 0.6rem; border-radius: 4px;
   color: var(--text); background: rgba(5, 7, 13, 0.55); box-shadow: inset 0 0 0 1px var(--hair-bright);
 }
+/* Catalog text comes from YouTube in whatever language the video was titled —
+   mostly Korean — so it keeps words whole on every locale, not just /ko. */
+.banner-title, .banner-desc, .scard-title, .ep-title, .orig-back, .orig-note { word-break: keep-all; overflow-wrap: anywhere; }
 .banner-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4.8vw, 3.5rem); line-height: 1.1; letter-spacing: -0.035em; text-wrap: balance; }
 html[lang="ja"] .banner-title { letter-spacing: -0.01em; }
 .banner-desc {
@@ -134,4 +137,44 @@ html[lang="ja"] .banner-title { letter-spacing: -0.01em; }
     transition-delay: calc(var(--i, 0) * 70ms);
   }
   [data-stagger].sv-in > * { opacity: 1; transform: none; }
+}
+
+/* ---- NEW on a series with a video from the last two weeks ---- */
+.scard-thumb { position: relative; }
+.scard-new {
+  position: absolute; top: 0.6rem; left: 0.65rem;
+  font-family: var(--font-tech); font-size: 0.58rem; letter-spacing: 0.2em; font-weight: 600;
+  padding: 0.16rem 0.5rem; border-radius: 999px; background: var(--neon-pink); color: #fff;
+}
+
+/* ---- share row under the episodes ---- */
+.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.6rem; margin-top: 1.6rem; }
+.share-label { font-family: var(--font-tech); font-size: 0.64rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); margin-right: 0.3rem; }
+.share-btn {
+  appearance: none; cursor: pointer; font: inherit; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.03em;
+  padding: 0.4rem 0.95rem; border-radius: 999px; border: 0; color: var(--text);
+  background: rgba(255, 255, 255, 0.045); box-shadow: inset 0 0 0 1px var(--hair);
+  transition: color 0.4s var(--ease), box-shadow 0.4s var(--ease), transform 0.5s var(--ease);
+}
+.share-btn:hover { box-shadow: inset 0 0 0 1px var(--hair-bright); transform: translateY(-1px); color: var(--neon-pink); }
+.share-btn:active { transform: scale(0.97); }
+
+/* ---- the collaboration band at the foot of the home ---- */
+.collab-band {
+  position: relative; overflow: hidden; margin-top: 1rem; padding: 5.5rem 1.25rem;
+  border-top: 1px solid var(--hair);
+  background:
+    radial-gradient(ellipse 55% 70% at 85% 120%, rgba(255, 45, 110, 0.2), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 10% -10%, rgba(62, 230, 240, 0.07), transparent 70%),
+    var(--bg-raised);
+}
+.collab-band-in { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem 3rem; align-items: center; }
+.collab-band-copy h2 { margin-top: 0.8rem; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3.6vw, 2.5rem); line-height: 1.15; letter-spacing: -0.03em; text-wrap: balance; }
+html[lang="ja"] .collab-band-copy h2 { letter-spacing: -0.01em; }
+.collab-band-copy p:last-child { margin-top: 0.9rem; color: var(--text-dim); font-size: 0.95rem; line-height: 1.75; max-width: 36em; }
+.collab-band-cta { justify-content: flex-end; margin-top: 0; }
+@media (max-width: 760px) {
+  .collab-band { padding: 3.6rem 1.25rem; }
+  .collab-band-in { grid-template-columns: 1fr; }
+  .collab-band-cta { justify-content: flex-start; margin-top: 0.4rem; }
 }

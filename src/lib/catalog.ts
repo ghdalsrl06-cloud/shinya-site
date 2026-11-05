@@ -42,3 +42,12 @@ export const seriesPath = (s: Series, lang: Lang, base: string) => `${base}${lan
 
 // "영상 4" / "4 videos" / "動画4本"
 export const videoCount = (n: number, lang: Lang) => (lang === 'ko' ? `영상 ${n}` : lang === 'ja' ? `動画${n}本` : `${n} ${n === 1 ? 'video' : 'videos'}`);
+
+// A series with a video from the last two weeks (at build time); the page
+// drops the badge itself after that, so a site that is not rebuilt stays right.
+const NEW_FOR = 14 * 864e5;
+export const isNew = (s: Series) => Date.now() - Date.parse(s.updatedAt) < NEW_FOR;
+export const newUntil = (s: Series) => new Date(Date.parse(s.updatedAt) + NEW_FOR).toISOString();
+
+// PT2M57S, for schema.org
+export const isoDuration = (seconds: number) => `PT${Math.floor(seconds / 60)}M${seconds % 60}S`;

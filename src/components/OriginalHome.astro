@@ -1,19 +1,30 @@
 ---
-// The home: ORIGINAL. A banner for the featured series, then every series in
-// a grid, read from the YouTube catalog.
+// The home: ORIGINAL. A banner for the featured series, every series in a
+// grid read from the YouTube catalog, and the door for collaborations.
 import Base from '../layouts/Base.astro';
 import '../styles/original.css';
 import SeriesBanner from './SeriesBanner.astro';
 import SeriesGrid from './SeriesGrid.astro';
+import CollabBand from './CollabBand.astro';
 import { t, type Lang } from '../i18n/ui';
-import { SERIES, featuredSeries } from '../lib/catalog';
+import { SERIES, featuredSeries, seriesPath } from '../lib/catalog';
 import { CHANNELS } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const featured = featuredSeries();
+// The catalog as a list, for search engines.
+const listLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'SHINYA ORIGINAL',
+  itemListElement: SERIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: encodeURI(`${site}${seriesPath(s, lang, base)}`) })),
+};
 ---
 
 <Base lang={lang} title={t(lang, 'orig.pageTitle')} description={t(lang, 'orig.pageDesc')}>
+  <script type="application/ld+json" set:html={JSON.stringify(listLd)} slot="head" />
   <div class="container orig">
     <header class="orig-head">
       <div>
@@ -37,11 +48,14 @@ const featured = featuredSeries();
       <SeriesGrid series={SERIES} lang={lang} />
     </section>
   </div>
+  <CollabBand lang={lang} />
 </Base>
 
 <script>
   // Cards rise in, in turn, as the grid reaches the viewport.
   const init = () => {
+    // NEW is stamped at build time; it comes off by itself once it is stale.
+    document.querySelectorAll('[data-new-until]').forEach((b) => { if (Date.now() > Date.parse(b.dataset.newUntil)) b.remove(); });
     const groups = [...document.querySelectorAll('[data-stagger]')];
     groups.forEach((g) => [...g.children].forEach((el, i) => el.style.setProperty('--i', String(i))));
     if (!('IntersectionObserver' in window)) { groups.forEach((g) => g.classList.add('sv-in')); return; }

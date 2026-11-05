@@ -1,6 +1,7 @@
 ---
 // The studio's pitch for commissions — what used to be the home: the hero,
-// the ticker, the four services, the process, the character, the ask.
+// the ticker, the four services, the process, the character, how to work
+// together, and the ask.
 import Base from '../layouts/Base.astro';
 import '../styles/studio.css'; // after Base, so it layers over global.css
 import StudioHero from './StudioHero.astro';
@@ -8,6 +9,7 @@ import StudioTicker from './StudioTicker.astro';
 import StudioServices from './StudioServices.astro';
 import StudioProcess from './StudioProcess.astro';
 import StudioIp from './StudioIp.astro';
+import StudioCollab from './StudioCollab.astro';
 import StudioCta from './StudioCta.astro';
 import { t, type Lang } from '../i18n/ui';
 import { COPY } from '../lib/studio';
@@ -24,6 +26,7 @@ const c = COPY[lang];
     <StudioServices lang={lang} />
     <StudioProcess lang={lang} />
     <StudioIp lang={lang} />
+    <StudioCollab lang={lang} />
   </div>
   <StudioCta lang={lang} />
 </Base>

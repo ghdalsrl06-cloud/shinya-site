@@ -109,7 +109,22 @@ interface Copy {
   process: { kicker: string; title: string; sub: string; steps: { name: string; desc: string; note: string }[] };
   ip: { kicker: string; title: string; lede: string; about: string; tag: string };
   cta: { kicker: string; title: string; sub: string; music: string; studio: string };
+  collab: {
+    kicker: string;
+    title: string;
+    lede: string;
+    sendTitle: string;
+    send: string[];
+    steps: [string, string][];
+    contact: string;
+    contactNote: string;
+    portfolio: string;
+  };
 }
+
+// Where a collaboration starts: the business e-mail on the studio channel's
+// about page, which YouTube shows after a captcha.
+export const COLLAB_URL = `${CHANNELS.studio.url}/about`;
 
 export const COPY: Record<Lang, Copy> = {
   ko: {
@@ -167,6 +182,21 @@ export const COPY: Record<Lang, Copy> = {
       music: '음악 채널 구독',
       studio: '스튜디오 채널 구독',
     },
+    collab: {
+      kicker: 'Collab',
+      title: '함께 만들 이야기가 있다면',
+      lede: '브랜드·게임·아티스트와의 협업, 뮤직비디오·숏드라마·트레일러 제작 의뢰를 받습니다. 기획부터 납품까지 한 팀이 맡고, 결과물은 전부 오리지널입니다.',
+      sendTitle: '문의할 때 함께 보내주세요',
+      send: ['무엇을 위한 영상인지 — 브랜드, 게임, 곡, 채널', '길이와 형식 — 가로·세로, 몇 분', '레퍼런스 한두 개', '희망 일정'],
+      steps: [
+        ['문의', '유튜브 채널 정보의 비즈니스 메일로 보내주세요. 하루 안에 답합니다.'],
+        ['기획·견적', '이야기 한 장과 컷 시트, 일정과 비용을 먼저 글로 맞춥니다.'],
+        ['제작·납품', '생성과 편집을 거쳐 2K 영상, 음원, 썸네일로 전달합니다.'],
+      ],
+      contact: '협업 문의',
+      contactNote: '유튜브 채널 정보 → 비즈니스 메일',
+      portfolio: '포트폴리오 보기',
+    },
   },
   en: {
     title: 'SHINYA Studio — AI music videos, short dramas, trailers & original music | 深夜',
@@ -223,6 +253,21 @@ export const COPY: Record<Lang, Copy> = {
       music: 'Subscribe · Music',
       studio: 'Subscribe · Studio',
     },
+    collab: {
+      kicker: 'Collab',
+      title: 'If there is a story to make together',
+      lede: 'Collaborations with brands, games and artists, and commissions for music videos, short dramas and trailers. One team from the brief to delivery, and everything delivered is original.',
+      sendTitle: 'Send along with your message',
+      send: ['What the video is for — a brand, a game, a song, a channel', 'Length and format — landscape or vertical, how many minutes', 'One or two references', 'The timeline you have in mind'],
+      steps: [
+        ['Get in touch', 'Through the business e-mail on the studio channel. We answer within a day.'],
+        ['Plan and quote', 'A one-page story and a cut sheet, with schedule and cost, agreed in writing first.'],
+        ['Make and deliver', 'Generation, then editing, delivered as 2K video, master audio and thumbnails.'],
+      ],
+      contact: 'Collaborate',
+      contactNote: 'YouTube channel · About → business e-mail',
+      portfolio: 'See the portfolio',
+    },
   },
   ja: {
     title: 'SHINYA Studio — AIミュージックビデオ · ショートドラマ · トレーラー · 音源制作 | 深夜',
@@ -278,6 +323,21 @@ export const COPY: Record<Lang, Copy> = {
       sub: 'ミュージックビデオは音楽チャンネルに、ドラマとトレーラーはスタジオチャンネルに。登録しておけば見逃しません。',
       music: '音楽チャンネルを登録',
       studio: 'スタジオチャンネルを登録',
+    },
+    collab: {
+      kicker: 'Collab',
+      title: '一緒に作る物語があるなら',
+      lede: 'ブランド・ゲーム・アーティストとのコラボ、ミュージックビデオ・ショートドラマ・トレーラーの制作依頼を受けています。企画から納品まで一つのチームで、成果物はすべてオリジナルです。',
+      sendTitle: 'お問い合わせの際に添えてください',
+      send: ['何のための映像か — ブランド、ゲーム、曲、チャンネル', '長さと形式 — 横型・縦型、何分', 'リファレンスを一つか二つ', '希望のスケジュール'],
+      steps: [
+        ['お問い合わせ', 'スタジオチャンネルの概要にあるビジネスメールへ。一日以内に返信します。'],
+        ['企画・見積もり', '物語一枚とカットシート、日程と費用を先に文章で合わせます。'],
+        ['制作・納品', '生成と編集を経て、2K映像・音源・サムネイルでお届けします。'],
+      ],
+      contact: 'コラボのご相談',
+      contactNote: 'YouTubeチャンネル概要 → ビジネスメール',
+      portfolio: 'ポートフォリオを見る',
     },
   },
 };

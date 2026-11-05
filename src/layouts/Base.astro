@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import NightSky from '../components/NightSky.astro';
 import { t, type Lang } from '../i18n/ui';
-import { CHANNELS, STORES } from '../lib/studio';
+import { CHANNELS, COLLAB_URL, STORES } from '../lib/studio';
 
 interface Props {
   title?: string;
@@ -103,6 +103,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <script type="application/ld+json" set:html={JSON.stringify(artistLd)} />
     <ClientRouter />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <div class="bg-glow" aria-hidden="true"></div>
@@ -150,6 +151,15 @@ const GOATCOUNTER_CODE = 'shinya';
             {STORES.map((s) => (
               <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>
             ))}
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>{t(lang, 'footer.site')}</h4>
+          <ul>
+            {links.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+            <li><a href={COLLAB_URL} target="_blank" rel="noopener">{t(lang, 'footer.collab')} ↗</a></li>
           </ul>
         </div>
       </div>
