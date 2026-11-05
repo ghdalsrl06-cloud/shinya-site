@@ -1,0 +1,15 @@
+{
+  "_comment": "What scripts/sync-youtube.mjs reads from YouTube. Channels are handles; every public playlist of a channel listed under `playlists` becomes a series, its uploads that sit in no playlist become single-video series (episodes titled 'EP.01 | Name' are grouped by Name), and `videos` adds standalone videos from a channel. `overrides` are keyed by playlist or video id.",
+  "channels": {
+    "studio": "@shinyatokyostudio",
+    "music": "@shinyatokyo"
+  },
+  "sources": [
+    { "channel": "studio", "playlists": true, "uploads": true },
+    { "channel": "music", "videos": ["zJZXD00Ne18"] }
+  ],
+  "exclude": [],
+  "overrides": {
+    "zJZXD00Ne18": { "cover": "images/series/tonight-the-curtain-rises.jpg", "coverWidth": 1280 }
+  }
+}

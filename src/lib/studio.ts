@@ -44,7 +44,7 @@ export const VIDEOS: StudioVideo[] = [
     sub: { ko: '첫 풀 뮤직비디오', en: 'First full music video', ja: '初のフルミュージックビデオ' },
     duration: '2:40',
     date: '2026-09-12',
-    art: { src: 'images/works/tonight-the-curtain-rises.jpg', width: 1280 },
+    art: { src: 'images/series/tonight-the-curtain-rises.jpg', width: 1280 },
     note: { ko: '20세그먼트 · 2K · 립싱크 없이 연출로', en: '20 segments · 2K · direction instead of lip-sync', ja: '20セグメント · 2K · リップシンクなしの演出' },
   },
   {

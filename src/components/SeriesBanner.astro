@@ -1,0 +1,53 @@
+---
+// The wide banner at the top of ORIGINAL and of each series page: the cover
+// across the whole width, the copy on the left over a dark fall-off, the
+// stamp in the corner. On the home it links into the series; on the series
+// page it shows the whole description and links out to YouTube.
+import ArtImg from './ArtImg.astro';
+import { t, type Lang } from '../i18n/ui';
+import { CHANNEL_LABEL, seriesPath, seriesUrl, videoCount, type Series } from '../lib/catalog';
+
+interface Props {
+  series: Series;
+  lang: Lang;
+  full?: boolean; // the series page: whole description, YouTube link
+}
+
+const { series: s, lang, full = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const remote = s.cover.startsWith('http');
+---
+
+<section class:list={['banner', full && 'full']}>
+  <div class="banner-art" aria-hidden="true">
+    {remote ? (
+      <img src={s.cover} alt="" loading="eager" decoding="async" />
+    ) : (
+      <ArtImg src={s.cover} width={s.coverWidth ?? 1280} sizes="100vw" alt="" loading="eager" />
+    )}
+  </div>
+  <div class="banner-body">
+    <p class="banner-crumb"><span>{t(lang, 'orig.stamp')}</span><span class="sep" aria-hidden="true">/</span><span>{t(lang, 'orig.ytSeries')}</span></p>
+    <p class="banner-tags">
+      <span class="tag">{t(lang, 'orig.tagYoutube')}</span>
+      <span class="tag">{videoCount(s.episodes.length, lang)} · {t(lang, 'orig.all')}</span>
+      <span class="tag">{CHANNEL_LABEL[s.channel]}</span>
+    </p>
+    {full ? <h1 class="banner-title">{s.title}</h1> : <h2 class="banner-title">{s.title}</h2>}
+    {s.description && <p class="banner-desc">{s.description}</p>}
+    <p class="banner-cta">
+      {full ? (
+        <a class="btn btn-ghost" href={seriesUrl(s)} target="_blank" rel="noopener">
+          {t(lang, 'orig.onYoutube')}
+          <span class="btn-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+        </a>
+      ) : (
+        <a class="btn btn-primary" href={seriesPath(s, lang, base)}>
+          <svg class="btn-play" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg>
+          {t(lang, 'orig.watch')}
+        </a>
+      )}
+    </p>
+  </div>
+  <span class="banner-stamp" aria-hidden="true">{t(lang, 'orig.stamp')}</span>
+</section>

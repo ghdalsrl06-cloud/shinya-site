@@ -1,0 +1,55 @@
+---
+// The home: ORIGINAL. A banner for the featured series, then every series in
+// a grid, read from the YouTube catalog.
+import Base from '../layouts/Base.astro';
+import '../styles/original.css';
+import SeriesBanner from './SeriesBanner.astro';
+import SeriesGrid from './SeriesGrid.astro';
+import { t, type Lang } from '../i18n/ui';
+import { SERIES, featuredSeries } from '../lib/catalog';
+import { CHANNELS } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const featured = featuredSeries();
+---
+
+<Base lang={lang} title={t(lang, 'orig.pageTitle')} description={t(lang, 'orig.pageDesc')}>
+  <div class="container orig">
+    <header class="orig-head">
+      <div>
+        <p class="orig-kicker">SHINYA</p>
+        <h1 class="orig-title">ORIGINAL</h1>
+      </div>
+      <nav class="orig-links" aria-label="YouTube">
+        <a href={`${CHANNELS.studio.url}/playlists`} target="_blank" rel="noopener">{t(lang, 'orig.ytSeries')}</a>
+        <a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'orig.ytChannel')} ↗</a>
+      </nav>
+    </header>
+
+    {featured && <SeriesBanner series={featured} lang={lang} />}
+
+    <section class="orig-section" id="series">
+      <div class="orig-sec-head">
+        <h2>{t(lang, 'orig.series')}</h2>
+        <span class="orig-count">{SERIES.length}</span>
+      </div>
+      <p class="orig-note">{t(lang, 'orig.note')}</p>
+      <SeriesGrid series={SERIES} lang={lang} />
+    </section>
+  </div>
+</Base>
+
+<script>
+  // Cards rise in, in turn, as the grid reaches the viewport.
+  const init = () => {
+    const groups = [...document.querySelectorAll('[data-stagger]')];
+    groups.forEach((g) => [...g.children].forEach((el, i) => el.style.setProperty('--i', String(i))));
+    if (!('IntersectionObserver' in window)) { groups.forEach((g) => g.classList.add('sv-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('sv-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    groups.forEach((g) => { if (!g.classList.contains('sv-in')) io.observe(g); });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

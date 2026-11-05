@@ -1,30 +1,27 @@
 ---
-// The whole studio home in one place; the three locale index pages only pick
-// the language. Hero, ticker and the closing band run full width, the rest
-// sits in the container.
+// The studio's pitch for commissions — what used to be the home: the hero,
+// the ticker, the four services, the process, the character, the ask.
 import Base from '../layouts/Base.astro';
 import '../styles/studio.css'; // after Base, so it layers over global.css
 import StudioHero from './StudioHero.astro';
 import StudioTicker from './StudioTicker.astro';
 import StudioServices from './StudioServices.astro';
-import StudioWorks from './StudioWorks.astro';
 import StudioProcess from './StudioProcess.astro';
 import StudioIp from './StudioIp.astro';
 import StudioCta from './StudioCta.astro';
-import type { Lang } from '../i18n/ui';
+import { t, type Lang } from '../i18n/ui';
 import { COPY } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
 const c = COPY[lang];
 ---
 
-<Base lang={lang} title={c.title} description={c.description}>
+<Base lang={lang} title={t(lang, 'portfolio.title')} description={c.description}>
   <div class="studio-grain" aria-hidden="true"></div>
   <StudioHero lang={lang} />
   <StudioTicker lang={lang} />
   <div class="container">
     <StudioServices lang={lang} />
-    <StudioWorks lang={lang} />
     <StudioProcess lang={lang} />
     <StudioIp lang={lang} />
   </div>

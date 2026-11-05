@@ -1,0 +1,40 @@
+name: YouTube catalog
+
+# Reads the channels' playlists and uploads into src/data/catalog.json once a
+# day. When the file changed it is committed to main and a deploy is started
+# (a push made with the workflow token starts no workflow by itself).
+on:
+  schedule:
+    - cron: '15 0 * * *' # 09:15 KST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sync the catalog from YouTube
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: node scripts/sync-youtube.mjs
+      - name: Commit and deploy when it changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- src/data/catalog.json; then
+            echo "catalog unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/catalog.json
+          git commit -m "Sync the YouTube catalog"
+          git push
+          gh workflow run deploy.yml --ref main

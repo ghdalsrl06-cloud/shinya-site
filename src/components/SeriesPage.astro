@@ -1,0 +1,72 @@
+---
+// One series: its banner with the whole description, then every episode as
+// a card that plays in place when clicked.
+import Base from '../layouts/Base.astro';
+import '../styles/original.css';
+import SeriesBanner from './SeriesBanner.astro';
+import { t, type Lang } from '../i18n/ui';
+import { ymd } from '../lib/dates';
+import { episodeUrl, seriesBySlug } from '../lib/catalog';
+
+const { lang, slug } = Astro.props as { lang: Lang; slug: string };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '' : `/${lang}`;
+const s = seriesBySlug(slug);
+if (!s) throw new Error(`unknown series: ${slug}`);
+const many = s.episodes.length > 1;
+---
+
+<Base lang={lang} title={`${s.title} — SHINYA ORIGINAL`} description={s.description || t(lang, 'orig.pageDesc')} ogImage={s.cover}>
+  <div class="container orig">
+    <p class="orig-back"><a href={`${base}${prefix}/`}>← {t(lang, 'orig.back')}</a></p>
+    <SeriesBanner series={s} lang={lang} full />
+
+    <section class="orig-section" id="episodes">
+      <div class="orig-sec-head">
+        <h2>{t(lang, 'orig.episodes')}</h2>
+        <span class="orig-count">{s.episodes.length}</span>
+      </div>
+      <div class="eps" data-eps>
+        {s.episodes.map((e, i) => (
+          <article class="ep">
+            <button class:list={['ep-frame', e.vertical && 'vert']} type="button" data-play={e.id} aria-label={`▶ ${e.title}`}>
+              {e.vertical && <img class="ep-bg" src={e.thumb} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+              <img class="ep-img" src={e.thumb} alt="" loading="lazy" decoding="async" />
+              {many && <span class="ep-no">EP.{String(i + 1).padStart(2, '0')}</span>}
+              <span class="work-dur">{e.duration}</span>
+              <span class="ep-play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span>
+            </button>
+            <h3 class="ep-title">{e.title}</h3>
+            <p class="ep-meta">{ymd(e.publishedAt)} · <a href={episodeUrl(e)} target="_blank" rel="noopener">YouTube ↗</a></p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  // A click swaps the thumbnail for the player, autoplaying.
+  const init = () => {
+    document.querySelectorAll('[data-eps]').forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+      root.querySelectorAll('[data-play]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.play;
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+          iframe.title = btn.getAttribute('aria-label') || 'YouTube';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          iframe.allowFullscreen = true;
+          const frame = document.createElement('div');
+          frame.className = btn.className + ' playing';
+          frame.appendChild(iframe);
+          btn.replaceWith(frame);
+        });
+      });
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
