@@ -1,0 +1,36 @@
+---
+// How a collaboration runs, on the portfolio: what to send, the three steps,
+// and the door — the business e-mail on the studio channel.
+import StudioHead from './StudioHead.astro';
+import type { Lang } from '../i18n/ui';
+import { COLLAB_URL, COPY } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const c = COPY[lang].collab;
+---
+
+<section class="section studio-section" id="collab">
+  <StudioHead kicker={c.kicker} title={c.title} sub={c.lede} />
+  <div class="studio-collab">
+    <ol class="collab-steps" data-stagger>
+      {c.steps.map(([name, desc]) => (
+        <li><b>{name}</b><p>{desc}</p></li>
+      ))}
+    </ol>
+    <div class="collab-send">
+      <div class="collab-send-in">
+        <p class="collab-send-title">{c.sendTitle}</p>
+        <ul>
+          {c.send.map((s) => <li>{s}</li>)}
+        </ul>
+        <p class="hero-cta">
+          <a class="btn btn-primary" href={COLLAB_URL} target="_blank" rel="noopener">
+            {c.contact}
+            <span class="btn-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+          </a>
+        </p>
+        <p class="collab-note">{c.contactNote}</p>
+      </div>
+    </div>
+  </div>
+</section>

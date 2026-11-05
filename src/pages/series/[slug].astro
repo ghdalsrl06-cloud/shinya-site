@@ -1,0 +1,9 @@
+---
+import SeriesPage from '../../components/SeriesPage.astro';
+import { SERIES } from '../../lib/catalog';
+
+export const getStaticPaths = () => SERIES.map((s) => ({ params: { slug: s.slug } }));
+const { slug } = Astro.params;
+---
+
+<SeriesPage lang="en" slug={slug!} />

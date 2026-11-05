@@ -1,0 +1,80 @@
+{
+  "series": [
+    {
+      "id": "series:남편이 나를 AI로 교체했다",
+      "slug": "남편이-나를-ai로-교체했다",
+      "kind": "group",
+      "channel": "studio",
+      "title": "남편이 나를 AI로 교체했다",
+      "description": "석 달 만에 집에 돌아왔다. 통유리 너머, 남편이 '나'를 안고 있었다. 사고 뒤 집으로 돌아온 재벌가 상속녀 설하나. 남편 곁에는 그가 만든 또 한 명의 '내'가 있었다.",
+      "cover": "https://i.ytimg.com/vi/jF4bKE5bP1c/maxresdefault.jpg",
+      "publishedAt": "2026-09-29T14:00:19Z",
+      "updatedAt": "2026-10-10T09:00:39Z",
+      "episodes": [
+        {
+          "id": "smEt8hgr2HQ",
+          "title": "EP.01 | 남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-09-29T14:00:19Z",
+          "duration": "2:57",
+          "seconds": 177,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/smEt8hgr2HQ/maxresdefault.jpg"
+        },
+        {
+          "id": "jF4bKE5bP1c",
+          "title": "EP.02 | 남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-10-10T09:00:39Z",
+          "duration": "2:58",
+          "seconds": 178,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/jF4bKE5bP1c/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
+      "id": "3if1sg_D5is",
+      "slug": "최후의-전투",
+      "kind": "video",
+      "channel": "studio",
+      "title": "이 게임의 이름을 지어 주세요 | 최후의 전투",
+      "description": "핏빛 하늘 아래, 무너진 성채. 피의 마법사 루나가 4미터의 흑철 거인 그라모스와 마주한다. 가상의 게임 트레일러 형식으로 만든 단편.",
+      "cover": "https://i.ytimg.com/vi/3if1sg_D5is/maxresdefault.jpg",
+      "publishedAt": "2026-10-09T15:00:30Z",
+      "updatedAt": "2026-10-09T15:00:30Z",
+      "episodes": [
+        {
+          "id": "3if1sg_D5is",
+          "title": "이 게임의 이름을 지어 주세요 | 최후의 전투",
+          "publishedAt": "2026-10-09T15:00:30Z",
+          "duration": "0:58",
+          "seconds": 58,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/3if1sg_D5is/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
+      "id": "zJZXD00Ne18",
+      "slug": "今夜も開演",
+      "kind": "video",
+      "channel": "music",
+      "title": "今夜も開演",
+      "description": "채널의 첫 풀 뮤직비디오. 공연장은 없다 — 무대는 도시의 창문이고, 잠 못 드는 사람들의 화면 불빛이 펜라이트다.",
+      "cover": "images/series/tonight-the-curtain-rises.jpg",
+      "coverWidth": 1280,
+      "publishedAt": "2026-09-12T14:59:00Z",
+      "updatedAt": "2026-09-12T14:59:00Z",
+      "episodes": [
+        {
+          "id": "zJZXD00Ne18",
+          "title": "今夜も開演",
+          "publishedAt": "2026-09-12T14:59:00Z",
+          "duration": "2:40",
+          "seconds": 160,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/zJZXD00Ne18/maxresdefault.jpg"
+        }
+      ]
+    }
+  ]
+}
