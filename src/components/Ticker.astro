@@ -1,0 +1,14 @@
+---
+// The band under the hero: what the studio is about, scrolling without a seam.
+import { TICKER } from '../lib/studio';
+
+const loop = [...TICKER, ...TICKER, ...TICKER];
+---
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {[...loop, ...loop].map((item) => (
+      <span class="ticker-item">{item}<span class="ticker-sep">•</span></span>
+    ))}
+  </div>
+</div>

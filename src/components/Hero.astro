@@ -1,0 +1,31 @@
+---
+// The opening: the character art the site has always led with, the name, one
+// line on what the studio is, and the two ways in — the series, or a word.
+import ArtImg from './ArtImg.astro';
+import type { Lang } from '../i18n/ui';
+import { COLLAB, HERO } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const h = HERO[lang];
+---
+
+<section class="hero hero-character home-hero" id="top">
+  <ArtImg class="hero-art" src="images/hero-character.jpg" width={2560} sizes="100vw" loading="eager" />
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="studio-pill live">{h.eyebrow}</span>
+      <span class="hero-loc">Tokyo / Seoul</span>
+    </div>
+    <h1 class="hero-name">SHINYA<em>.</em></h1>
+    <p class="hero-line">{h.line[0]}<em>{h.line[1]}</em>{h.line[2]}</p>
+    <p class="hero-sub">{h.sub}</p>
+    <p class="hero-cta">
+      <a class="btn btn-primary" href="#original">
+        {h.original}
+        <span class="btn-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></span>
+      </a>
+      <a class="btn btn-ghost" href="#collab">{COLLAB[lang].contact}</a>
+    </p>
+  </div>
+</section>

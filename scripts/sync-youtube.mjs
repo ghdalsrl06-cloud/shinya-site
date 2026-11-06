@@ -1,8 +1,9 @@
-// Reads the studio's YouTube channels and writes src/data/catalog.json — the
-// series the ORIGINAL pages are built from. Playlists are series; uploads in
-// no playlist become single-video series, except episodes titled
-// "EP.01 | Name", which are grouped under Name. Nothing is downloaded: the
-// site links to YouTube and shows YouTube's thumbnails.
+// Reads the studio's YouTube channel and writes src/data/catalog.json — the
+// series the ORIGINAL pages are built from. Every public playlist is a series,
+// in playlist order. A source in catalog.config.json can also take uploads in
+// no playlist (episodes titled "EP.01 | Name" grouped under Name) or listed
+// videos. Nothing is downloaded: the site links to YouTube and shows
+// YouTube's thumbnails.
 //
 //   YOUTUBE_API_KEY=... node scripts/sync-youtube.mjs
 //
@@ -69,9 +70,18 @@ async function isShort(id) {
 }
 
 async function channel(handle) {
-  const [c] = await yt('channels', { part: 'snippet,contentDetails', forHandle: handle.replace(/^@/, '') });
+  const [c] = await yt('channels', { part: 'snippet,contentDetails,statistics', forHandle: handle.replace(/^@/, '') });
   if (!c) throw new Error(`channel not found: ${handle}`);
-  return { id: c.id, title: c.snippet.title, uploads: c.contentDetails.relatedPlaylists.uploads };
+  const st = c.statistics ?? {};
+  return {
+    id: c.id,
+    title: c.snippet.title,
+    uploads: c.contentDetails.relatedPlaylists.uploads,
+    stats: {
+      ...(st.hiddenSubscriberCount ? {} : { subscribers: Number(st.subscriberCount ?? 0) }),
+      videos: Number(st.videoCount ?? 0),
+    },
+  };
 }
 
 async function playlistVideoIds(playlistId) {
@@ -110,9 +120,17 @@ const main = async () => {
   const playlists = []; // { key, channelKey, snippet, ids }
   const standalone = []; // { channelKey, ids, fromUploads }
 
+  // Every channel's counts, for the home; each channel is read once.
+  const channels = {};
+  const stats = {};
+  for (const [key, handle] of Object.entries(CONFIG.channels)) {
+    channels[key] = await channel(handle);
+    stats[key] = channels[key].stats;
+  }
+
   for (const src of CONFIG.sources) {
-    const handle = CONFIG.channels[src.channel];
-    const ch = await channel(handle);
+    const ch = channels[src.channel];
+    if (!ch) throw new Error(`source names a channel that is not configured: ${src.channel}`);
     const inPlaylists = new Set();
     if (src.playlists) {
       for (const p of await yt('playlists', { part: 'snippet,contentDetails', channelId: ch.id, maxResults: 50 })) {
@@ -203,8 +221,8 @@ const main = async () => {
     ...(featured ? { featured: true } : {}),
     publishedAt, updatedAt, episodes,
   }));
-  writeFileSync(OUT, JSON.stringify({ series: ordered }, null, 2) + '\n');
-  console.log(`${OUT}: ${ordered.length} series, ${ordered.reduce((n, s) => n + s.episodes.length, 0)} videos`);
+  writeFileSync(OUT, JSON.stringify({ channels: stats, series: ordered }, null, 2) + '\n');
+  console.log(`${OUT}: ${ordered.length} series, ${ordered.reduce((n, s) => n + s.episodes.length, 0)} videos, ${Object.keys(stats).length} channels`);
 };
 
 main().catch((e) => {

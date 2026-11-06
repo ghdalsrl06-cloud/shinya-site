@@ -1,0 +1,43 @@
+---
+// 03 — Owned media: the two YouTube channels as cards, with the counts the
+// catalog sync reads, and the stores the music is on.
+import SectionHead from './SectionHead.astro';
+import type { Lang } from '../i18n/ui';
+import { CHANNEL_STATS, formatCount } from '../lib/catalog';
+import { CHANNELS, OWNED, STORES } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const o = OWNED[lang];
+// A count is a point once it is one; under this the card just says YouTube.
+const SHOW_COUNT_FROM = 1000;
+---
+
+<section class="sec" id="channels">
+  <div class="container">
+    <SectionHead no="03" kicker="Channels" title={o.title} sub={o.sub} />
+    <div class="ch-grid" data-stagger>
+      {o.cards.map((card) => {
+        const st = CHANNEL_STATS[card.key];
+        return (
+          <a class="ch-card" href={CHANNELS[card.key].url} target="_blank" rel="noopener">
+            <div class="ch-top"><span>{card.role}</span><span class="ch-live">LIVE</span></div>
+            <h3 class="ch-name">{card.name}</h3>
+            <p class="ch-handle">{CHANNELS[card.key].handle}</p>
+            <div class="ch-bottom">
+              {st?.subscribers != null && st.subscribers >= SHOW_COUNT_FROM ? (
+                <p class="ch-stat"><b>{formatCount(st.subscribers, lang)}</b><span>{o.subscribers}</span></p>
+              ) : (
+                <p class="ch-stat ch-stat-plain"><b>YouTube</b><span>↗</span></p>
+              )}
+              <p class="ch-desc">{card.desc}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+    <p class="ch-stores">
+      <span>{o.stores}</span>
+      {STORES.map((s) => <a href={s.url} target="_blank" rel="noopener">{s.label} ↗</a>)}
+    </p>
+  </div>
+</section>

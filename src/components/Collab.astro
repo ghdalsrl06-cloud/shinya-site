@@ -1,0 +1,38 @@
+---
+// 04 — The way in for brands, games and artists: what to send, the three
+// steps, and the business e-mail on the studio channel.
+import SectionHead from './SectionHead.astro';
+import type { Lang } from '../i18n/ui';
+import { COLLAB, COLLAB_URL } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const c = COLLAB[lang];
+---
+
+<section class="collab-band" id="collab">
+  <div class="container">
+    <SectionHead no="04" kicker="Collab" title={c.title} sub={c.lede} />
+    <div class="collab-grid">
+      <ol class="collab-steps" data-stagger>
+        {c.steps.map(([name, desc]) => (
+          <li><b>{name}</b><p>{desc}</p></li>
+        ))}
+      </ol>
+      <div class="collab-send">
+        <div class="collab-send-in">
+          <p class="collab-send-title">{c.sendTitle}</p>
+          <ul>
+            {c.send.map((s) => <li>{s}</li>)}
+          </ul>
+          <p class="hero-cta">
+            <a class="btn btn-primary" href={COLLAB_URL} target="_blank" rel="noopener">
+              {c.contact}
+              <span class="btn-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </a>
+          </p>
+          <p class="collab-note">{c.contactNote}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

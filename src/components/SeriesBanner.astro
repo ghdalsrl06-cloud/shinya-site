@@ -5,7 +5,7 @@
 // page it shows the whole description and links out to YouTube.
 import ArtImg from './ArtImg.astro';
 import { t, type Lang } from '../i18n/ui';
-import { CHANNEL_LABEL, seriesPath, seriesUrl, videoCount, type Series } from '../lib/catalog';
+import { formatLabel, seriesPath, seriesUrl, videoCount, type Series } from '../lib/catalog';
 
 interface Props {
   series: Series;
@@ -31,7 +31,7 @@ const remote = s.cover.startsWith('http');
     <p class="banner-tags">
       <span class="tag">{t(lang, 'orig.tagYoutube')}</span>
       <span class="tag">{videoCount(s.episodes.length, lang)} · {t(lang, 'orig.all')}</span>
-      <span class="tag">{CHANNEL_LABEL[s.channel]}</span>
+      <span class="tag">{formatLabel(s, lang)}</span>
     </p>
     {full ? <h1 class="banner-title">{s.title}</h1> : <h2 class="banner-title">{s.title}</h2>}
     {s.description && <p class="banner-desc">{s.description}</p>}

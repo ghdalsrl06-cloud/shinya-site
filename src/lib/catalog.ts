@@ -1,6 +1,5 @@
 import catalog from '../data/catalog.json';
-import type { Lang } from '../i18n/ui';
-import { CHANNELS } from './studio';
+import { t, type Lang } from '../i18n/ui';
 
 // The ORIGINAL catalog: series read from YouTube by scripts/sync-youtube.mjs.
 export interface Episode {
@@ -28,11 +27,24 @@ export interface Series {
 }
 
 export const SERIES: Series[] = catalog.series as Series[];
-export const featuredSeries = (): Series => SERIES.find((s) => s.featured) ?? SERIES[0];
+
+// The channels' counts, as the sync last read them (absent until it has run).
+export interface ChannelStats { subscribers?: number; videos?: number }
+export const CHANNEL_STATS: Partial<Record<'studio' | 'music', ChannelStats>> = (catalog as { channels?: Partial<Record<'studio' | 'music', ChannelStats>> }).channels ?? {};
+// 12.3만 / 12.3K / 12.3万, the way each audience reads a count.
+export const formatCount = (n: number, lang: Lang) => {
+  if (lang === 'en') return n >= 1e6 ? `${(n / 1e6).toFixed(1).replace(/\.0$/, '')}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1).replace(/\.0$/, '')}K` : String(n);
+  const unit = lang === 'ko' ? '만' : '万';
+  return n >= 1e4 ? `${(n / 1e4).toFixed(1).replace(/\.0$/, '')}${unit}` : n.toLocaleString('en-US');
+};
+export const featuredSeries = (): Series | undefined => SERIES.find((s) => s.featured) ?? SERIES[0];
 export const seriesBySlug = (slug: string) => SERIES.find((s) => s.slug === slug);
 
-export const CHANNEL_LABEL: Record<Series['channel'], string> = { studio: 'shinya studio', music: 'shinya music' };
-export const channelUrl = (s: Series) => CHANNELS[s.channel].url;
+// A series is Shorts when most of its videos are; the home shows the two apart.
+export const isShorts = (s: Series) => s.episodes.filter((e) => e.vertical).length * 2 > s.episodes.length;
+export const shortsSeries = () => SERIES.filter(isShorts);
+export const regularSeries = () => SERIES.filter((s) => !isShorts(s));
+export const formatLabel = (s: Series, lang: Lang) => (isShorts(s) ? t(lang, 'orig.shorts') : t(lang, 'orig.regular'));
 
 export const episodeUrl = (e: Episode) => (e.vertical ? `https://www.youtube.com/shorts/${e.id}` : `https://www.youtube.com/watch?v=${e.id}`);
 // A playlist opens as a playlist on YouTube; anything else opens its first video.
