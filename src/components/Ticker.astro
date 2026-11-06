@@ -1,8 +1,10 @@
 ---
-// The band under the hero: what the studio is about, scrolling without a seam.
+// The band under the hero: what this is about, scrolling without a seam.
+import type { Lang } from '../i18n/ui';
 import { TICKER } from '../lib/studio';
 
-const loop = [...TICKER, ...TICKER, ...TICKER];
+const { lang } = Astro.props as { lang: Lang };
+const loop = [...TICKER[lang], ...TICKER[lang], ...TICKER[lang]];
 ---
 
 <div class="ticker" aria-hidden="true">

@@ -1,20 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
-import ArtImg from '../components/ArtImg.astro';
+import '../styles/original.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Base title="404 — SHINYA Studio" description="Page not found." localized={false}>
-  <section class="hero hero-character notfound">
-    <ArtImg class="hero-art" src="images/hero-character.jpg" width={2560} sizes="100vw" loading="eager" />
-    <div class="hero-scrim" aria-hidden="true"></div>
+<Base title="404 — After Bedtime" description="Page not found." localized={false}>
+  <section class="hero notfound">
     <div class="hero-inner">
-      <h1 class="jp-title glitch" data-text="迷子">迷子</h1>
-      <p class="en-title">404 · Not Found</p>
-      <p class="tagline">夜に迷いましたね — you got lost in the night.<br />The page you were looking for isn't here.</p>
+      <p class="hero-loc">404 · Not found</p>
+      <h1 class="hero-name">Lights off<em>.</em></h1>
+      <p class="hero-line">There is nothing on this page.</p>
+      <p class="hero-sub">The address may have changed, or the episode is not up yet.</p>
       <p class="hero-cta">
-        <a class="btn" href={`${base}/`}>Back Home</a>
+        <a class="btn btn-primary" href={`${base}/`}>Back home</a>
       </p>
     </div>
   </section>
