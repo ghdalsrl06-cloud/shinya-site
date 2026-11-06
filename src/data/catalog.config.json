@@ -1,15 +1,12 @@
 {
-  "_comment": "What scripts/sync-youtube.mjs reads from YouTube. Channels are handles; every public playlist of a channel listed under `playlists` becomes a series, its uploads that sit in no playlist become single-video series (episodes titled 'EP.01 | Name' are grouped by Name), and `videos` adds standalone videos from a channel. `overrides` are keyed by playlist or video id.",
+  "_comment": "What scripts/sync-youtube.mjs reads from YouTube. Every public playlist of a channel under `sources` becomes a series, in playlist order: make a playlist on YouTube and it shows up on ORIGINAL after the next sync (Shorts and long-form are told apart by the videos). Every channel under `channels` gets its subscriber and video counts read for the home. `exclude` hides a playlist or video by id. `overrides`, keyed by playlist id, can set `slug`, `cover`/`coverWidth` (a file under public/) and `featured: true`. A source can also take `uploads: true` (uploads in no playlist; titles like 'EP.01 | Name' group under Name) or `videos: [ids]`.",
   "channels": {
     "studio": "@shinyatokyostudio",
     "music": "@shinyatokyo"
   },
   "sources": [
-    { "channel": "studio", "playlists": true, "uploads": true },
-    { "channel": "music", "videos": ["zJZXD00Ne18"] }
+    { "channel": "studio", "playlists": true }
   ],
   "exclude": [],
-  "overrides": {
-    "zJZXD00Ne18": { "cover": "images/series/tonight-the-curtain-rises.jpg", "coverWidth": 1280 }
-  }
+  "overrides": {}
 }

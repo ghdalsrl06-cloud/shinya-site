@@ -1,0 +1,33 @@
+---
+// 01 — Who is SHINYA: the statement, the facts in a table, and the character.
+import ArtImg from './ArtImg.astro';
+import SectionHead from './SectionHead.astro';
+import type { Lang } from '../i18n/ui';
+import { ABOUT } from '../lib/studio';
+
+const { lang } = Astro.props as { lang: Lang };
+const a = ABOUT[lang];
+---
+
+<section class="sec" id="about">
+  <div class="container">
+    <SectionHead no="01" kicker="About" title={a.title} sub={a.sub} />
+    <div class="about-grid">
+      <div class="about-copy" data-stagger>
+        {a.paras.map((p) => <p>{p}</p>)}
+        <dl class="facts">
+          {a.facts.map(([k, v]) => (
+            <div><dt>{k}</dt><dd>{v}</dd></div>
+          ))}
+        </dl>
+      </div>
+      <figure class="about-figure">
+        <div class="character-card">
+          <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 900px) 360px, 80vw" alt="SHINYA / 深夜" />
+          <span class="scene-time">SHINYA</span>
+        </div>
+        <figcaption class="character-caption">{a.caption}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

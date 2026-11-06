@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import NightSky from '../components/NightSky.astro';
 import { t, type Lang } from '../i18n/ui';
-import { CHANNELS, COLLAB_URL, STORES } from '../lib/studio';
+import { CHANNELS, STORES } from '../lib/studio';
 
 interface Props {
   title?: string;
@@ -17,8 +17,8 @@ interface Props {
 }
 
 const {
-  title = 'SHINYA Studio — AI music videos, short dramas, trailers & original music | 深夜',
-  description = 'AI content studio: music videos, short dramas, trailers and original music — generated with AI, directed by people. Home of SHINYA / 深夜.',
+  title = 'SHINYA Studio — AI original series & music | 深夜',
+  description = 'AI content studio: original series and music — generated with AI, directed by people. Home of SHINYA / 深夜.',
   lang = 'en',
   ogImage: ogImageProp,
   localized = true,
@@ -26,13 +26,14 @@ const {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
-// The catalog, the pitch, the profile — named in English in every language,
-// as the channel sections are. ORIGINAL is the home and owns the series pages.
+// The home's four sections, named in English in every language, as the
+// channel sections are. ORIGINAL owns the series pages.
 const home = `${base}${prefix}/`;
 const links = [
-  { href: home, label: 'ORIGINAL', active: current === home || current === home.slice(0, -1) || current.startsWith(`${home}series/`) },
-  { href: `${home}portfolio/`, label: 'PORTFOLIO', active: current.startsWith(`${home}portfolio/`) },
-  { href: `${home}about/`, label: 'ABOUT', active: current.startsWith(`${home}about/`) },
+  { href: `${home}#about`, label: 'ABOUT', active: false },
+  { href: `${home}#original`, label: 'ORIGINAL', active: current.startsWith(`${home}series/`) },
+  { href: `${home}#channels`, label: 'CHANNELS', active: false },
+  { href: `${home}#collab`, label: 'COLLAB', active: false },
 ];
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
 const rest = localeMatch ? current.slice(base.length + 3) : current.slice(base.length);
@@ -159,7 +160,6 @@ const GOATCOUNTER_CODE = 'shinya';
             {links.map((l) => (
               <li><a href={l.href}>{l.label}</a></li>
             ))}
-            <li><a href={COLLAB_URL} target="_blank" rel="noopener">{t(lang, 'footer.collab')} ↗</a></li>
           </ul>
         </div>
       </div>

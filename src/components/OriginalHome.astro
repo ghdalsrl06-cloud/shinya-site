@@ -1,58 +1,87 @@
 ---
-// The home: ORIGINAL. A banner for the featured series, every series in a
-// grid read from the YouTube catalog, and the door for collaborations.
+// The home, one page: who SHINYA is, ORIGINAL — the series in two groups,
+// Shorts and long-form, read from the YouTube catalog — the two channels,
+// and the door for collaborations. With nothing in the catalog yet, the
+// series banner says so and points at the channel.
 import Base from '../layouts/Base.astro';
 import '../styles/original.css';
+import Hero from './Hero.astro';
+import Ticker from './Ticker.astro';
+import About from './About.astro';
+import SectionHead from './SectionHead.astro';
 import SeriesBanner from './SeriesBanner.astro';
 import SeriesGrid from './SeriesGrid.astro';
-import CollabBand from './CollabBand.astro';
+import Channels from './Channels.astro';
+import Collab from './Collab.astro';
 import { t, type Lang } from '../i18n/ui';
-import { SERIES, featuredSeries, seriesPath } from '../lib/catalog';
+import { SERIES, featuredSeries, regularSeries, seriesPath, shortsSeries } from '../lib/catalog';
 import { CHANNELS } from '../lib/studio';
 
 const { lang } = Astro.props as { lang: Lang };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const featured = featuredSeries();
+const groups = [
+  { id: 'shorts', title: t(lang, 'orig.shorts'), series: shortsSeries() },
+  { id: 'regular', title: t(lang, 'orig.regular'), series: regularSeries() },
+];
 // The catalog as a list, for search engines.
-const listLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'SHINYA ORIGINAL',
-  itemListElement: SERIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: encodeURI(`${site}${seriesPath(s, lang, base)}`) })),
-};
+const listLd = SERIES.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'SHINYA ORIGINAL',
+      itemListElement: SERIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: encodeURI(`${site}${seriesPath(s, lang, base)}`) })),
+    }
+  : null;
 ---
 
 <Base lang={lang} title={t(lang, 'orig.pageTitle')} description={t(lang, 'orig.pageDesc')}>
-  <script type="application/ld+json" set:html={JSON.stringify(listLd)} slot="head" />
-  <div class="container orig">
-    <header class="orig-head">
-      <div>
-        <p class="orig-kicker">SHINYA</p>
-        <h1 class="orig-title">ORIGINAL</h1>
-      </div>
-      <nav class="orig-links" aria-label="YouTube">
-        <a href={`${CHANNELS.studio.url}/playlists`} target="_blank" rel="noopener">{t(lang, 'orig.ytSeries')}</a>
-        <a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'orig.ytChannel')} ↗</a>
-      </nav>
-    </header>
+  <Fragment slot="head">{listLd && <script type="application/ld+json" set:html={JSON.stringify(listLd)} />}</Fragment>
+  <Hero lang={lang} />
+  <Ticker />
+  <About lang={lang} />
 
-    {featured && <SeriesBanner series={featured} lang={lang} />}
-
-    <section class="orig-section" id="series">
-      <div class="orig-sec-head">
-        <h2>{t(lang, 'orig.series')}</h2>
-        <span class="orig-count">{SERIES.length}</span>
-      </div>
+  <section class="sec" id="original">
+    <div class="container">
+      <SectionHead no="02" kicker="Original" title="Original Series" sub={t(lang, 'orig.secSub')} />
+      {featured ? (
+        <SeriesBanner series={featured} lang={lang} />
+      ) : (
+        <div class="banner soon">
+          <div class="banner-body">
+            <p class="banner-crumb"><span>{t(lang, 'orig.stamp')}</span><span class="sep" aria-hidden="true">/</span><span>{t(lang, 'orig.ytSeries')}</span></p>
+            <h3 class="banner-title">{t(lang, 'orig.soonTitle')}</h3>
+            <p class="banner-desc">{t(lang, 'orig.soonDesc')}</p>
+            <p class="banner-cta">
+              <a class="btn btn-primary" href={`${CHANNELS.studio.url}?sub_confirmation=1`} target="_blank" rel="noopener">
+                {t(lang, 'orig.subscribe')}
+                <span class="btn-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+              </a>
+            </p>
+          </div>
+          <span class="banner-stamp" aria-hidden="true">{t(lang, 'orig.stamp')}</span>
+        </div>
+      )}
+      {groups.map((g) => (
+        <div class="orig-section" id={g.id}>
+          <div class="orig-sec-head">
+            <h3>{g.title}</h3>
+            <span class="orig-count">{g.series.length}</span>
+          </div>
+          {g.series.length ? <SeriesGrid series={g.series} lang={lang} /> : <p class="orig-empty">{t(lang, 'orig.empty')}</p>}
+        </div>
+      ))}
       <p class="orig-note">{t(lang, 'orig.note')}</p>
-      <SeriesGrid series={SERIES} lang={lang} />
-    </section>
-  </div>
-  <CollabBand lang={lang} />
+    </div>
+  </section>
+
+  <Channels lang={lang} />
+  <Collab lang={lang} />
 </Base>
 
 <script>
-  // Cards rise in, in turn, as the grid reaches the viewport.
+  // Each [data-stagger] group rises in, in turn, as it reaches the viewport.
   const init = () => {
     // NEW is stamped at build time; it comes off by itself once it is stale.
     document.querySelectorAll('[data-new-until]').forEach((b) => { if (Date.now() > Date.parse(b.dataset.newUntil)) b.remove(); });

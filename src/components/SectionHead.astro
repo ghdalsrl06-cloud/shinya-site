@@ -1,0 +1,20 @@
+---
+// A numbered section head: "01 — ABOUT" in the tech face, the title in the
+// display weight, and a one-line subtitle set against the right edge.
+interface Props {
+  no: string;
+  kicker: string;
+  title: string;
+  sub?: string;
+}
+
+const { no, kicker, title, sub } = Astro.props;
+---
+
+<div class="sec-head" data-stagger>
+  <div>
+    <p class="sec-kicker">{no} — {kicker}</p>
+    <h2 class="sec-title">{title}</h2>
+  </div>
+  {sub && <p class="sec-sub">{sub}</p>}
+</div>

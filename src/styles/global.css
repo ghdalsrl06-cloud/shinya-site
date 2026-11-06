@@ -194,18 +194,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
    holds in browsers that ignore gap on flex (older Safari, some in-app views) */
 .hero-cta { display: flex; flex-wrap: wrap; align-items: center; margin: 2.5rem -0.6rem 0; }
 .hero-cta > .btn { margin: 0.4rem 0.6rem; }
-.hero .hero-clock { margin-top: 1.1rem; animation: fadeUp 0.9s ease 0.4s both; }
-
-/* ---- tokyo clock ---- */
-.tokyo-time {
-  display: inline-flex; align-items: baseline; gap: 0.55rem; flex-wrap: wrap; justify-content: center;
-  font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-dim);
-}
-.tokyo-time .tt-label { font-family: var(--font-jp); letter-spacing: 0.3em; }
-.tokyo-time .tt-time { font-variant-numeric: tabular-nums; color: var(--text); letter-spacing: 0.2em; }
-.tokyo-time .tt-msg { font-size: 0.75rem; letter-spacing: 0.08em; }
-.tokyo-time.is-shinya .tt-time { color: var(--neon-pink); text-shadow: 0 0 12px var(--neon-glow); }
-.tokyo-time.is-shinya .tt-msg { color: var(--neon-purple); }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
@@ -254,7 +242,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   padding: 0 1.25rem;
 }
 .hero-character .jp-title { animation: fadeUp 0.9s ease both, neonBreathe 5s ease-in-out 1s infinite; }
-.hero-character .tokyo-time { justify-content: flex-start; }
 @media (max-width: 640px) {
   .hero-character { min-height: 480px; padding: 4.5rem 0; }
   /* keep the face readable on a phone: the art stays brighter and the
@@ -290,47 +277,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   93.9%, 100% { opacity: 0; }
 }
 
-/* ---- track ticker ---- */
-.ticker {
-  overflow: hidden;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 0.6rem 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-}
-.ticker-track {
-  display: inline-flex; white-space: nowrap; will-change: transform;
-  animation: tickerScroll 36s linear infinite;
-}
-.ticker-item {
-  display: inline-flex; align-items: center;
-  font-family: var(--font-jp); font-size: 0.92rem; letter-spacing: 0.14em;
-  color: var(--text-dim);
-}
-.ticker-sep { color: var(--neon-pink); margin: 0 1.5rem; }
-@keyframes tickerScroll {
-  to { transform: translateX(-50%); }
-}
-
-/* ---- sections ---- */
-.section { padding: 3.5rem 0; }
-.section h2 {
-  display: flex; align-items: center; gap: 1rem;
-  font-family: var(--font-tech);
-  font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase;
-  color: var(--neon-purple); margin-bottom: 2rem; font-weight: 500;
-}
-.section h2::before {
-  content: '//'; color: var(--neon-pink); letter-spacing: 0;
-  margin-right: -0.2rem; font-weight: 600;
-}
-.section h2::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, var(--line-bright), transparent);
-}
-
-
 /* ---- buttons: pills that fill on hover and give under the press ---- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -364,39 +310,7 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
 .btn-ghost { border-color: var(--line-bright); color: var(--text-dim); background: transparent; }
 .btn-ghost:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.22); box-shadow: 0 16px 32px -18px rgba(5, 7, 13, 0.8); }
 
-/* ---- about page ---- */
-.about-hero {
-  position: relative; overflow: hidden; text-align: center;
-  padding: 6rem 1.25rem 4.5rem;
-}
-.about-hero-art {
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 42px, rgba(62, 230, 240, 0.05) 42px 44px),
-    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(255, 45, 110, 0.14), transparent 65%),
-    radial-gradient(ellipse 55% 45% at 20% -10%, rgba(62, 230, 240, 0.16), transparent 70%),
-    radial-gradient(ellipse 45% 40% at 85% 20%, rgba(24, 120, 160, 0.14), transparent 70%);
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
-  mask-image: linear-gradient(to bottom, black 55%, transparent);
-}
-.about-hero > * { position: relative; }
-.about-label {
-  font-size: 0.8rem; letter-spacing: 0.45em; text-transform: uppercase;
-  color: var(--neon-purple);
-}
-.about-title {
-  font-family: var(--font-jp); font-size: clamp(2.2rem, 6vw, 3.4rem);
-  font-weight: 700; letter-spacing: 0.12em; margin-top: 0.8rem;
-  text-shadow: 0 0 30px var(--neon-glow);
-}
-.about-motto { font-family: var(--font-jp); color: var(--text-dim); margin-top: 1rem; letter-spacing: 0.1em; }
-.about-intro { text-align: center; max-width: 42em; margin: 0 auto; }
-.about-intro p { color: var(--text-dim); font-size: 1.02rem; line-height: 1.8; }
-.about-intro p + p { margin-top: 1.1rem; }
-.about-intro a { color: var(--text); border-bottom: 1px solid var(--line-bright); }
-.about-intro a:hover { color: var(--neon-pink); border-color: var(--neon-pink); }
-
-.character-section { display: flex; flex-direction: column; align-items: center; padding-top: 1rem; }
+/* ---- the character card ---- */
 .character-card {
   position: relative; width: min(380px, 100%); aspect-ratio: 3 / 4;
   border-radius: 8px; overflow: hidden; border: 1px solid var(--line);
@@ -413,20 +327,13 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 55px rgba(255, 45, 110, 0.16);
 }
 .character-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.character-kanji {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  writing-mode: vertical-rl;
-  font-family: var(--font-jp); font-size: clamp(4rem, 10vw, 6.5rem); font-weight: 700;
-  letter-spacing: 0.25em; color: var(--text); opacity: 0.14;
-  text-shadow: 0 0 40px var(--neon-glow);
-}
 .character-caption {
   margin-top: 1.1rem; font-size: 0.82rem; letter-spacing: 0.14em;
   color: var(--text-dim); font-family: var(--font-jp);
 }
 
 /* ---- dark-electronic type accents ---- */
-.nav-links a, .lang-switch, .btn, .scene-time, .tokyo-time, .about-label {
+.nav-links a, .lang-switch, .btn, .scene-time {
   font-family: var(--font-tech);
 }
 /* the character card's name tag */
@@ -489,7 +396,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   .nav-links { gap: 0.75rem; flex-basis: 100%; justify-content: center; }
   .nav-links a { font-size: 0.7rem; letter-spacing: 0.12em; }
   .hero { padding: 5rem 1.25rem 4rem; }
-  .section { padding: 2.5rem 0; }
 }
 @media (max-width: 380px) {
   .nav-links { gap: 0.55rem; }
@@ -503,7 +409,6 @@ html[lang="ja"] .nav-links a { letter-spacing: 0.06em; font-size: 0.78rem; }
   .site-nav .inner,
   .hero-inner { max-width: 1160px; }
   .hero-character { min-height: min(1200px, 85vh); }
-  .about-intro { max-width: 48em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

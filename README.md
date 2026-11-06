@@ -4,25 +4,28 @@ Astro static site, deployed to GitHub Pages on every push to `main`.
 
 ## Pages
 
-- `/` **ORIGINAL** — the catalog: a banner for the featured series and a grid of every series, read from YouTube.
+- `/` — one page: the hero, **01 About** (who SHINYA is), **02 ORIGINAL** (the catalog: a banner
+  for the featured series, then every series in two groups, Shorts and long-form, read from
+  YouTube — until the first series is up, the banner points at the channel), **03 Channels**
+  (the two YouTube channels with their counts) and **04 Collab**.
 - `/series/<slug>/` — one series: description and every episode, playable in place.
-- `/portfolio/` — the studio's pitch for commissions (services, process, the character).
-- `/about/` — a short profile.
 
 Each exists in `en` (root), `ko/` and `ja/`.
 
 ## The YouTube catalog
 
 `src/data/catalog.json` is what the ORIGINAL pages are built from. It is written by
-`scripts/sync-youtube.mjs` from the channels named in `src/data/catalog.config.json`:
+`scripts/sync-youtube.mjs` from the channel named in `src/data/catalog.config.json`:
 
-- every public **playlist** of a channel becomes a series, in playlist order;
-- **uploads in no playlist** become single-video series — except videos titled
-  `EP.01 | Name`, which are grouped under `Name`;
-- `videos` in the config adds standalone videos from a channel;
-- `overrides` (keyed by playlist or video id) can set `slug`, `cover`/`coverWidth`
-  (a file under `public/`) and `featured: true`;
-- `exclude` hides a playlist or video by id.
+- every public **playlist** of the channel becomes a series, in playlist order — make a
+  playlist on YouTube and it is on the site after the next sync;
+- every channel under `channels` has its subscriber and video counts read, for the home;
+- a series whose videos are mostly Shorts goes under **Shorts**, the rest under **long-form**;
+- `overrides` (keyed by playlist id) can set `slug`, `cover`/`coverWidth` (a file under
+  `public/`) and `featured: true`;
+- `exclude` hides a playlist or video by id;
+- a source can also take `uploads: true` (uploads in no playlist; titles like `EP.01 | Name`
+  group under Name) or `videos: [ids]`.
 
 Nothing is downloaded: the site links to YouTube and shows YouTube's thumbnails.
 

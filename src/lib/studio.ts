@@ -1,14 +1,14 @@
 import type { Lang } from '../i18n/ui';
 
-// SHINYA Studio — a content studio that generates with AI and directs by
-// hand. The home sells four services on the strength of the videos already
-// made; this module holds those videos, the outside links, and the copy in
-// three languages.
+// SHINYA Studio: the outside links, and the home's copy in three languages —
+// the hero, who SHINYA is, the channels, and how a collaboration runs. The
+// catalog the series come from lives in lib/catalog.ts.
 
 export const CHANNELS = {
   music: { url: 'https://www.youtube.com/@shinyatokyo', handle: '@shinyatokyo' },
   studio: { url: 'https://www.youtube.com/@shinyatokyostudio', handle: '@shinyatokyostudio' },
 };
+export type ChannelKey = keyof typeof CHANNELS;
 
 export const STORES = [
   { id: 'spotify', label: 'Spotify', url: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH' },
@@ -16,328 +16,192 @@ export const STORES = [
   { id: 'ytmusic', label: 'YouTube Music', url: 'https://music.youtube.com/@shinyatokyo' },
 ];
 
-export type WorkType = 'mv' | 'drama' | 'trailer';
-
-// Every video the studio has published, newest first on the page. A video
-// with `art` carries its own frame in /public; the rest use the YouTube
-// thumbnail. `vertical` marks a Short, which opens under /shorts/ and gets a
-// pillarboxed thumbnail.
-export interface StudioVideo {
-  id: string;
-  type: WorkType;
-  series?: Record<Lang, string>;
-  title: Record<Lang, string>;
-  sub?: Record<Lang, string>;
-  episode?: string;
-  duration: string;
-  date: string; // YYYY-MM-DD, KST
-  vertical?: boolean;
-  art?: { src: string; width: number };
-  note: Record<Lang, string>;
-}
-
-export const VIDEOS: StudioVideo[] = [
-  {
-    id: 'zJZXD00Ne18',
-    type: 'mv',
-    title: { ko: '今夜も開演', en: '今夜も開演', ja: '今夜も開演' },
-    sub: { ko: '첫 풀 뮤직비디오', en: 'First full music video', ja: '初のフルミュージックビデオ' },
-    duration: '2:40',
-    date: '2026-09-12',
-    art: { src: 'images/series/tonight-the-curtain-rises.jpg', width: 1280 },
-    note: { ko: '20세그먼트 · 2K · 립싱크 없이 연출로', en: '20 segments · 2K · direction instead of lip-sync', ja: '20セグメント · 2K · リップシンクなしの演出' },
-  },
-  {
-    id: 'jF4bKE5bP1c',
-    type: 'drama',
-    series: { ko: '남편이 나를 AI로 교체했다', en: 'My Husband Replaced Me with an AI', ja: '夫が私をAIに差し替えた' },
-    title: { ko: '2화 「리셋」', en: 'EP.02 "Reset"', ja: '第2話「リセット」' },
-    episode: 'EP.02',
-    duration: '2:58',
-    date: '2026-10-10',
-    vertical: true,
-    note: { ko: '2026 비글루 숏드라마 페스티벌 출품작', en: '2026 Vigloo Short Drama Festival entry', ja: '2026 Vigloo ショートドラマフェスティバル出品作' },
-  },
-  {
-    id: '3if1sg_D5is',
-    type: 'trailer',
-    title: { ko: '최후의 전투', en: 'The Last Battle', ja: '最後の戦い' },
-    sub: { ko: 'AI 시네마틱 트레일러', en: 'AI cinematic trailer', ja: 'AIシネマティックトレーラー' },
-    duration: '0:58',
-    date: '2026-10-09',
-    note: { ko: '다크 판타지 · 가상의 게임 트레일러', en: 'Dark fantasy · trailer for a game that does not exist', ja: 'ダークファンタジー · 架空のゲームトレーラー' },
-  },
-  {
-    id: 'smEt8hgr2HQ',
-    type: 'drama',
-    series: { ko: '남편이 나를 AI로 교체했다', en: 'My Husband Replaced Me with an AI', ja: '夫が私をAIに差し替えた' },
-    title: { ko: '1화', en: 'EP.01', ja: '第1話' },
-    episode: 'EP.01',
-    duration: '2:57',
-    date: '2026-09-29',
-    vertical: true,
-    note: { ko: '2026 비글루 숏드라마 페스티벌 출품작', en: '2026 Vigloo Short Drama Festival entry', ja: '2026 Vigloo ショートドラマフェスティバル出品作' },
-  },
-];
-
-export const ytThumb = (id: string, q: 'maxresdefault' | 'hqdefault' = 'maxresdefault') => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
-export const ytUrl = (v: StudioVideo) => (v.vertical ? `https://www.youtube.com/shorts/${v.id}` : `https://www.youtube.com/watch?v=${v.id}`);
-export const videoName = (v: StudioVideo, lang: Lang) => v.series?.[lang] ?? v.title[lang];
-
-// Category labels on tiles and in the ticker stay in English across locales.
-export const WORK_LABEL: Record<WorkType, string> = {
-  mv: 'MUSIC VIDEO',
-  drama: 'SHORT DRAMA',
-  trailer: 'TRAILER',
-};
-
-interface Service {
-  type: WorkType | 'music';
-  k: string;
-  title: string;
-  desc: string;
-  refName: string;
-  ref: string;
-}
-
-interface Copy {
-  title: string;
-  description: string;
-  hero: { eyebrow: string; h1: [string, string, string]; lede: string; works: string; channel: string; tools: [string, string][] };
-  services: { kicker: string; title: string; sub: string; items: Service[] };
-  works: { kicker: string; title: string; sub: string; all: string; filter: Record<WorkType, string>; more: { studio: string; music: string } };
-  process: { kicker: string; title: string; sub: string; steps: { name: string; desc: string; note: string }[] };
-  ip: { kicker: string; title: string; lede: string; about: string; tag: string };
-  cta: { kicker: string; title: string; sub: string; music: string; studio: string };
-  collab: {
-    kicker: string;
-    title: string;
-    lede: string;
-    sendTitle: string;
-    send: string[];
-    steps: [string, string][];
-    contact: string;
-    contactNote: string;
-    portfolio: string;
-  };
-}
-
 // Where a collaboration starts: the business e-mail on the studio channel's
 // about page, which YouTube shows after a captcha.
 export const COLLAB_URL = `${CHANNELS.studio.url}/about`;
 
-export const COPY: Record<Lang, Copy> = {
+// The band under the hero; the same words in every language.
+export const TICKER = ['Original Series', 'Shorts', 'AI Filmmaking', 'Original Music', '深夜', '夜はまだ長い'];
+
+export interface HeroCopy {
+  eyebrow: string;
+  line: [string, string, string]; // before, the accented words, after
+  sub: string;
+  original: string;
+}
+
+export const HERO: Record<Lang, HeroCopy> = {
   ko: {
-    title: 'SHINYA Studio — AI 뮤직비디오 · 숏드라마 · 트레일러 · 음원 제작 | 深夜',
-    description: 'AI로 생성하고 사람이 연출하는 콘텐츠 스튜디오. 자체 캐릭터 深夜로 뮤직비디오·숏드라마·시네마틱 트레일러를 만든 파이프라인으로 영상과 음원을 제작합니다.',
-    hero: {
-      eyebrow: 'AI 콘텐츠 제작 스튜디오',
-      h1: ['밤에 만드는', '음악과 ', '영상'],
-      lede: 'AI로 생성하고, 사람이 연출합니다. 자체 캐릭터 深夜로 뮤직비디오, 숏드라마, 시네마틱 트레일러까지 직접 만들어 본 파이프라인을 의뢰 작업에 그대로 씁니다.',
-      works: '작품 보기',
-      channel: '스튜디오 채널',
-      tools: [['Seedance 2.5', '영상 생성'], ['Higgsfield', '이미지'], ['Suno', '음악'], ['ElevenLabs', '내레이션']],
-    },
-    services: {
-      kicker: 'Services',
-      title: '네 가지를 만듭니다',
-      sub: '기획부터 납품까지 한 팀이 합니다.',
-      items: [
-        { type: 'mv', k: 'MUSIC VIDEO', title: 'AI 뮤직비디오', desc: '곡 한 편의 풀 MV. 마스터프레임으로 세계를 고정하고 세그먼트를 이어 붙여 2~4분을 만듭니다. 립싱크 대신 연출로 보여 줍니다.', refName: '「今夜も開演」 MV', ref: '2:40 · 20세그먼트 · 2K' },
-        { type: 'drama', k: 'SHORT DRAMA', title: 'AI 숏드라마', desc: '세로형 3분 에피소드를 시리즈로. 캐릭터 시트로 얼굴을 고정하고, 대본·연출·자막까지 한 번에 갑니다.', refName: '「남편이 나를 AI로 교체했다」', ref: 'EP.01–02 · 2026 비글루 숏드라마 페스티벌 출품' },
-        { type: 'trailer', k: 'TRAILER', title: '시네마틱 트레일러', desc: '게임·브랜드용 60초. 컷 시트로 리듬을 먼저 설계하고 샷 단위로 생성한 뒤, 내레이션과 음악을 얹습니다.', refName: '「최후의 전투」', ref: '58초 · 다크 판타지' },
-        { type: 'music', k: 'MUSIC', title: '음원 제작', desc: '콘셉트·작사·구성·믹스·마스터링. 영상에 들어갈 한 곡부터 싱글 발매까지, 가사 3개 국어 대역과 스토어 유통 포함.', refName: '영상 음악 전부 자체 제작', ref: '「今夜も開演」 사운드트랙 포함' },
-      ],
-    },
-    works: {
-      kicker: 'Works',
-      title: '작품',
-      sub: '두 채널의 영상을 한자리에. 대표작이 먼저, 나머지는 최신순.',
-      all: '전체',
-      filter: { mv: '뮤직비디오', drama: '숏드라마', trailer: '트레일러' },
-      more: { studio: '스튜디오 채널', music: '음악 채널' },
-    },
-    process: {
-      kicker: 'Process',
-      title: '생성은 AI가, 결정은 사람이',
-      sub: '네 단계, 순서대로.',
-      steps: [
-        { name: '기획', desc: '이야기 한 장, 곡 구조, 컷 시트. 무엇을 만들지 먼저 글로 고정합니다.', note: '이야기가 먼저 — 가사는 그 요약' },
-        { name: '생성', desc: '마스터프레임으로 세계를 잠그고, 세그먼트·음원·음성을 생성합니다.', note: 'Suno · Seedance · Higgsfield · GPT Image · ElevenLabs' },
-        { name: '편집', desc: '연출, 컷, 자막, 믹스와 마스터링은 사람이 직접. 립싱크는 쓰지 않습니다.', note: 'AI 생성 + 사람의 연출' },
-        { name: '납품', desc: '2K 영상, 원본 음원, 썸네일, 가사 대역. 스톡 소재 없음, 전부 오리지널.', note: '유통까지 대행 가능' },
-      ],
-    },
-    ip: {
-      kicker: 'Original Character',
-      title: '모든 작업의 얼굴, 深夜',
-      lede: '깊은 밤의 도쿄에서 태어난 AI 캐릭터. 첫 풀 뮤직비디오의 주인공이자 스튜디오의 얼굴이고, 의뢰 작업에서는 캐릭터 시트로 세계를 잠그는 방식의 기준이 됩니다.',
-      about: '소개',
-      tag: '夜更かしの住人',
-    },
-    cta: {
-      kicker: 'Subscribe',
-      title: '새 작업은 밤에, 두 채널에 먼저 올라옵니다',
-      sub: '뮤직비디오는 음악 채널에, 숏드라마와 트레일러는 스튜디오 채널에. 구독해 두면 놓치지 않습니다.',
-      music: '음악 채널 구독',
-      studio: '스튜디오 채널 구독',
-    },
-    collab: {
-      kicker: 'Collab',
-      title: '함께 만들 이야기가 있다면',
-      lede: '브랜드·게임·아티스트와의 협업, 뮤직비디오·숏드라마·트레일러 제작 의뢰를 받습니다. 기획부터 납품까지 한 팀이 맡고, 결과물은 전부 오리지널입니다.',
-      sendTitle: '문의할 때 함께 보내주세요',
-      send: ['무엇을 위한 영상인지 — 브랜드, 게임, 곡, 채널', '길이와 형식 — 가로·세로, 몇 분', '레퍼런스 한두 개', '희망 일정'],
-      steps: [
-        ['문의', '유튜브 채널 정보의 비즈니스 메일로 보내주세요. 하루 안에 답합니다.'],
-        ['기획·견적', '이야기 한 장과 컷 시트, 일정과 비용을 먼저 글로 맞춥니다.'],
-        ['제작·납품', '생성과 편집을 거쳐 2K 영상, 음원, 썸네일로 전달합니다.'],
-      ],
-      contact: '협업 문의',
-      contactNote: '유튜브 채널 정보 → 비즈니스 메일',
-      portfolio: '포트폴리오 보기',
-    },
+    eyebrow: 'AI 오리지널 시리즈 스튜디오',
+    line: ['AI로 생성하고, ', '사람이 연출', '합니다.'],
+    sub: 'Original series made after midnight, in Tokyo.',
+    original: 'ORIGINAL 보기',
   },
   en: {
-    title: 'SHINYA Studio — AI music videos, short dramas, trailers & original music | 深夜',
-    description: 'A content studio where AI generates and people direct. The pipeline behind our own character, 深夜 — a music video, a short drama, a cinematic trailer — now makes video and music to commission.',
-    hero: {
-      eyebrow: 'AI content studio',
-      h1: ['Music and film,', 'made ', 'after midnight'],
-      lede: 'Generated with AI, directed by people. The pipeline we built around our own character, 深夜 — a music video, a short drama, a cinematic trailer — is the one we bring to commissioned work.',
-      works: 'See the work',
-      channel: 'Studio channel',
-      tools: [['Seedance 2.5', 'Video'], ['Higgsfield', 'Image'], ['Suno', 'Music'], ['ElevenLabs', 'Narration']],
-    },
-    services: {
-      kicker: 'Services',
-      title: 'Four things we make',
-      sub: 'One team, from the first page of the brief to delivery.',
-      items: [
-        { type: 'mv', k: 'MUSIC VIDEO', title: 'AI music video', desc: 'A full video for one song. Master frames lock the world, segments are chained into two to four minutes, and direction stands in for lip-sync.', refName: '「今夜も開演」 MV', ref: '2:40 · 20 segments · 2K' },
-        { type: 'drama', k: 'SHORT DRAMA', title: 'AI short drama', desc: 'Vertical three-minute episodes, written as a series. Character sheets hold the faces; script, direction and subtitles come as one job.', refName: '「My Husband Replaced Me with an AI」', ref: 'EP.01–02 · 2026 Vigloo Short Drama Festival entry' },
-        { type: 'trailer', k: 'TRAILER', title: 'Cinematic trailer', desc: 'Sixty seconds for a game or a brand. The cut sheet sets the rhythm first; shots are generated to it, then narration and score go on top.', refName: '「The Last Battle」', ref: '58 s · dark fantasy' },
-        { type: 'music', k: 'MUSIC', title: 'Original music', desc: 'Concept, lyrics, structure, mix and master. From the one track a video needs to a released single, with lyrics in three languages and store distribution.', refName: 'Every soundtrack made in-house', ref: 'including 「今夜も開演」' },
-      ],
-    },
-    works: {
-      kicker: 'Works',
-      title: 'Selected work',
-      sub: 'Both channels in one place. The flagship first, then newest.',
-      all: 'All',
-      filter: { mv: 'Music video', drama: 'Short drama', trailer: 'Trailer' },
-      more: { studio: 'Studio channel', music: 'Music channel' },
-    },
-    process: {
-      kicker: 'Process',
-      title: 'AI generates, people decide',
-      sub: 'Four steps, in order.',
-      steps: [
-        { name: 'Plan', desc: 'A one-page story, the song structure, the cut sheet. What gets made is fixed in writing first.', note: 'Story first — the lyric is its summary' },
-        { name: 'Generate', desc: 'Master frames lock the world; segments, music and voice are generated against them.', note: 'Suno · Seedance · Higgsfield · GPT Image · ElevenLabs' },
-        { name: 'Edit', desc: 'Direction, cuts, subtitles, mix and master are done by hand. No lip-sync.', note: 'AI generation + human direction' },
-        { name: 'Deliver', desc: '2K video, master audio, thumbnails, translated lyrics. No stock, all original.', note: 'Distribution handled on request' },
-      ],
-    },
-    ip: {
-      kicker: 'Original character',
-      title: 'The face of every piece, 深夜',
-      lede: 'An AI character born in Tokyo after midnight — the lead of the first full music video, the face of the studio, and on commissions the reference for how a character sheet locks a world.',
-      about: 'About',
-      tag: 'Resident of the late night',
-    },
-    cta: {
-      kicker: 'Subscribe',
-      title: 'New work lands at night, on two channels first',
-      sub: 'Music videos on the music channel, dramas and trailers on the studio channel. Subscribe and nothing slips past.',
-      music: 'Subscribe · Music',
-      studio: 'Subscribe · Studio',
-    },
-    collab: {
-      kicker: 'Collab',
-      title: 'If there is a story to make together',
-      lede: 'Collaborations with brands, games and artists, and commissions for music videos, short dramas and trailers. One team from the brief to delivery, and everything delivered is original.',
-      sendTitle: 'Send along with your message',
-      send: ['What the video is for — a brand, a game, a song, a channel', 'Length and format — landscape or vertical, how many minutes', 'One or two references', 'The timeline you have in mind'],
-      steps: [
-        ['Get in touch', 'Through the business e-mail on the studio channel. We answer within a day.'],
-        ['Plan and quote', 'A one-page story and a cut sheet, with schedule and cost, agreed in writing first.'],
-        ['Make and deliver', 'Generation, then editing, delivered as 2K video, master audio and thumbnails.'],
-      ],
-      contact: 'Collaborate',
-      contactNote: 'YouTube channel · About → business e-mail',
-      portfolio: 'See the portfolio',
-    },
+    eyebrow: 'AI original series studio',
+    line: ['Generated with AI, ', 'directed by people', '.'],
+    sub: '深夜 — original series made after midnight, in Tokyo.',
+    original: 'See ORIGINAL',
   },
   ja: {
-    title: 'SHINYA Studio — AIミュージックビデオ · ショートドラマ · トレーラー · 音源制作 | 深夜',
-    description: 'AIが生成し、人が演出するコンテンツスタジオ。自社キャラクター「深夜」でミュージックビデオ・ショートドラマ・シネマティックトレーラーを作ったパイプラインで、映像と音源を制作します。',
-    hero: {
-      eyebrow: 'AIコンテンツ制作スタジオ',
-      h1: ['夜に作る', '音楽と', '映像'],
-      lede: 'AIで生成し、人が演出します。自社キャラクター「深夜」でミュージックビデオ、ショートドラマ、シネマティックトレーラーまで作ってきたパイプラインを、そのまま受託制作に使います。',
-      works: '作品を見る',
-      channel: 'スタジオチャンネル',
-      tools: [['Seedance 2.5', '映像生成'], ['Higgsfield', '画像'], ['Suno', '音楽'], ['ElevenLabs', 'ナレーション']],
-    },
-    services: {
-      kicker: 'Services',
-      title: '四つを作ります',
-      sub: '企画から納品まで、一つのチームで。',
-      items: [
-        { type: 'mv', k: 'MUSIC VIDEO', title: 'AIミュージックビデオ', desc: '一曲のフルMV。マスターフレームで世界を固定し、セグメントを繋いで2〜4分に。リップシンクの代わりに演出で見せます。', refName: '「今夜も開演」 MV', ref: '2:40 · 20セグメント · 2K' },
-        { type: 'drama', k: 'SHORT DRAMA', title: 'AIショートドラマ', desc: '縦型3分のエピソードをシリーズで。キャラクターシートで顔を固定し、脚本・演出・字幕まで一括で。', refName: '「夫が私をAIに差し替えた」', ref: 'EP.01–02 · 2026 Vigloo ショートドラマフェスティバル出品' },
-        { type: 'trailer', k: 'TRAILER', title: 'シネマティックトレーラー', desc: 'ゲーム・ブランド向けの60秒。カットシートでリズムを先に設計し、ショット単位で生成してナレーションと音楽を重ねます。', refName: '「最後の戦い」', ref: '58秒 · ダークファンタジー' },
-        { type: 'music', k: 'MUSIC', title: '音源制作', desc: 'コンセプト・作詞・構成・ミックス・マスタリング。映像に入れる一曲からシングルのリリースまで、三か国語の歌詞対訳とストア配信込み。', refName: '映像の音楽はすべて自社制作', ref: '「今夜も開演」のサウンドトラックを含む' },
-      ],
-    },
-    works: {
-      kicker: 'Works',
-      title: '作品',
-      sub: '二つのチャンネルの映像をひとつに。代表作を先に、あとは新しい順。',
-      all: 'すべて',
-      filter: { mv: 'ミュージックビデオ', drama: 'ショートドラマ', trailer: 'トレーラー' },
-      more: { studio: 'スタジオチャンネル', music: '音楽チャンネル' },
-    },
-    process: {
-      kicker: 'Process',
-      title: '生成はAIが、決定は人が',
-      sub: '四つの段階を、順番に。',
-      steps: [
-        { name: '企画', desc: '物語一枚、曲の構成、カットシート。何を作るかを先に文章で固定します。', note: '物語が先 — 歌詞はその要約' },
-        { name: '生成', desc: 'マスターフレームで世界を固定し、セグメント・音源・音声を生成します。', note: 'Suno · Seedance · Higgsfield · GPT Image · ElevenLabs' },
-        { name: '編集', desc: '演出、カット、字幕、ミックスとマスタリングは人の手で。リップシンクは使いません。', note: 'AI生成 + 人の演出' },
-        { name: '納品', desc: '2K映像、原音源、サムネイル、歌詞対訳。ストック素材なし、すべてオリジナル。', note: '配信代行も可能' },
-      ],
-    },
-    ip: {
-      kicker: 'Original character',
-      title: 'すべての作品の顔、深夜',
-      lede: '深夜の東京で生まれたAIキャラクター。初のフルMVの主役であり、スタジオの顔であり、受託制作ではキャラクターシートで世界を固定するやり方の基準になります。',
-      about: 'アバウト',
-      tag: '夜更かしの住人',
-    },
-    cta: {
-      kicker: 'Subscribe',
-      title: '新しい仕事は夜に、二つのチャンネルへ先に届きます',
-      sub: 'ミュージックビデオは音楽チャンネルに、ドラマとトレーラーはスタジオチャンネルに。登録しておけば見逃しません。',
-      music: '音楽チャンネルを登録',
-      studio: 'スタジオチャンネルを登録',
-    },
-    collab: {
-      kicker: 'Collab',
-      title: '一緒に作る物語があるなら',
-      lede: 'ブランド・ゲーム・アーティストとのコラボ、ミュージックビデオ・ショートドラマ・トレーラーの制作依頼を受けています。企画から納品まで一つのチームで、成果物はすべてオリジナルです。',
-      sendTitle: 'お問い合わせの際に添えてください',
-      send: ['何のための映像か — ブランド、ゲーム、曲、チャンネル', '長さと形式 — 横型・縦型、何分', 'リファレンスを一つか二つ', '希望のスケジュール'],
-      steps: [
-        ['お問い合わせ', 'スタジオチャンネルの概要にあるビジネスメールへ。一日以内に返信します。'],
-        ['企画・見積もり', '物語一枚とカットシート、日程と費用を先に文章で合わせます。'],
-        ['制作・納品', '生成と編集を経て、2K映像・音源・サムネイルでお届けします。'],
-      ],
-      contact: 'コラボのご相談',
-      contactNote: 'YouTubeチャンネル概要 → ビジネスメール',
-      portfolio: 'ポートフォリオを見る',
-    },
+    eyebrow: 'AIオリジナルシリーズスタジオ',
+    line: ['AIで生成し、', '人が演出', 'します。'],
+    sub: 'Original series made after midnight, in Tokyo.',
+    original: 'ORIGINALを見る',
+  },
+};
+
+export interface AboutCopy {
+  title: string;
+  sub: string;
+  paras: string[];
+  facts: [string, string][];
+  caption: string;
+}
+
+export const ABOUT: Record<Lang, AboutCopy> = {
+  ko: {
+    title: 'Who is SHINYA',
+    sub: '깊은 밤의 도쿄에서, AI로 생성하고 사람이 연출하는 스튜디오.',
+    paras: [
+      'SHINYA Studio는 AI로 생성하고 사람이 연출하는 오리지널 시리즈 스튜디오입니다. 이야기를 쓰고, 캐릭터를 세우고, 생성과 편집을 거쳐 한 편을 완성하기까지 한 팀이 처음부터 끝까지 맡습니다.',
+      '深夜(SHINYA, 일본어로 "심야")는 스튜디오의 얼굴입니다. 깊은 밤의 도쿄에서 태어난 AI 캐릭터로, 앞으로 나올 모든 시리즈의 기준이 되는 캐릭터입니다.',
+      '새 시리즈는 유튜브 스튜디오 채널에 먼저 올라오고, 음악은 음악 채널과 스토어에서 들을 수 있습니다.',
+    ],
+    facts: [
+      ['Base', 'Tokyo · Seoul'],
+      ['Field', 'AI 오리지널 시리즈 · 음악'],
+      ['Face', '深夜 — AI 캐릭터'],
+      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
+      ['Motto', '夜はまだ長い — 밤은 아직 길다'],
+    ],
+    caption: '밤을 새우는 사람 — 夜更かしの住人',
+  },
+  en: {
+    title: 'Who is SHINYA',
+    sub: 'A studio in Tokyo after midnight: AI generates, people direct.',
+    paras: [
+      'SHINYA Studio is an original-series studio where AI generates and people direct. Writing the story, building the characters, generating and editing until an episode stands — one team, start to finish.',
+      '深夜 (SHINYA, "late night" in Japanese) is the studio\'s face: an AI character born in Tokyo after midnight, and the reference every series to come is measured against.',
+      'New series land first on the YouTube studio channel; the music lives on the music channel and the stores.',
+    ],
+    facts: [
+      ['Base', 'Tokyo · Seoul'],
+      ['Field', 'AI original series · music'],
+      ['Face', '深夜 — AI character'],
+      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
+      ['Motto', '夜はまだ長い — the night is still long'],
+    ],
+    caption: 'The one who stays up — 夜更かしの住人',
+  },
+  ja: {
+    title: 'Who is SHINYA',
+    sub: '深夜の東京で、AIが生成し人が演出するスタジオ。',
+    paras: [
+      'SHINYA Studio は、AIが生成し、人が演出するオリジナルシリーズのスタジオです。物語を書き、キャラクターを立て、生成と編集を経て一話を仕上げるまで、一つのチームが最初から最後まで担います。',
+      '深夜（SHINYA）はスタジオの顔です。深夜の東京で生まれたAIキャラクターで、これから生まれるすべてのシリーズの基準になるキャラクターです。',
+      '新しいシリーズは YouTube のスタジオチャンネルに先に上がり、音楽は音楽チャンネルとストアで聴けます。',
+    ],
+    facts: [
+      ['Base', '東京 · ソウル'],
+      ['Field', 'AIオリジナルシリーズ · 音楽'],
+      ['Face', '深夜 — AIキャラクター'],
+      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
+      ['Motto', '夜はまだ長い'],
+    ],
+    caption: '夜更かしの住人',
+  },
+};
+
+export interface OwnedCopy {
+  title: string;
+  sub: string;
+  cards: { key: ChannelKey; role: string; name: string; desc: string }[];
+  subscribers: string;
+  stores: string;
+}
+
+export const OWNED: Record<Lang, OwnedCopy> = {
+  ko: {
+    title: 'Owned Media',
+    sub: '두 개의 채널 — 시리즈와 음악.',
+    cards: [
+      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: '오리지널 시리즈 · Shorts · 트레일러' },
+      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: '오리지널 음악 · 뮤직비디오' },
+    ],
+    subscribers: '구독자',
+    stores: '음악은 스토어에서도',
+  },
+  en: {
+    title: 'Owned Media',
+    sub: 'Two channels — the series and the music.',
+    cards: [
+      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: 'Original series · Shorts · trailers' },
+      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'Original music · music videos' },
+    ],
+    subscribers: 'subscribers',
+    stores: 'The music, on the stores',
+  },
+  ja: {
+    title: 'Owned Media',
+    sub: '二つのチャンネル — シリーズと音楽。',
+    cards: [
+      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: 'オリジナルシリーズ · Shorts · トレーラー' },
+      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'オリジナル音楽 · ミュージックビデオ' },
+    ],
+    subscribers: '登録者',
+    stores: '音楽はストアでも',
+  },
+};
+
+export interface CollabCopy {
+  title: string;
+  lede: string;
+  sendTitle: string;
+  send: string[];
+  steps: [string, string][];
+  contact: string;
+  contactNote: string;
+}
+
+export const COLLAB: Record<Lang, CollabCopy> = {
+  ko: {
+    title: '함께 만들 이야기가 있다면',
+    lede: '브랜드·게임·아티스트와의 협업, 뮤직비디오·숏드라마·트레일러 제작 의뢰를 받습니다. 기획부터 납품까지 한 팀이 맡고, 결과물은 전부 오리지널입니다.',
+    sendTitle: '문의할 때 함께 보내주세요',
+    send: ['무엇을 위한 영상인지 — 브랜드, 게임, 곡, 채널', '길이와 형식 — 가로·세로, 몇 분', '레퍼런스 한두 개', '희망 일정'],
+    steps: [
+      ['문의', '유튜브 채널 정보의 비즈니스 메일로 보내주세요. 하루 안에 답합니다.'],
+      ['기획·견적', '이야기 한 장과 컷 시트, 일정과 비용을 먼저 글로 맞춥니다.'],
+      ['제작·납품', '생성과 편집을 거쳐 2K 영상, 음원, 썸네일로 전달합니다.'],
+    ],
+    contact: '협업 문의',
+    contactNote: '유튜브 채널 정보 → 비즈니스 메일',
+  },
+  en: {
+    title: 'If there is a story to make together',
+    lede: 'Collaborations with brands, games and artists, and commissions for music videos, short dramas and trailers. One team from the brief to delivery, and everything delivered is original.',
+    sendTitle: 'Send along with your message',
+    send: ['What the video is for — a brand, a game, a song, a channel', 'Length and format — landscape or vertical, how many minutes', 'One or two references', 'The timeline you have in mind'],
+    steps: [
+      ['Get in touch', 'Through the business e-mail on the studio channel. We answer within a day.'],
+      ['Plan and quote', 'A one-page story and a cut sheet, with schedule and cost, agreed in writing first.'],
+      ['Make and deliver', 'Generation, then editing, delivered as 2K video, master audio and thumbnails.'],
+    ],
+    contact: 'Collaborate',
+    contactNote: 'YouTube channel · About → business e-mail',
+  },
+  ja: {
+    title: '一緒に作る\u200B物語があるなら', // a soft break before 物語
+    lede: 'ブランド・ゲーム・アーティストとのコラボ、ミュージックビデオ・ショートドラマ・トレーラーの制作依頼を受けています。企画から納品まで一つのチームで、成果物はすべてオリジナルです。',
+    sendTitle: 'お問い合わせの際に添えてください',
+    send: ['何のための映像か — ブランド、ゲーム、曲、チャンネル', '長さと形式 — 横型・縦型、何分', 'リファレンスを一つか二つ', '希望のスケジュール'],
+    steps: [
+      ['お問い合わせ', 'スタジオチャンネルの概要にあるビジネスメールへ。一日以内に返信します。'],
+      ['企画・見積もり', '物語一枚とカットシート、日程と費用を先に文章で合わせます。'],
+      ['制作・納品', '生成と編集を経て、2K映像・音源・サムネイルでお届けします。'],
+    ],
+    contact: 'コラボのご相談',
+    contactNote: 'YouTubeチャンネル概要 → ビジネスメール',
   },
 };
