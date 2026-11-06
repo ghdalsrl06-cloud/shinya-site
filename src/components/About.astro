@@ -1,6 +1,5 @@
 ---
-// 01 — Who is SHINYA: the statement, the facts in a table, and the character.
-import ArtImg from './ArtImg.astro';
+// 01 — Who makes this: the statement, and the facts in a table beside it.
 import SectionHead from './SectionHead.astro';
 import type { Lang } from '../i18n/ui';
 import { ABOUT } from '../lib/studio';
@@ -15,19 +14,12 @@ const a = ABOUT[lang];
     <div class="about-grid">
       <div class="about-copy" data-stagger>
         {a.paras.map((p) => <p>{p}</p>)}
-        <dl class="facts">
-          {a.facts.map(([k, v]) => (
-            <div><dt>{k}</dt><dd>{v}</dd></div>
-          ))}
-        </dl>
       </div>
-      <figure class="about-figure">
-        <div class="character-card">
-          <ArtImg src="images/about/character.jpg" width={810} sizes="(min-width: 900px) 360px, 80vw" alt="SHINYA / 深夜" />
-          <span class="scene-time">SHINYA</span>
-        </div>
-        <figcaption class="character-caption">{a.caption}</figcaption>
-      </figure>
+      <dl class="facts" data-stagger>
+        {a.facts.map(([k, v]) => (
+          <div><dt>{k}</dt><dd>{v}</dd></div>
+        ))}
+      </dl>
     </div>
   </div>
 </section>

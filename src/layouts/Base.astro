@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import NightSky from '../components/NightSky.astro';
 import { t, type Lang } from '../i18n/ui';
 import { CHANNELS, STORES } from '../lib/studio';
 
@@ -17,8 +16,8 @@ interface Props {
 }
 
 const {
-  title = 'SHINYA Studio — AI original series & music | 深夜',
-  description = 'AI content studio: original series and music — generated with AI, directed by people. Home of SHINYA / 深夜.',
+  title = 'After Bedtime — 셋 재우고',
+  description = 'The hobby channel of a father of three: the things from his teens and twenties he never got to do, one episode at a time, after the kids are asleep.',
   lang = 'en',
   ogImage: ogImageProp,
   localized = true,
@@ -31,7 +30,7 @@ const current = Astro.url.pathname;
 const home = `${base}${prefix}/`;
 const links = [
   { href: `${home}#about`, label: 'ABOUT', active: false },
-  { href: `${home}#original`, label: 'ORIGINAL', active: current.startsWith(`${home}series/`) },
+  { href: `${home}#original`, label: 'EPISODES', active: current.startsWith(`${home}series/`) },
   { href: `${home}#channels`, label: 'CHANNELS', active: false },
   { href: `${home}#collab`, label: 'COLLAB', active: false },
 ];
@@ -51,23 +50,13 @@ const isDefaultOg = !ogImageProp;
 const studioLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'SHINYA Studio',
-  alternateName: '深夜',
+  name: t(lang, 'brand.mark'),
+  alternateName: 'After Bedtime',
   url: `${site}${base}/`,
   logo: `${site}${base}/images/og.png`,
   sameAs: [CHANNELS.studio.url, CHANNELS.music.url],
-  brand: { '@type': 'Brand', name: 'SHINYA / 深夜' },
 };
-const artistLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MusicGroup',
-  name: 'SHINYA',
-  alternateName: '深夜',
-  url: `${site}${base}/`,
-  sameAs: [CHANNELS.music.url, ...STORES.map((s) => s.url)],
-};
-// 무료 방문자 통계(GoatCounter): https://www.goatcounter.com 에서 가입 후
-// 사이트 코드(예: 'shinya')를 아래에 넣으면 활성화됩니다.
+// 무료 방문자 통계(GoatCounter): https://www.goatcounter.com 의 사이트 코드.
 const GOATCOUNTER_CODE = 'shinya';
 ---
 
@@ -77,9 +66,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#05070d" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#0f0d0b" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
     <link rel="canonical" href={canonical} />
@@ -98,20 +85,18 @@ const GOATCOUNTER_CODE = 'shinya';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='80' fill='%23ff2d6e'%3E%E5%A4%9C%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f0d0b'/%3E%3Ccircle cx='50' cy='42' r='21' fill='%23ffb547'/%3E%3Ccircle cx='30' cy='80' r='6' fill='%23f1eadf'/%3E%3Ccircle cx='50' cy='80' r='6' fill='%23f1eadf'/%3E%3Ccircle cx='70' cy='80' r='6' fill='%23f1eadf'/%3E%3C/svg%3E" />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
     <script type="application/ld+json" set:html={JSON.stringify(studioLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(artistLd)} />
     <ClientRouter />
     <title>{title}</title>
     <slot name="head" />
   </head>
   <body>
     <div class="bg-glow" aria-hidden="true"></div>
-    <NightSky />
     <nav class="site-nav">
       <div class="inner">
-        <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya Studio</span></a>
+        <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
         <div class="nav-right">
           <ul class="nav-links">
             {links.map((l) => (
@@ -135,15 +120,15 @@ const GOATCOUNTER_CODE = 'shinya';
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <a href={`${base}${prefix}/`} class="brand"><span class="jp">深夜</span><span class="en">Shinya Studio</span></a>
+          <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
           <p>{t(lang, 'footer.tagline')}</p>
           <p class="footer-motto">夜はまだ長い</p>
         </div>
         <div class="footer-col">
           <h4>{t(lang, 'footer.channels')}</h4>
           <ul>
+            <li><a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'footer.ytMain')}</a></li>
             <li><a href={CHANNELS.music.url} target="_blank" rel="noopener">{t(lang, 'footer.ytMusic')}</a></li>
-            <li><a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'footer.ytStudio')}</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -170,32 +155,6 @@ const GOATCOUNTER_CODE = 'shinya';
     </footer>
     <script>
       // Site-wide behaviour, re-initialized on every client-side navigation.
-      const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Hero parallax: art drifts with the pointer and slides with scroll.
-      let heroArt = null;
-      let mx = 0, my = 0, sy = 0, rafId = 0;
-      const findHero = () => { heroArt = reduced() ? null : document.querySelector('.hero-character .hero-art'); };
-      const applyParallax = () => {
-        rafId = 0;
-        if (!heroArt) return;
-        heroArt.style.transform = `scale(1.07) translate3d(${mx * 16}px, ${my * 10 + sy}px, 0)`;
-      };
-      const queue = () => { if (!rafId) rafId = requestAnimationFrame(applyParallax); };
-      addEventListener('mousemove', (e) => {
-        if (!heroArt) return;
-        mx = e.clientX / innerWidth - 0.5;
-        my = e.clientY / innerHeight - 0.5;
-        queue();
-      }, { passive: true });
-      addEventListener('scroll', () => {
-        if (!heroArt) return;
-        const hero = heroArt.closest('.hero-character');
-        if (!hero) return;
-        sy = Math.max(0, -hero.getBoundingClientRect().top) * 0.16;
-        queue();
-      }, { passive: true });
-
       // GoatCounter: count client-side navigations too (initial load counts itself).
       let firstLoad = true;
       const countView = () => {
@@ -203,7 +162,7 @@ const GOATCOUNTER_CODE = 'shinya';
         window.goatcounter?.count?.({ path: location.pathname });
       };
 
-      const initAll = () => { findHero(); countView(); };
+      const initAll = () => { countView(); };
       initAll();
       document.addEventListener('astro:page-load', initAll);
     </script>

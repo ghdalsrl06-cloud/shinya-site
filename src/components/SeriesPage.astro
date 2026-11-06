@@ -30,12 +30,12 @@ const videoLd = {
     duration: isoDuration(e.seconds),
     embedUrl: `https://www.youtube-nocookie.com/embed/${e.id}`,
     contentUrl: episodeUrl(e),
-    publisher: { '@type': 'Organization', name: 'SHINYA Studio' },
+    publisher: { '@type': 'Organization', name: 'After Bedtime' },
   })),
 };
 ---
 
-<Base lang={lang} title={`${s.title} — SHINYA ORIGINAL`} description={s.description || t(lang, 'orig.pageDesc')} ogImage={s.cover}>
+<Base lang={lang} title={`${s.title} — ${t(lang, 'brand.mark')}`} description={s.description || t(lang, 'orig.pageDesc')} ogImage={s.cover}>
   <script type="application/ld+json" set:html={JSON.stringify(videoLd)} slot="head" />
   <div class="container orig">
     <p class="orig-back"><a href={`${base}${prefix}/`}>← {t(lang, 'orig.back')}</a></p>

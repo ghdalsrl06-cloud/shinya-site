@@ -1,10 +1,10 @@
-# SHINYA Studio — shinya-music.com
+# 셋 재우고 — After Bedtime (shinya-music.com)
 
 Astro static site, deployed to GitHub Pages on every push to `main`.
 
 ## Pages
 
-- `/` — one page: the hero, **01 About** (who SHINYA is), **02 ORIGINAL** (the catalog: a banner
+- `/` — one page: the hero, **01 About** (who makes this), **02 Episodes** (the catalog: a banner
   for the featured series, then every series in two groups, Shorts and long-form, read from
   YouTube — until the first series is up, the banner points at the channel), **03 Channels**
   (the two YouTube channels with their counts) and **04 Collab**.

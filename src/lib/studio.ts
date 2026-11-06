@@ -1,8 +1,8 @@
 import type { Lang } from '../i18n/ui';
 
-// SHINYA Studio: the outside links, and the home's copy in three languages —
-// the hero, who SHINYA is, the channels, and how a collaboration runs. The
-// catalog the series come from lives in lib/catalog.ts.
+// 셋 재우고 — After Bedtime: the outside links, and the home's copy in three
+// languages — the opening, who makes this, the channels, and how to suggest
+// something. The catalog the episodes come from lives in lib/catalog.ts.
 
 export const CHANNELS = {
   music: { url: 'https://www.youtube.com/@shinyatokyo', handle: '@shinyatokyo' },
@@ -16,15 +16,20 @@ export const STORES = [
   { id: 'ytmusic', label: 'YouTube Music', url: 'https://music.youtube.com/@shinyatokyo' },
 ];
 
-// Where a collaboration starts: the business e-mail on the studio channel's
-// about page, which YouTube shows after a captcha.
+// Where a suggestion starts: the e-mail on the channel's about page, which
+// YouTube shows after a captcha.
 export const COLLAB_URL = `${CHANNELS.studio.url}/about`;
 
-// The band under the hero; the same words in every language.
-export const TICKER = ['Original Series', 'Shorts', 'AI Filmmaking', 'Original Music', '深夜', '夜はまだ長い'];
+// The band under the hero.
+export const TICKER: Record<Lang, string[]> = {
+  ko: ['After Bedtime', '아이 셋', '서른 앞', '못 해본 것들', 'Shorts', '밤 11시'],
+  en: ['After Bedtime', 'Three kids', 'Almost thirty', 'Things never done', 'Shorts', '11 pm'],
+  ja: ['After Bedtime', '子ども三人', '三十の手前', 'やり残したこと', 'Shorts', '夜11時'],
+};
 
 export interface HeroCopy {
   eyebrow: string;
+  loc: string;
   line: [string, string, string]; // before, the accented words, after
   sub: string;
   original: string;
@@ -32,22 +37,25 @@ export interface HeroCopy {
 
 export const HERO: Record<Lang, HeroCopy> = {
   ko: {
-    eyebrow: 'AI 오리지널 시리즈 스튜디오',
-    line: ['AI로 생성하고, ', '사람이 연출', '합니다.'],
-    sub: 'Original series made after midnight, in Tokyo.',
-    original: 'ORIGINAL 보기',
+    eyebrow: '아이 셋 아빠의 취미 채널',
+    loc: '23:00 · After bedtime',
+    line: ['애들 셋 재우고, ', '스물의 숙제', '를 합니다.'],
+    sub: '10대와 20대에 해보고 싶었던 것들을, 아이들이 잠든 뒤에 하나씩.',
+    original: '에피소드 보기',
   },
   en: {
-    eyebrow: 'AI original series studio',
-    line: ['Generated with AI, ', 'directed by people', '.'],
-    sub: '深夜 — original series made after midnight, in Tokyo.',
-    original: 'See ORIGINAL',
+    eyebrow: 'A dad of three, after hours',
+    loc: '23:00 · After bedtime',
+    line: ['Three kids asleep. Then ', 'the things I never got to do', ' at twenty.'],
+    sub: 'One unfinished wish from my teens and twenties at a time, after bedtime.',
+    original: 'See the episodes',
   },
   ja: {
-    eyebrow: 'AIオリジナルシリーズスタジオ',
-    line: ['AIで生成し、', '人が演出', 'します。'],
-    sub: 'Original series made after midnight, in Tokyo.',
-    original: 'ORIGINALを見る',
+    eyebrow: '三児の父の趣味チャンネル',
+    loc: '23:00 · After bedtime',
+    line: ['子ども三人を寝かせてから、', '二十歳のやり残し', 'をやります。'],
+    sub: '10代と20代にやりたかったことを、子どもが寝たあとにひとつずつ。',
+    original: 'エピソードを見る',
   },
 };
 
@@ -56,60 +64,56 @@ export interface AboutCopy {
   sub: string;
   paras: string[];
   facts: [string, string][];
-  caption: string;
 }
 
 export const ABOUT: Record<Lang, AboutCopy> = {
   ko: {
-    title: 'Who is SHINYA',
-    sub: '깊은 밤의 도쿄에서, AI로 생성하고 사람이 연출하는 스튜디오.',
+    title: '누가 만드나요',
+    sub: '서른을 앞둔 세 아이 아빠. 애들을 재우고 남는 밤 두어 시간이 작업실입니다.',
     paras: [
-      'SHINYA Studio는 AI로 생성하고 사람이 연출하는 오리지널 시리즈 스튜디오입니다. 이야기를 쓰고, 캐릭터를 세우고, 생성과 편집을 거쳐 한 편을 완성하기까지 한 팀이 처음부터 끝까지 맡습니다.',
-      '深夜(SHINYA, 일본어로 "심야")는 스튜디오의 얼굴입니다. 깊은 밤의 도쿄에서 태어난 AI 캐릭터로, 앞으로 나올 모든 시리즈의 기준이 되는 캐릭터입니다.',
-      '새 시리즈는 유튜브 스튜디오 채널에 먼저 올라오고, 음악은 음악 채널과 스토어에서 들을 수 있습니다.',
+      '셋 재우고는 세 아이 아빠의 취미 채널입니다. 10대와 20대에 해보고 싶었지만 못 해본 것들을, 아이들이 잠든 뒤의 두어 시간 동안 영상으로 하나씩 해봅니다.',
+      '밴드, 여행, 게임, 못 써 본 편지 같은 것들. 지금 할 수 있는 건 직접 하고, 그 시절로 돌아가야 하는 장면은 AI로 생성해서 연출합니다.',
+      '완성보다 시도가 먼저인 채널입니다. 새 에피소드는 유튜브에 먼저 올라옵니다.',
     ],
     facts: [
-      ['Base', 'Tokyo · Seoul'],
-      ['Field', 'AI 오리지널 시리즈 · 음악'],
-      ['Face', '深夜 — AI 캐릭터'],
-      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
-      ['Motto', '夜はまだ長い — 밤은 아직 길다'],
+      ['시간', '밤 11시 이후'],
+      ['나이', '서른 앞'],
+      ['식구', '아이 셋'],
+      ['도구', '직접 촬영 · AI 생성'],
+      ['원칙', '완성보다 시도'],
     ],
-    caption: '밤을 새우는 사람 — 夜更かしの住人',
   },
   en: {
-    title: 'Who is SHINYA',
-    sub: 'A studio in Tokyo after midnight: AI generates, people direct.',
+    title: 'Who makes this',
+    sub: 'A dad of three, nearly thirty. The two hours after bedtime are the studio.',
     paras: [
-      'SHINYA Studio is an original-series studio where AI generates and people direct. Writing the story, building the characters, generating and editing until an episode stands — one team, start to finish.',
-      '深夜 (SHINYA, "late night" in Japanese) is the studio\'s face: an AI character born in Tokyo after midnight, and the reference every series to come is measured against.',
-      'New series land first on the YouTube studio channel; the music lives on the music channel and the stores.',
+      'After Bedtime is the hobby channel of a father of three. The things I wanted to do in my teens and twenties and never did, I do one at a time, on video, in the couple of hours after the kids are asleep.',
+      'A band, a trip, a game, a letter never sent. What I can still do, I do myself; the scenes that need that younger me are generated with AI and directed.',
+      'Trying comes before finishing here. New episodes land on YouTube first.',
     ],
     facts: [
-      ['Base', 'Tokyo · Seoul'],
-      ['Field', 'AI original series · music'],
-      ['Face', '深夜 — AI character'],
-      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
-      ['Motto', '夜はまだ長い — the night is still long'],
+      ['Hours', 'After 11 pm'],
+      ['Age', 'Almost thirty'],
+      ['Household', 'Three kids'],
+      ['Tools', 'A camera · AI generation'],
+      ['Rule', 'Try before you polish'],
     ],
-    caption: 'The one who stays up — 夜更かしの住人',
   },
   ja: {
-    title: 'Who is SHINYA',
-    sub: '深夜の東京で、AIが生成し人が演出するスタジオ。',
+    title: '誰が作っているか',
+    sub: '三十を前にした三児の父。子どもを寝かせたあとの二時間が作業部屋です。',
     paras: [
-      'SHINYA Studio は、AIが生成し、人が演出するオリジナルシリーズのスタジオです。物語を書き、キャラクターを立て、生成と編集を経て一話を仕上げるまで、一つのチームが最初から最後まで担います。',
-      '深夜（SHINYA）はスタジオの顔です。深夜の東京で生まれたAIキャラクターで、これから生まれるすべてのシリーズの基準になるキャラクターです。',
-      '新しいシリーズは YouTube のスタジオチャンネルに先に上がり、音楽は音楽チャンネルとストアで聴けます。',
+      '「三人寝かせて」は三児の父の趣味チャンネルです。10代と20代にやりたくてできなかったことを、子どもが眠ったあとの二時間ほどで、動画にしてひとつずつやってみます。',
+      'バンド、旅、ゲーム、出せなかった手紙。いまできることは自分でやり、あの頃に戻る必要がある場面はAIで生成して演出します。',
+      '完成より挑戦が先のチャンネルです。新しいエピソードはYouTubeに先に上がります。',
     ],
     facts: [
-      ['Base', '東京 · ソウル'],
-      ['Field', 'AIオリジナルシリーズ · 音楽'],
-      ['Face', '深夜 — AIキャラクター'],
-      ['Tools', 'Seedance · Higgsfield · Suno · ElevenLabs'],
-      ['Motto', '夜はまだ長い'],
+      ['時間', '夜11時以降'],
+      ['年齢', '三十の手前'],
+      ['家族', '子ども三人'],
+      ['道具', '撮影 · AI生成'],
+      ['原則', '完成より挑戦'],
     ],
-    caption: '夜更かしの住人',
   },
 };
 
@@ -123,31 +127,31 @@ export interface OwnedCopy {
 
 export const OWNED: Record<Lang, OwnedCopy> = {
   ko: {
-    title: 'Owned Media',
-    sub: '두 개의 채널 — 시리즈와 음악.',
+    title: '채널',
+    sub: '유튜브 하나, 음악은 따로.',
     cards: [
-      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: '오리지널 시리즈 · Shorts · 트레일러' },
-      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: '오리지널 음악 · 뮤직비디오' },
+      { key: 'studio', role: 'YouTube / 메인', name: '셋 재우고', desc: '에피소드 · Shorts' },
+      { key: 'music', role: 'YouTube / 음악', name: 'SHINYA', desc: '만든 음악 · 뮤직비디오' },
     ],
     subscribers: '구독자',
     stores: '음악은 스토어에서도',
   },
   en: {
-    title: 'Owned Media',
-    sub: 'Two channels — the series and the music.',
+    title: 'Channels',
+    sub: 'One YouTube channel, and the music on its own.',
     cards: [
-      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: 'Original series · Shorts · trailers' },
-      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'Original music · music videos' },
+      { key: 'studio', role: 'YouTube / Main', name: 'After Bedtime', desc: 'Episodes · Shorts' },
+      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'The music · music videos' },
     ],
     subscribers: 'subscribers',
     stores: 'The music, on the stores',
   },
   ja: {
-    title: 'Owned Media',
-    sub: '二つのチャンネル — シリーズと音楽。',
+    title: 'チャンネル',
+    sub: 'YouTubeはひとつ、音楽は別に。',
     cards: [
-      { key: 'studio', role: 'YouTube / Studio', name: 'SHINYA STUDIO', desc: 'オリジナルシリーズ · Shorts · トレーラー' },
-      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'オリジナル音楽 · ミュージックビデオ' },
+      { key: 'studio', role: 'YouTube / メイン', name: '三人寝かせて', desc: 'エピソード · Shorts' },
+      { key: 'music', role: 'YouTube / 音楽', name: 'SHINYA', desc: '作った音楽 · ミュージックビデオ' },
     ],
     subscribers: '登録者',
     stores: '音楽はストアでも',
@@ -166,42 +170,42 @@ export interface CollabCopy {
 
 export const COLLAB: Record<Lang, CollabCopy> = {
   ko: {
-    title: '함께 만들 이야기가 있다면',
-    lede: '브랜드·게임·아티스트와의 협업, 뮤직비디오·숏드라마·트레일러 제작 의뢰를 받습니다. 기획부터 납품까지 한 팀이 맡고, 결과물은 전부 오리지널입니다.',
-    sendTitle: '문의할 때 함께 보내주세요',
-    send: ['무엇을 위한 영상인지 — 브랜드, 게임, 곡, 채널', '길이와 형식 — 가로·세로, 몇 분', '레퍼런스 한두 개', '희망 일정'],
+    title: '같이 해보고 싶은 게 있다면',
+    lede: '브랜드, 같은 처지의 아빠들, 친구들. 함께 해보고 싶은 것이 있으면 제안해 주세요. 가능한 건 애들 재우고 해봅니다.',
+    sendTitle: '제안할 때 함께 보내주세요',
+    send: ['해보고 싶은 것 한 줄', '왜 그때 못 했는지', '레퍼런스 하나', '언제쯤이면 좋을지'],
     steps: [
-      ['문의', '유튜브 채널 정보의 비즈니스 메일로 보내주세요. 하루 안에 답합니다.'],
-      ['기획·견적', '이야기 한 장과 컷 시트, 일정과 비용을 먼저 글로 맞춥니다.'],
-      ['제작·납품', '생성과 편집을 거쳐 2K 영상, 음원, 썸네일로 전달합니다.'],
+      ['제안', '유튜브 채널 정보의 메일로 보내주세요. 며칠 안에 답합니다.'],
+      ['정하기', '뭘, 언제, 어떻게 할지 짧게 맞춥니다.'],
+      ['해보기', '애들 재우고 찍고, 편집해서 올립니다.'],
     ],
-    contact: '협업 문의',
-    contactNote: '유튜브 채널 정보 → 비즈니스 메일',
+    contact: '제안하기',
+    contactNote: '유튜브 채널 정보 → 메일',
   },
   en: {
-    title: 'If there is a story to make together',
-    lede: 'Collaborations with brands, games and artists, and commissions for music videos, short dramas and trailers. One team from the brief to delivery, and everything delivered is original.',
+    title: 'If there is something to try together',
+    lede: 'Brands, fellow dads, friends. If there is something you want to see tried, say so. What is possible gets done after bedtime.',
     sendTitle: 'Send along with your message',
-    send: ['What the video is for — a brand, a game, a song, a channel', 'Length and format — landscape or vertical, how many minutes', 'One or two references', 'The timeline you have in mind'],
+    send: ['The thing to try, in one line', 'Why it never happened back then', 'One reference', 'Roughly when'],
     steps: [
-      ['Get in touch', 'Through the business e-mail on the studio channel. We answer within a day.'],
-      ['Plan and quote', 'A one-page story and a cut sheet, with schedule and cost, agreed in writing first.'],
-      ['Make and deliver', 'Generation, then editing, delivered as 2K video, master audio and thumbnails.'],
+      ['Suggest', 'Through the e-mail on the YouTube channel. An answer within a few days.'],
+      ['Settle', 'What, when and how, agreed in a few lines.'],
+      ['Try', 'Shot after bedtime, edited, and up on the channel.'],
     ],
-    contact: 'Collaborate',
-    contactNote: 'YouTube channel · About → business e-mail',
+    contact: 'Suggest something',
+    contactNote: 'YouTube channel · About → e-mail',
   },
   ja: {
-    title: '一緒に作る\u200B物語があるなら', // a soft break before 物語
-    lede: 'ブランド・ゲーム・アーティストとのコラボ、ミュージックビデオ・ショートドラマ・トレーラーの制作依頼を受けています。企画から納品まで一つのチームで、成果物はすべてオリジナルです。',
-    sendTitle: 'お問い合わせの際に添えてください',
-    send: ['何のための映像か — ブランド、ゲーム、曲、チャンネル', '長さと形式 — 横型・縦型、何分', 'リファレンスを一つか二つ', '希望のスケジュール'],
+    title: '一緒に​やってみたいことがあれば', // a soft break after 一緒に
+    lede: 'ブランド、同じ立場の父たち、友人。やってみてほしいことがあれば提案してください。できることは子どもを寝かせてからやります。',
+    sendTitle: '提案の際に添えてください',
+    send: ['やってみたいことを一行で', 'なぜあの頃できなかったか', 'リファレンスをひとつ', 'いつ頃がいいか'],
     steps: [
-      ['お問い合わせ', 'スタジオチャンネルの概要にあるビジネスメールへ。一日以内に返信します。'],
-      ['企画・見積もり', '物語一枚とカットシート、日程と費用を先に文章で合わせます。'],
-      ['制作・納品', '生成と編集を経て、2K映像・音源・サムネイルでお届けします。'],
+      ['提案', 'YouTubeチャンネル概要のメールへ。数日以内に返信します。'],
+      ['決める', '何を、いつ、どうやるかを短く合わせます。'],
+      ['やってみる', '子どもを寝かせてから撮り、編集して公開します。'],
     ],
-    contact: 'コラボのご相談',
-    contactNote: 'YouTubeチャンネル概要 → ビジネスメール',
+    contact: '提案する',
+    contactNote: 'YouTubeチャンネル概要 → メール',
   },
 };

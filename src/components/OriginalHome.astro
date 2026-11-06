@@ -1,8 +1,8 @@
 ---
-// The home, one page: who SHINYA is, ORIGINAL — the series in two groups,
-// Shorts and long-form, read from the YouTube catalog — the two channels,
-// and the door for collaborations. With nothing in the catalog yet, the
-// series banner says so and points at the channel.
+// The home, one page: the name, who makes this, the episodes — the series
+// in two groups, Shorts and long-form, read from the YouTube catalog — the
+// channels, and the invitation. With nothing in the catalog yet, the
+// episodes banner says so and points at the channel.
 import Base from '../layouts/Base.astro';
 import '../styles/original.css';
 import Hero from './Hero.astro';
@@ -30,7 +30,7 @@ const listLd = SERIES.length
   ? {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'SHINYA ORIGINAL',
+      name: 'After Bedtime — Episodes',
       itemListElement: SERIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: encodeURI(`${site}${seriesPath(s, lang, base)}`) })),
     }
   : null;
@@ -39,12 +39,12 @@ const listLd = SERIES.length
 <Base lang={lang} title={t(lang, 'orig.pageTitle')} description={t(lang, 'orig.pageDesc')}>
   <Fragment slot="head">{listLd && <script type="application/ld+json" set:html={JSON.stringify(listLd)} />}</Fragment>
   <Hero lang={lang} />
-  <Ticker />
+  <Ticker lang={lang} />
   <About lang={lang} />
 
   <section class="sec" id="original">
     <div class="container">
-      <SectionHead no="02" kicker="Original" title="Original Series" sub={t(lang, 'orig.secSub')} />
+      <SectionHead no="02" kicker="Episodes" title={t(lang, 'orig.secTitle')} sub={t(lang, 'orig.secSub')} />
       {featured ? (
         <SeriesBanner series={featured} lang={lang} />
       ) : (
