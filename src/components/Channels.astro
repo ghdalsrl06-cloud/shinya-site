@@ -1,6 +1,7 @@
 ---
-// 03 — Owned media: the two YouTube channels as cards, with the counts the
-// catalog sync reads, and the stores the music is on.
+// 03 — The two YouTube channels as cards, under the names they carry on
+// YouTube and with the counts the catalog sync reads, and the stores the
+// music is on.
 import SectionHead from './SectionHead.astro';
 import type { Lang } from '../i18n/ui';
 import { CHANNEL_STATS, formatCount } from '../lib/catalog';
@@ -21,7 +22,7 @@ const SHOW_COUNT_FROM = 1000;
         return (
           <a class="ch-card" href={CHANNELS[card.key].url} target="_blank" rel="noopener">
             <div class="ch-top"><span>{card.role}</span><span class="ch-live">LIVE</span></div>
-            <h3 class="ch-name">{card.name}</h3>
+            <h3 class="ch-name">{st?.title ?? card.name}</h3>
             <p class="ch-handle">{CHANNELS[card.key].handle}</p>
             <div class="ch-bottom">
               {st?.subscribers != null && st.subscribers >= SHOW_COUNT_FROM ? (

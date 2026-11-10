@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { t, type Lang } from '../i18n/ui';
-import { CHANNELS, STORES } from '../lib/studio';
+import { CHANNELS } from '../lib/studio';
 
 interface Props {
   title?: string;
@@ -25,15 +25,16 @@ const {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'en' ? '' : `/${lang}`;
 const current = Astro.url.pathname;
-// The home's four sections, named in English in every language, as the
-// channel sections are. ORIGINAL owns the series pages.
+// The home's four sections, named in the page's own language. Episodes owns
+// the series pages.
 const home = `${base}${prefix}/`;
 const links = [
-  { href: `${home}#about`, label: 'ABOUT', active: false },
-  { href: `${home}#original`, label: 'EPISODES', active: current.startsWith(`${home}series/`) },
-  { href: `${home}#channels`, label: 'CHANNELS', active: false },
-  { href: `${home}#collab`, label: 'COLLAB', active: false },
+  { href: `${home}#about`, label: t(lang, 'nav.about'), active: false },
+  { href: `${home}#original`, label: t(lang, 'nav.episodes'), active: current.startsWith(`${home}series/`) },
+  { href: `${home}#channels`, label: t(lang, 'nav.channels'), active: false },
+  { href: `${home}#collab`, label: t(lang, 'nav.collab'), active: false },
 ];
+const langs: [Lang, string][] = [['en', 'EN'], ['ko', '한국어'], ['ja', '日本語']];
 const localeMatch = current.slice(base.length).match(/^\/(ko|ja)(\/|$)/);
 const rest = localeMatch ? current.slice(base.length + 3) : current.slice(base.length);
 const urlFor = (l: Lang) =>
@@ -93,28 +94,35 @@ const GOATCOUNTER_CODE = 'shinya';
     <slot name="head" />
   </head>
   <body>
+    <a class="skip-link" href="#main">{t(lang, 'nav.skip')}</a>
     <div class="bg-glow" aria-hidden="true"></div>
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label={t(lang, 'nav.label')} data-nav data-open="false">
       <div class="inner">
         <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
         <div class="nav-right">
-          <ul class="nav-links">
-            {links.map((l) => (
-              <li><a href={l.href} class={l.active ? 'active' : ''}>{l.label}</a></li>
-            ))}
-          </ul>
-          <div class="lang-switch" aria-label="Language">
-            <a href={urlFor('en')} class={lang === 'en' ? 'active' : ''} lang="en">EN</a>
-            <span aria-hidden="true">·</span>
-            <a href={urlFor('ko')} class={lang === 'ko' ? 'active' : ''} lang="ko">한국어</a>
-            <span aria-hidden="true">·</span>
-            <a href={urlFor('ja')} class={lang === 'ja' ? 'active' : ''} lang="ja">日本語</a>
+          <div class="nav-panel" id="nav-panel">
+            <ul class="nav-links">
+              {links.map((l) => (
+                <li><a href={l.href} class={l.active ? 'active' : ''}>{l.label}</a></li>
+              ))}
+            </ul>
+            <div class="lang-switch" role="group" aria-label={t(lang, 'nav.lang')}>
+              {langs.map(([l, name], i) => (
+                <>
+                  {i > 0 && <span aria-hidden="true">·</span>}
+                  <a href={urlFor(l)} class={lang === l ? 'active' : ''} lang={l} hreflang={l} aria-current={lang === l ? 'true' : undefined}>{name}</a>
+                </>
+              ))}
+            </div>
           </div>
           <a class="btn btn-primary nav-cta" href={`${CHANNELS.studio.url}?sub_confirmation=1`} target="_blank" rel="noopener">{t(lang, 'nav.subscribe')}</a>
+          <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label={t(lang, 'nav.menu')}>
+            <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+          </button>
         </div>
       </div>
     </nav>
-    <main>
+    <main id="main">
       <slot />
     </main>
     <footer class="site-footer">
@@ -122,21 +130,12 @@ const GOATCOUNTER_CODE = 'shinya';
         <div class="footer-brand">
           <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
           <p>{t(lang, 'footer.tagline')}</p>
-          <p class="footer-motto">夜はまだ長い</p>
         </div>
         <div class="footer-col">
           <h4>{t(lang, 'footer.channels')}</h4>
           <ul>
             <li><a href={CHANNELS.studio.url} target="_blank" rel="noopener">{t(lang, 'footer.ytMain')}</a></li>
             <li><a href={CHANNELS.music.url} target="_blank" rel="noopener">{t(lang, 'footer.ytMusic')}</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>{t(lang, 'footer.stores')}</h4>
-          <ul>
-            {STORES.map((s) => (
-              <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>
-            ))}
           </ul>
         </div>
         <div class="footer-col">
@@ -150,11 +149,42 @@ const GOATCOUNTER_CODE = 'shinya';
       </div>
       <div class="footer-bottom">
         <p>{t(lang, 'footer.copy')}</p>
-        <p><a href={urlFor('en')} lang="en">EN</a> · <a href={urlFor('ko')} lang="ko">한국어</a> · <a href={urlFor('ja')} lang="ja">日本語</a></p>
+        <p class="footer-langs">
+          {langs.map(([l, name], i) => (
+            <>
+              {i > 0 && <span aria-hidden="true">·</span>}
+              <a href={urlFor(l)} lang={l} hreflang={l}>{name}</a>
+            </>
+          ))}
+        </p>
       </div>
     </footer>
     <script>
-      // Site-wide behaviour, re-initialized on every client-side navigation.
+      // Site-wide behaviour. The listeners sit on the document, so they survive
+      // the body swap of a client-side navigation.
+
+      // The menu on narrow screens: the button opens the panel; choosing a link,
+      // pressing Escape or tapping outside closes it.
+      const setNav = (open) => {
+        const nav = document.querySelector('[data-nav]');
+        if (!nav) return;
+        nav.dataset.open = String(open);
+        nav.querySelector('.nav-toggle')?.setAttribute('aria-expanded', String(open));
+      };
+      document.addEventListener('click', (e) => {
+        const nav = document.querySelector('[data-nav]');
+        if (!nav) return;
+        if (e.target.closest('.nav-toggle')) { setNav(nav.dataset.open !== 'true'); return; }
+        if (nav.dataset.open === 'true' && (e.target.closest('.nav-panel a') || !e.target.closest('.nav-panel'))) setNav(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const nav = document.querySelector('[data-nav]');
+        if (nav?.dataset.open !== 'true') return;
+        setNav(false);
+        nav.querySelector('.nav-toggle')?.focus();
+      });
+
       // GoatCounter: count client-side navigations too (initial load counts itself).
       let firstLoad = true;
       const countView = () => {
