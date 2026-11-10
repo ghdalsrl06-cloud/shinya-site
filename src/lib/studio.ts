@@ -4,16 +4,20 @@ import type { Lang } from '../i18n/ui';
 // languages — the opening, who makes this, the channels, and how to suggest
 // something. The catalog the episodes come from lives in lib/catalog.ts.
 
+// The channels are linked by their YouTube ids, which never change; a handle
+// can be renamed, and every link built on the old one then lands on a 404.
+// `handle` is only the text shown until the catalog sync has read the current one.
+const channel = (id: string, handle?: string) => ({ id, url: `https://www.youtube.com/channel/${id}`, handle });
 export const CHANNELS = {
-  music: { url: 'https://www.youtube.com/@shinyatokyo', handle: '@shinyatokyo' },
-  studio: { url: 'https://www.youtube.com/@shinya_studio_kr', handle: '@shinya_studio_kr' },
+  studio: channel('UCgKQTLjejj9BqTM2U4uqnLQ', '@shinya_studio_kr'),
+  music: channel('UCt3dNqlRzF_MeHKzNr7bywQ'),
 };
 export type ChannelKey = keyof typeof CHANNELS;
 
 export const STORES = [
   { id: 'spotify', label: 'Spotify', url: 'https://open.spotify.com/artist/6pNKFavzsT5AhRLq8Aj9KH' },
   { id: 'apple', label: 'Apple Music', url: 'https://music.apple.com/kr/artist/shinya-%E6%B7%B1%E5%A4%9C/6800007121' },
-  { id: 'ytmusic', label: 'YouTube Music', url: 'https://music.youtube.com/@shinyatokyo' },
+  { id: 'ytmusic', label: 'YouTube Music', url: `https://music.youtube.com/channel/${CHANNELS.music.id}` },
 ];
 
 // Where a suggestion starts: the e-mail on the channel's about page, which
@@ -132,7 +136,7 @@ export const OWNED: Record<Lang, OwnedCopy> = {
     sub: '유튜브 하나, 음악은 따로.',
     cards: [
       { key: 'studio', role: 'YouTube / 메인', name: '셋 재우고', desc: '에피소드 · Shorts' },
-      { key: 'music', role: 'YouTube / 음악', name: 'SHINYA', desc: '만든 음악 · 뮤직비디오' },
+      { key: 'music', role: 'YouTube / 음악', name: 'SHINYA 深夜', desc: '만든 음악 · 뮤직비디오' },
     ],
     subscribers: '구독자',
     stores: '음악은 스토어에서도',
@@ -142,7 +146,7 @@ export const OWNED: Record<Lang, OwnedCopy> = {
     sub: 'One YouTube channel, and the music on its own.',
     cards: [
       { key: 'studio', role: 'YouTube / Main', name: 'After Bedtime', desc: 'Episodes · Shorts' },
-      { key: 'music', role: 'YouTube / Music', name: 'SHINYA', desc: 'The music · music videos' },
+      { key: 'music', role: 'YouTube / Music', name: 'SHINYA 深夜', desc: 'The music · music videos' },
     ],
     subscribers: 'subscribers',
     stores: 'The music, on the stores',
@@ -152,7 +156,7 @@ export const OWNED: Record<Lang, OwnedCopy> = {
     sub: 'YouTubeはひとつ、音楽は別に。',
     cards: [
       { key: 'studio', role: 'YouTube / メイン', name: '三人寝かせて', desc: 'エピソード · Shorts' },
-      { key: 'music', role: 'YouTube / 音楽', name: 'SHINYA', desc: '作った音楽 · ミュージックビデオ' },
+      { key: 'music', role: 'YouTube / 音楽', name: 'SHINYA 深夜', desc: '作った音楽 · ミュージックビデオ' },
     ],
     subscribers: '登録者',
     stores: '音楽はストアでも',
