@@ -6,7 +6,7 @@ import type { Lang } from '../i18n/ui';
 
 export const CHANNELS = {
   music: { url: 'https://www.youtube.com/@shinyatokyo', handle: '@shinyatokyo' },
-  studio: { url: 'https://www.youtube.com/@shinyatokyostudio', handle: '@shinyatokyostudio' },
+  studio: { url: 'https://www.youtube.com/@shinya_studio_kr', handle: '@shinya_studio_kr' },
 };
 export type ChannelKey = keyof typeof CHANNELS;
 
@@ -120,6 +120,7 @@ export const ABOUT: Record<Lang, AboutCopy> = {
 export interface OwnedCopy {
   title: string;
   sub: string;
+  // `name` is shown until the catalog sync has read the channel's own title
   cards: { key: ChannelKey; role: string; name: string; desc: string }[];
   subscribers: string;
   stores: string;
@@ -177,7 +178,7 @@ export const COLLAB: Record<Lang, CollabCopy> = {
     steps: [
       ['제안', '유튜브 채널 정보의 메일로 보내주세요. 며칠 안에 답합니다.'],
       ['정하기', '뭘, 언제, 어떻게 할지 짧게 맞춥니다.'],
-      ['해보기', '애들 재우고 찍고, 편집해서 올립니다.'],
+      ['해보기', '애들 재우고 만들어서 채널에 올립니다.'],
     ],
     contact: '제안하기',
     contactNote: '유튜브 채널 정보 → 메일',
@@ -190,7 +191,7 @@ export const COLLAB: Record<Lang, CollabCopy> = {
     steps: [
       ['Suggest', 'Through the e-mail on the YouTube channel. An answer within a few days.'],
       ['Settle', 'What, when and how, agreed in a few lines.'],
-      ['Try', 'Shot after bedtime, edited, and up on the channel.'],
+      ['Try', 'Made after bedtime, and up on the channel.'],
     ],
     contact: 'Suggest something',
     contactNote: 'YouTube channel · About → e-mail',
@@ -203,7 +204,7 @@ export const COLLAB: Record<Lang, CollabCopy> = {
     steps: [
       ['提案', 'YouTubeチャンネル概要のメールへ。数日以内に返信します。'],
       ['決める', '何を、いつ、どうやるかを短く合わせます。'],
-      ['やってみる', '子どもを寝かせてから撮り、編集して公開します。'],
+      ['やってみる', '子どもを寝かせてから作り、チャンネルで公開します。'],
     ],
     contact: '提案する',
     contactNote: 'YouTubeチャンネル概要 → メール',

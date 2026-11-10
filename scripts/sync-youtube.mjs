@@ -78,6 +78,7 @@ async function channel(handle) {
     title: c.snippet.title,
     uploads: c.contentDetails.relatedPlaylists.uploads,
     stats: {
+      title: c.snippet.title,
       ...(st.hiddenSubscriberCount ? {} : { subscribers: Number(st.subscriberCount ?? 0) }),
       videos: Number(st.videoCount ?? 0),
     },
