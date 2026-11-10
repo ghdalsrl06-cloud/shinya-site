@@ -69,9 +69,11 @@ async function isShort(id) {
   }
 }
 
-async function channel(handle) {
-  const [c] = await yt('channels', { part: 'snippet,contentDetails,statistics', forHandle: handle.replace(/^@/, '') });
-  if (!c) throw new Error(`channel not found: ${handle}`);
+// A channel is named in the config by its id (UC…, permanent) or by its handle.
+async function channel(ref) {
+  const by = /^UC[\w-]{22}$/.test(ref) ? { id: ref } : { forHandle: ref.replace(/^@/, '') };
+  const [c] = await yt('channels', { part: 'snippet,contentDetails,statistics', ...by });
+  if (!c) throw new Error(`channel not found: ${ref}`);
   const st = c.statistics ?? {};
   return {
     id: c.id,
@@ -79,6 +81,7 @@ async function channel(handle) {
     uploads: c.contentDetails.relatedPlaylists.uploads,
     stats: {
       title: c.snippet.title,
+      ...(c.snippet.customUrl ? { handle: c.snippet.customUrl } : {}),
       ...(st.hiddenSubscriberCount ? {} : { subscribers: Number(st.subscriberCount ?? 0) }),
       videos: Number(st.videoCount ?? 0),
     },

@@ -1,6 +1,7 @@
 {
   "channels": {
-    "studio": { "title": "SHINYA Studio", "subscribers": 35, "videos": 12 }
+    "studio": { "title": "SHINYA Studio", "handle": "@shinya_studio_kr", "subscribers": 35, "videos": 12 },
+    "music": { "title": "SHINYA 深夜" }
   },
   "series": []
 }

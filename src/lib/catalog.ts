@@ -28,8 +28,8 @@ export interface Series {
 
 export const SERIES: Series[] = catalog.series as Series[];
 
-// The channels' names and counts, as the sync last read them (absent until it has run).
-export interface ChannelStats { title?: string; subscribers?: number; videos?: number }
+// The channels' names, handles and counts, as the sync last read them (absent until it has run).
+export interface ChannelStats { title?: string; handle?: string; subscribers?: number; videos?: number }
 export const CHANNEL_STATS: Partial<Record<'studio' | 'music', ChannelStats>> = (catalog as { channels?: Partial<Record<'studio' | 'music', ChannelStats>> }).channels ?? {};
 // 12.3만 / 12.3K / 12.3万, the way each audience reads a count.
 export const formatCount = (n: number, lang: Lang) => {
