@@ -198,13 +198,14 @@ html[lang="ko"] .share-label, html[lang="ja"] .share-label { font-size: var(--fs
 }
 html[lang="ko"] .studio-pill, html[lang="ja"] .studio-pill { font-size: var(--fs-small); letter-spacing: 0.02em; }
 .studio-pill.live::before { content: ''; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+/* one line on a wide screen; on a phone it breaks between the two words and
+   stands as a two-line lockup */
 .hero-name {
   margin-top: 1.2rem; font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(3.6rem, 11.5vw, 8rem); line-height: 1; letter-spacing: -0.05em; color: var(--text); text-wrap: balance;
+  font-size: clamp(3.4rem, 10.2vw, 7.4rem); line-height: 0.98; letter-spacing: -0.05em; color: var(--text);
   animation: fadeUp 0.9s var(--ease) 0.1s both;
 }
 .hero-name em { font-style: normal; color: var(--accent); }
-html[lang="ja"] .hero-name { letter-spacing: -0.03em; font-size: clamp(3rem, 9.5vw, 6.6rem); }
 .hero-line {
   margin-top: 1.3rem; font-family: var(--font-display); font-weight: 700;
   font-size: clamp(1.25rem, 2.6vw, 1.85rem); line-height: 1.4; letter-spacing: -0.02em; color: var(--text); max-width: 24em;
@@ -218,7 +219,9 @@ html[lang="ja"] .hero-line { letter-spacing: -0.01em; word-break: keep-all; over
 .home-hero .btn { padding: 0.95rem 1.7rem; }
 @media (max-width: 640px) {
   .hero.home-hero { min-height: 560px; padding: 6.5rem 0 3.4rem; }
-  .hero-name { font-size: clamp(3rem, 17vw, 4.4rem); }
+}
+@media (max-width: 520px) {
+  .hero-name { font-size: clamp(3.4rem, 19vw, 5rem); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-eyebrow, .hero-name, .hero-line, .hero-sub, .hero.home-hero .hero-cta { animation: none; }

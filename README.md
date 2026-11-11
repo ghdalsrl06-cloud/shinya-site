@@ -1,4 +1,4 @@
-# 셋 재우고 — After Bedtime (shinya-music.com)
+# SHINYA Studio (shinya-music.com)
 
 Astro static site, deployed to GitHub Pages on every push to `main`.
 

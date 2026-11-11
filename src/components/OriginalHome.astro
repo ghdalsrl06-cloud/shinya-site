@@ -30,7 +30,7 @@ const listLd = SERIES.length
   ? {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'After Bedtime — Episodes',
+      name: 'SHINYA Studio — Episodes',
       itemListElement: SERIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: encodeURI(`${site}${seriesPath(s, lang, base)}`) })),
     }
   : null;
