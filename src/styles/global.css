@@ -1,4 +1,4 @@
-/* 셋 재우고 — After Bedtime. The house is dark and one lamp is still on:
+/* SHINYA Studio. Late at night, the house dark and one lamp still on:
    warm near-black surfaces, paper-white type, and a single amber accent for
    the lamp. Pretendard (linked from the layout head) sets Korean, Japanese
    and Latin alike; labels are the same face, small, tracked and uppercase.
@@ -114,9 +114,6 @@ a:focus-visible, button:focus-visible {
 .brand:hover { color: var(--text); }
 .brand .mark { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.03em; }
 .brand .mark::after { content: '.'; color: var(--accent); }
-.brand .en { font-size: var(--fs-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); font-weight: 600; }
-/* on the English pages the small line is the Korean name, which takes no tracking */
-html[lang="en"] .brand .en { letter-spacing: 0.02em; }
 .nav-right { display: flex; align-items: center; gap: 1.2rem; min-width: 0; }
 .nav-panel { display: flex; align-items: center; gap: 1.4rem; }
 .nav-links { display: flex; gap: 1.3rem; list-style: none; }
@@ -180,9 +177,7 @@ html[lang="ko"] .nav-links a, html[lang="ja"] .nav-links a { font-size: 0.875rem
   .lang-switch { border-left: 0; padding: 0.45rem 0 0; margin-inline: -0.85rem; gap: 0; font-size: 0.875rem; }
   .lang-switch a { min-height: 44px; padding-inline: 0.85rem; }
 }
-/* a phone has no room for the second name beside the first */
-@media (max-width: 520px) { .site-nav .brand .en { display: none; } }
-/* the narrowest phones: the longest name and the longest button still share the row */
+/* the narrowest phones: the name and the longest button still share the row */
 @media (max-width: 360px) {
   .site-nav .inner { padding-left: 0.9rem; }
   .site-nav .brand .mark { font-size: 1rem; }

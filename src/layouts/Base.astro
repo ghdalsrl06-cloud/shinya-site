@@ -16,8 +16,8 @@ interface Props {
 }
 
 const {
-  title = 'After Bedtime — 셋 재우고',
-  description = 'The hobby channel of a father of three: the things he wanted in his teens and twenties, made after the kids are asleep as AI dramas, animation and music videos.',
+  title = 'SHINYA Studio',
+  description = 'SHINYA Studio is a small studio that makes videos late at night: AI dramas, animation and music videos.',
   lang = 'en',
   ogImage: ogImageProp,
   localized = true,
@@ -52,7 +52,6 @@ const studioLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: t(lang, 'brand.mark'),
-  alternateName: 'After Bedtime',
   url: `${site}${base}/`,
   logo: `${site}${base}/images/og.png`,
   sameAs: [CHANNELS.studio.url, CHANNELS.music.url],
@@ -86,7 +85,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f0d0b'/%3E%3Ccircle cx='50' cy='42' r='21' fill='%23ffb547'/%3E%3Ccircle cx='30' cy='80' r='6' fill='%23f1eadf'/%3E%3Ccircle cx='50' cy='80' r='6' fill='%23f1eadf'/%3E%3Ccircle cx='70' cy='80' r='6' fill='%23f1eadf'/%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f0d0b'/%3E%3Ccircle cx='50' cy='50' r='24' fill='%23ffb547'/%3E%3C/svg%3E" />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
     <script type="application/ld+json" set:html={JSON.stringify(studioLd)} />
     <ClientRouter />
@@ -98,7 +97,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <div class="bg-glow" aria-hidden="true"></div>
     <nav class="site-nav" aria-label={t(lang, 'nav.label')} data-nav data-open="false">
       <div class="inner">
-        <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
+        <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span></a>
         <div class="nav-right">
           <div class="nav-panel" id="nav-panel">
             <ul class="nav-links">
@@ -128,7 +127,7 @@ const GOATCOUNTER_CODE = 'shinya';
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span><span class="en">{t(lang, 'brand.sub')}</span></a>
+          <a href={`${base}${prefix}/`} class="brand"><span class="mark">{t(lang, 'brand.mark')}</span></a>
           <p>{t(lang, 'footer.tagline')}</p>
         </div>
         <div class="footer-col">
