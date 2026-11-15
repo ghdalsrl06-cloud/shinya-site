@@ -1,8 +1,9 @@
 name: YouTube catalog
 
-# Reads the channels' playlists and uploads into src/data/catalog.json once a
-# day. When the file changed it is committed to main and a deploy is started
-# (a push made with the workflow token starts no workflow by itself).
+# Reads the channel's uploads into src/data/catalog.json once a day. When the
+# file changed it is committed to main and a deploy is started (a push made
+# with the workflow token starts no workflow by itself). YOUTUBE_API_KEY is
+# optional: without it the sync reads the channel's public feeds.
 on:
   schedule:
     - cron: '15 0 * * *' # 09:15 KST

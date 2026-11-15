@@ -1,13 +1,14 @@
 ---
 // One series: its banner with the whole description, every episode as a card
-// that plays in place when clicked, a share row, and the other series.
+// that plays in place when clicked (portrait cards for a Shorts series), a
+// share row, and the other series.
 import Base from '../layouts/Base.astro';
 import '../styles/original.css';
 import SeriesBanner from './SeriesBanner.astro';
 import SeriesGrid from './SeriesGrid.astro';
 import { t, type Lang } from '../i18n/ui';
 import { ymd } from '../lib/dates';
-import { SERIES, episodeUrl, isoDuration, seriesBySlug, seriesPath, seriesUrl } from '../lib/catalog';
+import { SERIES, episodeName, episodeNo, episodeUrl, isShorts, isoDuration, seriesBySlug, seriesPath, seriesUrl, type Episode } from '../lib/catalog';
 
 const { lang, slug } = Astro.props as { lang: Lang; slug: string };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -15,19 +16,20 @@ const prefix = lang === 'en' ? '' : `/${lang}`;
 const site = (Astro.site?.href ?? 'https://shinya-music.com/').replace(/\/$/, '');
 const s = seriesBySlug(slug);
 if (!s) throw new Error(`unknown series: ${slug}`);
-const many = s.episodes.length > 1;
+// An episode shows its number when its title carries one, or when it is one of several.
+const numbered = (e: Episode) => e.no != null || s.episodes.length > 1;
 const others = SERIES.filter((o) => o.id !== s.id).slice(0, 4);
 const pageUrl = encodeURI(`${site}${seriesPath(s, lang, base)}`);
 // Every episode as a VideoObject, so the series can show up as video results.
 const videoLd = {
   '@context': 'https://schema.org',
-  '@graph': s.episodes.map((e) => ({
+  '@graph': s.episodes.map((e, i) => ({
     '@type': 'VideoObject',
-    name: e.title,
+    name: episodeName(s, e, i),
     description: s.description || e.title,
     thumbnailUrl: e.thumb,
     uploadDate: e.publishedAt,
-    duration: isoDuration(e.seconds),
+    ...(e.seconds ? { duration: isoDuration(e.seconds) } : {}),
     embedUrl: `https://www.youtube-nocookie.com/embed/${e.id}`,
     contentUrl: episodeUrl(e),
     publisher: { '@type': 'Organization', name: 'SHINYA Studio' },
@@ -46,17 +48,18 @@ const videoLd = {
         <h2>{t(lang, 'orig.episodes')}</h2>
         <span class="orig-count">{s.episodes.length}</span>
       </div>
-      <div class="eps" data-eps>
+      <div class:list={['eps', isShorts(s) && 'vert']} data-eps>
         {s.episodes.map((e, i) => (
           <article class="ep">
-            <button class:list={['ep-frame', e.vertical && 'vert']} type="button" data-play={e.id} aria-label={`▶ ${e.title}`}>
-              {e.vertical && <img class="ep-bg" src={e.thumb} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
-              <img class="ep-img" src={e.thumb} alt="" loading="lazy" decoding="async" />
-              {many && <span class="ep-no">EP.{String(i + 1).padStart(2, '0')}</span>}
-              <span class="work-dur">{e.duration}</span>
+            <button class="ep-frame" type="button" data-play={e.id} aria-label={`▶ ${episodeName(s, e, i)}`}>
+              <img src={e.thumb} alt="" loading="lazy" decoding="async" />
+              {e.duration && <span class="work-dur">{e.duration}</span>}
               <span class="ep-play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span>
             </button>
-            <h3 class="ep-title">{e.title}</h3>
+            <h3 class="ep-title">
+              {numbered(e) && <span class="ep-no">{episodeNo(e, i)}</span>}
+              {e.title !== s.title && e.title}
+            </h3>
             <p class="ep-meta">{ymd(e.publishedAt)} · <a href={episodeUrl(e)} target="_blank" rel="noopener">YouTube ↗</a></p>
           </article>
         ))}
