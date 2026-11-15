@@ -1,7 +1,7 @@
 // How a YouTube title becomes a place in the catalog. The sync reads titles
 // with these rules, so a video is filed by the way it is named on YouTube:
 //
-//   EP.05 | Name                     episode 5 of Name
+//   EP.05 | Name                     episode 5 of Name, shown under Name
 //   Hook | Name 3화                  episode 3 of Name, shown as Hook
 //   Hook | AI드라마 「Name」 1화      the same; 「」 marks the name
 //   「Name」 Subtitle | Label         a single work called Name
@@ -19,7 +19,7 @@ const quoted = (s) => /「([^」]+)」/.exec(s)?.[1].trim();
 export function parseTitle(raw) {
   const title = cleanTitle(raw);
   const ep = /^EP\.?\s*(\d+)\s*[|·—-]\s*(.+)$/i.exec(title);
-  if (ep) return { name: quoted(ep[2]) ?? ep[2].trim(), no: Number(ep[1]), title };
+  if (ep) return { name: quoted(ep[2]) ?? ep[2].trim(), no: Number(ep[1]), title: ep[2].trim() };
   const cut = title.lastIndexOf('|');
   if (cut > 0) {
     const tail = /^(.+?)\s*(?:제\s*)?(\d+)\s*(?:화|話|회)$/.exec(title.slice(cut + 1).trim());

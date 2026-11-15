@@ -1,7 +1,166 @@
 {
   "channels": {
-    "studio": { "title": "SHINYA Studio", "handle": "@shinya_studio_kr", "subscribers": 35, "videos": 12 },
-    "music": { "title": "SHINYA 深夜" }
+    "studio": {
+      "title": "SHINYA Studio",
+      "handle": "@shinya_studio_kr",
+      "subscribers": 35,
+      "videos": 12
+    },
+    "music": {
+      "title": "SHINYA 深夜"
+    }
   },
-  "series": []
+  "series": [
+    {
+      "id": "series:남편이 나를 AI로 교체했다",
+      "slug": "남편이-나를-ai로-교체했다",
+      "kind": "group",
+      "channel": "studio",
+      "title": "남편이 나를 AI로 교체했다",
+      "description": "석 달 만에 집에 돌아왔다. 통유리 너머, 남편이 '나'를 안고 있었다.",
+      "cover": "https://i.ytimg.com/vi/UBbo5dykw6Q/maxresdefault.jpg",
+      "publishedAt": "2026-09-29T14:00:19Z",
+      "updatedAt": "2026-11-14T11:00:10Z",
+      "episodes": [
+        {
+          "id": "smEt8hgr2HQ",
+          "no": 1,
+          "title": "남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-09-29T14:00:19Z",
+          "duration": "2:57",
+          "seconds": 177,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/smEt8hgr2HQ/maxresdefault.jpg"
+        },
+        {
+          "id": "jF4bKE5bP1c",
+          "no": 2,
+          "title": "남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-10-10T09:00:39Z",
+          "duration": "2:58",
+          "seconds": 178,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/jF4bKE5bP1c/maxresdefault.jpg"
+        },
+        {
+          "id": "1wGv9UqulCc",
+          "no": 3,
+          "title": "남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-10-16T21:00:31Z",
+          "duration": "2:55",
+          "seconds": 175,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/1wGv9UqulCc/maxresdefault.jpg"
+        },
+        {
+          "id": "vXliKxfgnxM",
+          "no": 4,
+          "title": "남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-11-06T12:00:14Z",
+          "duration": "2:51",
+          "seconds": 171,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/vXliKxfgnxM/maxresdefault.jpg"
+        },
+        {
+          "id": "UBbo5dykw6Q",
+          "no": 5,
+          "title": "남편이 나를 AI로 교체했다",
+          "publishedAt": "2026-11-14T11:00:10Z",
+          "duration": "2:54",
+          "seconds": 174,
+          "vertical": true,
+          "thumb": "https://i.ytimg.com/vi/UBbo5dykw6Q/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
+      "id": "series:전생했더니 최강 고양이",
+      "slug": "전생했더니-최강-고양이",
+      "kind": "group",
+      "channel": "studio",
+      "title": "전생했더니 최강 고양이",
+      "description": "출시 전날 밤, 미지급 야근 412시간을 안고 쓰러진 게임회사 막내 QA 이신. 눈을 떠 보니 자기 회사 게임의 튜토리얼 1번 몹, 고양이가 되어 있었다. 문제는 쓰러지기 직전 테스트한다고 올려 둔 레벨 99,999를 안 되돌렸다는 것.",
+      "cover": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg",
+      "publishedAt": "2026-11-13T09:00:38Z",
+      "updatedAt": "2026-11-13T09:00:38Z",
+      "episodes": [
+        {
+          "id": "dWYDpnf7aVU",
+          "no": 1,
+          "title": "수당 안 준 회사에 복수하러 온 튜토리얼 1번 몹",
+          "publishedAt": "2026-11-13T09:00:38Z",
+          "duration": "5:57",
+          "seconds": 357,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
+      "id": "series:호감도 버그",
+      "slug": "호감도-버그",
+      "kind": "group",
+      "channel": "studio",
+      "title": "호감도 버그",
+      "description": "서비스 종료의 밤, 최애 연애 게임 속으로 빨려 들어간 오타쿠 덕훈. 히로인 전원 호감도 MAX인데… 눈에 들어온 건 호감도 0의 그녀.",
+      "cover": "https://i.ytimg.com/vi/-Fpgy2-d9mk/maxresdefault.jpg",
+      "publishedAt": "2026-11-05T08:00:04Z",
+      "updatedAt": "2026-11-12T08:00:01Z",
+      "episodes": [
+        {
+          "id": "JENu9IX7VDU",
+          "no": 1,
+          "title": "연애 게임에 빨려 들어갔더니 히로인 전원 호감도 MAX!? 근데 난 도망친다",
+          "publishedAt": "2026-11-05T08:00:04Z",
+          "duration": "2:38",
+          "seconds": 158,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/JENu9IX7VDU/maxresdefault.jpg"
+        },
+        {
+          "id": "N-MTvKZQctg",
+          "no": 2,
+          "title": "나 하나 때문에 회사를 통째로 개편한 팀장님!? 호감도 MAX 역공략 대실패",
+          "publishedAt": "2026-11-09T08:00:27Z",
+          "duration": "3:07",
+          "seconds": 187,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/N-MTvKZQctg/maxresdefault.jpg"
+        },
+        {
+          "id": "-Fpgy2-d9mk",
+          "no": 3,
+          "title": "라떼에 하트 100개… 평생 삼시 세끼를 책임지겠다는 카페 사장님!?",
+          "publishedAt": "2026-11-12T08:00:01Z",
+          "duration": "3:00",
+          "seconds": 180,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/-Fpgy2-d9mk/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
+      "id": "BWnIx1p8cYM",
+      "slug": "트릿",
+      "kind": "video",
+      "channel": "studio",
+      "title": "트릿",
+      "description": "이사 온 지 삼 주째였다. 이 아파트의 할로윈이 어떤 날인지, 그땐 몰랐다.",
+      "cover": "https://i.ytimg.com/vi/BWnIx1p8cYM/maxresdefault.jpg",
+      "publishedAt": "2026-10-30T12:00:08Z",
+      "updatedAt": "2026-10-30T12:00:08Z",
+      "episodes": [
+        {
+          "id": "BWnIx1p8cYM",
+          "title": "「트릿」 아파트 할로윈의 규칙 | 단편 공포영화",
+          "publishedAt": "2026-10-30T12:00:08Z",
+          "duration": "9:51",
+          "seconds": 591,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/BWnIx1p8cYM/maxresdefault.jpg"
+        }
+      ]
+    }
+  ]
 }

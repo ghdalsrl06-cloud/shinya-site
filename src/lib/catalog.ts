@@ -1,13 +1,14 @@
 import catalog from '../data/catalog.json';
 import { t, type Lang } from '../i18n/ui';
 
-// The ORIGINAL catalog: series read from YouTube by scripts/sync-youtube.mjs.
+// The catalog: series read from YouTube by scripts/sync-youtube.mjs.
 export interface Episode {
   id: string;
+  no?: number; // the episode number in its title; absent for a single work
   title: string;
   publishedAt: string;
-  duration: string;
-  seconds: number;
+  duration?: string; // absent until the sync has read the video's length
+  seconds?: number;
   vertical: boolean;
   thumb: string;
 }
@@ -47,6 +48,10 @@ export const regularSeries = () => SERIES.filter((s) => !isShorts(s));
 export const formatLabel = (s: Series, lang: Lang) => (isShorts(s) ? t(lang, 'orig.shorts') : t(lang, 'orig.regular'));
 
 export const episodeUrl = (e: Episode) => (e.vertical ? `https://www.youtube.com/shorts/${e.id}` : `https://www.youtube.com/watch?v=${e.id}`);
+// "EP.03", from the number in the title, or from the position where there is none.
+export const episodeNo = (e: Episode, index: number) => `EP.${String(e.no ?? index + 1).padStart(2, '0')}`;
+// What an episode is called on its own: its title, or "Series EP.03" where the title is only the series' name.
+export const episodeName = (s: Series, e: Episode, index: number) => (e.title === s.title ? `${s.title} ${episodeNo(e, index)}` : e.title);
 // A playlist opens as a playlist on YouTube; anything else opens its first video.
 export const seriesUrl = (s: Series) => (s.kind === 'playlist' ? `https://www.youtube.com/playlist?list=${s.id}` : episodeUrl(s.episodes[0]));
 
