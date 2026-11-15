@@ -1,12 +1,16 @@
 {
-  "_comment": "What scripts/sync-youtube.mjs reads from YouTube. Every public playlist of a channel under `sources` becomes a series, in playlist order: make a playlist on YouTube and it shows up on ORIGINAL after the next sync (Shorts and long-form are told apart by the videos). Every channel under `channels` is named by its YouTube id (UC…, which survives a renamed handle) and gets its name, handle and counts read for the home. `exclude` hides a playlist or video by id. `overrides`, keyed by playlist id, can set `slug`, `cover`/`coverWidth` (a file under public/) and `featured: true`. A source can also take `uploads: true` (uploads in no playlist; titles like 'EP.01 | Name' group under Name) or `videos: [ids]`.",
+  "_comment": "What scripts/sync-youtube.mjs reads from YouTube. A source with `uploads: true` takes the channel's uploads and files them by title (scripts/catalog-rules.mjs): 'EP.05 | Name' and 'Hook | Name 3화' are episodes of Name, anything else is a single work. `skip.titles` keeps videos whose title carries one of the words off the site; `skip.clips` leaves out Shorts that have no episode number (clips cut from an episode). `exclude` hides a video or playlist by id. A source can also list `videos: [ids]` to show them whatever the rules say, or take `playlists: true` (needs YOUTUBE_API_KEY) to make every public playlist a series in its own order. `overrides`, keyed by series id ('series:Name', a video id or a playlist id), can set `title`, `description`, `slug`, `cover`/`coverWidth` (a file under public/) and `featured: true`. Channels under `channels` are named by their YouTube id (UC…, which survives a renamed handle).",
   "channels": {
     "studio": "UCgKQTLjejj9BqTM2U4uqnLQ",
     "music": "UCt3dNqlRzF_MeHKzNr7bywQ"
   },
   "sources": [
-    { "channel": "studio", "playlists": true }
+    { "channel": "studio", "uploads": true }
   ],
+  "skip": {
+    "titles": ["뮤직비디오", "가사", "Lyrics", "트레일러"],
+    "clips": true
+  },
   "exclude": [],
   "overrides": {}
 }
