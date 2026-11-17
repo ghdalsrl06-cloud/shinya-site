@@ -12,6 +12,57 @@
   },
   "series": [
     {
+      "id": "series:호감도 버그",
+      "slug": "호감도-버그",
+      "kind": "group",
+      "channel": "studio",
+      "title": "호감도 버그",
+      "description": "서비스 종료의 밤, 최애 연애 게임 속으로 빨려 들어간 오타쿠 덕훈. 히로인 전원 호감도 MAX인데… 눈에 들어온 건 호감도 0의 그녀.",
+      "cover": "https://i.ytimg.com/vi/bNiCP5XmZjg/maxresdefault.jpg",
+      "publishedAt": "2026-11-05T08:00:04Z",
+      "updatedAt": "2026-11-16T08:00:27Z",
+      "episodes": [
+        {
+          "id": "JENu9IX7VDU",
+          "no": 1,
+          "title": "연애 게임에 빨려 들어갔더니 히로인 전원 호감도 MAX!? 근데 난 도망친다",
+          "publishedAt": "2026-11-05T08:00:04Z",
+          "duration": "2:38",
+          "seconds": 158,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/JENu9IX7VDU/maxresdefault.jpg"
+        },
+        {
+          "id": "N-MTvKZQctg",
+          "no": 2,
+          "title": "나 하나 때문에 회사를 통째로 개편한 팀장님!? 호감도 MAX 역공략 대실패",
+          "publishedAt": "2026-11-09T08:00:27Z",
+          "duration": "3:07",
+          "seconds": 187,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/N-MTvKZQctg/maxresdefault.jpg"
+        },
+        {
+          "id": "-Fpgy2-d9mk",
+          "no": 3,
+          "title": "라떼에 하트 100개… 평생 삼시 세끼를 책임지겠다는 카페 사장님!?",
+          "publishedAt": "2026-11-12T08:00:01Z",
+          "duration": "3:00",
+          "seconds": 180,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/-Fpgy2-d9mk/maxresdefault.jpg"
+        },
+        {
+          "id": "bNiCP5XmZjg",
+          "no": 4,
+          "title": "톱 아이돌이 생방송에서 남친 선언!? 도시 전체가 나를 쫓는다",
+          "publishedAt": "2026-11-16T08:00:27Z",
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/bNiCP5XmZjg/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
       "id": "series:남편이 나를 AI로 교체했다",
       "slug": "남편이-나를-ai로-교체했다",
       "kind": "group",
@@ -94,49 +145,6 @@
           "seconds": 357,
           "vertical": false,
           "thumb": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg"
-        }
-      ]
-    },
-    {
-      "id": "series:호감도 버그",
-      "slug": "호감도-버그",
-      "kind": "group",
-      "channel": "studio",
-      "title": "호감도 버그",
-      "description": "서비스 종료의 밤, 최애 연애 게임 속으로 빨려 들어간 오타쿠 덕훈. 히로인 전원 호감도 MAX인데… 눈에 들어온 건 호감도 0의 그녀.",
-      "cover": "https://i.ytimg.com/vi/-Fpgy2-d9mk/maxresdefault.jpg",
-      "publishedAt": "2026-11-05T08:00:04Z",
-      "updatedAt": "2026-11-12T08:00:01Z",
-      "episodes": [
-        {
-          "id": "JENu9IX7VDU",
-          "no": 1,
-          "title": "연애 게임에 빨려 들어갔더니 히로인 전원 호감도 MAX!? 근데 난 도망친다",
-          "publishedAt": "2026-11-05T08:00:04Z",
-          "duration": "2:38",
-          "seconds": 158,
-          "vertical": false,
-          "thumb": "https://i.ytimg.com/vi/JENu9IX7VDU/maxresdefault.jpg"
-        },
-        {
-          "id": "N-MTvKZQctg",
-          "no": 2,
-          "title": "나 하나 때문에 회사를 통째로 개편한 팀장님!? 호감도 MAX 역공략 대실패",
-          "publishedAt": "2026-11-09T08:00:27Z",
-          "duration": "3:07",
-          "seconds": 187,
-          "vertical": false,
-          "thumb": "https://i.ytimg.com/vi/N-MTvKZQctg/maxresdefault.jpg"
-        },
-        {
-          "id": "-Fpgy2-d9mk",
-          "no": 3,
-          "title": "라떼에 하트 100개… 평생 삼시 세끼를 책임지겠다는 카페 사장님!?",
-          "publishedAt": "2026-11-12T08:00:01Z",
-          "duration": "3:00",
-          "seconds": 180,
-          "vertical": false,
-          "thumb": "https://i.ytimg.com/vi/-Fpgy2-d9mk/maxresdefault.jpg"
         }
       ]
     },
