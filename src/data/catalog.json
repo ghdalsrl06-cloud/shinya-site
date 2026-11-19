@@ -12,6 +12,26 @@
   },
   "series": [
     {
+      "id": "lf61aAtUEDc",
+      "slug": "i-m-on-my-way-harry-draconia-malfoid-x-harry",
+      "kind": "video",
+      "channel": "studio",
+      "title": "I'm on my way, Harry.. | Draconia Malfoid x Harry",
+      "description": "놈들은 무전기를 켜 둔 채 해리를 고문했다. 그녀를 부르는 미끼였다. 담 밖 차 안, 이어피스 너머로 말포이드는 모든 소리를 듣는다. 거친 숨 사이로 해리의 콧노래가 들린다. 둘이 듣던 노래, 반음씩 틀린 음으로.",
+      "cover": "https://i.ytimg.com/vi/lf61aAtUEDc/maxresdefault.jpg",
+      "publishedAt": "2026-11-18T10:00:06Z",
+      "updatedAt": "2026-11-18T10:00:06Z",
+      "episodes": [
+        {
+          "id": "lf61aAtUEDc",
+          "title": "I'm on my way, Harry.. | Draconia Malfoid x Harry",
+          "publishedAt": "2026-11-18T10:00:06Z",
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/lf61aAtUEDc/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
       "id": "series:호감도 버그",
       "slug": "호감도-버그",
       "kind": "group",
