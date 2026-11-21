@@ -12,6 +12,37 @@
   },
   "series": [
     {
+      "id": "series:전생했더니 최강 고양이",
+      "slug": "전생했더니-최강-고양이",
+      "kind": "group",
+      "channel": "studio",
+      "title": "전생했더니 최강 고양이",
+      "description": "출시 전날 밤, 미지급 야근 412시간을 안고 쓰러진 게임회사 막내 QA 이신. 눈을 떠 보니 자기 회사 게임의 튜토리얼 1번 몹, 고양이가 되어 있었다. 문제는 쓰러지기 직전 테스트한다고 올려 둔 레벨 99,999를 안 되돌렸다는 것.",
+      "cover": "https://i.ytimg.com/vi/fSxYboMyN88/maxresdefault.jpg",
+      "publishedAt": "2026-11-13T09:00:38Z",
+      "updatedAt": "2026-11-20T09:00:13Z",
+      "episodes": [
+        {
+          "id": "dWYDpnf7aVU",
+          "no": 1,
+          "title": "야근하다 쓰러졌더니 내가 만든 게임의 고양이 몹이 됐다. 레벨 99,999",
+          "publishedAt": "2026-11-13T09:00:38Z",
+          "duration": "5:57",
+          "seconds": 357,
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg"
+        },
+        {
+          "id": "fSxYboMyN88",
+          "no": 2,
+          "title": "수당 달랬더니 회사가 개를 보냈다. 레벨 999,999",
+          "publishedAt": "2026-11-20T09:00:13Z",
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/fSxYboMyN88/maxresdefault.jpg"
+        }
+      ]
+    },
+    {
       "id": "0Hjx_J0AwLE",
       "slug": "見つけたっ",
       "kind": "video",
@@ -162,29 +193,6 @@
           "seconds": 174,
           "vertical": true,
           "thumb": "https://i.ytimg.com/vi/UBbo5dykw6Q/maxresdefault.jpg"
-        }
-      ]
-    },
-    {
-      "id": "series:전생했더니 최강 고양이",
-      "slug": "전생했더니-최강-고양이",
-      "kind": "group",
-      "channel": "studio",
-      "title": "전생했더니 최강 고양이",
-      "description": "출시 전날 밤, 미지급 야근 412시간을 안고 쓰러진 게임회사 막내 QA 이신. 눈을 떠 보니 자기 회사 게임의 튜토리얼 1번 몹, 고양이가 되어 있었다. 문제는 쓰러지기 직전 테스트한다고 올려 둔 레벨 99,999를 안 되돌렸다는 것.",
-      "cover": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg",
-      "publishedAt": "2026-11-13T09:00:38Z",
-      "updatedAt": "2026-11-13T09:00:38Z",
-      "episodes": [
-        {
-          "id": "dWYDpnf7aVU",
-          "no": 1,
-          "title": "야근하다 쓰러졌더니 내가 만든 게임의 고양이 몹이 됐다. 레벨 99,999",
-          "publishedAt": "2026-11-13T09:00:38Z",
-          "duration": "5:57",
-          "seconds": 357,
-          "vertical": false,
-          "thumb": "https://i.ytimg.com/vi/dWYDpnf7aVU/maxresdefault.jpg"
         }
       ]
     },
