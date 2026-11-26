@@ -18,9 +18,9 @@
       "channel": "studio",
       "title": "호감도 버그",
       "description": "서비스 종료의 밤, 최애 연애 게임 속으로 빨려 들어간 오타쿠 덕훈. 히로인 전원 호감도 MAX인데… 눈에 들어온 건 호감도 0의 그녀.",
-      "cover": "https://i.ytimg.com/vi/y7kKk81MIGg/maxresdefault.jpg",
+      "cover": "https://i.ytimg.com/vi/C2_GBU8tcYA/maxresdefault.jpg",
       "publishedAt": "2026-11-05T08:00:04Z",
-      "updatedAt": "2026-11-23T08:00:19Z",
+      "updatedAt": "2026-11-26T08:00:34Z",
       "episodes": [
         {
           "id": "JENu9IX7VDU",
@@ -67,6 +67,14 @@
           "publishedAt": "2026-11-23T08:00:19Z",
           "vertical": false,
           "thumb": "https://i.ytimg.com/vi/y7kKk81MIGg/maxresdefault.jpg"
+        },
+        {
+          "id": "C2_GBU8tcYA",
+          "no": 6,
+          "title": "호감도 0인데 데이트 신청 성공!? 공략집에 없는 봄밤 축제",
+          "publishedAt": "2026-11-26T08:00:34Z",
+          "vertical": false,
+          "thumb": "https://i.ytimg.com/vi/C2_GBU8tcYA/maxresdefault.jpg"
         }
       ]
     },
